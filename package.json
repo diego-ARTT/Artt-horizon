@@ -1,0 +1,40 @@
+{
+  "name": "artt-horizon",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "[Getting started](#getting-started) | [Staying up to date with Horizon changes](#staying-up-to-date-with-horizon-changes) | [Developer tools](#developer-tools) | [Contributing](#contributing) | [License](#license)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:js": "eslint assets/**/*.js",
+    "lint:css": "stylelint assets/**/*.css",
+    "lint:theme": "shopify theme check",
+    "lint": "npm run lint:js && npm run lint:css && npm run lint:theme",
+    "format": "prettier --write \"**/*.{js,css,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,css,json,md}\"",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diego-ARTT/Artt-horizon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diego-ARTT/Artt-horizon/issues"
+  },
+  "homepage": "https://github.com/diego-ARTT/Artt-horizon#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@shopify/cli": "^3.86.1",
+    "@shopify/theme-check-node": "^3.23.0",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
+    "prettier": "^3.6.2",
+    "stylelint": "^16.25.0",
+    "stylelint-config-standard": "^39.0.1"
+  }
+}

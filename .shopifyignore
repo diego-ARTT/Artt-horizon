@@ -1,0 +1,11 @@
+node_modules/
+.git/
+.github/
+*.md
+package*.json
+.env*
+.vscode/
+.idea/
+*.log
+tests/
+.DS_Store

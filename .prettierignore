@@ -1,0 +1,7 @@
+node_modules/
+*.min.js
+*.min.css
+package-lock.json
+.shopify/
+# Liquid files have complex syntax - use Theme Check instead
+*.liquid
