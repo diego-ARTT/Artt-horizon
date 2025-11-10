@@ -325,6 +325,8 @@
     "marquee_section": "Marquee",
     // Block name for image/video component
     "media": "Media",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote",
     "media_with_text": "Media with text",
     "menu": "Menu",
     "mobile_layout": "Mobile layout",
@@ -909,6 +911,7 @@
     "links": "Links",
     "logo": "Logo",
     "logo_font": "Logo font",
+    "logo_max_height": "Logo max height",
     "loop": "Loop",
     "make_details_sticky_desktop": "Sticky on desktop",
     "make_section_full_width": "Make section full width",
@@ -1007,6 +1010,8 @@
     "quick_add": "Quick add",
     // Color scheme for quick add buttons on product cards
     "quick_add_colors": "Quick add colors",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote font size",
     "ratio": "Ratio",
     "read_only": "Read only",
     "reflection_opacity": "Reflection opacity",
@@ -1054,6 +1059,8 @@
     // Font size or element dimensions setting
     "size": "Size",
     "size_mobile": "Mobile size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Border weight",
     "slide_spacing": "Slide gap",
     "slide_width": "Slide width",
     "slideshow_fullwidth": "Full width slides",
