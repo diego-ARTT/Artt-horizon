@@ -160,6 +160,7 @@
     "variant_pickers": "Variantvælgere",
     "view_all_button": "Se alle",
     "pills": "Etiketter",
+    "column": "Kolonne",
     "large_logo": "Stort logo",
     "product_inventory": "Produktlager",
     "description": "Beskrivelse",
@@ -174,7 +175,9 @@
     "blog_posts_editorial": "Blogopslag: Redaktionelt",
     "excerpt": "Uddrag",
     "footer_password": "Sidefod til adgangskodeside",
-    "policies_and_links": "Politikker og links"
+    "policies_and_links": "Politikker og links",
+    "media_quote_carousel": "Mediecitat-karrusel",
+    "media_quote_carousel_block": "Citat"
   },
   "settings": {
     "alignment": "Justering",
@@ -353,6 +356,7 @@
     "link_preset": "Forudindstilling for link",
     "links": "Links",
     "logo": "Logo",
+    "logo_max_height": "Maks. højde på logo",
     "loop": "Gentag",
     "make_details_sticky_desktop": "Fastgjort på computer",
     "max_width": "Max. bredde",
@@ -388,6 +392,8 @@
     "product_templates": "Produktskabeloner",
     "products": "Produkter",
     "quick_add": "Tilføj hurtigt",
+    "quote_alignment": "Justering af citat",
+    "quote_font_size": "Størrelse på skrifttype til citat",
     "ratio": "Forhold",
     "regular": "Almindelig",
     "review_count": "Antal anmeldelser",
@@ -440,6 +446,8 @@
     "show_filter_label": "Tekstlabels på anvendte filtre",
     "show_swatch_label": "Tekstlabels til prøver",
     "size_mobile": "Størrelse på mobil",
+    "slide_background_style": "Diasbaggrund",
+    "slide_border_weight": "Kantvægt",
     "transparent_background": "Gennemsigtig baggrund",
     "unit": "Enhed",
     "hide_logo_on_home_page": "Skjul logoet på startsiden",
@@ -538,9 +546,10 @@
     "empty_cart_button_link": "Knaplink til tømning af indkøbskurv",
     "auto_load_products": "Automatisk indlæsning af produkter ved scroll",
     "products_per_page": "Produkter pr. side",
-    "block_link": "Bloklink",
     "custom_mobile_media": "Tilpassede mobilmedier",
-    "stack_media_on_mobile": "Stak medier"
+    "stack_media_on_mobile": "Stak medier",
+    "media_type_1": "Medietype",
+    "media_type_2": "Medie 2 type"
   },
   "options": {
     "adapt_to_image": "Tilpas til billede",
@@ -889,6 +898,7 @@
     "customer_account": "Kundekonto",
     "edit_empty_state_collection_in_theme_settings": "Rediger kollektion i tom tilstand i [temaindstillingerne](/editor?context=theme&category=search)",
     "grid_layout": "Gitterlayout",
+    "submissions_are_sent_to_store_email_address": "Indsendelser sendes til din butiks [afsenderadresse](https://admin.shopify.com/settings/notifications)",
     "home_page": "Startside",
     "images": "Billeder",
     "inverse_logo_info": "Bruges, når gennemsigtig baggrund for sidehoved er angivet til Omvendt",
@@ -1001,8 +1011,7 @@
     "view_all_button_label": "Se alle",
     "what_is_return_policy": "Hvad er returpolitikken?",
     "when_will_order_arrive": "Hvornår modtager jeg min ordre?",
-    "where_are_products_made": "Hvor bliver jeres produkter fremstillet?",
-    "faq": "FAQ"
+    "where_are_products_made": "Hvor bliver jeres produkter fremstillet?"
   },
   "info": {
     "carousel_layout_on_mobile": "Karrusel anvendes på mobil",

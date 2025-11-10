@@ -158,6 +158,7 @@
     "split_showcase": "分欄展示",
     "variant_pickers": "子類選擇器",
     "pills": "圓角",
+    "column": "欄位",
     "product_title": "產品名稱",
     "large_logo": "大型標誌",
     "product_list_button": "「檢視全部」按鈕",
@@ -174,7 +175,9 @@
     "blog_posts_editorial": "部落格貼文：編輯",
     "excerpt": "摘錄",
     "footer_password": "密碼頁面頁尾",
-    "policies_and_links": "政策與連結"
+    "policies_and_links": "政策與連結",
+    "media_quote_carousel": "多媒體引文輪播",
+    "media_quote_carousel_block": "引文"
   },
   "settings": {
     "alignment": "對齊方式",
@@ -538,7 +541,6 @@
     "empty_cart_button_link": "清空購物車按鈕連結",
     "auto_load_products": "捲動時自動載入產品",
     "products_per_page": "每頁產品數",
-    "block_link": "區塊連結",
     "custom_mobile_media": "自訂行動媒體",
     "stack_media_on_mobile": "堆疊媒體"
   },
@@ -886,7 +888,8 @@
     "collection_page": "商品系列頁面",
     "customer_account": "顧客帳號",
     "edit_empty_state_collection_in_theme_settings": "在 [佈景主題設定](/editor?context=theme&category=search) 中編輯空白狀態商品系列",
-    "grid_layout": "網格式版面配置",
+    "grid_layout": "網格版面配置",
+    "submissions_are_sent_to_store_email_address": "提交內容會傳送至您商店的 [寄件人電子郵件地址](https://admin.shopify.com/settings/notifications)",
     "home_page": "首頁",
     "images": "圖片",
     "inverse_logo_info": "當透明頁首背景設為對比色時使用",
@@ -1001,8 +1004,7 @@
     "view_all_button_label": "檢視全部",
     "what_is_return_policy": "退貨政策是什麼？",
     "when_will_order_arrive": "您的訂單何時會送達？",
-    "where_are_products_made": "商品在哪裡製造？",
-    "faq": "常見問題"
+    "where_are_products_made": "商品在哪裡製造？"
   },
   "info": {
     "link_info": "選用：使圖示可點按",
