@@ -22,6 +22,17 @@
     style="
       --header-marquee-duration: {{ marquee_speed }}s;
       --header-marquee-direction: {{ section.settings.direction }};
+      {% case section.settings.text_size %}
+        {% when 'small' %}
+          --header-marquee-font-size: 0.875rem;
+          --header-marquee-line-height: 1.2;
+        {% when 'large' %}
+          --header-marquee-font-size: 1.375rem;
+          --header-marquee-line-height: 1.25;
+        {% else %}
+          --header-marquee-font-size: 1.0625rem;
+          --header-marquee-line-height: 1.22;
+      {% endcase %}
     "
   >
     <div class="header-marquee__surface" aria-live="off">
@@ -91,6 +102,8 @@
     text-decoration: none;
     color: inherit;
     font: inherit;
+    font-size: var(--header-marquee-font-size, 1rem);
+    line-height: var(--header-marquee-line-height, 1.2);
   }
 
   .header-marquee__link:focus-visible {
@@ -135,6 +148,26 @@
       "type": "text",
       "id": "message",
       "label": "t:settings.text"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "t:settings.size",
+      "default": "medium",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:options.small"
+        },
+        {
+          "value": "medium",
+          "label": "t:options.medium"
+        },
+        {
+          "value": "large",
+          "label": "t:options.large"
+        }
+      ]
     },
     {
       "type": "url",
