@@ -7,7 +7,7 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "section": {
       "type": "main-blog-post",
@@ -45,7 +45,7 @@
           "static": true,
           "settings": {
             "show_date": true,
-            "show_author": false,
+            "show_author": true,
             "type_preset": "",
             "alignment": "center",
             "show_alignment": true,
@@ -92,7 +92,5 @@
       }
     }
   },
-  "order": [
-    "section"
-  ]
+  "order": ["section"]
 }

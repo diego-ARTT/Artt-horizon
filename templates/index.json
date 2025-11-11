@@ -117,7 +117,7 @@
             "style_class": "button-secondary",
             "width": "fit-content",
             "custom_width": 100,
-            "width_mobile": "fit-content",
+            "width_mobile": "custom",
             "custom_width_mobile": 100
           },
           "blocks": {}
@@ -412,7 +412,7 @@
         "subheading": "",
         "enable_autoplay": true,
         "autoplay_interval": 6,
-        "controls_style": "counter",
+        "controls_style": "none",
         "show_navigation_arrows": false,
         "quote_font_size": "large",
         "quote_alignment": "center",
