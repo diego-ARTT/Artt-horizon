@@ -17,6 +17,7 @@
       "settings": {
         "enable_marquee": true,
         "message": "Every day’s a Black Friday this November – get up to 40% OFF //",
+        "text_size": "small",
         "link": "",
         "speed": 40,
         "direction": "normal",
