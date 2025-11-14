@@ -1,4 +1,4 @@
-import { ThemeEvents, VariantUpdateEvent } from '@theme/events';
+import { ThemeEvents } from '@theme/events';
 
 /**
  * A custom element that displays a product price.
@@ -24,10 +24,13 @@ class ProductPrice extends HTMLElement {
    * Updates the price.
    * @param {VariantUpdateEvent} event - The variant update event.
    */
-  updatePrice = (event) => {
+  updatePrice = event => {
     if (event.detail.data.newProduct) {
       this.dataset.productId = event.detail.data.newProduct.id;
-    } else if (event.target instanceof HTMLElement && event.target.dataset.productId !== this.dataset.productId) {
+    } else if (
+      event.target instanceof HTMLElement &&
+      event.target.dataset.productId !== this.dataset.productId
+    ) {
       return;
     }
 

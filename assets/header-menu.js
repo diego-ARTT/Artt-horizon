@@ -57,7 +57,9 @@ class HeaderMenu extends Component {
    * Get the overflow menu
    */
   get overflowMenu() {
-    return /** @type {HTMLElement | null} */ (this.refs.overflowMenu?.shadowRoot?.querySelector('[part="overflow"]'));
+    return /** @type {HTMLElement | null} */ (
+      this.refs.overflowMenu?.shadowRoot?.querySelector('[part="overflow"]')
+    );
   }
 
   /**
@@ -72,7 +74,7 @@ class HeaderMenu extends Component {
    * Activate the selected menu item immediately
    * @param {PointerEvent | FocusEvent} event
    */
-  activate = (event) => {
+  activate = event => {
     this.#debouncedDeactivate.cancel();
     this.#debouncedActivateHandler.cancel();
 
@@ -83,7 +85,7 @@ class HeaderMenu extends Component {
    * Activate the selected menu item with a delay
    * @param {PointerEvent | FocusEvent} event
    */
-  #activateHandler = (event) => {
+  #activateHandler = event => {
     this.#debouncedDeactivate.cancel();
 
     this.dispatchEvent(new MegaMenuHoverEvent());
@@ -92,7 +94,7 @@ class HeaderMenu extends Component {
 
     if (!(event.target instanceof Element)) return;
 
-    let item = findMenuItem(event.target);
+    const item = findMenuItem(event.target);
 
     if (!item || item == this.#state.activeItem) return;
 
@@ -111,7 +113,7 @@ class HeaderMenu extends Component {
     item.ariaExpanded = 'true';
 
     let submenu = findSubmenu(item);
-    let overflowMenuHeight = this.overflowMenu?.offsetHeight ?? 0;
+    const overflowMenuHeight = this.overflowMenu?.offsetHeight ?? 0;
 
     if (!submenu && !isDefaultSlot) {
       submenu = this.overflowMenu;
@@ -160,9 +162,12 @@ class HeaderMenu extends Component {
     item.ariaExpanded = 'false';
     item.setAttribute('data-animating', '');
 
-    setTimeout(() => {
-      item.removeAttribute('data-animating');
-    }, Math.max(0, this.animationDelay - 150)); // Start header transition 150ms before submenu finishes
+    setTimeout(
+      () => {
+        item.removeAttribute('data-animating');
+      },
+      Math.max(0, this.animationDelay - 150)
+    ); // Start header transition 150ms before submenu finishes
   };
 
   /**
@@ -176,7 +181,7 @@ class HeaderMenu extends Component {
    */
   #preloadImages = () => {
     const images = this.querySelectorAll('img[loading="lazy"]');
-    images?.forEach((image) => image.removeAttribute('loading'));
+    images?.forEach(image => image.removeAttribute('loading'));
   };
 }
 

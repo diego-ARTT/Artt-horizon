@@ -1,6 +1,6 @@
 import { Component } from '@theme/component';
 import { morph } from '@theme/morph';
-import { ThemeEvents, VariantUpdateEvent } from '@theme/events';
+import { ThemeEvents } from '@theme/events';
 
 class LocalPickup extends Component {
   /** @type {AbortController | undefined} */
@@ -12,7 +12,7 @@ class LocalPickup extends Component {
     const closestSection = this.closest(`.shopify-section, dialog`);
 
     /** @type {(event: VariantUpdateEvent) => void} */
-    const variantUpdated = (event) => {
+    const variantUpdated = event => {
       if (event.detail.data.newProduct) {
         this.dataset.productUrl = event.detail.data.newProduct.url;
       }
@@ -47,7 +47,7 @@ class LocalPickup extends Component {
    * Fetches the availability of a variant.
    * @param {string} variantId - The ID of the variant to fetch availability for.
    */
-  #fetchAvailability = (variantId) => {
+  #fetchAvailability = variantId => {
     if (!variantId) return;
 
     const abortController = this.#createAbortController();
@@ -56,8 +56,8 @@ class LocalPickup extends Component {
     fetch(`${url}?variant=${variantId}&section_id=${this.dataset.sectionId}`, {
       signal: abortController.signal,
     })
-      .then((response) => response.text())
-      .then((text) => {
+      .then(response => response.text())
+      .then(text => {
         if (abortController.signal.aborted) return;
 
         const html = new DOMParser().parseFromString(text, 'text/html');
@@ -67,7 +67,7 @@ class LocalPickup extends Component {
           morph(this, wrapper);
         } else this.setAttribute('hidden', '');
       })
-      .catch((_e) => {
+      .catch(_e => {
         if (abortController.signal.aborted) return;
         this.setAttribute('hidden', '');
       });

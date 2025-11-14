@@ -27,7 +27,7 @@ class FacetsFormComponent extends Component {
    * @returns {URLSearchParams} The processed URL parameters
    */
   createURLParameters(formData = new FormData(this.refs.facetsForm)) {
-    let newParameters = new URLSearchParams(/** @type any */ (formData));
+    const newParameters = new URLSearchParams(/** @type any */ (formData));
 
     if (newParameters.get('filter.v.price.gte') === '') newParameters.delete('filter.v.price.gte');
     if (newParameters.get('filter.v.price.lte') === '') newParameters.delete('filter.v.price.lte');
@@ -156,7 +156,7 @@ class FacetInputsComponent extends Component {
    * Handles mouseover events on facet labels
    * @param {MouseEvent} event - The mouseover event
    */
-  prefetchPage = debounce((event) => {
+  prefetchPage = debounce(event => {
     if (!(event.target instanceof HTMLElement)) return;
 
     const form = this.closest('form');
@@ -191,7 +191,7 @@ class FacetInputsComponent extends Component {
   #updateSelectedFacetSummary() {
     if (!this.refs.facetInputs) return;
 
-    const checkedInputElements = this.refs.facetInputs.filter((input) => input.checked);
+    const checkedInputElements = this.refs.facetInputs.filter(input => input.checked);
     const details = this.closest('details');
     const statusComponent = details?.querySelector('facet-status-component');
 
@@ -230,10 +230,11 @@ class PriceFacetComponent extends Component {
    * Handles keydown events to restrict input to valid characters
    * @param {KeyboardEvent} event - The keydown event
    */
-  #onKeyDown = (event) => {
+  #onKeyDown = event => {
     if (event.metaKey) return;
 
-    const pattern = /[0-9]|\.|,|'| |Tab|Backspace|Enter|ArrowUp|ArrowDown|ArrowLeft|ArrowRight|Delete|Escape/;
+    const pattern =
+      /[0-9]|\.|,|'| |Tab|Backspace|Enter|ArrowUp|ArrowDown|ArrowLeft|ArrowRight|Delete|Escape/;
     if (!event.key.match(pattern)) event.preventDefault();
   };
 
@@ -278,7 +279,8 @@ class PriceFacetComponent extends Component {
     if (maxInput.value) minInput.setAttribute('data-max', maxInput.value);
     if (minInput.value) maxInput.setAttribute('data-min', minInput.value);
     if (minInput.value === '') maxInput.setAttribute('data-min', '0');
-    if (maxInput.value === '') minInput.setAttribute('data-max', maxInput.getAttribute('data-max') ?? '');
+    if (maxInput.value === '')
+      minInput.setAttribute('data-max', maxInput.getAttribute('data-max') ?? '');
   }
 
   /**
@@ -332,7 +334,7 @@ class FacetClearComponent extends Component {
     }
 
     const container = event.target.closest('facet-inputs-component, price-facet-component');
-    container?.querySelectorAll('[type="checkbox"]:checked, input').forEach((input) => {
+    container?.querySelectorAll('[type="checkbox"]:checked, input').forEach(input => {
       if (input instanceof HTMLInputElement) {
         input.checked = false;
         input.value = '';
@@ -356,7 +358,7 @@ class FacetClearComponent extends Component {
    * Handles keyup events
    * @param {KeyboardEvent} event - The keyup event
    */
-  #handleKeyUp = (event) => {
+  #handleKeyUp = event => {
     if (event.metaKey) return;
     if (event.key === 'Enter') this.clearFilter(event);
   };
@@ -367,7 +369,7 @@ class FacetClearComponent extends Component {
    *
    * @param {FilterUpdateEvent} event
    */
-  #handleFilterUpdate = (event) => {
+  #handleFilterUpdate = event => {
     const { clearButton } = this.refs;
     if (clearButton instanceof Element) {
       clearButton.classList.toggle('facets__clear--active', event.shouldShowClearAll());
@@ -429,7 +431,7 @@ class FacetRemoveComponent extends Component {
    *
    * @param {FilterUpdateEvent} event
    */
-  #handleFilterUpdate = (event) => {
+  #handleFilterUpdate = event => {
     const { clearButton } = this.refs;
     if (clearButton instanceof Element) {
       clearButton.classList.toggle('active', event.shouldShowClearAll());
@@ -458,12 +460,14 @@ class SortingFilterComponent extends Component {
    * Handles keyboard navigation in the sorting dropdown
    * @param {KeyboardEvent} event - The keyboard event
    */
-  handleKeyDown = (event) => {
+  handleKeyDown = event => {
     const { listbox } = this.refs;
     if (!(listbox instanceof Element)) return;
 
     const options = Array.from(listbox.querySelectorAll('[role="option"]'));
-    const currentFocused = options.find((option) => option instanceof HTMLElement && option.tabIndex === 0);
+    const currentFocused = options.find(
+      option => option instanceof HTMLElement && option.tabIndex === 0
+    );
     let newFocusIndex = currentFocused ? options.indexOf(currentFocused) : 0;
 
     switch (event.key) {
@@ -523,7 +527,7 @@ class SortingFilterComponent extends Component {
    */
   #moveFocus(options, newIndex) {
     // Remove tabindex from all options
-    options.forEach((option) => {
+    options.forEach(option => {
       if (option instanceof HTMLElement) {
         option.tabIndex = -1;
       }
@@ -545,7 +549,7 @@ class SortingFilterComponent extends Component {
     const input = option.querySelector('input[type="radio"]');
     if (input instanceof HTMLInputElement && option instanceof HTMLElement) {
       // Update aria-selected states
-      this.querySelectorAll('[role="option"]').forEach((opt) => {
+      this.querySelectorAll('[role="option"]').forEach(opt => {
         opt.setAttribute('aria-selected', 'false');
       });
       option.setAttribute('aria-selected', 'true');
@@ -568,7 +572,7 @@ class SortingFilterComponent extends Component {
       const options = this.querySelectorAll('[role="option"]');
       const selectedOption = this.querySelector('[aria-selected="true"]');
 
-      options.forEach((opt) => {
+      options.forEach(opt => {
         if (opt instanceof HTMLElement) {
           opt.tabIndex = -1;
         }
@@ -591,7 +595,8 @@ class SortingFilterComponent extends Component {
    */
   updateFilterAndSorting(event) {
     const facetsForm =
-      this.closest('facets-form-component') || this.closest('.shopify-section')?.querySelector('facets-form-component');
+      this.closest('facets-form-component') ||
+      this.closest('.shopify-section')?.querySelector('facets-form-component');
 
     if (!(facetsForm instanceof FacetsFormComponent)) return;
     const isMobile = window.innerWidth < 750;
@@ -603,7 +608,7 @@ class SortingFilterComponent extends Component {
     if (shouldDisable) {
       if (isMobile) {
         const inputs = this.querySelectorAll('input[name="sort_by"]');
-        inputs.forEach((input) => {
+        inputs.forEach(input => {
           if (!(input instanceof HTMLInputElement)) return;
           input.disabled = true;
         });
@@ -621,7 +626,7 @@ class SortingFilterComponent extends Component {
     if (shouldDisable) {
       if (isMobile) {
         const inputs = this.querySelectorAll('input[name="sort_by"]');
-        inputs.forEach((input) => {
+        inputs.forEach(input => {
           if (!(input instanceof HTMLInputElement)) return;
           input.disabled = false;
         });
@@ -652,7 +657,9 @@ class SortingFilterComponent extends Component {
     if (!(facetStatus instanceof FacetStatusComponent)) return;
 
     facetStatus.textContent =
-      event.target.value !== details.dataset.defaultSortBy ? event.target.dataset.optionName ?? '' : '';
+      event.target.value !== details.dataset.defaultSortBy
+        ? (event.target.dataset.optionName ?? '')
+        : '';
   }
 }
 
@@ -703,7 +710,7 @@ class FacetStatusComponent extends Component {
     }
 
     facetStatus.innerHTML = Array.from(checkedInputElements)
-      .map((inputElement) => {
+      .map(inputElement => {
         const swatch = inputElement.parentElement?.querySelector('span.swatch');
         return swatch?.outerHTML ?? '';
       })
@@ -841,7 +848,7 @@ class FacetStatusComponent extends Component {
     if (!b) b = '';
 
     // Split by groups of 3 digits
-    a = a.replace(/\d(?=(\d\d\d)+(?!\d))/g, (digit) => digit + thousandsSeparator);
+    a = a.replace(/\d(?=(\d\d\d)+(?!\d))/g, digit => digit + thousandsSeparator);
 
     return precision <= 0 ? a : a + decimalSeparator + b.padEnd(precision, '0');
   }

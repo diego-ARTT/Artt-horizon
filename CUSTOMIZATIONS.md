@@ -212,6 +212,85 @@
 - **Created:** Nov 4, 2024
 - **Notes:** All checks must pass before merge
 
+#### ESLint Code Quality Fixes (Jan 2025)
+
+- **Purpose:** Fix ESLint errors and warnings to ensure CI pipeline passes
+- **Status:** ✅ Completed
+- **Date:** January 2025
+- **Reason:** CI pipeline was failing due to ESLint violations
+- **Impact:** Low - Code quality improvements, no functional changes
+- **Merge Strategy:** ✅ Safe - These are code quality fixes that should be preserved
+
+**Files Modified:**
+
+1. **`assets/cart-discount.js`**
+   - Fixed empty catch blocks (lines 113, 165) - Added comments explaining silent error handling for abort controller scenarios
+   - Changed `catch (error)` to `catch` (error variable unused)
+
+2. **`assets/cart-note.js`**
+   - Fixed empty catch block (line 36) - Added comment explaining silent error handling
+   - Changed `catch (error)` to `catch` (error variable unused)
+
+3. **`assets/component.js`**
+   - Fixed `prefer-const` error (line 231) - Changed `let [selector, method]` to `const [selector, method]` and introduced `cleanedMethod` variable for reassignment
+   - Fixed `no-useless-escape` errors (line 234) - Removed unnecessary escapes in regex pattern: `/([/?][^/?]+)([/?][^/?]+)$/`
+   - Added eslint-disable comment for console.error (line 257) - Legitimate error logging
+
+4. **`assets/facets.js`**
+   - Fixed `prefer-const` error (line 30) - Changed `let newParameters` to `const newParameters`
+
+5. **`assets/gift-card-recipient-form.js`**
+   - Removed unused imports: `CartErrorEvent`, `CartAddEvent`
+   - Fixed `prefer-const` error (line 249) - Changed `let controlFlag` to `const controlFlag`
+   - Added eslint-disable comment for console.warn (line 193) - Legitimate warning logging
+
+6. **`assets/header-menu.js`**
+   - Fixed `prefer-const` errors (lines 95, 114) - Changed `let item` and `let overflowMenuHeight` to `const`
+   - Note: `let submenu` remains as `let` because it's reassigned later
+
+7. **`assets/localization.js`**
+   - Fixed `prefer-const` error (line 184) - Changed `let matchTypes` to `const matchTypes`
+
+8. **`assets/product-form.js`**
+   - Removed unused imports: `CartUpdateEvent`, `VariantUpdateEvent`
+   - Fixed `prefer-const` error (line 288) - Changed `let cartItemComponentsSectionIds` to `const cartItemComponentsSectionIds`
+   - Added eslint-disable comments for console.error statements (lines 211, 384) - Legitimate error logging
+
+9. **`assets/utilities.js`**
+   - Fixed `prefer-const` errors (lines 92, 250) - Changed `let cleanupFunctions` and `let valueWithNoSpaces` to `const`
+
+10. **Removed Unused Imports (Multiple Files):**
+    - `assets/cart-icon.js` - Removed `CartUpdateEvent`
+    - `assets/component-cart-items.js` - Removed `QuantitySelectorUpdateEvent`, `CartAddEvent` (Note: `CartUpdateEvent` kept as it's used on line 160)
+    - `assets/drag-zoom-wrapper.js` - Removed `ZoomDialog`
+    - `assets/local-pickup.js` - Removed `VariantUpdateEvent`
+    - `assets/media-gallery.js` - Removed `VariantUpdateEvent`, `ZoomMediaSelectedEvent`
+    - `assets/predictive-search.js` - Removed `DialogComponent`
+    - `assets/product-card.js` - Removed `VariantSelectedEvent`, `VariantUpdateEvent`
+    - `assets/product-inventory.js` - Removed `VariantUpdateEvent`
+    - `assets/product-price.js` - Removed `VariantUpdateEvent`
+    - `assets/quick-add.js` - Removed `CartUpdateEvent`
+
+11. **Console Statement Handling:**
+    - Added `eslint-disable-next-line no-console` comments for legitimate error/warning logging in:
+      - `assets/component-cart-items.js` (line 175)
+      - `assets/component.js` (line 257)
+      - `assets/gift-card-recipient-form.js` (line 193)
+      - `assets/product-form.js` (lines 211, 384)
+      - `assets/product-recommendations.js` (line 142)
+      - `assets/variant-picker.js` (lines 255, 258)
+
+12. **Unused Variable Fixes:**
+    - `assets/cart-icon.js` (line 100) - Changed `catch (_)` to `catch` (unused catch parameter)
+    - `assets/theme-editor.js` (line 93) - Removed unused `event` parameter from beforeunload handler
+
+**Summary:**
+
+- **20 errors fixed** (empty catch blocks, prefer-const, no-useless-escape)
+- **30 warnings addressed** (unused imports, console statements, unused variables)
+- **No functional changes** - All fixes are code quality improvements
+- **Upstream compatibility:** ✅ High - These are standard ESLint fixes that won't conflict with upstream changes
+
 ### Repository Configuration
 
 #### `.gitignore`

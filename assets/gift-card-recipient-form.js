@@ -1,5 +1,5 @@
 import { Component } from '@theme/component';
-import { ThemeEvents, CartErrorEvent, CartAddEvent } from '@theme/events';
+import { ThemeEvents } from '@theme/events';
 
 /**
  * @typedef {Object} GiftCardRecipientFormRefs
@@ -54,7 +54,12 @@ class GiftCardRecipientForm extends Component {
    * @returns {(HTMLInputElement | HTMLTextAreaElement)[]} Array of input fields
    */
   get #inputFields() {
-    return [this.refs.recipientEmail, this.refs.recipientName, this.refs.recipientMessage, this.refs.recipientSendOn];
+    return [
+      this.refs.recipientEmail,
+      this.refs.recipientName,
+      this.refs.recipientMessage,
+      this.refs.recipientSendOn,
+    ];
   }
 
   connectedCallback() {
@@ -113,9 +118,9 @@ class GiftCardRecipientForm extends Component {
     // Validate mode
     if (!Object.values(GiftCardRecipientForm.DeliveryMode).includes(mode)) {
       throw new Error(
-        `Invalid delivery mode: ${mode}. Must be one of: ${Object.values(GiftCardRecipientForm.DeliveryMode).join(
-          ', '
-        )}`
+        `Invalid delivery mode: ${mode}. Must be one of: ${Object.values(
+          GiftCardRecipientForm.DeliveryMode
+        ).join(', ')}`
       );
     }
 
@@ -144,7 +149,8 @@ class GiftCardRecipientForm extends Component {
       // Announce to screen readers
       if (this.refs.liveRegion) {
         this.refs.liveRegion.textContent =
-          Theme.translations?.recipient_form_fields_visible || 'Recipient form fields are now visible';
+          Theme.translations?.recipient_form_fields_visible ||
+          'Recipient form fields are now visible';
       }
 
       // Focus first field for accessibility
@@ -156,7 +162,8 @@ class GiftCardRecipientForm extends Component {
       // Announce to screen readers
       if (this.refs.liveRegion) {
         this.refs.liveRegion.textContent =
-          Theme.translations?.recipient_form_fields_hidden || 'Recipient form fields are now hidden';
+          Theme.translations?.recipient_form_fields_hidden ||
+          'Recipient form fields are now hidden';
       }
     }
 
@@ -190,6 +197,7 @@ class GiftCardRecipientForm extends Component {
         break;
 
       default:
+        // eslint-disable-next-line no-console
         console.warn(`Unknown delivery mode: ${mode}`);
         // Default to self delivery
         this.refs.myEmailButton.checked = true;
@@ -221,7 +229,9 @@ class GiftCardRecipientForm extends Component {
     }
 
     // Remove control field when sending to self
-    const controlFlag = this.querySelector('input[name="properties[__shopify_send_gift_card_to_recipient]"]');
+    const controlFlag = this.querySelector(
+      'input[name="properties[__shopify_send_gift_card_to_recipient]"]'
+    );
     if (controlFlag) {
       controlFlag.remove();
     }
@@ -246,7 +256,9 @@ class GiftCardRecipientForm extends Component {
     }
 
     // Add control field when sending to recipient
-    let controlFlag = this.querySelector('input[name="properties[__shopify_send_gift_card_to_recipient]"]');
+    const controlFlag = this.querySelector(
+      'input[name="properties[__shopify_send_gift_card_to_recipient]"]'
+    );
     if (!controlFlag) {
       const input = document.createElement('input');
       input.type = 'hidden';
@@ -277,7 +289,9 @@ class GiftCardRecipientForm extends Component {
     const template = this.refs.characterCount.getAttribute('data-template');
     if (!template) return;
 
-    const updatedText = template.replace('[current]', currentLength.toString()).replace('[max]', maxLength.toString());
+    const updatedText = template
+      .replace('[current]', currentLength.toString())
+      .replace('[max]', maxLength.toString());
 
     this.refs.characterCount.textContent = updatedText;
   }
@@ -296,7 +310,7 @@ class GiftCardRecipientForm extends Component {
      * @param {Date} date
      * @returns {string}
      */
-    const formatDate = (date) => {
+    const formatDate = date => {
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
@@ -371,7 +385,9 @@ class GiftCardRecipientForm extends Component {
     // Announce errors to screen readers
     if (this.refs.liveRegion) {
       this.refs.liveRegion.textContent =
-        title || Theme.translations?.recipient_form_error || 'There was an error with the form submission';
+        title ||
+        Theme.translations?.recipient_form_error ||
+        'There was an error with the form submission';
     }
   }
 

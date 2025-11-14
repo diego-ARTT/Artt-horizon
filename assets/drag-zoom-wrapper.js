@@ -1,5 +1,4 @@
 import { clamp, preventDefault, isMobileBreakpoint } from './utilities.js';
-import { ZoomDialog } from './zoom-dialog.js';
 
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 5;
@@ -115,7 +114,7 @@ export class DragZoomWrapper extends HTMLElement {
   /**
    * @param {TouchEvent} event
    */
-  #handleTouchStart = (event) => {
+  #handleTouchStart = event => {
     preventDefault(event);
 
     const touchCount = event.touches.length;
@@ -253,7 +252,7 @@ export class DragZoomWrapper extends HTMLElement {
   /**
    * @param {TouchEvent} event
    */
-  #handleTouchMove = (event) => {
+  #handleTouchMove = event => {
     preventDefault(event);
 
     const touchCount = event.touches.length;
@@ -341,7 +340,7 @@ export class DragZoomWrapper extends HTMLElement {
   /**
    * @param {TouchEvent} event
    */
-  #handleTouchEnd = (event) => {
+  #handleTouchEnd = event => {
     if (event.touches.length === 0) {
       this.#isDragging = false;
       this.#requestUpdateTransform();

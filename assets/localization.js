@@ -23,8 +23,10 @@ class LocalizationFormComponent extends Component {
     super.connectedCallback();
 
     this.refs.search && this.refs.search.addEventListener('keydown', this.#onSearchKeyDown);
-    this.refs.countryList && this.refs.countryList.addEventListener('keydown', this.#onContainerKeyDown);
-    this.refs.countryList && this.refs.countryList.addEventListener('scroll', this.#onCountryListScroll);
+    this.refs.countryList &&
+      this.refs.countryList.addEventListener('keydown', this.#onContainerKeyDown);
+    this.refs.countryList &&
+      this.refs.countryList.addEventListener('scroll', this.#onCountryListScroll);
 
     this.resizeLanguageInput();
   }
@@ -32,8 +34,10 @@ class LocalizationFormComponent extends Component {
   disconnectedCallback() {
     super.disconnectedCallback();
     this.refs.search && this.refs.search.removeEventListener('keydown', this.#onSearchKeyDown);
-    this.refs.countryList && this.refs.countryList.removeEventListener('keydown', this.#onContainerKeyDown);
-    this.refs.countryList && this.refs.countryList.removeEventListener('scroll', this.#onCountryListScroll);
+    this.refs.countryList &&
+      this.refs.countryList.removeEventListener('keydown', this.#onContainerKeyDown);
+    this.refs.countryList &&
+      this.refs.countryList.removeEventListener('scroll', this.#onCountryListScroll);
   }
 
   /**
@@ -41,7 +45,7 @@ class LocalizationFormComponent extends Component {
    *
    * @param {KeyboardEvent} event - The event object.
    */
-  #onContainerKeyDown = (event) => {
+  #onContainerKeyDown = event => {
     const { countryInput, countryListItems, form } = this.refs;
 
     switch (event.key) {
@@ -58,7 +62,9 @@ class LocalizationFormComponent extends Component {
       case 'Enter': {
         event.preventDefault();
         event.stopPropagation();
-        const focusedItem = countryListItems.find((item) => item.getAttribute('aria-selected') === 'true');
+        const focusedItem = countryListItems.find(
+          item => item.getAttribute('aria-selected') === 'true'
+        );
 
         if (focusedItem) {
           countryInput.value = focusedItem.dataset.value ?? '';
@@ -71,8 +77,10 @@ class LocalizationFormComponent extends Component {
     if (!this.refs.search) return;
 
     setTimeout(() => {
-      const focusableItems = this.refs.countryListItems.filter((item) => !item.hasAttribute('hidden'));
-      const focusedItemIndex = focusableItems.findIndex((item) => item === document.activeElement);
+      const focusableItems = this.refs.countryListItems.filter(
+        item => !item.hasAttribute('hidden')
+      );
+      const focusedItemIndex = focusableItems.findIndex(item => item === document.activeElement);
       const focusedItem = focusableItems[focusedItemIndex];
 
       if (focusedItem) {
@@ -181,7 +189,7 @@ class LocalizationFormComponent extends Component {
       aliasExactMatch: false,
     }
   ) {
-    let matchTypes = {};
+    const matchTypes = {};
     const { aliases, value: iso } = countryEl.dataset;
 
     if (options.matchLabel) {
@@ -195,7 +203,9 @@ class LocalizationFormComponent extends Component {
     }
 
     if (options.matchCurrency) {
-      const currency = normalizeString(countryEl.querySelector('.localization-form__currency')?.textContent ?? '');
+      const currency = normalizeString(
+        countryEl.querySelector('.localization-form__currency')?.textContent ?? ''
+      );
       matchTypes.currency = currency.includes(searchValue);
     }
 
@@ -204,13 +214,13 @@ class LocalizationFormComponent extends Component {
     }
 
     if (options.matchAlias) {
-      const countryAliases = aliases?.split(',').map((alias) => normalizeString(alias));
+      const countryAliases = aliases?.split(',').map(alias => normalizeString(alias));
 
       if (!countryAliases) return matchTypes;
 
       matchTypes.alias =
         countryAliases.length > 0 &&
-        countryAliases.find((alias) =>
+        countryAliases.find(alias =>
           options.aliasExactMatch ? alias === searchValue : alias.startsWith(searchValue)
         ) !== undefined;
     }
@@ -254,8 +264,15 @@ class LocalizationFormComponent extends Component {
    * Filters the countries based on the search value.
    */
   filterCountries() {
-    const { countryList, countryListItems, liveRegion, noResultsMessage, popularCountries, resetButton, search } =
-      this.refs;
+    const {
+      countryList,
+      countryListItems,
+      liveRegion,
+      noResultsMessage,
+      popularCountries,
+      resetButton,
+      search,
+    } = this.refs;
     const { labelResultsCount } = this.dataset;
     const searchValue = normalizeString(search.value);
     let countVisibleCountries = 0;
@@ -312,17 +329,21 @@ class LocalizationFormComponent extends Component {
    */
   #changeCountryFocus(direction) {
     const { countryListItems } = this.refs;
-    const focusableItems = countryListItems.filter((item) => !item.hasAttribute('hidden'));
-    const focusedItemIndex = focusableItems.findIndex((item) => item === document.activeElement);
+    const focusableItems = countryListItems.filter(item => !item.hasAttribute('hidden'));
+    const focusedItemIndex = focusableItems.findIndex(item => item === document.activeElement);
     const focusedItem = focusableItems[focusedItemIndex];
     let itemToFocus;
 
     if (direction === 'UP') {
       itemToFocus =
-        focusedItemIndex > 0 ? focusableItems[focusedItemIndex - 1] : focusableItems[focusableItems.length - 1];
+        focusedItemIndex > 0
+          ? focusableItems[focusedItemIndex - 1]
+          : focusableItems[focusableItems.length - 1];
     } else {
       itemToFocus =
-        focusedItemIndex < focusableItems.length - 1 ? focusableItems[focusedItemIndex + 1] : focusableItems[0];
+        focusedItemIndex < focusableItems.length - 1
+          ? focusableItems[focusedItemIndex + 1]
+          : focusableItems[0];
     }
 
     if (focusedItem) {
@@ -352,7 +373,7 @@ class LocalizationFormComponent extends Component {
    *
    * @param {KeyboardEvent} event - The event object.
    */
-  #onSearchKeyDown = (event) => {
+  #onSearchKeyDown = event => {
     if (event.key === 'Enter') {
       event.preventDefault();
       event.stopPropagation();
@@ -390,7 +411,7 @@ class LocalizationFormComponent extends Component {
    *
    * @param {Event} event - The scroll event object.
    */
-  #onCountryListScroll = (event) => {
+  #onCountryListScroll = event => {
     const countryFilter = this.querySelector('.country-filter');
     const countryList = event.target instanceof HTMLElement ? event.target : null;
 
@@ -460,7 +481,7 @@ class DropdownLocalizationComponent extends Component {
    *
    * @param {PointerEvent} event - The event object.
    */
-  #handleClickOutside = (event) => {
+  #handleClickOutside = event => {
     if (isClickedOutside(event, this)) {
       this.hidePanel();
     }
@@ -478,7 +499,7 @@ class DropdownLocalizationComponent extends Component {
    *
    * @param {KeyboardEvent} event - The event object.
    */
-  #handleKeyUp = (event) => {
+  #handleKeyUp = event => {
     switch (event.key) {
       case 'Escape':
         this.hidePanel();
@@ -526,7 +547,7 @@ class DrawerLocalizationComponent extends Component {
    *
    * @param {Event} event - The scroll event object.
    */
-  #onCountryListScroll = (event) => {
+  #onCountryListScroll = event => {
     const countryFilter = this.querySelector('.country-filter');
     const countryList = event.target instanceof HTMLElement ? event.target : null;
 

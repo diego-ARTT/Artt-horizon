@@ -1,6 +1,6 @@
 import { Component } from '@theme/component';
 import { fetchConfig, onAnimationEnd, preloadImage } from '@theme/utilities';
-import { ThemeEvents, CartAddEvent, CartErrorEvent, CartUpdateEvent, VariantUpdateEvent } from '@theme/events';
+import { ThemeEvents, CartAddEvent, CartErrorEvent } from '@theme/events';
 import { cartPerformance } from '@theme/performance';
 import { morph } from '@theme/morph';
 
@@ -184,7 +184,9 @@ class ProductFormComponent extends Component {
    * @returns {Promise<number>} The cart quantity for the current variant
    */
   async #fetchAndUpdateCartQuantity() {
-    const variantIdInput = /** @type {HTMLInputElement | null} */ (this.querySelector('input[name="id"]'));
+    const variantIdInput = /** @type {HTMLInputElement | null} */ (
+      this.querySelector('input[name="id"]')
+    );
     if (!variantIdInput?.value) return 0;
 
     try {
@@ -193,12 +195,14 @@ class ProductFormComponent extends Component {
 
       const cartItem = cart.items.find(
         /** @param {any} item */
-        (item) => item.variant_id.toString() === variantIdInput.value.toString()
+        item => item.variant_id.toString() === variantIdInput.value.toString()
       );
       const cartQty = cartItem ? cartItem.quantity : 0;
 
       // Use public API to update quantity selector
-      const quantitySelector = /** @type {any} */ (this.querySelector('quantity-selector-component'));
+      const quantitySelector = /** @type {any} */ (
+        this.querySelector('quantity-selector-component')
+      );
       if (quantitySelector?.setCartQuantity) {
         quantitySelector.setCartQuantity(cartQty);
       }
@@ -208,6 +212,7 @@ class ProductFormComponent extends Component {
 
       return cartQty;
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to fetch cart quantity:', error);
       return 0;
     }
@@ -217,9 +222,13 @@ class ProductFormComponent extends Component {
    * Updates data-cart-quantity when cart is updated from elsewhere
    * @param {CartUpdateEvent|CartAddEvent} event
    */
-  #onCartUpdate = async (event) => {
+  #onCartUpdate = async event => {
     // Skip if this event came from this component
-    if (event.detail?.sourceId === this.id || event.detail?.data?.source === 'product-form-component') return;
+    if (
+      event.detail?.sourceId === this.id ||
+      event.detail?.data?.source === 'product-form-component'
+    )
+      return;
 
     await this.#fetchAndUpdateCartQuantity();
   };
@@ -252,7 +261,10 @@ class ProductFormComponent extends Component {
         addToCartButtonContainer?.disable();
 
         const errorTemplate = this.dataset.quantityErrorMax || '';
-        const errorMessage = errorTemplate.replace('{{ maximum }}', validation.maxQuantity.toString());
+        const errorMessage = errorTemplate.replace(
+          '{{ maximum }}',
+          validation.maxQuantity.toString()
+        );
         if (addToCartTextError) {
           addToCartTextError.classList.remove('hidden');
 
@@ -285,8 +297,8 @@ class ProductFormComponent extends Component {
     const formData = new FormData(form);
 
     const cartItemsComponents = document.querySelectorAll('cart-items-component');
-    let cartItemComponentsSectionIds = [];
-    cartItemsComponents.forEach((item) => {
+    const cartItemComponentsSectionIds = [];
+    cartItemsComponents.forEach(item => {
       if (item instanceof HTMLElement && item.dataset.sectionId) {
         cartItemComponentsSectionIds.push(item.dataset.sectionId);
       }
@@ -302,11 +314,16 @@ class ProductFormComponent extends Component {
         Accept: 'text/html',
       },
     })
-      .then((response) => response.json())
-      .then((response) => {
+      .then(response => response.json())
+      .then(response => {
         if (response.status) {
           this.dispatchEvent(
-            new CartErrorEvent(form.getAttribute('id') || '', response.message, response.description, response.errors)
+            new CartErrorEvent(
+              form.getAttribute('id') || '',
+              response.message,
+              response.description,
+              response.errors
+            )
           );
 
           if (!addToCartTextError) return;
@@ -380,7 +397,8 @@ class ProductFormComponent extends Component {
           );
         }
       })
-      .catch((error) => {
+      .catch(error => {
+        // eslint-disable-next-line no-console
         console.error(error);
       })
       .finally(() => {
@@ -430,14 +448,17 @@ class ProductFormComponent extends Component {
     } else if (currentElement && !newElement) {
       currentElement.remove();
     } else if (!currentElement && newElement && insertReferenceElement) {
-      insertReferenceElement.insertAdjacentElement('beforebegin', /** @type {Element} */ (newElement.cloneNode(true)));
+      insertReferenceElement.insertAdjacentElement(
+        'beforebegin',
+        /** @type {Element} */ (newElement.cloneNode(true))
+      );
     }
   }
 
   /**
    * @param {VariantUpdateEvent} event
    */
-  #onVariantUpdate = async (event) => {
+  #onVariantUpdate = async event => {
     if (event.detail.data.newProduct) {
       this.dataset.productId = event.detail.data.newProduct.id;
     } else if (event.detail.data.productId !== this.dataset.productId) {
@@ -480,7 +501,10 @@ class ProductFormComponent extends Component {
     if (event.detail.resource) {
       const productVariantMedia = event.detail.resource.featured_media?.preview_image?.src;
       productVariantMedia &&
-        addToCartButtonContainer?.setAttribute('data-product-variant-media', productVariantMedia + '&width=100');
+        addToCartButtonContainer?.setAttribute(
+          'data-product-variant-media',
+          productVariantMedia + '&width=100'
+        );
     }
 
     // Update quantity selector's min/max/step attributes and cart quantity for the new variant
@@ -513,12 +537,20 @@ class ProductFormComponent extends Component {
         morph(currentProductFormButtons, newProductFormButtons);
 
         // Get the NEW quantity selector after morphing and update its constraints
-        const newQuantitySelector = /** @type {any} */ (this.querySelector('quantity-selector-component'));
+        const newQuantitySelector = /** @type {any} */ (
+          this.querySelector('quantity-selector-component')
+        );
         const newQuantityInputElement = /** @type {HTMLInputElement | null} */ (
-          event.detail.data.html.querySelector('quantity-selector-component input[ref="quantityInput"]')
+          event.detail.data.html.querySelector(
+            'quantity-selector-component input[ref="quantityInput"]'
+          )
         );
 
-        if (newQuantitySelector?.updateConstraints && newQuantityInputElement && currentQuantityValue) {
+        if (
+          newQuantitySelector?.updateConstraints &&
+          newQuantityInputElement &&
+          currentQuantityValue
+        ) {
           // Temporarily set the old value so updateConstraints can snap it properly
           newQuantitySelector.setValue(currentQuantityValue);
           // updateConstraints will snap to valid increment if needed
@@ -603,7 +635,7 @@ class FlyToCart extends HTMLElement {
      * Animates the flying thingy along the bezier curve.
      * @param {number} currentTime - The current time.
      */
-    const animate = (currentTime) => {
+    const animate = currentTime => {
       if (!startTime) startTime = currentTime;
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);

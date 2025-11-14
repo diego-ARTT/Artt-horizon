@@ -1,4 +1,4 @@
-import { ThemeEvents, VariantUpdateEvent } from '@theme/events';
+import { ThemeEvents } from '@theme/events';
 import { morph } from '@theme/morph';
 
 class ProductInventory extends HTMLElement {
@@ -16,10 +16,13 @@ class ProductInventory extends HTMLElement {
    * Updates the inventory.
    * @param {VariantUpdateEvent} event - The variant update event.
    */
-  updateInventory = (event) => {
+  updateInventory = event => {
     if (event.detail.data.newProduct) {
       this.dataset.productId = event.detail.data.newProduct.id;
-    } else if (event.target instanceof HTMLElement && event.target.dataset.productId !== this.dataset.productId) {
+    } else if (
+      event.target instanceof HTMLElement &&
+      event.target.dataset.productId !== this.dataset.productId
+    ) {
       return;
     }
 
