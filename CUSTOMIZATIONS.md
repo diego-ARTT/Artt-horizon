@@ -291,6 +291,59 @@
 - **No functional changes** - All fixes are code quality improvements
 - **Upstream compatibility:** ✅ High - These are standard ESLint fixes that won't conflict with upstream changes
 
+#### Stylelint CSS Code Quality Fixes (Jan 2025)
+
+- **Purpose:** Fix Stylelint errors and warnings to ensure CI pipeline passes
+- **Status:** ✅ Completed
+- **Date:** January 2025
+- **Reason:** CI pipeline was failing due to Stylelint violations
+- **Impact:** Low - Code quality improvements, no functional changes
+- **Merge Strategy:** ✅ Safe - These are code quality fixes that should be preserved
+
+**Files Modified:**
+
+1. **`assets/base.css`**
+   - **Duplicate selectors merged:**
+     - `.product-card__content` (lines 85, 89) - Merged into single rule
+     - `.flex` (lines 527, 562) - Removed duplicate
+     - `.button-secondary` (lines 1324, 1378) - Merged hover state into single rule
+     - `.quantity-selector input[type='number']` (lines 2694, 2712) - Merged Firefox-specific styles using nested selectors
+     - `slideshow-controls[controls-on-media]` (lines 3365, 3477) - Merged position styles
+     - `.slideshow-controls__dots, .slideshow-controls__counter` (lines 3531, 3596) - Merged `:only-child` rule
+     - `.icon-caret` (lines 3627, 3631) - Removed duplicate
+     - `.media-gallery--carousel slideshow-arrows .slideshow-control` (lines 3805, 3818) - Merged opacity into padding rule
+
+   - **Deprecated properties fixed:**
+     - `clip: rect(0 0 0 0)` → `clip-path: inset(50%)` (lines 502, 517) - Modern way to hide elements visually
+     - `word-break: break-word` removed (line 205) - Redundant with `overflow-wrap: break-word`
+     - `word-wrap` → `overflow-wrap` (auto-fixed by Stylelint)
+
+   - **Keyframe names converted to kebab-case:**
+     - All 26 keyframe names converted from camelCase to kebab-case (e.g., `fadeInUp` → `fade-in-up`, `slideInLeft` → `slide-in-left`)
+     - All usages of these keyframes updated throughout the file
+
+   - **Media query range notation:**
+     - Auto-fixed by Stylelint: `min-width: 750px` → `width >= 750px` (62 instances)
+
+   - **Value keyword case:**
+     - `currentColor` → `currentcolor` (auto-fixed by Stylelint)
+
+   - **Formatting:**
+     - Added empty line before custom property in `.button-secondary` (line 1319)
+
+2. **`assets/overflow-list.css`**
+   - Media query range notation auto-fixed
+
+3. **`assets/template-giftcard.css`**
+   - Media query range notation auto-fixed
+
+**Summary:**
+
+- **97 errors fixed** (duplicate selectors, deprecated properties, keyframe naming, media query syntax)
+- **62 errors auto-fixed** by Stylelint (media query range notation, value keyword case)
+- **No functional changes** - All fixes are code quality improvements
+- **Upstream compatibility:** ✅ High - These are standard Stylelint fixes that won't conflict with upstream changes
+
 ### Repository Configuration
 
 #### `.gitignore`

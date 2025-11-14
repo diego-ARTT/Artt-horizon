@@ -10,7 +10,7 @@
   justify-content: var(--overflow-list-alignment);
   column-gap: 1rem;
 
-  @media (max-width: 749px) {
+  @media (width <= 749px) {
     justify-content: var(--overflow-list-alignment-mobile);
   }
 }
