@@ -7,7 +7,7 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "cart-section": {
       "type": "main-cart",
@@ -142,10 +142,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "product_list_text_fifeh4",
-            "product_list_button_eibbma"
-          ]
+          "block_order": ["product_list_text_fifeh4", "product_list_button_eibbma"]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -230,11 +227,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "product_card_gallery_PEPpfq",
-            "product_title_WNMpHe",
-            "price_yXfkPX"
-          ]
+          "block_order": ["product_card_gallery_PEPpfq", "product_title_WNMpHe", "price_yXfkPX"]
         }
       },
       "name": "t:names.featured_collection",
@@ -259,8 +252,5 @@
       }
     }
   },
-  "order": [
-    "cart-section",
-    "product_list_NNFgcy"
-  ]
+  "order": ["cart-section", "product_list_NNFgcy"]
 }

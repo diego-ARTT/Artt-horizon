@@ -41,7 +41,7 @@ class CollectionLinks extends Component {
   }
 
   get currentIndex() {
-    return this.links.findIndex((link) => link.getAttribute('aria-current') === 'true');
+    return this.links.findIndex(link => link.getAttribute('aria-current') === 'true');
   }
 
   /**
@@ -75,7 +75,7 @@ class CollectionLinks extends Component {
    *
    * @param {SlideshowSelectEvent} event
    */
-  #handleSlideshowSelect = async (event) => {
+  #handleSlideshowSelect = async event => {
     if (!event.detail.userInitiated) return;
 
     const { index } = event.detail;
@@ -123,7 +123,7 @@ class CollectionLinks extends Component {
     const visibleLinks = getVisibleElements(this, links, 0.1);
 
     if (visibleLinks.length === 0) return;
-    const centers = visibleLinks.map((link) => center(link, 'x'));
+    const centers = visibleLinks.map(link => center(link, 'x'));
     const referencePoint = center(container, 'x');
     const closestCenter = closest(centers, referencePoint);
     const closestVisibleLink = visibleLinks[centers.indexOf(closestCenter)];
@@ -154,7 +154,7 @@ class CollectionLinks extends Component {
     if (!selectedImage) return;
 
     /** @param {PointerEvent} event */
-    const updateImagePosition = (event) => {
+    const updateImagePosition = event => {
       const imageHeight = selectedImage.offsetHeight;
       const imageWidth = selectedImage.offsetWidth;
       const viewportHeight = window.innerHeight;
@@ -164,7 +164,10 @@ class CollectionLinks extends Component {
       const wouldBeCutOff = event.clientY + imageHeight + offset > viewportHeight;
       const yPos = wouldBeCutOff ? event.clientY - imageHeight - offset : event.clientY + offset;
 
-      const xPos = Math.min(Math.max(offset, event.clientX + offset), viewportWidth - imageWidth - offset);
+      const xPos = Math.min(
+        Math.max(offset, event.clientX + offset),
+        viewportWidth - imageWidth - offset
+      );
 
       selectedImage.style.setProperty('--x', `${xPos}px`);
       selectedImage.style.setProperty('--y', `${yPos}px`);

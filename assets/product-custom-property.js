@@ -24,7 +24,9 @@ class ProductCustomProperty extends Component {
     const template = characterCount.getAttribute('data-template');
     if (!template) return;
 
-    const updatedText = template.replace('[current]', currentLength.toString()).replace('[max]', maxLength.toString());
+    const updatedText = template
+      .replace('[current]', currentLength.toString())
+      .replace('[max]', maxLength.toString());
 
     characterCount.textContent = updatedText;
   }

@@ -32,7 +32,7 @@ export default class ResultsList extends PaginatedList {
    *
    * @param {string} value
    */
-  #animateLayoutChange = async (value) => {
+  #animateLayoutChange = async value => {
     const { grid } = this.refs;
 
     if (!grid) return;
@@ -61,7 +61,7 @@ export default class ResultsList extends PaginatedList {
    *
    * @param {MediaQueryListEvent} event
    */
-  #handleMediaQueryChange = (event) => {
+  #handleMediaQueryChange = event => {
     const targetElement = event.matches
       ? this.querySelector('[data-grid-layout="desktop-default-option"]')
       : this.querySelector('[data-grid-layout="mobile-option"]');

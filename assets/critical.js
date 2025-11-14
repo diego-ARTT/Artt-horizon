@@ -27,7 +27,7 @@ export class ResizeNotifier extends ResizeObserver {
    * @param {ResizeObserverCallback} callback
    */
   constructor(callback) {
-    super((entries) => {
+    super(entries => {
       if (this.#initialized) return callback(entries, this);
       this.#initialized = true;
     });
@@ -159,7 +159,7 @@ export class OverflowList extends DeclarativeShadowElement {
     // Add event listener for reflow requests
     this.addEventListener(
       'reflow',
-      /** @param {ReflowEvent} event */ (event) => {
+      /** @param {ReflowEvent} event */ event => {
         this.#reflowItems(event.detail.lastVisibleElement);
       }
     );
@@ -174,7 +174,7 @@ export class OverflowList extends DeclarativeShadowElement {
   get schedule() {
     return typeof Theme?.utilities?.scheduler?.schedule === 'function'
       ? Theme.utilities.scheduler.schedule
-      : /** @param {FrameRequestCallback} callback */ (callback) =>
+      : /** @param {FrameRequestCallback} callback */ callback =>
           requestAnimationFrame(() => setTimeout(callback, 0));
   }
 
@@ -210,7 +210,7 @@ export class OverflowList extends DeclarativeShadowElement {
   /**
    * @type {ResizeObserverCallback & MutationCallback}
    */
-  #handleChange = (event) => {
+  #handleChange = event => {
     if (this.#scheduled) return;
 
     let width = null;
@@ -226,7 +226,11 @@ export class OverflowList extends DeclarativeShadowElement {
     }
 
     if (isResize) {
-      if (!width || !height || (width === this.#lastDimensions.width && height === this.#lastDimensions.height)) {
+      if (
+        !width ||
+        !height ||
+        (width === this.#lastDimensions.width && height === this.#lastDimensions.height)
+      ) {
         // Skip reflow if dimensions are 0 or the same as the last reflow
         return;
       }
@@ -300,7 +304,7 @@ export class OverflowList extends DeclarativeShadowElement {
    * Reflow items based on available space within the list.
    * @param {HTMLElement} [lastVisibleElement] Optional element to place in last visible position
    */
-  #reflowItems = (lastVisibleElement) => {
+  #reflowItems = lastVisibleElement => {
     const { defaultSlot, overflowSlot, moreSlot, list, placeholder } = this.#refs;
 
     this.#resizeObserver.disconnect();
@@ -325,9 +329,13 @@ export class OverflowList extends DeclarativeShadowElement {
     const rootRect = list.getBoundingClientRect();
 
     // Store the initial dimensions for comparison later
-    this.#lastDimensions = { width: Math.round(rootRect.width), height: Math.round(rootRect.height) };
+    this.#lastDimensions = {
+      width: Math.round(rootRect.width),
+      height: Math.round(rootRect.height),
+    };
 
-    const getVisibleElements = () => elements.filter((el) => el.getBoundingClientRect().top <= rootRect.top);
+    const getVisibleElements = () =>
+      elements.filter(el => el.getBoundingClientRect().top <= rootRect.top);
     let visibleElements = getVisibleElements();
 
     // If not all items fit or we have a lastVisibleElement, let's calculate with "More" button
@@ -364,7 +372,7 @@ export class OverflowList extends DeclarativeShadowElement {
       moreSlot.style.setProperty('height', 'auto');
     }
 
-    const overflowingElements = elements.filter((element) => !visibleElements.includes(element));
+    const overflowingElements = elements.filter(element => !visibleElements.includes(element));
     const [firstOverflowingElement] = overflowingElements;
     const hasOverflow = overflowingElements.length > 0;
     const placeholderWidth = firstOverflowingElement ? firstOverflowingElement.clientWidth : 0;
@@ -439,7 +447,11 @@ export function calculateHeaderGroupHeight(
   }
 
   // If the header is transparent and has a sibling section, add the height of the header to the total height
-  if (header instanceof HTMLElement && header.hasAttribute('transparent') && header.parentElement?.nextElementSibling) {
+  if (
+    header instanceof HTMLElement &&
+    header.hasAttribute('transparent') &&
+    header.parentElement?.nextElementSibling
+  ) {
     return totalHeight + header.offsetHeight;
   }
 
@@ -479,7 +491,8 @@ function updateTransparentHeaderOffset() {
     return;
   }
 
-  const hasImmediateSection = hasHeaderSection.nextElementSibling?.classList.contains('shopify-section');
+  const hasImmediateSection =
+    hasHeaderSection.nextElementSibling?.classList.contains('shopify-section');
 
   const shouldApplyOffset = !hasImmediateSection ? '1' : '0';
   document.body.style.setProperty('--transparent-header-offset-boolean', shouldApplyOffset);

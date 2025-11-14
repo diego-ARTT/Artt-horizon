@@ -77,7 +77,7 @@ class ShowMoreComponent extends Component {
     this.#collapsedHeight = showMoreContent.offsetHeight;
     const startHeight = this.#collapsedHeight;
 
-    showMoreItems?.forEach((item) => item.classList.remove(this.#disabledClass));
+    showMoreItems?.forEach(item => item.classList.remove(this.#disabledClass));
 
     return {
       startHeight,
@@ -128,7 +128,7 @@ class ShowMoreComponent extends Component {
     const { showMoreContent, showMoreItems } = this.refs;
 
     if (this.#expanded) {
-      showMoreItems.forEach((item) => item.classList.add(this.#disabledClass));
+      showMoreItems.forEach(item => item.classList.add(this.#disabledClass));
     }
 
     showMoreContent.style.removeProperty('height');
@@ -141,7 +141,7 @@ class ShowMoreComponent extends Component {
    *
    * @param {Event} event - The click event
    */
-  toggle = (event) => {
+  toggle = event => {
     event.preventDefault();
 
     this.#updateBreakpointState();

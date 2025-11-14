@@ -70,7 +70,7 @@ export default class PaginatedList extends Component {
     // Create observer if it doesn't exist
     if (!this.infinityScrollObserver) {
       this.infinityScrollObserver = new IntersectionObserver(
-        async (entries) => {
+        async entries => {
           // Wait for any in-progress view transitions to finish
           if (viewTransition.current) await viewTransition.current;
 
@@ -175,7 +175,7 @@ export default class PaginatedList extends Component {
     let nextPageItemElements = this.#getGridForPage(nextPage.page);
 
     if (!nextPageItemElements) {
-      const promise = new Promise((res) => {
+      const promise = new Promise(res => {
         this.#resolveNextPagePromise = res;
       });
 
@@ -208,7 +208,7 @@ export default class PaginatedList extends Component {
 
     let previousPageItemElements = this.#getGridForPage(previousPage.page);
     if (!previousPageItemElements) {
-      const promise = new Promise((res) => {
+      const promise = new Promise(res => {
         this.#resolvePreviousPagePromise = res;
       });
 

@@ -29,7 +29,7 @@ class HeaderDrawer extends Component {
    * Close the main menu drawer when the Escape key is pressed
    * @param {KeyboardEvent} event
    */
-  #onKeyUp = (event) => {
+  #onKeyUp = event => {
     if (event.key !== 'Escape') return;
 
     this.#close(this.#getDetailsElement(event));
@@ -139,7 +139,7 @@ class HeaderDrawer extends Component {
       }
     }
     const allAnimated = this.querySelectorAll('.menu-drawer__animated-element');
-    allAnimated.forEach((element) => {
+    allAnimated.forEach(element => {
       element.addEventListener('animationend', removeWillChangeOnAnimationEnd);
     });
   }
@@ -153,13 +153,13 @@ class HeaderDrawer extends Component {
   preventInitialAccordionAnimations(details) {
     const content = details.querySelectorAll('accordion-custom .details-content');
 
-    content.forEach((element) => {
+    content.forEach(element => {
       if (element instanceof HTMLElement) {
         element.classList.add('details-content--no-animation');
       }
     });
     setTimeout(() => {
-      content.forEach((element) => {
+      content.forEach(element => {
         if (element instanceof HTMLElement) {
           element.classList.remove('details-content--no-animation');
         }

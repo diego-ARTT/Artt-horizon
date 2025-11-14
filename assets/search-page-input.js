@@ -26,7 +26,7 @@ class SearchPageInputComponent extends Component {
    *
    * @param {KeyboardEvent} event - The keyboard event.
    */
-  handleKeyDown = debounce((event) => {
+  handleKeyDown = debounce(event => {
     const value = this.refs.searchPageInput.value.trim();
 
     if (event.key === 'Escape' && value === '') {

@@ -20,7 +20,8 @@ class EmailSignupBlock extends HTMLElement {
     this.input = this.querySelector('.email-signup__input');
     this.inputGroup = this.querySelector('.email-signup__input-group');
 
-    const isTextButton = this.button && this.button.classList.contains('email-signup__button--text');
+    const isTextButton =
+      this.button && this.button.classList.contains('email-signup__button--text');
 
     if (this.button && this.input && this.inputGroup && isTextButton) {
       this.adjustInputPadding();
@@ -51,7 +52,10 @@ class EmailSignupBlock extends HTMLElement {
 
     if (buttonWidth !== this.lastButtonWidth) {
       this.lastButtonWidth = buttonWidth;
-      /** @type {HTMLElement} */ (this.inputGroup).style.setProperty('--button-actual-width', `${buttonWidth}px`);
+      /** @type {HTMLElement} */ (this.inputGroup).style.setProperty(
+        '--button-actual-width',
+        `${buttonWidth}px`
+      );
     }
   }
 }

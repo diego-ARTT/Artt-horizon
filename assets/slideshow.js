@@ -132,7 +132,9 @@ export class Slideshow extends Component {
       if (typeof input === 'number') return input;
       if (typeof input === 'string') return parseInt(input, 10);
       if ('id' in input) {
-        const requestedSlide = this.refs.slides.find((slide) => slide.getAttribute('slide-id') == input.id);
+        const requestedSlide = this.refs.slides.find(
+          slide => slide.getAttribute('slide-id') == input.id
+        );
 
         if (!requestedSlide || !this.slides) return;
 
@@ -167,7 +169,8 @@ export class Slideshow extends Component {
     if (requestedIndex < 0) index = lastIndex;
     else if (requestedIndex > lastIndex) index = 0;
 
-    const isAdjacentSlide = Math.abs(index - current) <= 1 && requestedIndex >= 0 && requestedIndex <= lastIndex;
+    const isAdjacentSlide =
+      Math.abs(index - current) <= 1 && requestedIndex >= 0 && requestedIndex <= lastIndex;
     const { visibleSlides } = this;
     const instant = prefersReducedMotion() || !animate;
 
@@ -398,7 +401,8 @@ export class Slideshow extends Component {
    */
   get disabled() {
     return (
-      this.getAttribute('disabled') === 'true' || (this.hasAttribute('mobile-disabled') && !mediaQueryLarge.matches)
+      this.getAttribute('disabled') === 'true' ||
+      (this.hasAttribute('mobile-disabled') && !mediaQueryLarge.matches)
     );
   }
 
@@ -556,8 +560,9 @@ export class Slideshow extends Component {
 
     const { axis } = this.#scroll;
     const { scroller } = this.refs;
-    const centers = visibleSlides.map((slide) => center(slide, axis));
-    const referencePoint = visibleSlides.length > 1 ? scroller.getBoundingClientRect()[axis] : center(scroller, axis);
+    const centers = visibleSlides.map(slide => center(slide, axis));
+    const referencePoint =
+      visibleSlides.length > 1 ? scroller.getBoundingClientRect()[axis] : center(scroller, axis);
     const closestCenter = closest(centers, referencePoint);
     const closestVisibleSlide = visibleSlides[centers.indexOf(closestCenter)];
 
@@ -574,7 +579,7 @@ export class Slideshow extends Component {
    * Handles the 'mousedown' event to start dragging slides.
    * @param {MouseEvent} event - The mousedown event.
    */
-  #handleMouseDown = (event) => {
+  #handleMouseDown = event => {
     const { slides } = this;
 
     if (!slides || slides.length <= 1) return;
@@ -606,7 +611,7 @@ export class Slideshow extends Component {
      * Handles the 'pointermove' event to update the scroll position.
      * @param {PointerEvent} event - The pointermove event.
      */
-    const onPointerMove = (event) => {
+    const onPointerMove = event => {
       const current = event[axis];
       const initialDelta = startPosition - current;
 
@@ -653,7 +658,7 @@ export class Slideshow extends Component {
      * Handles the 'pointerup' event to stop dragging slides.
      * @param {PointerEvent} event - The pointerup event.
      */
-    const onPointerUp = async (event) => {
+    const onPointerUp = async event => {
       controller.abort();
       const { current, slides } = this;
       const { scroller } = this.refs;
@@ -665,7 +670,8 @@ export class Slideshow extends Component {
       const direction = Math.sign(velocity);
       const next = this.#sync();
 
-      const modifier = current !== next || Math.abs(velocity) < 10 || distanceTravelled < 10 ? 0 : direction;
+      const modifier =
+        current !== next || Math.abs(velocity) < 10 || distanceTravelled < 10 ? 0 : direction;
       const newIndex = clamp(next + modifier, 0, slides.length - 1);
 
       const newSlide = slides[newIndex];
@@ -721,7 +727,9 @@ export class Slideshow extends Component {
   };
 
   get slides() {
-    return this.refs.slides?.filter((slide) => !slide.hasAttribute('hidden') || slide.hasAttribute('reveal'));
+    return this.refs.slides?.filter(
+      slide => !slide.hasAttribute('hidden') || slide.hasAttribute('reveal')
+    );
   }
 
   /**
@@ -782,7 +790,7 @@ export class Slideshow extends Component {
     // Batch writes to the DOM
     scheduler.schedule(() => {
       // Update aria-hidden based on visibility
-      slides.forEach((slide) => {
+      slides.forEach(slide => {
         const isVisible = visibleSlides.includes(slide);
         slide.setAttribute('aria-hidden', `${!isVisible}`);
       });
