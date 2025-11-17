@@ -1004,7 +1004,11 @@
     "what_is_return_policy": "Wie lauten die Rückgabebedingungen?",
     "when_will_order_arrive": "Wann erhalte ich meine Bestellung?",
     "where_are_products_made": "Wo werden eure Produkte hergestellt?",
-    "faq": "FAQ"
+    "faq": {
+      "title": "FAQ",
+      "item_heading": "Überschrift des Elements",
+      "item_content": "Inhalt des Elements"
+    }
   },
   "info": {
     "video_alt_text": "Beschreibe das Video für Nutzer von unterstützender Technologie.",
