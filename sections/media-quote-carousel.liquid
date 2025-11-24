@@ -28,6 +28,10 @@
   if has_multiple and section.settings.show_navigation_arrows
     assign show_arrows = true
   endif
+  # Hide arrows when dots are shown
+  if controls_style == 'dots'
+    assign show_arrows = false
+  endif
 
   assign quote_font_size_option = section.settings.quote_font_size | default: 'default'
   case quote_font_size_option
@@ -90,12 +94,13 @@
   {% capture controls %}
     {% render 'slideshow-controls',
       style: controls_style,
-      autoplay: autoplay_enabled,
+      autoplay: false,
       item_count: block_count,
       show_arrows: show_arrows,
       arrows_on_media: false,
       controls_on_media: false,
-      icon_style: 'chevron'
+      icon_style: 'chevron',
+      pagination_position: 'center'
     %}
   {% endcapture %}
 {% endif %}
@@ -307,6 +312,49 @@ role="region" aria-roledescription="carousel" aria-live="{% if autoplay_enabled 
     border: 1px dashed color-mix(in srgb, var(--color-foreground, currentColor) 40%, transparent);
     border-radius: var(--radius-lg, 1.5rem);
     color: color-mix(in srgb, var(--color-foreground, currentColor) 80%, transparent);
+  }
+
+  /* Hide play/pause buttons */
+  .media-quote-carousel__slider slideshow-controls .icon-play,
+  .media-quote-carousel__slider slideshow-controls .icon-pause {
+    display: none;
+  }
+
+  /* Ensure dots are visible - override mix-blend-mode and add background */
+  .media-quote-carousel__slider slideshow-controls:has(.slideshow-controls__dots) {
+    mix-blend-mode: normal;
+  }
+
+  .media-quote-carousel__slider .slideshow-controls__dots {
+    backdrop-filter: blur(10px);
+    justify-content: center;
+  }
+
+  .media-quote-carousel__slider .slideshow-controls__dots button {
+    --color: color-mix(in srgb, var(--color-foreground, currentColor) 50%, transparent);
+    --color-active: var(--color-foreground, currentColor);
+    --color-hover: color-mix(in srgb, var(--color-foreground, currentColor) 70%, transparent);
+  }
+
+  /* Ensure active dot is visible */
+  .media-quote-carousel__slider .slideshow-controls__dots button[aria-selected='true'] {
+    --color: var(--color-foreground, currentColor);
+  }
+
+  .media-quote-carousel__slider .slideshow-controls__dots button[aria-selected='true']::after {
+    background-color: var(--color-foreground, currentColor) !important;
+    width: 0.7rem !important;
+    height: 0.7rem !important;
+  }
+
+  /* Hide navigation arrows when dots are shown */
+  .media-quote-carousel__slider:has(.slideshow-controls__dots) .slideshow-controls__arrows {
+    display: none;
+  }
+
+  /* Active slide styling */
+  .media-quote-carousel__slider slideshow-slide[aria-hidden='false'] .media-quote-carousel__slide {
+    border-color: color-mix(in srgb, var(--color-foreground, currentColor) 40%, transparent);
   }
 
   @media (max-width: 749px) {
