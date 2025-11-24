@@ -11,8 +11,8 @@
 | **Base Theme**         | Shopify Horizon                                                                  |
 | **Horizon Version**    | v3.1.0 (as of Nov 3, 2024)                                                       |
 | **Custom Theme Name**  | ARTT Horizon                                                                     |
-| **Custom Version**     | 1.0.0                                                                            |
-| **Last Updated**       | 2025-11-10                                                                       |
+| **Custom Version**     | 1.1.0                                                                            |
+| **Last Updated**       | 2025-01-XX                                                                       |
 | **Last Upstream Sync** | Nov 3, 2024 (commit: 51a72d4)                                                    |
 | **Maintainer**         | [@diego-ARTT](https://github.com/diego-ARTT)                                     |
 | **Repository**         | [github.com/diego-ARTT/Artt-horizon](https://github.com/diego-ARTT/Artt-horizon) |
@@ -22,6 +22,22 @@
 ## 🎨 Modified Core Files
 
 > **Note:** These files exist in the Horizon boilerplate but have been modified. Exercise caution when merging upstream updates.
+
+### Core Assets
+
+#### `assets/base.css`
+
+- **Status:** ⚠️ Modified
+- **Changes Made:**
+  - **January 2025:** Added drawer backdrop blur effect
+    - Added `.dialog-drawer::backdrop` styles with blur filter
+    - Default blur: 8px (configurable via CSS variable)
+    - Smooth transitions for blur animation
+    - Combines with existing backdrop brightness and opacity
+- **Reason:** Enhanced visual focus for drawer overlays
+- **Last Modified:** January 2025
+- **Merge Strategy:** ⚠️ Review carefully - preserve custom backdrop blur styles
+- **Notes:** Blur effect uses CSS custom property `--drawer-backdrop-blur` set via theme settings
 
 ### Configuration Files
 
@@ -50,6 +66,42 @@
 - **Author:** [@diego-ARTT]
 - **Merge Strategy:** ✅ Safe - JSON template can be recreated if needed
 - **Notes:** May need to re-add custom section after Horizon updates
+
+#### `blocks/_product-details.liquid`
+
+- **Status:** ⚠️ Modified
+- **Changes Made:**
+  - **January 2025:** Added `size-guide` block type to schema
+  - Block can now be added to product details section
+- **Reason:** Enable size guide widget on product pages
+- **Last Modified:** January 2025
+- **Merge Strategy:** ⚠️ Review carefully - preserve custom block addition
+- **Notes:** Size guide block reads from product metafield
+
+#### `config/settings_schema.json`
+
+- **Status:** ⚠️ Modified
+- **Changes Made:**
+  - **January 2025:** Added `drawer_backdrop_blur` setting to Drawers section
+    - Range: 0-20px
+    - Default: 8px
+    - Controls blur intensity for drawer backdrops
+- **Reason:** Configurable backdrop blur effect for drawers
+- **Last Modified:** January 2025
+- **Merge Strategy:** ⚠️ Review carefully - preserve custom setting
+- **Notes:** Setting appears in Theme Settings → Drawers → Backdrop blur
+
+#### `snippets/theme-styles-variables.liquid`
+
+- **Status:** ⚠️ Modified
+- **Changes Made:**
+  - **January 2025:** Added `--drawer-backdrop-blur` CSS custom property
+    - Reads from `settings.drawer_backdrop_blur`
+    - Default fallback: 8px
+- **Reason:** Make drawer backdrop blur configurable via theme settings
+- **Last Modified:** January 2025
+- **Merge Strategy:** ⚠️ Review carefully - preserve custom CSS variable
+- **Notes:** Variable used in `assets/base.css` for drawer backdrop styling
 
 #### `sections/header-group.json`
 
@@ -93,16 +145,58 @@
   - Removed orphaned translations:
     - `settings.block_link` (existed only in translations, not in default)
     - `text_defaults.faq` (existed only in translations, not in default)
-- **Reason:** Support for custom media quote carousel section and translation consistency
-- **Last Modified:** Nov 10, 2024
+  - **January 2025 Updates:**
+    - Added translations for `size-guide` block:
+      - `names.size_guide`
+      - `settings.size_guide.*` (button_text, icon, icon_size, hide_title, title_size)
+      - `info.size_guide_button_text`
+      - `info.size_guide_hide_title`
+    - Added translations for drawer backdrop blur:
+      - `settings.backdrop_blur`
+      - `info.drawer_backdrop_blur`
+    - Added `content.button` translation
+- **Reason:** Support for custom media quote carousel section, size guide block, drawer backdrop blur, and translation consistency
+- **Last Modified:** January 2025
 - **Merge Strategy:** ⚠️ Append new custom keys, preserve during updates
-- **Notes:** Custom translation keys use `media_quote_carousel` prefix for easy identification
+- **Notes:** Custom translation keys use `media_quote_carousel` and `size_guide` prefixes for easy identification
 
 ---
 
 ## ✨ Custom Files (Safe from Upstream Conflicts)
 
 > **Note:** These files are custom additions and will never conflict with Horizon updates.
+
+### Custom Blocks
+
+#### `blocks/size-guide.liquid`
+
+- **Purpose:** Display size guide pages in an accessible modal/drawer based on product metafields
+- **Features:**
+  - Reads size guide page from product metafield: `product.metafields.custom.size_guide_page`
+  - Configurable button text and styling
+  - Adjustable icon selection (ruler, arrow, question_mark, clipboard, eye, or none)
+  - Adjustable icon size (12-32px)
+  - Adjustable modal title size (h1-h6 or custom font size)
+  - Modal or drawer display modes
+  - Responsive table styling for size charts
+  - Full accessibility compliance (ARIA labels, keyboard navigation, focus management)
+  - Conditional rendering (only shows if metafield is set)
+- **Schema Settings:**
+  - Button text
+  - Icon selection and size
+  - Button type preset (link, paragraph, h1-h6)
+  - Behavior (modal or drawer)
+  - Hide title option
+  - Title size (h1-h6 or custom)
+  - Custom title font size (when title_size is custom)
+  - Button padding controls
+- **Dependencies:**
+  - `assets/dialog.js` (core Horizon component)
+  - Product metafield: `custom.size_guide_page` (page_reference type)
+- **Status:** ✅ Complete and functional
+- **Created:** January 2025
+- **Author:** [@diego-ARTT]
+- **Usage:** Add as block in product details section via theme editor
 
 ### Custom Sections
 
@@ -491,14 +585,19 @@ git push origin update/horizon-vX.X.X
 ### Files Requiring Manual Review (High Conflict Risk)
 
 - ⚠️ `templates/index.json` - Contains our custom section reference
+- ⚠️ `blocks/_product-details.liquid` - Contains size-guide block addition
+- ⚠️ `assets/base.css` - Contains drawer backdrop blur styles
+- ⚠️ `config/settings_schema.json` - Contains drawer backdrop blur setting
+- ⚠️ `snippets/theme-styles-variables.liquid` - Contains drawer backdrop blur CSS variable
 - ⚠️ `sections/header-group.json` - May have store-specific settings
 - ⚠️ `sections/footer-group.json` - May have store-specific settings
-- ⚠️ `locales/en.default.schema.json` - Contains custom carousel translations
+- ⚠️ `locales/en.default.schema.json` - Contains custom carousel and size guide translations
 - ⚠️ All other `locales/*.schema.json` files - Custom translations added
 - ⚠️ `config/settings_data.json` - **CRITICAL** - Never auto-merge!
 
 ### Custom Files to Preserve (Never Merge)
 
+- 🔒 `blocks/size-guide.liquid` - Our custom size guide block
 - 🔒 `sections/media-quote-carousel.liquid` - Our custom section
 - 🔒 All development tooling files (`.eslintrc.json`, `.prettierrc`, etc.)
 - 🔒 `.github/workflows/ci.yml` - Our CI pipeline
@@ -550,6 +649,10 @@ git push origin update/horizon-vX.X.X
   - [ ] Variant selection functions
   - [ ] Add to cart works
   - [ ] Product information displays
+  - [ ] Size guide button appears (if metafield is set)
+  - [ ] Size guide modal/drawer opens correctly
+  - [ ] Size guide content displays properly
+  - [ ] Size guide accessibility (keyboard navigation, screen reader)
 
 - [ ] **Collection Page**
   - [ ] Products load correctly
@@ -567,6 +670,11 @@ git push origin update/horizon-vX.X.X
   - [ ] All carousel settings appear in editor
   - [ ] Settings changes reflect in preview
   - [ ] Block management works (add/remove/reorder quotes)
+  - [ ] Size Guide block can be added to product details
+  - [ ] Size Guide settings appear correctly
+  - [ ] Size Guide preview works (with metafield set)
+  - [ ] Drawer backdrop blur setting appears in Theme Settings → Drawers
+  - [ ] Drawer backdrop blur adjustment works in preview
 
 ### Media Quote Carousel Specific Tests
 
@@ -643,6 +751,64 @@ git push origin update/horizon-vX.X.X
 ---
 
 ## 📝 Change Log
+
+### Version 1.1.0 - January 2025
+
+#### Size Guide Widget
+
+- **New Custom Block:** `blocks/size-guide.liquid`
+  - Displays size guide pages in an accessible modal/drawer
+  - Reads from product metafield: `product.metafields.custom.size_guide_page`
+  - Features:
+    - Configurable button text and icon
+    - Adjustable icon selection (ruler, arrow, question_mark, clipboard, eye, or none)
+    - Adjustable icon size (12-32px)
+    - Adjustable title size (h1-h6 or custom font size)
+    - Modal or drawer display modes
+    - Responsive table styling for size charts
+    - Full accessibility compliance (ARIA labels, keyboard navigation, focus management)
+  - Integration: Added to `blocks/_product-details.liquid` schema
+  - Translations: Added to `locales/en.default.schema.json`
+    - `names.size_guide`
+    - `settings.size_guide.*` (button_text, icon, icon_size, hide_title, title_size)
+    - `info.size_guide_button_text`
+    - `info.size_guide_hide_title`
+- **Files Created:**
+  - `blocks/size-guide.liquid` - Main size guide block
+- **Files Modified:**
+  - `blocks/_product-details.liquid` - Added size-guide to block schema
+  - `locales/en.default.schema.json` - Added size guide translations
+- **Dependencies:**
+  - Uses existing `dialog.js` component
+  - Requires product metafield: `custom.size_guide_page` (page_reference type)
+- **Status:** ✅ Complete and functional
+- **Created:** January 2025
+
+#### Drawer Backdrop Blur Effect
+
+- **Feature:** Configurable background blur effect for drawer overlays
+- **Implementation:**
+  - Added CSS for `.dialog-drawer::backdrop` with blur effect
+  - Default blur: 8px (configurable via theme settings)
+  - Smooth transitions for blur animation
+  - Combines with existing backdrop brightness and opacity
+- **Theme Setting:** Added `drawer_backdrop_blur` range setting (0-20px)
+  - Location: Theme Settings → Drawers → Backdrop blur
+  - Default: 8px
+  - Set to 0px to disable blur
+- **CSS Variable:** `--drawer-backdrop-blur` (set via theme settings)
+- **Files Modified:**
+  - `assets/base.css` - Added drawer backdrop blur styles
+  - `config/settings_schema.json` - Added backdrop blur setting to Drawers section
+  - `snippets/theme-styles-variables.liquid` - Added CSS variable
+  - `locales/en.default.schema.json` - Added translations (`backdrop_blur`, `drawer_backdrop_blur` info)
+- **Affected Drawers:**
+  - Size guide drawer (when in drawer mode)
+  - Filters drawer
+  - Popup link drawer (when in drawer mode)
+  - Any drawer using `.dialog-drawer` class
+- **Status:** ✅ Complete and functional
+- **Created:** January 2025
 
 ### Version 1.0.0 - Nov 10, 2024
 
@@ -742,10 +908,13 @@ npm run prepare           # Set up Husky hooks
 
 ### Most Important Custom Files
 
-1. `sections/media-quote-carousel.liquid` - Custom carousel section
-2. `locales/en.default.schema.json` - Translation definitions
-3. `templates/index.json` - Homepage layout with carousel
-4. Development tooling configs (`.eslintrc.json`, `.prettierrc`, etc.)
+1. `blocks/size-guide.liquid` - Custom size guide block
+2. `sections/media-quote-carousel.liquid` - Custom carousel section
+3. `locales/en.default.schema.json` - Translation definitions
+4. `assets/base.css` - Drawer backdrop blur styles
+5. `config/settings_schema.json` - Drawer backdrop blur setting
+6. `templates/index.json` - Homepage layout with carousel
+7. Development tooling configs (`.eslintrc.json`, `.prettierrc`, etc.)
 
 ### Emergency Rollback
 
@@ -797,9 +966,9 @@ git push origin main --force
 
 ---
 
-**Document Version:** 1.0.0  
-**Last Updated:** 2025-11-10  
-**Next Review:** 2025-12-10  
+**Document Version:** 1.1.0  
+**Last Updated:** 2025-01-XX  
+**Next Review:** 2025-02-XX  
 **Maintained By:** [@diego-ARTT](https://github.com/diego-ARTT)
 
 ---

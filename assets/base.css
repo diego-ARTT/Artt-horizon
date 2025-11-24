@@ -1286,6 +1286,22 @@ results-list[initialized] {
   animation: var(--dialog-drawer-closing-animation) var(--animation-speed) var(--animation-easing);
 }
 
+.dialog-drawer::backdrop {
+  backdrop-filter: blur(var(--drawer-backdrop-blur, 8px)) brightness(1);
+  background: rgb(var(--backdrop-color-rgb) / var(--backdrop-opacity));
+  transition:
+    backdrop-filter var(--animation-speed) var(--animation-easing),
+    opacity var(--animation-speed) var(--animation-easing);
+}
+
+.dialog-drawer[open]::backdrop {
+  animation: backdrop-filter var(--animation-speed) var(--animation-easing) forwards;
+}
+
+.dialog-drawer.dialog-closing::backdrop {
+  opacity: 0;
+}
+
 /* Buttons */
 .button,
 .button-secondary,

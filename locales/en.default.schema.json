@@ -221,7 +221,8 @@
     "pills_usage": "Used for applied filters, discount codes, and search suggestions",
     "media_type_info": "Features are populated from your menu links",
     "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
-    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content"
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "names": {
     "column": "Column",
@@ -754,6 +755,7 @@
     "behavior": "Behavior",
     "blog": "Blog",
     "blur": "Shadow blur",
+    "backdrop_blur": "Backdrop blur",
     "blurred_reflection": "Blurred reflection",
     "border": "Border",
     "border_opacity": "Border opacity",
