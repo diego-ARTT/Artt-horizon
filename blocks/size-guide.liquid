@@ -51,27 +51,31 @@
       aria-modal="true"
       role="dialog"
     >
-      <button
-        ref="closeButton"
-        on:click="/closeDialog"
-        class="button button-unstyled close-button size-guide__close"
-        aria-label="{{ 'accessibility.close_dialog' | t }}"
-      >
-        {{- 'icon-close.svg' | inline_asset_content -}}
-      </button>
-      
-      <h2
-        id="size-guide-heading"
-        class="size-guide__title size-guide__title--{{ block_settings.title_size }}{% if block_settings.hide_title %} visually-hidden{% endif %}"
-        style="{% if block_settings.title_size == 'custom' and block_settings.title_font_size != blank %}font-size: {{ block_settings.title_font_size }};{% endif %}"
-      >
-        {{ size_guide_page.title | default: 'Size Guide' }}
-      </h2>
-      
-      <div class="size-guide__inner">
-        <rte-formatter>
-          {{ size_guide_page.content }}
-        </rte-formatter>
+      <div class="size-guide__inner-wrapper">
+        <button
+          ref="closeButton"
+          on:click="/closeDialog"
+          class="button button-unstyled close-button size-guide__close"
+          aria-label="{{ 'accessibility.close_dialog' | t }}"
+        >
+          {{- 'icon-close.svg' | inline_asset_content -}}
+        </button>
+        
+        <div class="size-guide__header">
+          <h2
+            id="size-guide-heading"
+            class="size-guide__title size-guide__title--{{ block_settings.title_size }}{% if block_settings.hide_title %} visually-hidden{% endif %}"
+            style="{% if block_settings.title_size == 'custom' and block_settings.title_font_size != blank %}font-size: {{ block_settings.title_font_size }};{% endif %}"
+          >
+            {{ size_guide_page.title | default: 'Size Guide' }}
+          </h2>
+        </div>
+        
+        <div class="size-guide__content-wrapper">
+          <rte-formatter>
+            {{ size_guide_page.content }}
+          </rte-formatter>
+        </div>
       </div>
     </dialog>
   </dialog-component>
@@ -121,11 +125,60 @@
     max-width: 95vw;
     height: 100%;
     margin: 0 0 0 auto;
+    padding: 0;
+    border-left: var(--style-border-drawer);
+    box-shadow: var(--shadow-drawer);
+  }
+
+  /* Override modal animations for drawer mode - use slide-in animations */
+  /* Right-side drawer: slides in from right (100% to 0) and slides out to right (0 to 100%) */
+  .size-guide__content--drawer[open] {
+    animation: slide-in-left var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  .size-guide__content--drawer.dialog-closing {
+    animation: slide-out-left var(--animation-speed) var(--animation-easing) forwards;
   }
 
   /* Needed to ensure the drawer is full height */
   .size-guide__content--drawer:modal {
     max-height: 100dvh;
+    overflow-y: hidden;
+  }
+
+  /* Drawer-specific inner wrapper structure */
+  .size-guide__content--drawer .size-guide__inner-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+  }
+
+  .size-guide__content--drawer .size-guide__header {
+    flex-shrink: 0;
+    padding: var(--padding-xl) var(--padding-xl) var(--padding-md);
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  }
+
+  .size-guide__content--drawer .size-guide__content-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--padding-xl);
+  }
+
+  /* Modal mode - keep existing structure */
+  .size-guide__content:not(.size-guide__content--drawer) .size-guide__inner-wrapper {
+    display: block;
+  }
+
+  .size-guide__content:not(.size-guide__content--drawer) .size-guide__header {
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .size-guide__content:not(.size-guide__content--drawer) .size-guide__content-wrapper {
+    padding: 0;
+    overflow-y: visible;
   }
 
   .size-guide__close {
@@ -143,7 +196,12 @@
 
   .size-guide__title {
     margin-block-start: 0;
-    margin-block-end: var(--margin-xl);
+    margin-block-end: 0;
+  }
+
+  /* Drawer-specific title styling */
+  .size-guide__content--drawer .size-guide__title {
+    margin-block-end: 0;
   }
 
   .size-guide__inner {
