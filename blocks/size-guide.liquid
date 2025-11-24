@@ -64,7 +64,7 @@
         <div class="size-guide__header">
           <h2
             id="size-guide-heading"
-            class="size-guide__title size-guide__title--{{ block_settings.title_size }}{% if block_settings.hide_title %} visually-hidden{% endif %}"
+            class="size-guide__title{% if block_settings.title_size != blank and block_settings.title_size != 'custom' %} {{ block_settings.title_size }}{% endif %}{% if block_settings.hide_title %} visually-hidden{% endif %}"
             style="{% if block_settings.title_size == 'custom' and block_settings.title_font_size != blank %}font-size: {{ block_settings.title_font_size }};{% endif %}"
           >
             {{ size_guide_page.title | default: 'Size Guide' }}
@@ -199,6 +199,16 @@
     margin-block-end: 0;
   }
 
+  /* Ensure type preset classes apply to title */
+  .size-guide__title.h1,
+  .size-guide__title.h2,
+  .size-guide__title.h3,
+  .size-guide__title.h4,
+  .size-guide__title.h5,
+  .size-guide__title.h6 {
+    /* Type preset styles are inherited from base.css .h1, .h2, etc. */
+  }
+
   /* Drawer-specific title styling */
   .size-guide__content--drawer .size-guide__title {
     margin-block-end: 0;
@@ -209,26 +219,36 @@
   }
 
   /* Ensure tables in size guides are responsive */
-  .size-guide__inner table {
+  .size-guide__content-wrapper table,
+  .size-guide__inner table,
+  rte-formatter table {
     width: 100%;
     border-collapse: collapse;
     margin-block: var(--margin-md);
   }
 
+  .size-guide__content-wrapper table th,
+  .size-guide__content-wrapper table td,
   .size-guide__inner table th,
-  .size-guide__inner table td {
+  .size-guide__inner table td,
+  rte-formatter table th,
+  rte-formatter table td {
     padding: var(--padding-sm);
     text-align: left;
     border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10));
   }
 
-  .size-guide__inner table th {
+  .size-guide__content-wrapper table th,
+  .size-guide__inner table th,
+  rte-formatter table th {
     font-weight: 600;
     background-color: rgb(var(--color-background-rgb) / var(--opacity-50));
   }
 
   @media screen and (max-width: 749px) {
-    .size-guide__inner table {
+    .size-guide__content-wrapper table,
+    .size-guide__inner table,
+    rte-formatter table {
       display: block;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
