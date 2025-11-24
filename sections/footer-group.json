@@ -304,7 +304,7 @@
                   "type": "image",
                   "name": "t:names.image",
                   "settings": {
-                    "image": "shopify://shop_images/Arttitude_Logo_white-GOTH01.svg",
+                    "image": "shopify://shop_images/Arttitude_Logo_black-GOTH01.svg",
                     "link": "",
                     "image_ratio": "adapt",
                     "width": "custom",
@@ -361,7 +361,7 @@
       "settings": {
         "section_width": "page-width",
         "gap": 40,
-        "color_scheme": "scheme-5",
+        "color_scheme": "scheme-2",
         "padding-block-start": 36,
         "padding-block-end": 36
       }
