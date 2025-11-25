@@ -79,7 +79,9 @@
               "blocks": {}
             }
           },
-          "block_order": ["text_pKXg8w"]
+          "block_order": [
+            "text_pKXg8w"
+          ]
         },
         "group_n9JCfz": {
           "type": "group",
@@ -152,10 +154,16 @@
               "blocks": {}
             }
           },
-          "block_order": ["button_QFiR43", "button_qTim7y"]
+          "block_order": [
+            "button_QFiR43",
+            "button_qTim7y"
+          ]
         }
       },
-      "block_order": ["group_7RWxJ6", "group_n9JCfz"],
+      "block_order": [
+        "group_7RWxJ6",
+        "group_n9JCfz"
+      ],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "video",
@@ -283,7 +291,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_list_text_gPBAJD", "product_list_button_EYmGCt"]
+          "block_order": [
+            "product_list_text_gPBAJD",
+            "product_list_button_EYmGCt"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -368,10 +379,16 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_card_gallery_ey8mzd", "product_title_JNDbtY", "price_XjW4Ff"]
+          "block_order": [
+            "product_card_gallery_ey8mzd",
+            "product_title_JNDbtY",
+            "price_XjW4Ff"
+          ]
         }
       },
-      "block_order": ["button_LVmccw"],
+      "block_order": [
+        "button_LVmccw"
+      ],
       "name": "t:names.featured_collection",
       "settings": {
         "collection": "memento-mori",
@@ -399,7 +416,7 @@
         "quote_NaxN7L": {
           "type": "quote",
           "settings": {
-            "quote_text": "“Arttitude stands out as a genuine force democratizing art appreciation”",
+            "quote_text": "\"Arttitude stands out as a genuine force democratizing art appreciation\"",
             "media_name": "",
             "media_logo": "shopify://shop_images/modern_luxury.png",
             "cta_label": "Learn more",
@@ -409,9 +426,9 @@
         "quote_akmJTT": {
           "type": "quote",
           "settings": {
-            "quote_text": "“Arttitude is a bridge between street culture and art world”",
+            "quote_text": "\"At NYFW25 Arttitude continues to challenge where art belongs — on walls, on runways, or on the body.\"",
             "media_name": "",
-            "media_logo": "shopify://shop_images/best_reviews.png",
+            "media_logo": "shopify://shop_images/resident-mag-logo.png",
             "cta_label": "Learn more",
             "cta_url": ""
           }
@@ -419,9 +436,9 @@
         "quote_c4wVnA": {
           "type": "quote",
           "settings": {
-            "quote_text": "“Arttitude transforms the mundane into the magnificent and make true luxury accessible”",
+            "quote_text": "“At NYFW25, Each collection from Arttitude was a testament to the belief that fashion should provoke, not just decorate.”",
             "media_name": "",
-            "media_logo": "shopify://shop_images/gq.png",
+            "media_logo": "shopify://shop_images/beauty-news-logo.png",
             "cta_label": "Learn more",
             "cta_url": ""
           }
@@ -437,7 +454,12 @@
           }
         }
       },
-      "block_order": ["quote_NaxN7L", "quote_akmJTT", "quote_c4wVnA", "quote_rH7YNc"],
+      "block_order": [
+        "quote_NaxN7L",
+        "quote_akmJTT",
+        "quote_c4wVnA",
+        "quote_rH7YNc"
+      ],
       "name": "t:names.media_quote_carousel",
       "settings": {
         "heading": "",
@@ -551,7 +573,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_list_text_YFtzcL", "product_list_button_MWeP9V"]
+          "block_order": [
+            "product_list_text_YFtzcL",
+            "product_list_button_MWeP9V"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -636,10 +661,16 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_card_gallery_677WP3", "product_title_YXxMTj", "price_JQzVV4"]
+          "block_order": [
+            "product_card_gallery_677WP3",
+            "product_title_YXxMTj",
+            "price_JQzVV4"
+          ]
         }
       },
-      "block_order": ["button_nJaQcT"],
+      "block_order": [
+        "button_nJaQcT"
+      ],
       "name": "t:names.featured_collection",
       "settings": {
         "collection": "man-fw25",
@@ -826,7 +857,9 @@
           }
         }
       },
-      "block_order": ["lookfy_gallery_lookfy_gallery_GcEgLR"],
+      "block_order": [
+        "lookfy_gallery_lookfy_gallery_GcEgLR"
+      ],
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -885,7 +918,9 @@
           }
         }
       },
-      "block_order": ["moast_carousel_HTa9Xh"],
+      "block_order": [
+        "moast_carousel_HTa9Xh"
+      ],
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
