@@ -16,7 +16,7 @@
       "name": "t:names.marquee",
       "settings": {
         "enable_marquee": true,
-        "message": "Every day’s a Black Friday this November – get up to 40% OFF //",
+        "message": "December never got any better – Gift art. Not things. Up to 40% OFF //",
         "text_size": "small",
         "link": "",
         "speed": 40,
@@ -94,5 +94,8 @@
       }
     }
   },
-  "order": ["header_marquee_98qecc", "header_section"]
+  "order": [
+    "header_marquee_98qecc",
+    "header_section"
+  ]
 }
