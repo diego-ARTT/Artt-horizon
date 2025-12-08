@@ -279,7 +279,12 @@
     "recipient_form_fields_visible": "Recipient form fields are now visible",
     "recipient_form_fields_hidden": "Recipient form fields are now hidden",
     "recipient_form_error": "There was an error with the form submission",
-    "product_custom_property_character_count": "{{ used_chars }}/{{ max_chars }} characters used"
+    "product_custom_property_character_count": "{{ used_chars }}/{{ max_chars }} characters used",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo"
   },
   "fields": {
     // Separates min and max values in price range filter

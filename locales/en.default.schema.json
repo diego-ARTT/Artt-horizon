@@ -147,7 +147,12 @@
     "visibility": "Visibility",
     "width": "Width",
     "width_is_automatically_optimized": "Width is automatically optimized for mobile.",
-    "app_required_for_ratings": "An app is required for product ratings. [Learn more](https://help.shopify.com/manual/apps)"
+    "app_required_for_ratings": "An app is required for product ratings. [Learn more](https://help.shopify.com/manual/apps)",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo"
   },
   "html_defaults": {
     "join_our_email_list": "<h2>Join our email list</h2>",
