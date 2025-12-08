@@ -94,8 +94,5 @@
       }
     }
   },
-  "order": [
-    "header_marquee_98qecc",
-    "header_section"
-  ]
+  "order": ["header_marquee_98qecc", "header_section"]
 }
