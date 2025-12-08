@@ -1,5 +1,37 @@
+# Dependencies
 node_modules/
-.env*
-*.log
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS files
 .DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# Build outputs
+dist/
+build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Shopify CLI
 .shopify/
+
+# Config files (if they contain sensitive data)
+config.yml
