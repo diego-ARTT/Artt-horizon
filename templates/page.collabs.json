@@ -19,13 +19,9 @@
           }
         }
       },
-      "block_order": [
-        "03b2926a-ee57-41c9-8c9d-e48236deb134"
-      ],
+      "block_order": ["03b2926a-ee57-41c9-8c9d-e48236deb134"],
       "settings": {}
     }
   },
-  "order": [
-    "collabs"
-  ]
+  "order": ["collabs"]
 }

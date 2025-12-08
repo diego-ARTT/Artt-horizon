@@ -57,10 +57,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "text_hzB7xH",
-        "logo_wyK8CV"
-      ],
+      "block_order": ["text_hzB7xH", "logo_wyK8CV"],
       "name": "t:names.large_logo",
       "settings": {
         "content_direction": "column",
@@ -207,15 +204,10 @@
                   "blocks": {}
                 }
               },
-              "block_order": [
-                "text_Gdr8k4",
-                "text_RVk87t"
-              ]
+              "block_order": ["text_Gdr8k4", "text_RVk87t"]
             }
           },
-          "block_order": [
-            "group_DQnHWW"
-          ]
+          "block_order": ["group_DQnHWW"]
         }
       },
       "name": "t:names.editorial",
@@ -286,10 +278,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "text_dge6Pd",
-        "text_wgEP6f"
-      ],
+      "block_order": ["text_dge6Pd", "text_wgEP6f"],
       "name": "t:names.rich_text_section",
       "settings": {
         "content_direction": "column",
@@ -375,10 +364,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "text_RqbG7G",
-        "text_VLVm8i"
-      ],
+      "block_order": ["text_RqbG7G", "text_VLVm8i"],
       "name": "t:names.rich_text_section",
       "settings": {
         "content_direction": "column",
@@ -536,16 +522,10 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "text_iCGpqb",
-            "text_4QXG7m"
-          ]
+          "block_order": ["text_iCGpqb", "text_4QXG7m"]
         }
       },
-      "block_order": [
-        "image_AN7Ccc",
-        "group_EBcrjt"
-      ],
+      "block_order": ["image_AN7Ccc", "group_EBcrjt"],
       "name": "t:names.image_with_text",
       "settings": {
         "content_direction": "row",
@@ -669,10 +649,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "text_Dix479",
-            "text_wpz4RH"
-          ]
+          "block_order": ["text_Dix479", "text_wpz4RH"]
         },
         "image_3YQYaa": {
           "type": "image",
@@ -697,10 +674,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "group_jRUJt4",
-        "image_3YQYaa"
-      ],
+      "block_order": ["group_jRUJt4", "image_3YQYaa"],
       "name": "t:names.image_with_text",
       "settings": {
         "content_direction": "row",
