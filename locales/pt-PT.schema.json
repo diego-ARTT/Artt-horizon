@@ -174,7 +174,11 @@
     "blog_posts_editorial": "Publicações no blogue: Editorial",
     "excerpt": "Excerto",
     "footer_password": "Rodapé da palavra-passe",
-    "policies_and_links": "Políticas e links"
+    "policies_and_links": "Políticas e links",
+    "column": "Column",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote",
+    "size_guide": "Size guide"
   },
   "settings": {
     "alignment": "Alinhamento",
@@ -541,7 +545,21 @@
     "custom_mobile_media": "Conteúdo multimédia para móvel personalizado",
     "stack_media_on_mobile": "Empilhar conteúdo multimédia",
     "media_type_1": "Tipo de conteúdo multimédia",
-    "media_type_2": "Tipo de conteúdo multimédia 2"
+    "media_type_2": "Tipo de conteúdo multimédia 2",
+    "backdrop_blur": "Backdrop blur",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote font size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Border weight",
+    "size_guide": {
+      "button_text": "Button text",
+      "icon": "Icon",
+      "icon_size": "Icon size",
+      "hide_title": "Hide title",
+      "title_size": "Title size"
+    },
+    "block_link": "Block link"
   },
   "options": {
     "adapt_to_image": "Adaptar à imagem",
@@ -925,7 +943,13 @@
     "email_signup": "Registo de e-mail",
     "submissions_are_sent_to_store_email_address": "As submissões são enviadas para o [endereço de e-mail do remetente](https://admin.shopify.com/settings/notifications) da sua loja",
     "mobile_media": "Conteúdo multimédia para móvel",
-    "mobile_media_2": "Conteúdo multimédia para móvel 2"
+    "mobile_media_2": "Conteúdo multimédia para móvel 2",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo",
+    "button": "Button"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Partilhe informações sobre a sua marca com os clientes. Descreva um produto, faça comunicados ou dê as boas-vindas aos clientes da loja.</p>",
@@ -1004,7 +1028,11 @@
     "what_is_return_policy": "Qual é a política de devoluções?",
     "when_will_order_arrive": "Quando vou receber a minha encomenda?",
     "where_are_products_made": "Onde são fabricados os vossos produtos?",
-    "faq": "Perguntas frequentes"
+    "faq": {
+      "title": "Perguntas frequentes",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   },
   "info": {
     "video_alt_text": "Descreva o vídeo para utilizadores de tecnologia de apoio",
@@ -1030,7 +1058,10 @@
     "hover_effects": "Aplicável a cartões de produto e coleção",
     "hide_logo_on_home_page_help": "O logótipo permanecerá visível quando o cabeçalho fixo está ativo",
     "media_type_info": "Os recursos são preenchidos a partir dos links do seu menu",
-    "logo_height": "Apenas afeta o logótipo do cabeçalho"
+    "logo_height": "Apenas afeta o logótipo do cabeçalho",
+    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "categories": {
     "basic": "Basic",

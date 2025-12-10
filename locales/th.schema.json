@@ -174,7 +174,11 @@
     "blog_posts_editorial": "บล็อกโพสต์: รูปแบบบทความ",
     "excerpt": "เนื้อหาบางส่วน",
     "footer_password": "ส่วนท้ายของหน้ารหัสผ่าน",
-    "policies_and_links": "นโยบายและลิงก์"
+    "policies_and_links": "นโยบายและลิงก์",
+    "column": "Column",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote",
+    "size_guide": "Size guide"
   },
   "settings": {
     "alignment": "การจัดแนว",
@@ -541,7 +545,21 @@
     "custom_mobile_media": "สื่อสำหรับมือถือแบบกำหนดเอง",
     "stack_media_on_mobile": "เรียงซ้อนสื่อ",
     "media_type_1": "ประเภทสื่อ",
-    "media_type_2": "ประเภทสื่อ 2"
+    "media_type_2": "ประเภทสื่อ 2",
+    "backdrop_blur": "Backdrop blur",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote font size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Border weight",
+    "size_guide": {
+      "button_text": "Button text",
+      "icon": "Icon",
+      "icon_size": "Icon size",
+      "hide_title": "Hide title",
+      "title_size": "Title size"
+    },
+    "block_link": "Block link"
   },
   "options": {
     "adapt_to_image": "ปรับตามรูปภาพ",
@@ -925,7 +943,13 @@
     "email_signup": "การลงทะเบียนอีเมล",
     "submissions_are_sent_to_store_email_address": "ส่งการส่งไปยัง [ที่อยู่อีเมลผู้ส่ง](https://admin.shopify.com/settings/notifications) ของร้านค้าของคุณแล้ว",
     "mobile_media": "สื่อสำหรับมือถือ",
-    "mobile_media_2": "สื่อสำหรับมือถือ 2"
+    "mobile_media_2": "สื่อสำหรับมือถือ 2",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo",
+    "button": "Button"
   },
   "html_defaults": {
     "share_information_about_your": "<p>แชร์ข้อมูลเกี่ยวกับแบรนด์ของคุณให้ลูกค้าทราบ โดยอธิบายคุณสมบัติของสินค้า แชร์ประกาศ หรือกล่าวต้อนรับลูกค้าสู่ร้านค้าของคุณ</p>",
@@ -1004,7 +1028,11 @@
     "what_is_return_policy": "นโยบายการคืนสินค้าคืออะไร",
     "when_will_order_arrive": "ฉันจะได้รับคำสั่งซื้อเมื่อไร",
     "where_are_products_made": "สินค้าของคุณผลิตที่ไหน",
-    "faq": "คำถามที่พบบ่อย"
+    "faq": {
+      "title": "คำถามที่พบบ่อย",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   },
   "info": {
     "video_alt_text": "อธิบายวิดีโอสำหรับผู้ใช้เทคโนโลยีช่วยเหลือ",
@@ -1030,7 +1058,10 @@
     "hover_effects": "ใช้กับบัตรสินค้าและบัตรคอลเลกชัน",
     "hide_logo_on_home_page_help": "โลโก้จะยังปรากฏอยู่เมื่อเปิดใช้งานส่วนหัวแบบยึดตำแหน่ง",
     "media_type_info": "ระบบแสดงฟีเจอร์ต่างๆ จากลิงก์เมนูของคุณ",
-    "logo_height": "ส่งผลกับโลโก้ที่ส่วนหัวเท่านั้น"
+    "logo_height": "ส่งผลกับโลโก้ที่ส่วนหัวเท่านั้น",
+    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "categories": {
     "basic": "Basic",

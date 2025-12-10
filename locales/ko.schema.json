@@ -174,7 +174,11 @@
     "blog_posts_editorial": "블로그 게시물: 에디토리얼",
     "excerpt": "요약",
     "footer_password": "비밀번호 바닥글",
-    "policies_and_links": "정책 및 링크"
+    "policies_and_links": "정책 및 링크",
+    "column": "Column",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote",
+    "size_guide": "Size guide"
   },
   "settings": {
     "autoplay": "자동 재생",
@@ -541,7 +545,21 @@
     "custom_mobile_media": "사용자 지정 모바일 미디어",
     "stack_media_on_mobile": "미디어 쌓기",
     "media_type_1": "미디어 유형",
-    "media_type_2": "미디어 2 유형"
+    "media_type_2": "미디어 2 유형",
+    "backdrop_blur": "Backdrop blur",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote font size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Border weight",
+    "size_guide": {
+      "button_text": "Button text",
+      "icon": "Icon",
+      "icon_size": "Icon size",
+      "hide_title": "Hide title",
+      "title_size": "Title size"
+    },
+    "block_link": "Block link"
   },
   "options": {
     "adapt_to_image": "이미지에 맞춤",
@@ -925,7 +943,13 @@
     "email_signup": "이메일 가입",
     "submissions_are_sent_to_store_email_address": "제출 사항은 스토어의 [발신자 이메일 주소](https://admin.shopify.com/settings/notifications)(으)로 전송됩니다.",
     "mobile_media": "모바일 미디어",
-    "mobile_media_2": "모바일 미디어 2"
+    "mobile_media_2": "모바일 미디어 2",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo",
+    "button": "Button"
   },
   "html_defaults": {
     "share_information_about_your": "<p>고객과 브랜드 정보를 공유하세요. 제품을 설명하고 공지 사항을 제공하고, 스토어를 방문하는 고객을 환영할 수 있습니다.</p>",
@@ -1004,7 +1028,11 @@
     "what_is_return_policy": "반품 정책은 어떻게 되나요?",
     "when_will_order_arrive": "주문한 제품은 언제 도착하나요?",
     "where_are_products_made": "제품은 어디에서 제조되나요?",
-    "faq": "자주 묻는 질문"
+    "faq": {
+      "title": "자주 묻는 질문",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   },
   "info": {
     "carousel_layout_on_mobile": "캐러셀은 모바일에서 사용됩니다.",
@@ -1030,7 +1058,10 @@
     "pills_usage": "적용된 필터, 할인 코드 및 검색 제안에 사용됩니다",
     "hide_logo_on_home_page_help": "고정 머리글이 활성화되어 있으면 로고가 계속 표시됩니다",
     "media_type_info": "기능은 메뉴 링크에서 채워집니다",
-    "logo_height": "머리글 로고에만 영향이 있습니다"
+    "logo_height": "머리글 로고에만 영향이 있습니다",
+    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "categories": {
     "basic": "Basic",

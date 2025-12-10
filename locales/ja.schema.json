@@ -174,7 +174,11 @@
     "blog_posts_editorial": "ブログ記事：編集",
     "excerpt": "抜粋",
     "footer_password": "パスワードページのフッター",
-    "policies_and_links": "ポリシーとリンク"
+    "policies_and_links": "ポリシーとリンク",
+    "column": "Column",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote",
+    "size_guide": "Size guide"
   },
   "settings": {
     "alignment": "配置",
@@ -541,7 +545,21 @@
     "custom_mobile_media": "カスタムモバイルメディア",
     "stack_media_on_mobile": "メディアを積み重ねる",
     "media_type_1": "メディアの種類",
-    "media_type_2": "メディア2の種類"
+    "media_type_2": "メディア2の種類",
+    "backdrop_blur": "Backdrop blur",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote font size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Border weight",
+    "size_guide": {
+      "button_text": "Button text",
+      "icon": "Icon",
+      "icon_size": "Icon size",
+      "hide_title": "Hide title",
+      "title_size": "Title size"
+    },
+    "block_link": "Block link"
   },
   "options": {
     "adapt_to_image": "画像に合わせる",
@@ -925,7 +943,13 @@
     "email_signup": "メール登録者",
     "submissions_are_sent_to_store_email_address": "送信はストストアの [差出人メールアドレス](https://admin.shopify.com/settings/notifications) に送信されます。",
     "mobile_media": "モバイルメディア",
-    "mobile_media_2": "モバイルメディア2"
+    "mobile_media_2": "モバイルメディア2",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo",
+    "button": "Button"
   },
   "html_defaults": {
     "share_information_about_your": "<p>ブランドに関する情報をお客様と共有します。商品を説明したり、告知をしたり、ストアへのお客様を歓迎したりします。</p>",
@@ -1004,7 +1028,11 @@
     "what_is_return_policy": "返品ポリシーはどのような内容ですか？",
     "when_will_order_arrive": "注文した商品はいつ届きますか？",
     "where_are_products_made": "商品はどこで製造されていますか？",
-    "faq": "よくある質問"
+    "faq": {
+      "title": "よくある質問",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   },
   "info": {
     "video_alt_text": "支援技術ユーザー向けのビデオを説明する",
@@ -1030,7 +1058,10 @@
     "pills_usage": "適用されたフィルター、割引コード、検索候補に使用されます",
     "hide_logo_on_home_page_help": "スティッキーヘッダーがアクティブな場合、ロゴは表示されたままになります",
     "media_type_info": "Featuresはメニューリンクから入力されます",
-    "logo_height": "ヘッダーロゴにのみ影響します"
+    "logo_height": "ヘッダーロゴにのみ影響します",
+    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "categories": {
     "product_list": "特集コレクション",

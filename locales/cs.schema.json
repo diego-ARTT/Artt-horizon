@@ -177,7 +177,8 @@
     "footer_password": "Zápatí stránky s heslem",
     "policies_and_links": "Zásady a odkazy",
     "media_quote_carousel": "Karusel citace s médii",
-    "media_quote_carousel_block": "Citace"
+    "media_quote_carousel_block": "Citace",
+    "size_guide": "Size guide"
   },
   "settings": {
     "alignment": "Zarovnání",
@@ -549,7 +550,16 @@
     "auto_load_products": "Automaticky načítat produkty při rolování",
     "products_per_page": "Produktů na stránku",
     "custom_mobile_media": "Vlastní mobilní média",
-    "stack_media_on_mobile": "Skládat média"
+    "stack_media_on_mobile": "Skládat média",
+    "backdrop_blur": "Backdrop blur",
+    "size_guide": {
+      "button_text": "Button text",
+      "icon": "Icon",
+      "icon_size": "Icon size",
+      "hide_title": "Hide title",
+      "title_size": "Title size"
+    },
+    "block_link": "Block link"
   },
   "options": {
     "adapt_to_image": "Přizpůsobení obrázku",
@@ -933,7 +943,13 @@
     "cart_features": "Funkce košíku",
     "email_signup": "Přihlášení k odběru e-mailů",
     "mobile_media": "Mobilní média",
-    "mobile_media_2": "Mobilní média 2"
+    "mobile_media_2": "Mobilní média 2",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo",
+    "button": "Button"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Informujte zákazníky o své značce. Zároveň můžete popsat některý z produktů, oznámit důležité informace nebo přivítat zákazníky ve svém obchodě.</p>",
@@ -1011,7 +1027,12 @@
     "view_all_button_label": "Zobrazit vše",
     "what_is_return_policy": "Jaké jsou podmínky vrácení?",
     "when_will_order_arrive": "Kdy mi dorazí objednávka?",
-    "where_are_products_made": "Kde se vyrábějí vaše produkty?"
+    "where_are_products_made": "Kde se vyrábějí vaše produkty?",
+    "faq": {
+      "title": "FAQ",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   },
   "info": {
     "video_alt_text": "Popište video pro uživatele asistivních technologií",
@@ -1037,7 +1058,10 @@
     "pills_usage": "Používá se pro použité filtry, slevové kódy a návrhy vyhledávání",
     "hide_logo_on_home_page_help": "Pokud je aktivní plovoucí záhlaví, logo zůstane viditelné.",
     "media_type_info": "Prvky se načítají z odkazů v nabídce",
-    "logo_height": "Ovlivňuje pouze logo v záhlaví"
+    "logo_height": "Ovlivňuje pouze logo v záhlaví",
+    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "categories": {
     "product_list": "Propagovaná kolekce",

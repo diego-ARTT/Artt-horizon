@@ -177,7 +177,8 @@
     "footer_password": "Sidefod til adgangskodeside",
     "policies_and_links": "Politikker og links",
     "media_quote_carousel": "Mediecitat-karrusel",
-    "media_quote_carousel_block": "Citat"
+    "media_quote_carousel_block": "Citat",
+    "size_guide": "Size guide"
   },
   "settings": {
     "alignment": "Justering",
@@ -549,7 +550,16 @@
     "custom_mobile_media": "Tilpassede mobilmedier",
     "stack_media_on_mobile": "Stak medier",
     "media_type_1": "Medietype",
-    "media_type_2": "Medie 2 type"
+    "media_type_2": "Medie 2 type",
+    "backdrop_blur": "Backdrop blur",
+    "size_guide": {
+      "button_text": "Button text",
+      "icon": "Icon",
+      "icon_size": "Icon size",
+      "hide_title": "Hide title",
+      "title_size": "Title size"
+    },
+    "block_link": "Block link"
   },
   "options": {
     "adapt_to_image": "Tilpas til billede",
@@ -933,7 +943,13 @@
     "cart_features": "Indkøbskurvfunktioner",
     "email_signup": "Tilmelding med mail",
     "mobile_media": "Mobilmedier",
-    "mobile_media_2": "Mobilmedier 2"
+    "mobile_media_2": "Mobilmedier 2",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo",
+    "button": "Button"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Del oplysninger om dit brand med dine kunder. Beskriv et produkt, del meddelelser, eller byd velkommen til din butik.</p>",
@@ -1011,7 +1027,12 @@
     "view_all_button_label": "Se alle",
     "what_is_return_policy": "Hvad er returpolitikken?",
     "when_will_order_arrive": "Hvornår modtager jeg min ordre?",
-    "where_are_products_made": "Hvor bliver jeres produkter fremstillet?"
+    "where_are_products_made": "Hvor bliver jeres produkter fremstillet?",
+    "faq": {
+      "title": "FAQ",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   },
   "info": {
     "carousel_layout_on_mobile": "Karrusel anvendes på mobil",
@@ -1037,7 +1058,10 @@
     "hover_effects": "Gælder for produkter og kollektionskort",
     "hide_logo_on_home_page_help": "Logoet forbliver synligt, når et fastgjort sidehoved er aktiveret",
     "media_type_info": "Funktionerne udfyldes fra dine menulinks",
-    "logo_height": "Påvirker kun logoet i sidehovedet"
+    "logo_height": "Påvirker kun logoet i sidehovedet",
+    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "categories": {
     "basic": "Basic",

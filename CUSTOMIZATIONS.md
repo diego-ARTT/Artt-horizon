@@ -7,12 +7,12 @@
 ## 📋 Theme Information
 
 | Property               | Value                                                                            |
-| ---------------------- | -------------------------------------------------------------------------------- |
+| ---------------------- | -------------------------------------------------------------------------------- | ---------- |
 | **Base Theme**         | Shopify Horizon                                                                  |
 | **Horizon Version**    | v3.1.0 (as of Nov 3, 2024)                                                       |
 | **Custom Theme Name**  | ARTT Horizon                                                                     |
-| **Custom Version**     | 1.1.0                                                                            |
-| **Last Updated**       | 2025-01-XX                                                                       |
+|                        | **Custom Version**                                                               | 1.1.1      |
+|                        | **Last Updated**                                                                 | 2025-12-10 |
 | **Last Upstream Sync** | Nov 3, 2024 (commit: 51a72d4)                                                    |
 | **Maintainer**         | [@diego-ARTT](https://github.com/diego-ARTT)                                     |
 | **Repository**         | [github.com/diego-ARTT/Artt-horizon](https://github.com/diego-ARTT/Artt-horizon) |
@@ -113,6 +113,18 @@
 - **Last Modified:** Nov 10, 2024
 - **Merge Strategy:** ⚠️ Review carefully - contains custom settings
 
+#### `sections/header.liquid`
+
+- **Status:** ⚠️ Modified
+- **Changes Made:**
+  - **December 2025:** Fixed duplicate block IDs in mobile menu and navigation bar
+    - Changed mobile menu block ID from `header-menu` to `header-menu-mobile`
+    - Changed navigation bar block ID from `header-menu` to `header-menu-nav-bar`
+- **Reason:** Resolve duplicate ID conflicts causing rendering issues
+- **Last Modified:** December 2025
+- **Merge Strategy:** ⚠️ Review carefully - preserve unique ID changes
+- **Notes:** This fix ensures each header menu instance has a unique identifier
+
 #### `sections/footer-group.json`
 
 - **Status:** Modified
@@ -155,8 +167,15 @@
       - `settings.backdrop_blur`
       - `info.drawer_backdrop_blur`
     - Added `content.button` translation
-- **Reason:** Support for custom media quote carousel section, size guide block, drawer backdrop blur, and translation consistency
-- **Last Modified:** January 2025
+  - **December 2025 Updates:**
+    - Added `content.share_information_about_your` translation for header marquee fallback text
+    - Added media quote carousel content translations:
+      - `content.media_quote_carousel`
+      - `content.media_quote_slide_label`
+      - `content.media_quote_carousel_placeholder`
+      - `content.media_quote_logo_alt`
+- **Reason:** Support for custom media quote carousel section, size guide block, drawer backdrop blur, header marquee, and translation consistency
+- **Last Modified:** December 2025
 - **Merge Strategy:** ⚠️ Append new custom keys, preserve during updates
 - **Notes:** Custom translation keys use `media_quote_carousel` and `size_guide` prefixes for easy identification
 
@@ -752,6 +771,40 @@ git push origin update/horizon-vX.X.X
 
 ## 📝 Change Log
 
+### Version 1.1.1 - December 2025
+
+#### Translation Key Fixes
+
+- **Fixed Missing Translation:** Added `content.share_information_about_your` to locale files
+  - Resolves Theme Check error in `sections/header-marquee.liquid`
+  - Translation: "Share information about your brand with your customers"
+  - Files modified:
+    - `locales/en.default.json`
+    - `locales/en.default.schema.json`
+- **Added Media Quote Carousel Translations:**
+  - `content.media_quote_carousel`
+  - `content.media_quote_slide_label`
+  - `content.media_quote_carousel_placeholder`
+  - `content.media_quote_logo_alt`
+- **Files Modified:**
+  - `locales/en.default.json`
+  - `locales/en.default.schema.json`
+- **Status:** ✅ Complete
+- **Date:** December 8, 2025
+- **Commit:** 2278a3e
+
+#### Header Duplicate ID Fix
+
+- **Fixed:** Duplicate block IDs in header component
+  - Changed mobile menu block ID: `header-menu` → `header-menu-mobile`
+  - Changed navigation bar block ID: `header-menu` → `header-menu-nav-bar`
+- **Reason:** Prevent ID conflicts and rendering issues
+- **Files Modified:**
+  - `sections/header.liquid` (lines 53, 57)
+- **Status:** ✅ Complete
+- **Date:** December 8, 2025
+- **Commit:** 2278a3e
+
 ### Version 1.1.0 - January 2025
 
 #### Size Guide Widget
@@ -966,9 +1019,9 @@ git push origin main --force
 
 ---
 
-**Document Version:** 1.1.0  
-**Last Updated:** 2025-01-XX  
-**Next Review:** 2025-02-XX  
+**Document Version:** 1.1.1  
+**Last Updated:** 2025-12-10  
+**Next Review:** 2026-01-10
 **Maintained By:** [@diego-ARTT](https://github.com/diego-ARTT)
 
 ---

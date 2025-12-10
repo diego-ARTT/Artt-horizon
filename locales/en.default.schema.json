@@ -1146,7 +1146,8 @@
     "product_corner_radius": "Product corner radius",
     "card_corner_radius": "Card corner radius",
     "media_type_1": "Media type",
-    "media_type_2": "Media 2 type"
+    "media_type_2": "Media 2 type",
+    "block_link": "Block link"
   },
   "text_defaults": {
     "accordion_heading": "Accordion heading",
@@ -1178,6 +1179,11 @@
     "welcome_to_our_store": "Welcome to our store",
     "what_is_return_policy": "What is the return policy?",
     "when_will_order_arrive": "When will I get my order?",
-    "where_are_products_made": "Where are your products manufactured?"
+    "where_are_products_made": "Where are your products manufactured?",
+    "faq": {
+      "title": "FAQ",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   }
 }

@@ -174,7 +174,11 @@
     "blog_posts_editorial": "Blogginnlegg: Redaksjonelt",
     "excerpt": "Utdrag",
     "footer_password": "Bunntekst for passordside",
-    "policies_and_links": "Retningslinjer og lenker"
+    "policies_and_links": "Retningslinjer og lenker",
+    "column": "Column",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote",
+    "size_guide": "Size guide"
   },
   "settings": {
     "alignment": "Justering",
@@ -541,7 +545,21 @@
     "custom_mobile_media": "Egendefinerte mobilmedier",
     "stack_media_on_mobile": "Stable medier",
     "media_type_1": "Medietype",
-    "media_type_2": "Medietype 2"
+    "media_type_2": "Medietype 2",
+    "backdrop_blur": "Backdrop blur",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote font size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Border weight",
+    "size_guide": {
+      "button_text": "Button text",
+      "icon": "Icon",
+      "icon_size": "Icon size",
+      "hide_title": "Hide title",
+      "title_size": "Title size"
+    },
+    "block_link": "Block link"
   },
   "options": {
     "adapt_to_image": "Tilpass til bilde",
@@ -925,7 +943,13 @@
     "email_signup": "E-postregistrering",
     "submissions_are_sent_to_store_email_address": "Innsendinger sendes til butikkens [avsenderens e-postadresse](https://admin.shopify.com/settings/notifications)",
     "mobile_media": "Mobilmedier",
-    "mobile_media_2": "Mobilmedier 2"
+    "mobile_media_2": "Mobilmedier 2",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo",
+    "button": "Button"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Del informasjon om merkevaren din med kundene. Beskriv et produkt, gjør kunngjøringer eller ønsk kundene velkommen til butikken.</p>",
@@ -1004,7 +1028,11 @@
     "what_is_return_policy": "Hva er returvilkårene?",
     "when_will_order_arrive": "Når kommer bestillingen min?",
     "where_are_products_made": "Hvor produseres produktene deres?",
-    "faq": "FAQ"
+    "faq": {
+      "title": "FAQ",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   },
   "info": {
     "carousel_layout_on_mobile": "Karusell er brukt på mobil",
@@ -1030,7 +1058,10 @@
     "hover_effects": "Gjelder produkt- og samlingskort",
     "hide_logo_on_home_page_help": "Logoen forblir synlig når festet overskrift er aktiv",
     "media_type_info": "Funksjoner fylles ut fra menykoblingene",
-    "logo_height": "Påvirker bare overskriftslogoen"
+    "logo_height": "Påvirker bare overskriftslogoen",
+    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "categories": {
     "product_list": "Utvalgt samling",

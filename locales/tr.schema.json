@@ -174,7 +174,11 @@
     "blog_posts_editorial": "Blog gönderileri: Editoryal",
     "excerpt": "Alıntı",
     "footer_password": "Şifre altbilgisi",
-    "policies_and_links": "Politikalar ve bağlantılar"
+    "policies_and_links": "Politikalar ve bağlantılar",
+    "column": "Column",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote",
+    "size_guide": "Size guide"
   },
   "settings": {
     "autoplay": "Otomatik oynatma",
@@ -541,7 +545,21 @@
     "custom_mobile_media": "Özel mobil medya",
     "stack_media_on_mobile": "Medyayı üst üste diz",
     "media_type_1": "Medya türü",
-    "media_type_2": "Medya 2 türü"
+    "media_type_2": "Medya 2 türü",
+    "backdrop_blur": "Backdrop blur",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote font size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Border weight",
+    "size_guide": {
+      "button_text": "Button text",
+      "icon": "Icon",
+      "icon_size": "Icon size",
+      "hide_title": "Hide title",
+      "title_size": "Title size"
+    },
+    "block_link": "Block link"
   },
   "options": {
     "adapt_to_image": "Görsele uyarla",
@@ -925,7 +943,13 @@
     "email_signup": "E-posta kaydı",
     "submissions_are_sent_to_store_email_address": "Gönderimler mağazanızın [gönderen e-postası adresine](https://admin.shopify.com/settings/notifications) gönderilir",
     "mobile_media": "Mobil medya",
-    "mobile_media_2": "Mobil medya 2"
+    "mobile_media_2": "Mobil medya 2",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo",
+    "button": "Button"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Müşterilerinizle markanız hakkında bilgi paylaşın. Ürün açıklaması girin, duyuru paylaşın veya mağazanıza gelen müşterileri karşılayın.</p>",
@@ -1004,7 +1028,11 @@
     "what_is_return_policy": "İade politikanız nedir?",
     "when_will_order_arrive": "Siparişim ne zaman elime ulaşır?",
     "where_are_products_made": "Ürünleriniz nerede üretiliyor?",
-    "faq": "SSS"
+    "faq": {
+      "title": "SSS",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   },
   "info": {
     "video_alt_text": "Yardımcı teknoloji kullanan kişiler için videonun içeriğini tarif et",
@@ -1030,7 +1058,10 @@
     "pills_usage": "Uygulanan filtreler, indirim kodları ve arama önerileri için kullanılır",
     "hide_logo_on_home_page_help": "Sabit üstbilgi etkin olduğunda logo görünür kalır",
     "media_type_info": "Özellikler, menü bağlantılarınızdan doldurulur",
-    "logo_height": "Sadece üstbilgi logoyu etkiler"
+    "logo_height": "Sadece üstbilgi logoyu etkiler",
+    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "categories": {
     "product_list": "Öne çıkan koleksiyon",
