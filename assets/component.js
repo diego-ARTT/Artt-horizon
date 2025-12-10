@@ -131,10 +131,10 @@ export class Component extends DeclarativeShadowElement {
    *
    * @type {MutationObserver}
    */
-  #mutationObserver = new MutationObserver((mutations) => {
+  #mutationObserver = new MutationObserver(mutations => {
     if (
       mutations.some(
-        (m) =>
+        m =>
           (m.type === 'attributes' && this.#isDescendant(m.target)) ||
           (m.type === 'childList' && [...m.addedNodes, ...m.removedNodes].some(this.#isDescendant))
       )
@@ -149,7 +149,7 @@ export class Component extends DeclarativeShadowElement {
    * @param {Node} node - The node to check.
    * @returns {boolean} True if the node is a descendant of this component.
    */
-  #isDescendant = (node) => getClosestComponent(getAncestor(node)) === this;
+  #isDescendant = node => getClosestComponent(getAncestor(node)) === this;
 }
 
 /**
@@ -196,7 +196,18 @@ function registerEventListeners() {
   if (initialized) return;
   initialized = true;
 
-  const events = ['click', 'change', 'select', 'focus', 'blur', 'submit', 'input', 'keydown', 'keyup', 'toggle'];
+  const events = [
+    'click',
+    'change',
+    'select',
+    'focus',
+    'blur',
+    'submit',
+    'input',
+    'keydown',
+    'keyup',
+    'toggle',
+  ];
   const shouldBubble = ['focus', 'blur'];
   const expensiveEvents = ['pointerenter', 'pointerleave'];
 
@@ -205,7 +216,7 @@ function registerEventListeners() {
 
     document.addEventListener(
       eventName,
-      (event) => {
+      event => {
         const element = getElement(event);
 
         if (!element) return;
@@ -228,10 +239,11 @@ function registerEventListeners() {
             : event;
 
         const value = element.getAttribute(attribute) ?? '';
-        let [selector, method] = value.split('/');
+        const [selector, method] = value.split('/');
+        let cleanedMethod = method;
         // Extract the last segment of the attribute value delimited by `?` or `/`
         // Do not use lookback for Safari 16.0 compatibility
-        const matches = value.match(/([\/\?][^\/\?]+)([\/\?][^\/\?]+)$/);
+        const matches = value.match(/([/?][^/?]+)([/?][^/?]+)$/);
         const data = matches ? matches[2] : null;
         const instance = selector
           ? selector.startsWith('#')
@@ -239,11 +251,11 @@ function registerEventListeners() {
             : element.closest(selector)
           : getClosestComponent(element);
 
-        if (!(instance instanceof Component) || !method) return;
+        if (!(instance instanceof Component) || !cleanedMethod) return;
 
-        method = method.replace(/\?.*/, '');
+        cleanedMethod = cleanedMethod.replace(/\?.*/, '');
 
-        const callback = /** @type {any} */ (instance)[method];
+        const callback = /** @type {any} */ (instance)[cleanedMethod];
 
         if (typeof callback === 'function') {
           try {
@@ -254,6 +266,7 @@ function registerEventListeners() {
 
             callback.call(instance, ...args);
           } catch (error) {
+            // eslint-disable-next-line no-console
             console.error(error);
           }
         }
@@ -276,7 +289,9 @@ function registerEventListeners() {
       return null;
     }
 
-    return event.bubbles || shouldBubble.includes(event.type) ? target.closest(`[on\\:${event.type}]`) : null;
+    return event.bubbles || shouldBubble.includes(event.type)
+      ? target.closest(`[on\\:${event.type}]`)
+      : null;
   }
 }
 
@@ -292,7 +307,10 @@ function parseData(str) {
 
   return delimiter === '?'
     ? Object.fromEntries(
-        Array.from(new URLSearchParams(data).entries()).map(([key, value]) => [key, parseValue(value)])
+        Array.from(new URLSearchParams(data).entries()).map(([key, value]) => [
+          key,
+          parseValue(value),
+        ])
       )
     : parseValue(data);
 }

@@ -17,7 +17,11 @@ import { cartPerformance } from '@theme/performance';
  * @extends {Component<CartDiscountComponentRefs>}
  */
 class CartDiscount extends Component {
-  requiredRefs = ['cartDiscountError', 'cartDiscountErrorDiscountCode', 'cartDiscountErrorShipping'];
+  requiredRefs = [
+    'cartDiscountError',
+    'cartDiscountErrorDiscountCode',
+    'cartDiscountErrorShipping',
+  ];
 
   /** @type {AbortController | null} */
   #activeFetch = null;
@@ -36,8 +40,9 @@ class CartDiscount extends Component {
    * Handles updates to the cart note.
    * @param {SubmitEvent} event - The submit event on our form.
    */
-  applyDiscount = async (event) => {
-    const { cartDiscountError, cartDiscountErrorDiscountCode, cartDiscountErrorShipping } = this.refs;
+  applyDiscount = async event => {
+    const { cartDiscountError, cartDiscountErrorDiscountCode, cartDiscountErrorShipping } =
+      this.refs;
 
     event.preventDefault();
     event.stopPropagation();
@@ -46,7 +51,8 @@ class CartDiscount extends Component {
     if (!(form instanceof HTMLFormElement)) return;
 
     const discountCode = form.querySelector('input[name="discount"]');
-    if (!(discountCode instanceof HTMLInputElement) || typeof this.dataset.sectionId !== 'string') return;
+    if (!(discountCode instanceof HTMLInputElement) || typeof this.dataset.sectionId !== 'string')
+      return;
 
     const discountCodeValue = discountCode.value;
 
@@ -75,9 +81,11 @@ class CartDiscount extends Component {
       const data = await response.json();
 
       if (
-        data.discount_codes.find((/** @type {{ code: string; applicable: boolean; }} */ discount) => {
-          return discount.code === discountCodeValue && discount.applicable === false;
-        })
+        data.discount_codes.find(
+          (/** @type {{ code: string; applicable: boolean; }} */ discount) => {
+            return discount.code === discountCodeValue && discount.applicable === false;
+          }
+        )
       ) {
         discountCode.value = '';
         this.#handleDiscountError('discount_code');
@@ -90,7 +98,7 @@ class CartDiscount extends Component {
       const discountCodes = section?.querySelectorAll('.cart-discount__pill') || [];
       if (section) {
         const codes = Array.from(discountCodes)
-          .map((element) => (element instanceof HTMLLIElement ? element.dataset.discountCode : null))
+          .map(element => (element instanceof HTMLLIElement ? element.dataset.discountCode : null))
           .filter(Boolean);
         // Before morphing, we need to check if the shipping discount is applicable in the UI
         // we check the liquid logic compared to the cart payload to assess whether we leveraged
@@ -98,9 +106,11 @@ class CartDiscount extends Component {
         if (
           codes.length === existingDiscounts.length &&
           codes.every((/** @type {string} */ code) => existingDiscounts.includes(code)) &&
-          data.discount_codes.find((/** @type {{ code: string; applicable: boolean; }} */ discount) => {
-            return discount.code === discountCodeValue && discount.applicable === true;
-          })
+          data.discount_codes.find(
+            (/** @type {{ code: string; applicable: boolean; }} */ discount) => {
+              return discount.code === discountCodeValue && discount.applicable === true;
+            }
+          )
         ) {
           this.#handleDiscountError('shipping');
           discountCode.value = '';
@@ -110,7 +120,9 @@ class CartDiscount extends Component {
 
       document.dispatchEvent(new DiscountUpdateEvent(data, this.id));
       morphSection(this.dataset.sectionId, newHtml);
-    } catch (error) {
+    } catch {
+      // Silently handle aborted requests or network errors
+      // Errors are already handled via abort controller signal
     } finally {
       this.#activeFetch = null;
       cartPerformance.measureFromEvent('discount-update:user-action', event);
@@ -121,7 +133,7 @@ class CartDiscount extends Component {
    * Handles removing a discount from the cart.
    * @param {MouseEvent | KeyboardEvent} event - The mouse or keyboard event in our pill.
    */
-  removeDiscount = async (event) => {
+  removeDiscount = async event => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -150,7 +162,10 @@ class CartDiscount extends Component {
 
     try {
       const config = fetchConfig('json', {
-        body: JSON.stringify({ discount: existingDiscounts.join(','), sections: [this.dataset.sectionId] }),
+        body: JSON.stringify({
+          discount: existingDiscounts.join(','),
+          sections: [this.dataset.sectionId],
+        }),
       });
 
       const response = await fetch(Theme.routes.cart_update_url, {
@@ -162,7 +177,9 @@ class CartDiscount extends Component {
 
       document.dispatchEvent(new DiscountUpdateEvent(data, this.id));
       morphSection(this.dataset.sectionId, data.sections[this.dataset.sectionId]);
-    } catch (error) {
+    } catch {
+      // Silently handle aborted requests or network errors
+      // Errors are already handled via abort controller signal
     } finally {
       this.#activeFetch = null;
     }
@@ -174,8 +191,10 @@ class CartDiscount extends Component {
    * @param {'discount_code' | 'shipping'} type - The type of discount error.
    */
   #handleDiscountError(type) {
-    const { cartDiscountError, cartDiscountErrorDiscountCode, cartDiscountErrorShipping } = this.refs;
-    const target = type === 'discount_code' ? cartDiscountErrorDiscountCode : cartDiscountErrorShipping;
+    const { cartDiscountError, cartDiscountErrorDiscountCode, cartDiscountErrorShipping } =
+      this.refs;
+    const target =
+      type === 'discount_code' ? cartDiscountErrorDiscountCode : cartDiscountErrorShipping;
     cartDiscountError.classList.remove('hidden');
     target.classList.remove('hidden');
   }

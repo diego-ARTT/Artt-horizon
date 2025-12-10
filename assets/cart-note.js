@@ -13,7 +13,7 @@ class CartNote extends Component {
    * Handles updates to the cart note.
    * @param {InputEvent} event - The input event in our text-area.
    */
-  updateCartNote = debounce(async (event) => {
+  updateCartNote = debounce(async event => {
     if (!(event.target instanceof HTMLTextAreaElement)) return;
 
     const note = event.target.value;
@@ -33,7 +33,9 @@ class CartNote extends Component {
         ...config,
         signal: abortController.signal,
       });
-    } catch (error) {
+    } catch {
+      // Silently handle aborted requests or network errors
+      // Errors are already handled via abort controller signal
     } finally {
       this.#activeFetch = null;
       cartPerformance.measureFromEvent('note-update:user-action', event);

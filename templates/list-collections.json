@@ -7,7 +7,7 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "collection_list_Wfgh3m": {
       "type": "main-collection-list",
@@ -78,9 +78,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "text_fRMQMR"
-          ]
+          "block_order": ["text_fRMQMR"]
         },
         "static-collection-card": {
           "type": "_collection-card",
@@ -142,14 +140,10 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "collection_title_7YgBPU"
-          ]
+          "block_order": ["collection_title_7YgBPU"]
         }
       },
-      "block_order": [
-        "group_4FtiAg"
-      ],
+      "block_order": ["group_4FtiAg"],
       "name": "t:names.collection_list",
       "settings": {
         "layout_type": "grid",
@@ -170,7 +164,5 @@
       }
     }
   },
-  "order": [
-    "collection_list_Wfgh3m"
-  ]
+  "order": ["collection_list_Wfgh3m"]
 }

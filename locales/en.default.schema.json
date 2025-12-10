@@ -46,6 +46,7 @@
     "body_size": "Body size",
     "borders": "Borders",
     "bottom_row_appearance": "Bottom row appearance",
+    "button": "Button",
     "buttons": "Buttons",
     "cards_layout": "Cards layout",
     "carousel": "Carousel",
@@ -146,7 +147,12 @@
     "visibility": "Visibility",
     "width": "Width",
     "width_is_automatically_optimized": "Width is automatically optimized for mobile.",
-    "app_required_for_ratings": "An app is required for product ratings. [Learn more](https://help.shopify.com/manual/apps)"
+    "app_required_for_ratings": "An app is required for product ratings. [Learn more](https://help.shopify.com/manual/apps)",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo"
   },
   "html_defaults": {
     "join_our_email_list": "<h2>Join our email list</h2>",
@@ -218,7 +224,10 @@
     "video_autoplay": "Videos will be muted by default",
     "video_external": "Use a YouTube or Vimeo URL",
     "pills_usage": "Used for applied filters, discount codes, and search suggestions",
-    "media_type_info": "Features are populated from your menu links"
+    "media_type_info": "Features are populated from your menu links",
+    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "names": {
     "column": "Column",
@@ -325,6 +334,8 @@
     "marquee_section": "Marquee",
     // Block name for image/video component
     "media": "Media",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote",
     "media_with_text": "Media with text",
     "menu": "Menu",
     "mobile_layout": "Mobile layout",
@@ -368,6 +379,7 @@
     "products_grid": "Featured collection: Grid",
     "product_inventory": "Product inventory",
     "product_custom_property": "Special instructions",
+    "size_guide": "Size guide",
     "pull_quote": "Pull quote",
     "quantity": "Quantity",
     "read_only": "Read only",
@@ -748,6 +760,7 @@
     "behavior": "Behavior",
     "blog": "Blog",
     "blur": "Shadow blur",
+    "backdrop_blur": "Backdrop blur",
     "blurred_reflection": "Blurred reflection",
     "border": "Border",
     "border_opacity": "Border opacity",
@@ -909,6 +922,7 @@
     "links": "Links",
     "logo": "Logo",
     "logo_font": "Logo font",
+    "logo_max_height": "Logo max height",
     "loop": "Loop",
     "make_details_sticky_desktop": "Sticky on desktop",
     "make_section_full_width": "Make section full width",
@@ -1003,10 +1017,19 @@
       "input_preset": "Input",
       "checkbox_preset": "Checkbox label"
     },
+    "size_guide": {
+      "button_text": "Button text",
+      "icon": "Icon",
+      "icon_size": "Icon size",
+      "hide_title": "Hide title",
+      "title_size": "Title size"
+    },
     // Checkbox setting to enable quick add to cart from product cards
     "quick_add": "Quick add",
     // Color scheme for quick add buttons on product cards
     "quick_add_colors": "Quick add colors",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote font size",
     "ratio": "Ratio",
     "read_only": "Read only",
     "reflection_opacity": "Reflection opacity",
@@ -1054,6 +1077,8 @@
     // Font size or element dimensions setting
     "size": "Size",
     "size_mobile": "Mobile size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Border weight",
     "slide_spacing": "Slide gap",
     "slide_width": "Slide width",
     "slideshow_fullwidth": "Full width slides",
@@ -1121,7 +1146,8 @@
     "product_corner_radius": "Product corner radius",
     "card_corner_radius": "Card corner radius",
     "media_type_1": "Media type",
-    "media_type_2": "Media 2 type"
+    "media_type_2": "Media 2 type",
+    "block_link": "Block link"
   },
   "text_defaults": {
     "accordion_heading": "Accordion heading",
@@ -1153,6 +1179,11 @@
     "welcome_to_our_store": "Welcome to our store",
     "what_is_return_policy": "What is the return policy?",
     "when_will_order_arrive": "When will I get my order?",
-    "where_are_products_made": "Where are your products manufactured?"
+    "where_are_products_made": "Where are your products manufactured?",
+    "faq": {
+      "title": "FAQ",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   }
 }

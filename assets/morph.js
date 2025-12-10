@@ -32,7 +32,10 @@ const MORPH_OPTIONS = {
       return true;
     }
 
-    if (newNode.nodeType === Node.COMMENT_NODE && newNode.nodeValue === 'shopify:rendered_by_section_api') {
+    if (
+      newNode.nodeType === Node.COMMENT_NODE &&
+      newNode.nodeValue === 'shopify:rendered_by_section_api'
+    ) {
       // Remove a comment node injected by the Section Rendering API in the Theme Editor
       return true;
     }
@@ -70,7 +73,11 @@ const MORPH_OPTIONS = {
       }
 
       // Preserve temporary view transition name
-      if (oldNode instanceof HTMLElement && newNode instanceof HTMLElement && oldNode.style.viewTransitionName) {
+      if (
+        oldNode instanceof HTMLElement &&
+        newNode instanceof HTMLElement &&
+        oldNode.style.viewTransitionName
+      ) {
         newNode.style.viewTransitionName = oldNode.style.viewTransitionName;
       }
     }
@@ -252,7 +259,12 @@ function copyAttributes(newNode, oldNode) {
     const { name: attrName, namespaceURI: attrNamespaceURI, value: attrValue } = attr;
     const localName = attr.localName || attrName;
 
-    if (attrName === 'src' || attrName === 'href' || attrName === 'srcset' || attrName === 'poster') {
+    if (
+      attrName === 'src' ||
+      attrName === 'href' ||
+      attrName === 'srcset' ||
+      attrName === 'poster'
+    ) {
       // Skip updating resource attributes when the value hasn't changed
       // to prevent unnecessary network requests
       if (oldNode.getAttribute(attrName) === attrValue) continue;
@@ -467,7 +479,8 @@ function same(a, b, options) {
   if (a.nodeType === Node.TEXT_NODE && b.nodeType === Node.TEXT_NODE)
     // Trim whitespace to avoid false negatives
     return a.nodeValue?.trim() === b.nodeValue?.trim();
-  if (a.nodeType === Node.COMMENT_NODE && b.nodeType === Node.COMMENT_NODE) return a.nodeValue === b.nodeValue;
+  if (a.nodeType === Node.COMMENT_NODE && b.nodeType === Node.COMMENT_NODE)
+    return a.nodeValue === b.nodeValue;
 
   // If we get here and nodes are elements with same tag (and compatible keys), they're the same
   return true;

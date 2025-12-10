@@ -148,7 +148,8 @@ export class DialogComponent extends Component {
   }
 }
 
-if (!customElements.get('dialog-component')) customElements.define('dialog-component', DialogComponent);
+if (!customElements.get('dialog-component'))
+  customElements.define('dialog-component', DialogComponent);
 
 export class DialogOpenEvent extends CustomEvent {
   constructor() {
@@ -168,7 +169,7 @@ export class DialogCloseEvent extends CustomEvent {
 
 document.addEventListener(
   'toggle',
-  (event) => {
+  event => {
     if (event.target instanceof HTMLDetailsElement) {
       if (event.target.hasAttribute('scroll-lock')) {
         const { open } = event.target;

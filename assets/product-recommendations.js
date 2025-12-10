@@ -17,7 +17,7 @@ class ProductRecommendations extends HTMLElement {
    * Observing changes to the elements attributes
    * @type {MutationObserver}
    */
-  #mutationObserver = new MutationObserver((mutations) => {
+  #mutationObserver = new MutationObserver(mutations => {
     for (const mutation of mutations) {
       // Only attribute changes are interesting
       if (mutation.target !== this || mutation.type !== 'attributes') continue;
@@ -76,7 +76,7 @@ class ProductRecommendations extends HTMLElement {
     }
 
     this.#fetchCachedRecommendations(productId, sectionId, intent)
-      .then((result) => {
+      .then(result => {
         if (!result.success) {
           // The Theme Editor will place a section element element in the DOM whose section_id is not available
           // to the Section Renderer API. In this case, we can safely ignore the error.
@@ -97,7 +97,7 @@ class ProductRecommendations extends HTMLElement {
           this.#handleError(new Error('No recommendations available'));
         }
       })
-      .catch((e) => {
+      .catch(e => {
         this.#handleError(e);
       });
   }
@@ -139,6 +139,7 @@ class ProductRecommendations extends HTMLElement {
    * @param {Error} error
    */
   #handleError(error) {
+    // eslint-disable-next-line no-console
     console.error('Product recommendations error:', error.message);
     this.classList.add('hidden');
     this.dataset.error = 'Error loading product recommendations';

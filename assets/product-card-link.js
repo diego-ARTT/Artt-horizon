@@ -20,13 +20,15 @@ class ProductCardLink extends HTMLElement {
    * Handles the click event for the product link
    * @param {Event} event
    */
-  #handleClick = (event) => {
+  #handleClick = event => {
     // If the event has been prevented, don't do anything, another component is handling the click
     if (event.defaultPrevented) return;
 
     // If the event was on an interactive element, don't do anything, this is not a navigation
     if (event.target instanceof Element) {
-      const interactiveElement = event.target.closest('button, input, label, select, [tabindex="1"]');
+      const interactiveElement = event.target.closest(
+        'button, input, label, select, [tabindex="1"]'
+      );
       if (interactiveElement) return;
     }
 

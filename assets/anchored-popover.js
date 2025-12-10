@@ -97,9 +97,12 @@ export class AnchoredPopoverComponent extends Component {
     super.connectedCallback();
     const { popover, trigger } = this.refs;
     if (this.dataset.closeOnResize) {
-      popover.addEventListener('beforetoggle', (event) => {
+      popover.addEventListener('beforetoggle', event => {
         const evt = /** @type {ToggleEvent} */ (event);
-        window[evt.newState === 'open' ? 'addEventListener' : 'removeEventListener']('resize', this.#resizeListener);
+        window[evt.newState === 'open' ? 'addEventListener' : 'removeEventListener'](
+          'resize',
+          this.#resizeListener
+        );
       });
     }
     if (this.dataset.hoverTriggered) {

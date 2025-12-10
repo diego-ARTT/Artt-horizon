@@ -1,0 +1,645 @@
+{% liquid
+  assign block_count = section.blocks.size
+  assign has_multiple = false
+  if block_count > 1
+    assign has_multiple = true
+  endif
+  assign autoplay_enabled = false
+  if has_multiple and section.settings.enable_autoplay
+    assign autoplay_enabled = true
+  endif
+  assign carousel_id = 'MediaQuoteCarousel-' | append: section.id
+  assign heading = section.settings.heading | strip
+  assign description = section.settings.subheading | strip
+  assign heading_id = carousel_id | append: '-Heading'
+  assign description_id = carousel_id | append: '-Description'
+
+  assign aria_label = heading
+  if aria_label == blank
+    assign aria_label = 'content.media_quote_carousel' | t
+  endif
+
+  assign controls_style = section.settings.controls_style
+  assign show_controls = false
+  if has_multiple and controls_style != 'none'
+    assign show_controls = true
+  endif
+  assign show_arrows = false
+  if has_multiple and section.settings.show_navigation_arrows
+    assign show_arrows = true
+  endif
+  # Hide arrows when dots are shown
+  if controls_style == 'dots'
+    assign show_arrows = false
+  endif
+
+  assign quote_font_size_option = section.settings.quote_font_size | default: 'default'
+  case quote_font_size_option
+    when 'small'
+      assign quote_font_size_value = 'clamp(1.125rem, 1.075rem + 0.8vw, 1.75rem)'
+    when 'large'
+      assign quote_font_size_value = 'clamp(1.5rem, 1.35rem + 1vw, 2.25rem)'
+    when 'extra_large'
+      assign quote_font_size_value = 'clamp(1.75rem, 1.5rem + 1.2vw, 2.5rem)'
+    else
+      assign quote_font_size_value = 'clamp(1.25rem, 1.2rem + 1vw, 2rem)'
+  endcase
+
+  assign slide_background_option = section.settings.slide_background_style | default: 'light'
+  case slide_background_option
+    when 'solid'
+      assign slide_background_value = 'color-mix(in srgb, var(--color-foreground, currentColor) 20%, transparent)'
+      assign slide_border_color_value = 'color-mix(in srgb, var(--color-foreground, currentColor) 35%, transparent)'
+    when 'none'
+      assign slide_background_value = 'transparent'
+      assign slide_border_color_value = 'color-mix(in srgb, var(--color-foreground, currentColor) 28%, transparent)'
+    else
+      assign slide_background_value = 'color-mix(in srgb, var(--color-foreground, currentColor) 12%, transparent)'
+      assign slide_border_color_value = 'color-mix(in srgb, var(--color-foreground, currentColor) 24%, transparent)'
+  endcase
+
+  assign slide_border_weight_value = section.settings.slide_border_weight | append: 'px'
+  assign logo_max_height_value = section.settings.logo_max_height | append: 'px'
+
+  assign quote_alignment_option = section.settings.quote_alignment | default: 'left'
+  case quote_alignment_option
+    when 'center'
+      assign quote_text_align_value = 'center'
+      assign quote_footer_justify_value = 'center'
+    when 'right'
+      assign quote_text_align_value = 'right'
+      assign quote_footer_justify_value = 'flex-end'
+    else
+      assign quote_text_align_value = 'left'
+      assign quote_footer_justify_value = 'flex-start'
+  endcase
+
+  capture section_custom_properties
+    echo '--quote-font-size: ' | append: quote_font_size_value | append: ';'
+    echo '--slide-background: ' | append: slide_background_value | append: ';'
+    echo '--slide-border-width: ' | append: slide_border_weight_value | append: ';'
+    echo '--slide-border-color: ' | append: slide_border_color_value | append: ';'
+    echo '--quote-text-align: ' | append: quote_text_align_value | append: ';'
+    echo '--quote-footer-justify: ' | append: quote_footer_justify_value | append: ';'
+    echo '--logo-max-height: ' | append: logo_max_height_value | append: ';'
+  endcapture
+
+  capture section_style
+    render 'spacing-style', settings: section.settings
+    echo section_custom_properties
+  endcapture
+%}
+
+{% if show_controls %}
+  {% capture controls %}
+    {% render 'slideshow-controls',
+      style: controls_style,
+      autoplay: false,
+      item_count: block_count,
+      show_arrows: show_arrows,
+      arrows_on_media: false,
+      controls_on_media: false,
+      icon_style: 'chevron',
+      pagination_position: 'center'
+    %}
+  {% endcapture %}
+{% endif %}
+
+{% if block_count > 0 %}
+  {% capture slides %}
+    {% for block in section.blocks %}
+      {% liquid
+        assign outlet = block.settings.media_name | strip
+        assign quote_text = block.settings.quote_text | strip
+        assign logo = block.settings.media_logo
+        assign slide_label = 'content.media_quote_slide_label' | t: index: forloop.index, total: block_count, outlet: outlet
+        assign logo_alt = logo.alt | default: outlet | default: 'content.media_quote_logo_alt' | t
+      %}
+
+      {% capture slide_content %}
+        <article class="media-quote-carousel__slide" {{ block.shopify_attributes }}>
+          <blockquote class="media-quote-carousel__quote">
+            <p class="media-quote-carousel__quote-text">{{ quote_text | escape }}</p>
+            <footer class="media-quote-carousel__quote-footer">
+              {% if logo != blank %}
+                <span class="media-quote-carousel__logo">
+                  {{
+                    logo
+                    | image_url: width: 200
+                    | image_tag:
+                      loading: 'lazy',
+                      alt: logo_alt,
+                      class: 'media-quote-carousel__logo-image'
+                  }}
+                </span>
+              {% endif %}
+
+              {% if outlet != blank %}
+                <cite class="media-quote-carousel__outlet">{{ outlet | escape }}</cite>
+              {% endif %}
+            </footer>
+          </blockquote>
+
+          {% if block.settings.cta_label != blank and block.settings.cta_url != blank %}
+            <p class="media-quote-carousel__cta">
+              <a
+                href="{{ block.settings.cta_url }}"
+                class="media-quote-carousel__cta-link"
+              >
+                {{ block.settings.cta_label | escape }}
+              </a>
+            </p>
+          {% endif %}
+        </article>
+      {% endcapture %}
+
+      {% capture slide_attributes -%}
+role="group" aria-roledescription="slide"{% if slide_label != blank %} aria-label="{{ slide_label | escape }}"{% endif %}
+      {%- endcapture %}
+      {% assign slide_attributes = slide_attributes | strip %}
+
+      {% render 'slideshow-slide',
+        index: forloop.index0,
+        children: slide_content,
+        attributes: slide_attributes
+      %}
+    {% endfor %}
+  {% endcapture %}
+{% endif %}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<section
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} spacing-style"
+  style="{{ section_style | strip }}"
+>
+  <div class="media-quote-carousel">
+    {% if heading != blank or description != blank %}
+      <header class="media-quote-carousel__header">
+        {% if heading != blank %}
+          <h2 id="{{ heading_id }}" class="media-quote-carousel__heading">
+            {{ heading | escape }}
+          </h2>
+        {% endif %}
+
+        {% if description != blank %}
+          <p id="{{ description_id }}" class="media-quote-carousel__description">
+            {{ description | escape }}
+          </p>
+        {% endif %}
+      </header>
+    {% endif %}
+
+    {% if block_count > 0 %}
+      {% capture carousel_attributes -%}
+role="region" aria-roledescription="carousel" aria-live="{% if autoplay_enabled %}off{% else %}polite{% endif %}"{% if heading != blank %} aria-labelledby="{{ heading_id }}"{% else %} aria-label="{{ aria_label | escape }}"{% endif %} onmouseenter="this.suspend && this.suspend()" onmouseleave="this.resume && this.resume()"
+      {%- endcapture %}
+      {% assign carousel_attributes = carousel_attributes | strip %}
+
+      {% render 'slideshow',
+        class: 'media-quote-carousel__slider',
+        slides: slides,
+        slide_count: block_count,
+        controls: controls,
+        autoplay: autoplay_enabled,
+        autoplay_speed: section.settings.autoplay_interval,
+        show_arrows: show_arrows,
+        icon_style: 'chevron',
+        attributes: carousel_attributes
+      %}
+    {% else %}
+      <div class="media-quote-carousel__empty">
+        {{ 'content.media_quote_carousel_placeholder' | t }}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .media-quote-carousel {
+    display: grid;
+    gap: var(--gap-2xl, 2.5rem);
+  }
+
+  .media-quote-carousel__header {
+    display: grid;
+    gap: var(--gap-sm, 0.75rem);
+    max-width: min(48rem, 100%);
+  }
+
+  .media-quote-carousel__heading {
+    margin: 0;
+  }
+
+  .media-quote-carousel__description {
+    margin: 0;
+    color: color-mix(in srgb, var(--color-foreground, currentColor) 80%, transparent);
+  }
+
+  .media-quote-carousel__slider slideshow-slide {
+    display: block;
+    height: 100%;
+  }
+
+  .media-quote-carousel__slide {
+    padding: clamp(1.5rem, 5vw, 3rem);
+    border-radius: var(--radius-lg, 1.5rem);
+    background: var(--slide-background, color-mix(in srgb, var(--color-foreground, currentColor) 8%, transparent));
+    border-width: var(--slide-border-width, 1px);
+    border-style: solid;
+    border-color: var(--slide-border-color, color-mix(in srgb, var(--color-foreground, currentColor) 16%, transparent));
+    display: grid;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    text-align: var(--quote-text-align, left);
+  }
+
+  .media-quote-carousel__quote {
+    margin: 0;
+    display: grid;
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+  }
+
+  .media-quote-carousel__quote-text {
+    margin: 0;
+    font-size: var(--quote-font-size, clamp(1.25rem, 1.2rem + 1vw, 2rem));
+    line-height: 1.4;
+    font-weight: 600;
+    color: var(--color-foreground, currentColor);
+  }
+
+  .media-quote-carousel__quote-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-sm, 0.75rem);
+    align-items: center;
+    color: color-mix(in srgb, var(--color-foreground, currentColor) 80%, transparent);
+    font-weight: 500;
+    justify-content: var(--quote-footer-justify, flex-start);
+  }
+
+  .media-quote-carousel__logo-image {
+    max-height: var(--logo-max-height, clamp(1.75rem, 3vw, 2.5rem));
+    width: auto;
+  }
+
+  .media-quote-carousel__outlet {
+    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .media-quote-carousel__cta {
+    margin: 0;
+    text-align: var(--quote-text-align, left);
+  }
+
+  .media-quote-carousel__cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gap-2xs, 0.25rem);
+    font-weight: 600;
+    color: var(--color-foreground, currentColor);
+    text-decoration: underline;
+    text-underline-offset: 0.1875rem;
+  }
+
+  .media-quote-carousel__cta-link:focus-visible {
+    outline: 0.1875rem solid currentColor;
+    outline-offset: 0.125rem;
+  }
+
+  .media-quote-carousel__empty {
+    padding: var(--gap-xl, 2rem);
+    border: 1px dashed color-mix(in srgb, var(--color-foreground, currentColor) 40%, transparent);
+    border-radius: var(--radius-lg, 1.5rem);
+    color: color-mix(in srgb, var(--color-foreground, currentColor) 80%, transparent);
+  }
+
+  /* Hide play/pause buttons */
+  .media-quote-carousel__slider slideshow-controls .icon-play,
+  .media-quote-carousel__slider slideshow-controls .icon-pause {
+    display: none;
+  }
+
+  /* Ensure dots are visible - override mix-blend-mode and add background */
+  .media-quote-carousel__slider slideshow-controls:has(.slideshow-controls__dots) {
+    mix-blend-mode: normal;
+  }
+
+  .media-quote-carousel__slider .slideshow-controls__dots {
+    backdrop-filter: blur(10px);
+    justify-content: center;
+  }
+
+  .media-quote-carousel__slider .slideshow-controls__dots button {
+    --color: color-mix(in srgb, var(--color-foreground, currentColor) 50%, transparent);
+    --color-active: var(--color-foreground, currentColor);
+    --color-hover: color-mix(in srgb, var(--color-foreground, currentColor) 70%, transparent);
+  }
+
+  /* Ensure active dot is visible */
+  .media-quote-carousel__slider .slideshow-controls__dots button[aria-selected='true'] {
+    --color: var(--color-foreground, currentColor);
+  }
+
+  .media-quote-carousel__slider .slideshow-controls__dots button[aria-selected='true']::after {
+    background-color: var(--color-foreground, currentColor) !important;
+    width: 0.7rem !important;
+    height: 0.7rem !important;
+  }
+
+  /* Hide navigation arrows when dots are shown */
+  .media-quote-carousel__slider:has(.slideshow-controls__dots) .slideshow-controls__arrows {
+    display: none;
+  }
+
+  /* Active slide styling */
+  .media-quote-carousel__slider slideshow-slide[aria-hidden='false'] .media-quote-carousel__slide {
+    border-color: color-mix(in srgb, var(--color-foreground, currentColor) 40%, transparent);
+  }
+
+  @media (max-width: 749px) {
+    .media-quote-carousel {
+      gap: var(--gap-xl, 2rem);
+    }
+
+    .media-quote-carousel__slide {
+      padding: clamp(1.25rem, 6vw, 2rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .media-quote-carousel__cta-link {
+      scroll-behavior: auto;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.media_quote_carousel",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "t:text_defaults.heading"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "t:settings.subheading"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "t:settings.auto_rotate_slides",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_interval",
+      "label": "t:settings.speed",
+      "min": 5,
+      "max": 10,
+      "step": 1,
+      "default": 6,
+      "unit": "s",
+      "visible_if": "{{ section.settings.enable_autoplay }}"
+    },
+    {
+      "type": "select",
+      "id": "controls_style",
+      "label": "t:content.carousel_pagination",
+      "options": [
+        {
+          "value": "dots",
+          "label": "t:options.dots"
+        },
+        {
+          "value": "counter",
+          "label": "t:options.counter"
+        },
+        {
+          "value": "none",
+          "label": "t:options.none"
+        }
+      ],
+      "default": "dots"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation_arrows",
+      "label": "t:content.carousel_navigation",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "quote_font_size",
+      "label": "t:settings.quote_font_size",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:options.small"
+        },
+        {
+          "value": "default",
+          "label": "t:options.default"
+        },
+        {
+          "value": "large",
+          "label": "t:options.large"
+        },
+        {
+          "value": "extra_large",
+          "label": "t:options.extra_large"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "select",
+      "id": "quote_alignment",
+      "label": "t:settings.quote_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:options.left"
+        },
+        {
+          "value": "center",
+          "label": "t:options.center"
+        },
+        {
+          "value": "right",
+          "label": "t:options.right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "slide_border_weight",
+      "label": "t:settings.slide_border_weight",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "default": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "slide_background_style",
+      "label": "t:settings.slide_background_style",
+      "options": [
+        {
+          "value": "light",
+          "label": "t:options.light"
+        },
+        {
+          "value": "solid",
+          "label": "t:options.solid"
+        },
+        {
+          "value": "none",
+          "label": "t:options.none"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "range",
+      "id": "logo_max_height",
+      "label": "t:settings.logo_max_height",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "t:options.page"
+        },
+        {
+          "value": "full-width",
+          "label": "t:options.full"
+        }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 48,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "quote",
+      "name": "t:names.media_quote_carousel_block",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote_text",
+          "label": "t:content.quote",
+          "default": "t:text_defaults.media_quote_excerpt"
+        },
+        {
+          "type": "text",
+          "id": "media_name",
+          "label": "t:content.media_outlet",
+          "default": "t:text_defaults.media_outlet"
+        },
+        {
+          "type": "image_picker",
+          "id": "media_logo",
+          "label": "t:content.logo"
+        },
+        {
+          "type": "header",
+          "content": "t:content.link"
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "t:settings.label",
+          "default": "t:text_defaults.learn_more"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "t:settings.link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "t:names.media_quote_carousel",
+      "category": "t:categories.storytelling",
+      "blocks": {
+        "quote_1": {
+          "type": "quote",
+          "settings": {
+            "quote_text": "t:text_defaults.media_quote_excerpt",
+            "media_name": "t:text_defaults.media_outlet",
+            "cta_label": "t:text_defaults.learn_more"
+          }
+        },
+        "quote_2": {
+          "type": "quote",
+          "settings": {
+            "quote_text": "t:text_defaults.media_quote_excerpt_secondary",
+            "media_name": "t:text_defaults.media_outlet_secondary",
+            "cta_label": "t:text_defaults.learn_more"
+          }
+        },
+        "quote_3": {
+          "type": "quote",
+          "settings": {
+            "quote_text": "t:text_defaults.media_quote_excerpt_tertiary",
+            "media_name": "t:text_defaults.media_outlet_tertiary",
+            "cta_label": "t:text_defaults.learn_more"
+          }
+        }
+      },
+      "block_order": ["quote_1", "quote_2", "quote_3"]
+    }
+  ]
+}
+{% endschema %}
+

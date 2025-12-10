@@ -32,7 +32,9 @@ export class PaginatedListAspectRatioHelper {
     if (!Shopify.designMode) return;
     // Wait for the DOM to update
     requestAnimationFrame(() => {
-      this.#imageRatioSetting === 'adapt' ? this.#fixAdaptiveAspectRatios() : this.#applyFixedAspectRatio();
+      this.#imageRatioSetting === 'adapt'
+        ? this.#fixAdaptiveAspectRatios()
+        : this.#applyFixedAspectRatio();
     });
   }
 
@@ -54,7 +56,7 @@ export class PaginatedListAspectRatioHelper {
 
     const productRatioCache = new Map();
 
-    newCardGalleries.forEach((gallery) => {
+    newCardGalleries.forEach(gallery => {
       if (!(gallery instanceof HTMLElement)) return;
 
       const productId = gallery.getAttribute('data-product-id');
@@ -104,7 +106,7 @@ export class PaginatedListAspectRatioHelper {
 
     // Batch DOM operations for better performance
     requestAnimationFrame(() => {
-      newCardGalleries.forEach((gallery) => {
+      newCardGalleries.forEach(gallery => {
         if (!(gallery instanceof HTMLElement)) return;
         this.#applyAspectRatioToGallery(gallery, aspectRatio);
       });
@@ -143,7 +145,7 @@ export class PaginatedListAspectRatioHelper {
     gallery.style.setProperty('--gallery-aspect-ratio', aspectRatio);
 
     const mediaContainers = gallery.querySelectorAll('.product-media-container');
-    mediaContainers.forEach((container) => {
+    mediaContainers.forEach(container => {
       if (container instanceof HTMLElement) {
         container.style.aspectRatio = aspectRatio;
       }

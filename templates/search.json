@@ -7,7 +7,7 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "search": {
       "type": "search-header",
@@ -162,11 +162,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "product_card_gallery_cFExAi",
-            "product_title_j7qXTx",
-            "price_fYkUgG"
-          ]
+          "block_order": ["product_card_gallery_cFExAi", "product_title_j7qXTx", "price_fYkUgG"]
         }
       },
       "settings": {
@@ -185,8 +181,5 @@
       }
     }
   },
-  "order": [
-    "search",
-    "main"
-  ]
+  "order": ["search", "main"]
 }

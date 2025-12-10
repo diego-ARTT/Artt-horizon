@@ -1,6 +1,6 @@
 import { morph } from '@theme/morph';
 import { Component } from '@theme/component';
-import { CartUpdateEvent, ThemeEvents } from '@theme/events';
+import { ThemeEvents } from '@theme/events';
 import { DialogComponent, DialogCloseEvent } from '@theme/dialog';
 import { mediaQueryLarge, isMobileBreakpoint, getIOSVersion } from '@theme/utilities';
 
@@ -11,7 +11,9 @@ export class QuickAddComponent extends Component {
   #cachedContent = new Map();
 
   get productPageUrl() {
-    const productCard = /** @type {import('./product-card').ProductCard | null} */ (this.closest('product-card'));
+    const productCard = /** @type {import('./product-card').ProductCard | null} */ (
+      this.closest('product-card')
+    );
     const productLink = productCard?.getProductCardLink();
 
     if (!productLink?.href) return '';
@@ -35,7 +37,9 @@ export class QuickAddComponent extends Component {
    * @returns {string | null} The variant ID or null
    */
   #getSelectedVariantId() {
-    const productCard = /** @type {import('./product-card').ProductCard | null} */ (this.closest('product-card'));
+    const productCard = /** @type {import('./product-card').ProductCard | null} */ (
+      this.closest('product-card')
+    );
     return productCard?.getSelectedVariantId() || null;
   }
 
@@ -56,7 +60,7 @@ export class QuickAddComponent extends Component {
    * Handles quick add button click
    * @param {Event} event - The click event
    */
-  handleClick = async (event) => {
+  handleClick = async event => {
     event.preventDefault();
 
     const currentUrl = this.productPageUrl;
@@ -90,9 +94,13 @@ export class QuickAddComponent extends Component {
   #stayVisibleUntilDialogCloses(dialogComponent) {
     this.toggleAttribute('stay-visible', true);
 
-    dialogComponent.addEventListener(DialogCloseEvent.eventName, () => this.toggleAttribute('stay-visible', false), {
-      once: true,
-    });
+    dialogComponent.addEventListener(
+      DialogCloseEvent.eventName,
+      () => this.toggleAttribute('stay-visible', false),
+      {
+        once: true,
+      }
+    );
   }
 
   #openQuickAddModal = () => {
@@ -202,7 +210,11 @@ export class QuickAddComponent extends Component {
     // Find and check the corresponding input in the modal
     const modalInputs = modalContent.querySelectorAll('input[type="radio"][data-variant-id]');
     for (const input of modalInputs) {
-      if (input instanceof HTMLInputElement && input.dataset.variantId === selectedVariantId && !input.checked) {
+      if (
+        input instanceof HTMLInputElement &&
+        input.dataset.variantId === selectedVariantId &&
+        !input.checked
+      ) {
         input.checked = true;
         input.dispatchEvent(new Event('change', { bubbles: true }));
         break;
@@ -221,7 +233,9 @@ class QuickAddDialog extends DialogComponent {
   connectedCallback() {
     super.connectedCallback();
 
-    this.addEventListener(ThemeEvents.cartUpdate, this.handleCartUpdate, { signal: this.#abortController.signal });
+    this.addEventListener(ThemeEvents.cartUpdate, this.handleCartUpdate, {
+      signal: this.#abortController.signal,
+    });
     this.addEventListener(ThemeEvents.variantUpdate, this.#updateProductTitleLink);
 
     this.addEventListener(DialogCloseEvent.eventName, this.#handleDialogClose);
@@ -238,7 +252,7 @@ class QuickAddDialog extends DialogComponent {
    * Closes the dialog
    * @param {CartUpdateEvent} event - The cart update event
    */
-  handleCartUpdate = (event) => {
+  handleCartUpdate = event => {
     if (event.detail.data.didError) return;
     this.closeDialog();
   };
@@ -247,8 +261,12 @@ class QuickAddDialog extends DialogComponent {
     const anchorElement = /** @type {HTMLAnchorElement} */ (
       event.detail.data.html?.querySelector('.view-product-title a')
     );
-    const viewMoreDetailsLink = /** @type {HTMLAnchorElement} */ (this.querySelector('.view-product-title a'));
-    const mobileProductTitle = /** @type {HTMLAnchorElement} */ (this.querySelector('.product-header a'));
+    const viewMoreDetailsLink = /** @type {HTMLAnchorElement} */ (
+      this.querySelector('.view-product-title a')
+    );
+    const mobileProductTitle = /** @type {HTMLAnchorElement} */ (
+      this.querySelector('.product-header a')
+    );
 
     if (!anchorElement) return;
 
@@ -262,7 +280,8 @@ class QuickAddDialog extends DialogComponent {
      * This is a patch to solve an issue with the UI freezing when the dialog is closed.
      * To reproduce it, use iOS 16.0.
      */
-    if (!iosVersion || iosVersion.major >= 17 || (iosVersion.major === 16 && iosVersion.minor >= 4)) return;
+    if (!iosVersion || iosVersion.major >= 17 || (iosVersion.major === 16 && iosVersion.minor >= 4))
+      return;
 
     requestAnimationFrame(() => {
       /** @type {HTMLElement | null} */

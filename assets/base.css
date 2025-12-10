@@ -71,7 +71,8 @@ select {
 .predictive-search-results__card--product,
 .predictive-search-results__card {
   position: relative;
-  transition: transform var(--hover-transition-duration) var(--hover-transition-timing),
+  transition:
+    transform var(--hover-transition-duration) var(--hover-transition-timing),
     box-shadow var(--hover-transition-duration) var(--hover-transition-timing);
   will-change: transform, box-shadow;
   z-index: var(--layer-flat);
@@ -84,9 +85,6 @@ select {
 
 .product-card__content {
   position: relative;
-}
-
-.product-card__content {
   cursor: pointer;
 }
 
@@ -202,7 +200,6 @@ h6 {
 
 .wrap-text {
   overflow-wrap: break-word;
-  word-break: break-word;
   hyphens: auto;
 }
 
@@ -246,7 +243,8 @@ p:empty {
     view-transition-name: main-content;
   }
 
-  html:active-view-transition-type(page-navigation) main[data-product-transition='true'][data-template*='product'] {
+  html:active-view-transition-type(page-navigation)
+    main[data-product-transition='true'][data-template*='product'] {
     view-transition-name: none;
   }
 
@@ -322,7 +320,7 @@ p:empty {
   --page-margin: 16px;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (width >= 750px) {
   .page-width-wide,
   .page-width-normal,
   .page-width-narrow,
@@ -364,8 +362,8 @@ p:empty {
     calc(100% - var(--page-margin) * 2)
   );
   --full-page-grid-margin: minmax(var(--page-margin), 1fr);
-  --full-page-grid-with-margins: var(--full-page-grid-margin) var(--full-page-grid-central-column-width)
-    var(--full-page-grid-margin);
+  --full-page-grid-with-margins: var(--full-page-grid-margin)
+    var(--full-page-grid-central-column-width) var(--full-page-grid-margin);
 
   /* Utility variable gives the grid's first column width. Provides an offset width for components like carousels */
   --util-page-margin-offset: max(
@@ -375,7 +373,9 @@ p:empty {
 
   /* Offset for full-width sections to account for the page margin,
   used for Marquee — note that --util-page-margin-offset doesn't work here */
-  --full-page-margin-inline-offset: calc(((100vw - var(--full-page-grid-central-column-width)) / 2) * -1);
+  --full-page-margin-inline-offset: calc(
+    ((100vw - var(--full-page-grid-central-column-width)) / 2) * -1
+  );
 
   width: 100%;
 
@@ -428,7 +428,7 @@ p:empty {
 .section--full-width.section--full-width-margin > * {
   grid-column: 1 / -1;
 
-  @media screen and (min-width: 750px) {
+  @media screen and (width >= 750px) {
     padding-left: var(--page-margin);
     padding-right: var(--page-margin);
   }
@@ -469,7 +469,7 @@ p:empty {
   display: none !important;
 }
 
-@media screen and (max-width: 749px) {
+@media screen and (width <= 749px) {
   .hidden--mobile,
   .mobile\:hidden {
     /* stylelint-disable-next-line declaration-no-important */
@@ -477,7 +477,7 @@ p:empty {
   }
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (width >= 750px) {
   .hidden--desktop,
   .desktop\:hidden {
     /* stylelint-disable-next-line declaration-no-important */
@@ -499,12 +499,12 @@ p:empty {
   margin: -1px;
   padding: 0;
   border: 0;
-  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
   /* stylelint-disable-next-line declaration-no-important */
-  word-wrap: normal !important;
+  overflow-wrap: normal !important;
 }
 
-@media screen and (max-width: 749px) {
+@media screen and (width <= 749px) {
   .is-visually-hidden-mobile:not(:focus, :active) {
     /* stylelint-disable-next-line declaration-no-important */
     position: absolute !important;
@@ -514,9 +514,9 @@ p:empty {
     margin: -1px;
     padding: 0;
     border: 0;
-    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
     /* stylelint-disable-next-line declaration-no-important */
-    word-wrap: normal !important;
+    overflow-wrap: normal !important;
   }
 }
 
@@ -539,29 +539,29 @@ p:empty {
   flex-direction: column;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (width >= 750px) {
   .grid {
     display: grid;
     gap: 0;
-    grid-template-columns: var(--margin-4xl) repeat(var(--centered-column-number), minmax(0, 1fr)) var(--margin-4xl);
+    grid-template-columns:
+      var(--margin-4xl) repeat(var(--centered-column-number), minmax(0, 1fr))
+      var(--margin-4xl);
     grid-template-areas: 'column-0 column-1 column-2 column-3 column-4 column-5 column-6 column-7 column-8 column-9 column-10 column-11 column-12 column-13';
   }
 }
 
-@media screen and (min-width: 1400px) {
+@media screen and (width >= 1400px) {
   .grid {
     grid-template-columns:
       1fr repeat(
         var(--centered-column-number),
-        minmax(0, calc((var(--page-width) - var(--page-margin) * 2) / var(--centered-column-number)))
+        minmax(
+          0,
+          calc((var(--page-width) - var(--page-margin) * 2) / var(--centered-column-number))
+        )
       )
       1fr;
   }
-}
-
-.flex {
-  display: flex;
-  gap: var(--gap-md);
 }
 
 .flip-x {
@@ -584,7 +584,7 @@ p:empty {
   height: 1px;
   left: -99999px;
   /* stylelint-disable-next-line declaration-no-important */
-  word-wrap: normal !important;
+  overflow-wrap: normal !important;
 }
 
 .skip-to-content-link:focus {
@@ -753,7 +753,7 @@ body,
 }
 
 /* Ensure inputs with type presets maintain minimum 16px on mobile to prevent iOS zoom */
-@media screen and (max-width: 1200px) {
+@media screen and (width <= 1200px) {
   input.paragraph.paragraph,
   input.paragraph.paragraph:not([type]),
   textarea.paragraph.paragraph,
@@ -781,7 +781,7 @@ h1,
   color: var(--color, var(--font-h1-color));
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (width <= 1200px) {
   input.h1.h1,
   textarea.h1.h1,
   select.h1.h1 {
@@ -802,7 +802,7 @@ h2,
   color: var(--color, var(--font-h2-color));
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (width <= 1200px) {
   input.h2.h2,
   textarea.h2.h2,
   select.h2.h2 {
@@ -824,7 +824,7 @@ h3,
   color: var(--color, var(--font-h3-color));
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (width <= 1200px) {
   input.h3,
   textarea.h3,
   select.h3 {
@@ -845,7 +845,7 @@ h4,
   color: var(--color, var(--font-h4-color));
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (width <= 1200px) {
   input.h4.h4,
   textarea.h4.h4,
   select.h4.h4 {
@@ -866,7 +866,7 @@ h5,
   color: var(--color, var(--font-h5-color));
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (width <= 1200px) {
   input.h5.h5,
   textarea.h5.h5,
   select.h5.h5 {
@@ -887,7 +887,7 @@ h6,
   color: var(--color, var(--font-h6-color));
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (width <= 1200px) {
   input.h6.h6,
   textarea.h6.h6,
   select.h6.h6 {
@@ -911,7 +911,8 @@ a {
   text-decoration-color: transparent;
   text-decoration-thickness: 0.075em;
   text-underline-offset: 0.125em;
-  transition: text-decoration-color var(--animation-speed) var(--animation-easing),
+  transition:
+    text-decoration-color var(--animation-speed) var(--animation-easing),
     color var(--animation-speed) var(--animation-easing);
 }
 
@@ -981,7 +982,7 @@ body:has(.header[transparent]) #header-group > *:not(.header-section) {
   width: 100%;
   padding-block: var(--padding-block-start) var(--padding-block-end);
 
-  @media screen and (min-width: 750px) {
+  @media screen and (width >= 750px) {
     display: grid;
   }
 }
@@ -995,7 +996,7 @@ body:has(.header[transparent]) #header-group > *:not(.header-section) {
   list-style: none;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (width >= 750px) {
   .product-grid {
     grid-template-columns: var(--product-grid-columns-desktop);
   }
@@ -1006,7 +1007,8 @@ body:has(.header[transparent]) #header-group > *:not(.header-section) {
 }
 
 .product-grid__item {
-  border: var(--product-card-border-width) solid rgb(var(--color-border-rgb) / var(--product-card-border-opacity));
+  border: var(--product-card-border-width) solid
+    rgb(var(--color-border-rgb) / var(--product-card-border-opacity));
 }
 
 .product-grid--organic[product-grid-view='default'] .product-grid__item {
@@ -1043,13 +1045,13 @@ body:has(.header[transparent]) #header-group > *:not(.header-section) {
 
 [product-grid-view='mobile-single'],
 .product-grid-mobile--large {
-  @media screen and (max-width: 749px) {
+  @media screen and (width <= 749px) {
     grid-template-columns: 1fr;
   }
 }
 
 .product-grid__card .group-block > * {
-  @media screen and (max-width: 749px) {
+  @media screen and (width <= 749px) {
     flex-direction: column;
   }
 }
@@ -1147,14 +1149,15 @@ ul[product-grid-view='zoom-out'] .card-gallery > img {
 
 ::view-transition-new(product-grid) {
   animation-delay: 150ms;
-  animation-name: fadeInUp;
+  animation-name: fade-in-up;
   animation-duration: var(--animation-speed);
   animation-timing-function: var(--animation-easing);
 }
 
 results-list[initialized] {
   .product-grid__item {
-    transition: opacity var(--animation-speed) var(--animation-easing),
+    transition:
+      opacity var(--animation-speed) var(--animation-easing),
       transform var(--animation-speed) var(--animation-easing);
 
     @starting-style {
@@ -1164,7 +1167,7 @@ results-list[initialized] {
   }
 }
 
-@keyframes fadeInUp {
+@keyframes fade-in-up {
   from {
     opacity: 0;
     transform: translateY(10px);
@@ -1225,12 +1228,12 @@ results-list[initialized] {
   border: none;
   box-shadow: var(--shadow-popover);
 
-  @media screen and (min-width: 750px) {
+  @media screen and (width >= 750px) {
     border-radius: var(--style-border-radius-popover);
     max-width: var(--normal-content-width);
   }
 
-  @media screen and (max-width: 749px) {
+  @media screen and (width <= 749px) {
     max-width: 100%;
     max-height: 100%;
     height: 100dvh;
@@ -1246,16 +1249,16 @@ results-list[initialized] {
 }
 
 .dialog-modal[open] {
-  animation: elementSlideInTop var(--animation-speed) var(--animation-easing) forwards;
+  animation: element-slide-in-top var(--animation-speed) var(--animation-easing) forwards;
 
   &::backdrop {
-    animation: backdropFilter var(--animation-speed) var(--animation-easing) forwards;
+    animation: backdrop-filter var(--animation-speed) var(--animation-easing) forwards;
     transition: opacity var(--animation-speed) var(--animation-easing);
   }
 }
 
 .dialog-modal.dialog-closing {
-  animation: elementSlideOutTop var(--animation-speed) var(--animation-easing) forwards;
+  animation: element-slide-out-top var(--animation-speed) var(--animation-easing) forwards;
 
   &::backdrop {
     opacity: 0;
@@ -1264,22 +1267,39 @@ results-list[initialized] {
 
 /* stylelint-disable value-keyword-case */
 .dialog-drawer {
-  --dialog-drawer-opening-animation: slideInLeft;
-  --dialog-drawer-closing-animation: slideOutLeft;
+  --dialog-drawer-opening-animation: slide-in-left;
+  --dialog-drawer-closing-animation: slide-out-left;
 }
 
 .dialog-drawer--right {
-  --dialog-drawer-opening-animation: slideInRight;
-  --dialog-drawer-closing-animation: slideOutRight;
+  --dialog-drawer-opening-animation: slide-in-right;
+  --dialog-drawer-closing-animation: slide-out-right;
 }
 /* stylelint-enable value-keyword-case */
 
 .dialog-drawer[open] {
-  animation: var(--dialog-drawer-opening-animation) var(--animation-speed) var(--animation-easing) forwards;
+  animation: var(--dialog-drawer-opening-animation) var(--animation-speed) var(--animation-easing)
+    forwards;
 }
 
 .dialog-drawer.dialog-closing {
   animation: var(--dialog-drawer-closing-animation) var(--animation-speed) var(--animation-easing);
+}
+
+.dialog-drawer::backdrop {
+  backdrop-filter: blur(var(--drawer-backdrop-blur, 8px)) brightness(1);
+  background: rgb(var(--backdrop-color-rgb) / var(--backdrop-opacity));
+  transition:
+    backdrop-filter var(--animation-speed) var(--animation-easing),
+    opacity var(--animation-speed) var(--animation-easing);
+}
+
+.dialog-drawer[open]::backdrop {
+  animation: backdrop-filter var(--animation-speed) var(--animation-easing) forwards;
+}
+
+.dialog-drawer.dialog-closing::backdrop {
+  opacity: 0;
 }
 
 /* Buttons */
@@ -1301,7 +1321,8 @@ button.shopify-payment-button__button--unbranded {
   font-size: var(--font-paragraph--size);
   line-height: var(--font-paragraph--line-height);
   margin-block: 0;
-  transition: color var(--animation-speed) var(--animation-easing),
+  transition:
+    color var(--animation-speed) var(--animation-easing),
     box-shadow var(--animation-speed) var(--animation-easing),
     background-color var(--animation-speed) var(--animation-easing);
   cursor: pointer;
@@ -1325,6 +1346,11 @@ button.shopify-payment-button__button--unbranded {
   font-family: var(--button-font-family-secondary);
   text-transform: var(--button-text-case-secondary);
   border-radius: var(--style-border-radius-buttons-secondary);
+
+  --button-color: var(--color-secondary-button-text);
+  --button-background-color: var(--color-secondary-button-background);
+  --button-border-color: var(--color-secondary-button-border);
+  --button-border-width: var(--style-border-width-secondary);
 }
 
 button.shopify-payment-button__button--unbranded {
@@ -1373,13 +1399,6 @@ button.shopify-payment-button__button--unbranded:hover:not([disabled]) {
   --button-color: var(--color-primary-button-hover-text);
   --button-background-color: var(--color-primary-button-hover-background);
   --button-border-color: var(--color-primary-button-hover-border);
-}
-
-.button-secondary {
-  --button-color: var(--color-secondary-button-text);
-  --button-background-color: var(--color-secondary-button-background);
-  --button-border-color: var(--color-secondary-button-border);
-  --button-border-width: var(--style-border-width-secondary);
 }
 
 .button-secondary:hover {
@@ -1431,7 +1450,7 @@ button.shopify-payment-button__button--unbranded:hover:not([disabled]) {
 }
 
 .show-more__button:hover {
-  @media screen and (min-width: 750px) {
+  @media screen and (width >= 750px) {
     color: var(--color-primary-hover);
   }
 }
@@ -1538,7 +1557,7 @@ media-gallery {
 }
 
 .product-media-gallery__slideshow--single-media slideshow-container {
-  @media screen and (max-width: 749px) {
+  @media screen and (width <= 749px) {
     grid-area: unset;
   }
 }
@@ -1580,13 +1599,13 @@ media-gallery.media-gallery--grid .media-gallery__grid .product-media-container 
   position: absolute;
 }
 
-@media screen and (max-width: 749px) {
+@media screen and (width <= 749px) {
   .product-media-container.constrain-height {
     max-height: none;
   }
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (width >= 750px) {
   .product-media-container.constrain-height {
     --viewport-offset: var(--header-height, 100px);
     --constrained-min-height: 500px;
@@ -1716,14 +1735,15 @@ zoom-dialog dialog {
     content: '';
     position: absolute;
     inset: calc(-1 * var(--focus-outline-offset));
-    border: var(--focus-outline-width) solid currentColor;
+    border: var(--focus-outline-width) solid currentcolor;
     border-radius: 50%;
     display: inherit;
   }
 }
 
 .dialog--closed .close-button {
-  animation: elementSlideOutBottom calc(var(--animation-speed) * 0.5) var(--animation-easing) forwards;
+  animation: element-slide-out-bottom calc(var(--animation-speed) * 0.5) var(--animation-easing)
+    forwards;
 }
 
 .dialog-thumbnails-list-container {
@@ -1745,15 +1765,16 @@ zoom-dialog dialog {
   padding: var(--padding-lg);
   margin-inline: auto;
   scrollbar-width: none;
-  animation: thumbnailsSlideInBottom calc(var(--animation-speed) * 0.75) var(--animation-easing) forwards;
+  animation: thumbnails-slide-in-bottom calc(var(--animation-speed) * 0.75) var(--animation-easing)
+    forwards;
   animation-delay: calc(var(--animation-speed) * 1.5);
 }
 
 .dialog--closed .dialog-thumbnails-list {
-  animation: thumbnailsSlideOutBottom var(--animation-speed) var(--animation-easing) forwards;
+  animation: thumbnails-slide-out-bottom var(--animation-speed) var(--animation-easing) forwards;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (width >= 750px) {
   .dialog-thumbnails-list {
     position: fixed;
     flex-direction: column;
@@ -1761,12 +1782,13 @@ zoom-dialog dialog {
     right: 0;
     max-height: calc(100vh - 200px);
     overflow-y: auto;
-    animation: thumbnailsSlideInTop calc(var(--animation-speed) * 0.5) var(--animation-easing) forwards;
+    animation: thumbnails-slide-in-top calc(var(--animation-speed) * 0.5) var(--animation-easing)
+      forwards;
     animation-delay: calc(var(--animation-speed) * 2);
   }
 
   .dialog--closed .dialog-thumbnails-list {
-    animation: thumbnailsSlideOutTop var(--animation-speed) var(--animation-easing) forwards;
+    animation: thumbnails-slide-out-top var(--animation-speed) var(--animation-easing) forwards;
   }
 }
 
@@ -1787,7 +1809,8 @@ zoom-dialog dialog {
   &:is([aria-selected='true']) {
     outline: var(--focus-outline-width) solid currentcolor;
     outline-offset: calc(var(--focus-outline-offset) / 2);
-    border: var(--style-border-width) solid rgb(var(--color-border-rgb) / var(--media-border-opacity));
+    border: var(--style-border-width) solid
+      rgb(var(--color-border-rgb) / var(--media-border-opacity));
   }
 }
 
@@ -1847,28 +1870,34 @@ slideshow-slide .shopify-model-viewer-ui__controls-area.shopify-model-viewer-ui_
   right: var(--padding-sm);
 }
 
-.dialog-zoomed-gallery .shopify-model-viewer-ui__controls-area.shopify-model-viewer-ui__controls-area {
+.dialog-zoomed-gallery
+  .shopify-model-viewer-ui__controls-area.shopify-model-viewer-ui__controls-area {
   /* Move the controls above the thumbnails. Need to calculate the height of the thumbnails list */
   bottom: calc(var(--thumbnail-width) / calc(var(--media-preview-ratio)) + var(--padding-lg) * 2);
   right: var(--padding-lg);
 }
 
-@media screen and (max-width: 749px) {
-  slideshow-component:has(:not(.mobile\:hidden) :is(.slideshow-controls__dots, .slideshow-controls__counter))
+@media screen and (width <= 749px) {
+  slideshow-component:has(
+      :not(.mobile\:hidden) :is(.slideshow-controls__dots, .slideshow-controls__counter)
+    )
     .shopify-model-viewer-ui__controls-area {
     /* Position the controls just above the counter */
     bottom: calc(var(--minimum-touch-target) + var(--padding-sm));
   }
 }
 
-@media screen and (min-width: 750px) {
-  slideshow-component:has(:not(.desktop\:hidden) :is(.slideshow-controls__dots, .slideshow-controls__counter))
+@media screen and (width >= 750px) {
+  slideshow-component:has(
+      :not(.desktop\:hidden) :is(.slideshow-controls__dots, .slideshow-controls__counter)
+    )
     .shopify-model-viewer-ui__controls-area {
     /* Position the controls just above the counter */
     bottom: calc(var(--minimum-touch-target) + var(--padding-sm));
   }
 
-  .dialog-zoomed-gallery .shopify-model-viewer-ui__controls-area.shopify-model-viewer-ui__controls-area {
+  .dialog-zoomed-gallery
+    .shopify-model-viewer-ui__controls-area.shopify-model-viewer-ui__controls-area {
     /* Move the controls up to match the padding on the thumbnails */
     bottom: var(--padding-lg);
 
@@ -1948,13 +1977,14 @@ deferred-media[data-media-loaded] img {
     color: rgb(var(--color-white-rgb) / var(--opacity-80));
   }
 
-  @media screen and (min-width: 750px) {
+  @media screen and (width >= 750px) {
     width: 4rem;
     height: 4rem;
   }
 }
 
-deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__poster-button ~ video) {
+deferred-media[class]
+  :is(.deferred-media__poster-button img, .deferred-media__poster-button ~ video) {
   /* only apply this on the video block not product media */
   object-fit: cover;
   height: 100%;
@@ -1995,8 +2025,12 @@ deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__p
   --max-filter-size: 32px;
 
   /* From the settings */
-  --offset-swatch-width: calc(var(--variant-picker-swatch-width-unitless) - var(--min-width-unitless));
-  --offset-swatch-height: calc(var(--variant-picker-swatch-height-unitless) - var(--min-height-unitless));
+  --offset-swatch-width: calc(
+    var(--variant-picker-swatch-width-unitless) - var(--min-width-unitless)
+  );
+  --offset-swatch-height: calc(
+    var(--variant-picker-swatch-height-unitless) - var(--min-height-unitless)
+  );
 
   /**
     Offset values are obtained from the following formulas:
@@ -2014,10 +2048,12 @@ deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__p
     by some scaling factor.
   */
   --offset-scaled-width: calc(
-    var(--scaling-factor) * var(--offset-swatch-width) / var(--offset-swatch-height) * var(--offset-max-swatch-size)
+    var(--scaling-factor) * var(--offset-swatch-width) / var(--offset-swatch-height) *
+      var(--offset-max-swatch-size)
   );
   --offset-scaled-height: calc(
-    var(--scaling-factor) * var(--offset-swatch-height) / var(--offset-swatch-width) * var(--offset-max-swatch-size)
+    var(--scaling-factor) * var(--offset-swatch-height) / var(--offset-swatch-width) *
+      var(--offset-max-swatch-size)
   );
   --offset-max-swatch-size: calc(var(--max-swatch-size) - var(--min-width));
 
@@ -2080,7 +2116,7 @@ deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__p
     --color-border: rgb(var(--color-foreground-rgb) / var(--variant-picker-border-opacity));
   }
 
-  @media screen and (min-width: 750px) {
+  @media screen and (width >= 750px) {
     /* desktop values */
     --max-swatch-size: 32px;
     --max-pill-size: 16px;
@@ -2099,7 +2135,7 @@ deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__p
   z-index: var(--layer-flat);
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (width >= 750px) {
   .sticky-content--desktop,
   .sticky-content--desktop.full-height--desktop > .group-block {
     position: sticky;
@@ -2140,12 +2176,12 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
   position: relative;
 }
 
-@media screen and (min-width: 750px) {
+@media screen and (width >= 750px) {
   product-card:focus-within .quick-add__button,
   .card-gallery:hover .quick-add__button {
     display: grid;
     will-change: margin, opacity;
-    animation: elementSlideInTop var(--animation-speed) var(--animation-easing);
+    animation: element-slide-in-top var(--animation-speed) var(--animation-easing);
   }
 }
 
@@ -2221,7 +2257,7 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
 .spacing-style {
   --spacing-scale: var(--spacing-scale-md);
 
-  @media screen and (min-width: 990px) {
+  @media screen and (width >= 990px) {
     --spacing-scale: var(--spacing-scale-default);
   }
 
@@ -2243,7 +2279,8 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
 
 .spacing-style,
 .inherit-spacing {
-  padding-block: calc(var(--padding-block-start) + var(--section-top-offset, 0px)) var(--padding-block-end);
+  padding-block: calc(var(--padding-block-start) + var(--section-top-offset, 0px))
+    var(--padding-block-end);
   padding-inline: var(--padding-inline-start) var(--padding-inline-end);
   margin-block: var(--margin-block-start) var(--margin-block-end);
   margin-inline: var(--margin-inline-start) var(--margin-inline-end);
@@ -2254,7 +2291,7 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
   width: var(--size-style-width-mobile, var(--size-style-width));
   height: var(--size-style-height-mobile, var(--size-style-height));
 
-  @media screen and (min-width: 750px) {
+  @media screen and (width >= 750px) {
     width: var(--size-style-width);
     height: var(--size-style-height);
   }
@@ -2310,7 +2347,7 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
 .layout-panel-flex {
   --gap-scale: var(--spacing-scale-md);
 
-  @media screen and (min-width: 990px) {
+  @media screen and (width >= 990px) {
     --gap-scale: var(--spacing-scale-default);
   }
 }
@@ -2333,7 +2370,7 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
   justify-content: var(--vertical-alignment);
 }
 
-@media screen and (max-width: 749px) {
+@media screen and (width <= 749px) {
   .mobile-column {
     flex-flow: column nowrap;
     align-items: var(--horizontal-alignment);
@@ -2361,7 +2398,7 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
   }
 }
 
-@media (min-width: 750px) {
+@media (width >= 750px) {
   .layout-panel-flex {
     flex-direction: var(--flex-direction);
   }
@@ -2379,7 +2416,9 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
   flex-grow: 1;
   text-align: left;
   border-radius: var(--style-border-radius-inputs);
-  transition: box-shadow var(--animation-speed) ease, background-color var(--animation-speed) ease;
+  transition:
+    box-shadow var(--animation-speed) ease,
+    background-color var(--animation-speed) ease;
   padding: var(--input-padding);
   box-shadow: var(--input-box-shadow);
   background-color: var(--color-input-background);
@@ -2416,7 +2455,9 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
   margin-bottom: 0;
   pointer-events: none;
   position: absolute;
-  transition: top var(--animation-speed) ease, font-size var(--animation-speed) ease;
+  transition:
+    top var(--animation-speed) ease,
+    font-size var(--animation-speed) ease;
 }
 
 /* RTE styles */
@@ -2499,7 +2540,7 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
   display: flex;
   align-items: center;
 
-  @media screen and (min-width: 750px) {
+  @media screen and (width >= 750px) {
     --checkbox-size: 16px;
     --checkbox-border-radius: 5px;
     --checkbox-label-padding: 6px;
@@ -2700,17 +2741,16 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
   border-radius: var(--style-border-radius-buttons);
   color: var(--color-input-text);
   background-color: transparent;
-}
 
-/* Chrome, Safari, Edge, Opera */
-.quantity-selector input[type='number']::-webkit-inner-spin-button,
-.quantity-selector input[type='number']::-webkit-outer-spin-button {
-  appearance: none;
-}
+  /* Chrome, Safari, Edge, Opera */
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    appearance: none;
+  }
 
-/* Firefox */
-.quantity-selector input[type='number'] {
-  appearance: textfield;
+  /* Firefox */
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -moz-appearance: textfield;
 }
 
 /* Pills (used in facets and predictive search) */
@@ -2734,7 +2774,7 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
     --pills-pill-background-color: rgb(var(--color-foreground-rgb) / var(--opacity-10-25));
   }
 
-  @media screen and (max-width: 749px) {
+  @media screen and (width <= 749px) {
     padding: var(--padding-xs) var(--padding-md);
   }
 }
@@ -2747,7 +2787,7 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
 }
 
 .pills__pill--swatch {
-  @media screen and (max-width: 749px) {
+  @media screen and (width <= 749px) {
     padding-inline-start: var(--padding-sm);
   }
 }
@@ -2757,7 +2797,7 @@ product-price.text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) > *:not(.tax-note) {
 }
 
 .pills__pill--desktop-small {
-  @media screen and (min-width: 750px) {
+  @media screen and (width >= 750px) {
     font-size: var(--font-size--xs);
   }
 }
@@ -2804,7 +2844,7 @@ fly-to-cart {
   }
 }
 
-@keyframes slideInLeft {
+@keyframes slide-in-left {
   from {
     transform: translateX(var(--custom-transform-from, 100%));
   }
@@ -2814,13 +2854,13 @@ fly-to-cart {
   }
 }
 
-@keyframes slideInLeftViewTransition {
+@keyframes slide-in-left-view-transition {
   from {
     transform: translateX(100px);
   }
 }
 
-@keyframes slideOutRight {
+@keyframes slide-out-right {
   from {
     transform: translateX(0);
   }
@@ -2830,7 +2870,7 @@ fly-to-cart {
   }
 }
 
-@keyframes slideInRight {
+@keyframes slide-in-right {
   from {
     transform: translateX(-100%);
   }
@@ -2840,7 +2880,7 @@ fly-to-cart {
   }
 }
 
-@keyframes slideOutLeft {
+@keyframes slide-out-left {
   from {
     transform: translateX(0);
   }
@@ -2850,7 +2890,7 @@ fly-to-cart {
   }
 }
 
-@keyframes slideInTop {
+@keyframes slide-in-top {
   from {
     transform: translateY(100%);
   }
@@ -2860,13 +2900,13 @@ fly-to-cart {
   }
 }
 
-@keyframes slideInTopViewTransition {
+@keyframes slide-in-top-view-transition {
   from {
     transform: translateY(100px);
   }
 }
 
-@keyframes slideOutBottom {
+@keyframes slide-out-bottom {
   from {
     transform: translateY(0);
   }
@@ -2876,7 +2916,7 @@ fly-to-cart {
   }
 }
 
-@keyframes slideInBottom {
+@keyframes slide-in-bottom {
   from {
     transform: translateY(-100%);
   }
@@ -2886,7 +2926,7 @@ fly-to-cart {
   }
 }
 
-@keyframes slideOutTop {
+@keyframes slide-out-top {
   from {
     transform: translateY(0);
   }
@@ -2896,7 +2936,7 @@ fly-to-cart {
   }
 }
 
-@keyframes cartBubbleSlideIn {
+@keyframes cart-bubble-slide-in {
   from {
     transform: translateY(-1em);
   }
@@ -2906,7 +2946,7 @@ fly-to-cart {
   }
 }
 
-@keyframes elementSlideInTop {
+@keyframes element-slide-in-top {
   from {
     margin-top: var(--padding-sm);
     opacity: 0;
@@ -2918,7 +2958,7 @@ fly-to-cart {
   }
 }
 
-@keyframes elementSlideOutTop {
+@keyframes element-slide-out-top {
   from {
     transform: translateY(0);
     opacity: 1;
@@ -2930,7 +2970,7 @@ fly-to-cart {
   }
 }
 
-@keyframes elementSlideInBottom {
+@keyframes element-slide-in-bottom {
   from {
     transform: translateY(calc(-1 * var(--padding-sm)));
     opacity: 0;
@@ -2942,7 +2982,7 @@ fly-to-cart {
   }
 }
 
-@keyframes elementSlideOutBottom {
+@keyframes element-slide-out-bottom {
   from {
     transform: translateY(0);
     opacity: 1;
@@ -2954,7 +2994,7 @@ fly-to-cart {
   }
 }
 
-@keyframes thumbnailsSlideInTop {
+@keyframes thumbnails-slide-in-top {
   from {
     transform: translateY(calc(-50% + var(--margin-lg)));
     opacity: 0;
@@ -2966,7 +3006,7 @@ fly-to-cart {
   }
 }
 
-@keyframes thumbnailsSlideOutTop {
+@keyframes thumbnails-slide-out-top {
   from {
     transform: translateY(-50%);
     opacity: 1;
@@ -2978,7 +3018,7 @@ fly-to-cart {
   }
 }
 
-@keyframes thumbnailsSlideInBottom {
+@keyframes thumbnails-slide-in-bottom {
   from {
     transform: translateY(100%);
     opacity: 0;
@@ -2990,7 +3030,7 @@ fly-to-cart {
   }
 }
 
-@keyframes thumbnailsSlideOutBottom {
+@keyframes thumbnails-slide-out-bottom {
   from {
     transform: translateY(0);
     opacity: 1;
@@ -3026,7 +3066,7 @@ fly-to-cart {
   }
 }
 
-@keyframes dialogZoom {
+@keyframes dialog-zoom {
   from {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -3051,7 +3091,7 @@ fly-to-cart {
   }
 }
 
-@keyframes backdropFilter {
+@keyframes backdrop-filter {
   from {
     backdrop-filter: brightness(1);
   }
@@ -3061,7 +3101,7 @@ fly-to-cart {
   }
 }
 
-@keyframes fadeOut {
+@keyframes fade-out {
   from {
     opacity: 1;
   }
@@ -3071,7 +3111,7 @@ fly-to-cart {
   }
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   from {
     opacity: 0;
   }
@@ -3081,7 +3121,7 @@ fly-to-cart {
   }
 }
 
-@keyframes modalSlideInTop {
+@keyframes modal-slide-in-top {
   from {
     transform: translateY(var(--padding-sm));
     opacity: 0;
@@ -3093,7 +3133,7 @@ fly-to-cart {
   }
 }
 
-@keyframes modalSlideOutTop {
+@keyframes modal-slide-out-top {
   from {
     transform: translateY(0);
     opacity: 1;
@@ -3132,7 +3172,7 @@ fly-to-cart {
   clip-path: inset(-50px 0 0 0); /* stylelint-disable-line */
 }
 
-@media (min-width: 750px) {
+@media (width >= 750px) {
   .top-shadow--mobile::before {
     display: none;
   }
@@ -3147,7 +3187,7 @@ fly-to-cart {
   clip-path: inset(0 0 -50px 0); /* stylelint-disable-line */
 }
 
-@media (min-width: 750px) {
+@media (width >= 750px) {
   .bottom-shadow--mobile::before {
     display: none;
   }
@@ -3235,7 +3275,7 @@ slideshow-slides {
     min-height: 25rem;
   }
 
-  @media screen and (min-width: 750px) {
+  @media screen and (width >= 750px) {
     &[size='small'] {
       min-height: 26.25rem;
     }
@@ -3255,7 +3295,7 @@ slideshow-component[disabled='true'] slideshow-slides {
 }
 
 slideshow-component[mobile-disabled] slideshow-slides {
-  @media screen and (max-width: 749px) {
+  @media screen and (width <= 749px) {
     overflow: hidden;
   }
 }
@@ -3288,7 +3328,7 @@ slideshow-slide.product-media-container--tallest {
   content-visibility: visible;
 }
 
-@media screen and (max-width: 749px) {
+@media screen and (width <= 749px) {
   /* Media gallery has a peeking slide on the right side always, and on the left side when the current slide is the last one */
   .media-gallery--hint
     :is(
@@ -3324,7 +3364,10 @@ slideshow-slide.product-media-container--tallest {
  * Be specific about HTML children structure to avoid targeting nested slideshows.
  * Ensure that the content is 'visible' while scrolling instead of 'auto' to avoid issues in Safari.
  */
-slideshow-component:is([dragging], [transitioning], :hover) > slideshow-container > slideshow-slides > slideshow-slide {
+slideshow-component:is([dragging], [transitioning], :hover)
+  > slideshow-container
+  > slideshow-slides
+  > slideshow-slide {
   content-visibility: visible;
 }
 
@@ -3367,11 +3410,6 @@ slideshow-controls {
   scrollbar-width: none;
   min-height: var(--minimum-touch-target);
   grid-area: controls;
-
-  &[controls-on-media] {
-    position: absolute;
-    bottom: 0;
-  }
 }
 
 slideshow-controls::-webkit-scrollbar {
@@ -3403,7 +3441,11 @@ slideshow-controls[pagination-position='center'][thumbnails] {
   width: 100%;
 }
 
-slideshow-controls[pagination-position='center']:not([controls-on-media], [thumbnails], [icons-on-media]) {
+slideshow-controls[pagination-position='center']:not(
+    [controls-on-media],
+    [thumbnails],
+    [icons-on-media]
+  ) {
   justify-content: space-between;
 }
 
@@ -3461,7 +3503,10 @@ slideshow-controls:not([controls-on-media])[icons-on-media] {
   }
 }
 
-slideshow-controls:not([controls-on-media]):is([pagination-position='left'], [pagination-position='right'])
+slideshow-controls:not([controls-on-media]):is(
+    [pagination-position='left'],
+    [pagination-position='right']
+  )
   .slideshow-controls__thumbnails {
   padding-block: var(--padding-2xs);
 }
@@ -3481,6 +3526,8 @@ slideshow-controls:not([controls-on-media]) {
 }
 
 slideshow-controls[controls-on-media] {
+  position: absolute;
+  bottom: 0;
   z-index: var(--layer-raised);
 
   &:has(.slideshow-controls__dots, .slideshow-controls__counter) {
@@ -3541,6 +3588,10 @@ slideshow-controls:is([pagination-position='right'], [pagination-position='left'
     --color-active: var(--color-foreground);
     --color-hover: rgb(var(--color-foreground-rgb) / var(--opacity-50));
   }
+
+  &:only-child {
+    margin-inline: auto;
+  }
 }
 
 slideshow-controls:has(.slideshow-controls__dots),
@@ -3593,13 +3644,6 @@ slideshow-component[autoplay] slideshow-controls {
   }
 }
 
-.slideshow-controls__dots,
-.slideshow-controls__counter {
-  &:only-child {
-    margin-inline: auto;
-  }
-}
-
 .slideshow-controls__counter {
   color: var(--color-foreground);
   background-color: rgb(0 0 0 / 40%);
@@ -3624,10 +3668,6 @@ slideshow-component[autoplay] slideshow-controls {
 }
 
 .slideshow-control--large {
-  .icon-caret {
-    --icon-stroke-width: 1px;
-  }
-
   .icon-caret {
     --icon-stroke-width: 1px;
   }
@@ -3694,7 +3734,8 @@ slideshow-component[autoplay] slideshow-controls {
     &:is([aria-selected='true']) {
       outline: var(--focus-outline-width) solid currentcolor;
       outline-offset: calc(var(--focus-outline-offset) / 2);
-      border: var(--style-border-width) solid rgb(var(--color-border-rgb) / var(--media-border-opacity));
+      border: var(--style-border-width) solid
+        rgb(var(--color-border-rgb) / var(--media-border-opacity));
     }
   }
 }
@@ -3804,6 +3845,7 @@ slideshow-arrows .slideshow-control.slideshow-control--style-none {
 
 .media-gallery--carousel slideshow-arrows .slideshow-control {
   padding-inline: 0 var(--padding-md);
+  opacity: 1;
 }
 
 .card-gallery slideshow-arrows .slideshow-control {
@@ -3815,19 +3857,17 @@ slideshow-arrows .slideshow-control.slideshow-control--style-none {
   }
 }
 
-.media-gallery--carousel slideshow-arrows .slideshow-control {
-  opacity: 1;
-}
-
 :not(.media-gallery--carousel)
-  > :is(slideshow-component:hover, slideshow-component:focus-within):not(:has(slideshow-controls:hover))
+  > :is(slideshow-component:hover, slideshow-component:focus-within):not(
+    :has(slideshow-controls:hover)
+  )
   > slideshow-container
   > slideshow-arrows
   .slideshow-control {
-  animation: arrowsSlideIn var(--animation-speed) var(--animation-easing) forwards;
+  animation: arrows-slide-in var(--animation-speed) var(--animation-easing) forwards;
 }
 
-@keyframes arrowsSlideIn {
+@keyframes arrows-slide-in {
   from {
     transform: translate(var(--padding-sm), 0);
     opacity: 0;
@@ -3870,7 +3910,7 @@ slideshow-arrows .slideshow-control.slideshow-control--style-none {
 }
 
 .section-resource-list.section--full-width product-card-link > .group-block {
-  @media screen and (max-width: 749px) {
+  @media screen and (width <= 749px) {
     padding-inline: max(var(--padding-xs), var(--padding-inline-start))
       max(var(--padding-xs), var(--padding-inline-end));
   }
@@ -3879,19 +3919,25 @@ slideshow-arrows .slideshow-control.slideshow-control--style-none {
 .resource-list--carousel-mobile {
   display: block;
 
-  @media screen and (min-width: 750px) {
+  @media screen and (width >= 750px) {
     display: none;
   }
 }
 
 .resource-list {
   --resource-list-mobile-gap-max: 9999px;
-  --resource-list-column-gap: min(var(--resource-list-column-gap-desktop), var(--resource-list-mobile-gap-max));
-  --resource-list-row-gap: min(var(--resource-list-row-gap-desktop), var(--resource-list-mobile-gap-max));
+  --resource-list-column-gap: min(
+    var(--resource-list-column-gap-desktop),
+    var(--resource-list-mobile-gap-max)
+  );
+  --resource-list-row-gap: min(
+    var(--resource-list-row-gap-desktop),
+    var(--resource-list-mobile-gap-max)
+  );
 
   width: 100%;
 
-  @media screen and (max-width: 749px) {
+  @media screen and (width <= 749px) {
     --resource-list-mobile-gap-max: 12px;
   }
 
@@ -3905,7 +3951,7 @@ slideshow-arrows .slideshow-control.slideshow-control--style-none {
   gap: var(--resource-list-row-gap) var(--resource-list-column-gap);
   grid-template-columns: var(--resource-list-columns-mobile);
 
-  @media screen and (min-width: 750px) {
+  @media screen and (width >= 750px) {
     grid-template-columns: var(--resource-list-columns);
   }
 
@@ -3989,7 +4035,10 @@ slideshow-arrows .slideshow-control.slideshow-control--style-none {
 @container resource-list-carousel (min-width: 750px) {
   .resource-list__carousel .resource-list__slide {
     --section-slide-width: calc(
-      (100% - (var(--resource-list-column-gap) * (var(--column-count) - 1)) - var(--peek-next-slide-size)) /
+      (
+          100% - (var(--resource-list-column-gap) * (var(--column-count) - 1)) -
+            var(--peek-next-slide-size)
+        ) /
         var(--column-count)
     );
     --fallback-slide-width: clamp(150px, var(--mobile-card-size, 60cqw), var(--slide-width-max));
@@ -4087,7 +4136,8 @@ accordion-custom {
       overflow-y: clip;
       opacity: 0;
       interpolate-size: allow-keywords;
-      transition: content-visibility var(--animation-speed-slow) allow-discrete,
+      transition:
+        content-visibility var(--animation-speed-slow) allow-discrete,
         padding-block var(--animation-speed-slow) var(--animation-easing),
         opacity var(--animation-speed-slow) var(--animation-easing),
         block-size var(--animation-speed-slow) var(--animation-easing);
@@ -4121,13 +4171,13 @@ accordion-custom {
 }
 
 accordion-custom[data-disable-on-mobile='true'] summary {
-  @media screen and (max-width: 749px) {
+  @media screen and (width <= 749px) {
     cursor: auto;
   }
 }
 
 accordion-custom[data-disable-on-desktop='true'] summary {
-  @media screen and (min-width: 750px) {
+  @media screen and (width >= 750px) {
     cursor: auto;
   }
 }
@@ -4234,7 +4284,7 @@ text-component {
 }
 
 /* Product card title truncation - applied on mobile regardless of view */
-@media screen and (max-width: 749px) {
+@media screen and (width <= 749px) {
   :is(.product-card, .product-grid__card) :is(h4, .h4) {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -4251,7 +4301,8 @@ text-component {
 .predictive-search-results__card:hover {
   position: relative;
   z-index: var(--layer-raised);
-  transition: transform var(--hover-transition-duration) var(--hover-transition-timing),
+  transition:
+    transform var(--hover-transition-duration) var(--hover-transition-timing),
     box-shadow var(--hover-transition-duration) var(--hover-transition-timing);
 }
 
@@ -4267,7 +4318,7 @@ text-component {
 }
 
 /* Prevent iOS zoom on input focus by ensuring minimum 16px font size on mobile */
-@media screen and (max-width: 1200px) {
+@media screen and (width <= 1200px) {
   input,
   textarea,
   select,

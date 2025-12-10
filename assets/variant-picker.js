@@ -31,11 +31,13 @@ export default class VariantPicker extends Component {
     super.connectedCallback();
     const fieldsets = /** @type {HTMLFieldSetElement[]} */ (this.refs.fieldsets || []);
 
-    fieldsets.forEach((fieldset) => {
+    fieldsets.forEach(fieldset => {
       const radios = Array.from(fieldset?.querySelectorAll('input') ?? []);
       this.#radios.push(radios);
 
-      const initialCheckedIndex = radios.findIndex((radio) => radio.dataset.currentChecked === 'true');
+      const initialCheckedIndex = radios.findIndex(
+        radio => radio.dataset.currentChecked === 'true'
+      );
       if (initialCheckedIndex !== -1) {
         this.#checkedIndices.push([initialCheckedIndex]);
       }
@@ -52,12 +54,16 @@ export default class VariantPicker extends Component {
     if (!(event.target instanceof HTMLElement)) return;
 
     const selectedOption =
-      event.target instanceof HTMLSelectElement ? event.target.options[event.target.selectedIndex] : event.target;
+      event.target instanceof HTMLSelectElement
+        ? event.target.options[event.target.selectedIndex]
+        : event.target;
 
     if (!selectedOption) return;
 
     this.updateSelectedOption(event.target);
-    this.dispatchEvent(new VariantSelectedEvent({ id: selectedOption.dataset.optionValueId ?? '' }));
+    this.dispatchEvent(
+      new VariantSelectedEvent({ id: selectedOption.dataset.optionValueId ?? '' })
+    );
 
     const isOnProductPage =
       this.dataset.templateProductMatch === 'true' &&
@@ -162,7 +168,9 @@ export default class VariantPicker extends Component {
 
     if (target instanceof HTMLSelectElement) {
       const newValue = target.value;
-      const newSelectedOption = Array.from(target.options).find((option) => option.value === newValue);
+      const newSelectedOption = Array.from(target.options).find(
+        option => option.value === newValue
+      );
 
       if (!newSelectedOption) throw new Error('Option not found');
 
@@ -184,7 +192,10 @@ export default class VariantPicker extends Component {
   buildRequestUrl(selectedOption, source = null, sourceSelectedOptionsValues = []) {
     // this productUrl and pendingRequestUrl will be useful for the support of combined listing. It is used when a user changes variant quickly and those products are using separate URLs (combined listing).
     // We create a new URL and abort the previous fetch request if it's still pending.
-    let productUrl = selectedOption.dataset.connectedProductUrl || this.#pendingRequestUrl || this.dataset.productUrl;
+    let productUrl =
+      selectedOption.dataset.connectedProductUrl ||
+      this.#pendingRequestUrl ||
+      this.dataset.productUrl;
     this.#pendingRequestUrl = productUrl;
     const params = [];
     const viewParamValue = getViewParameterValue();
@@ -223,14 +234,16 @@ export default class VariantPicker extends Component {
     this.#abortController = new AbortController();
 
     fetch(requestUrl, { signal: this.#abortController.signal })
-      .then((response) => response.text())
-      .then((responseText) => {
+      .then(response => response.text())
+      .then(responseText => {
         this.#pendingRequestUrl = undefined;
         const html = new DOMParser().parseFromString(responseText, 'text/html');
         // Defer is only useful for the initial rendering of the page. Remove it here.
         html.querySelector('overflow-list[defer]')?.removeAttribute('defer');
 
-        const textContent = html.querySelector(`variant-picker script[type="application/json"]`)?.textContent;
+        const textContent = html.querySelector(
+          `variant-picker script[type="application/json"]`
+        )?.textContent;
         if (!textContent) return;
 
         if (shouldMorphMain) {
@@ -250,10 +263,12 @@ export default class VariantPicker extends Component {
           }
         }
       })
-      .catch((error) => {
+      .catch(error => {
         if (error.name === 'AbortError') {
+          // eslint-disable-next-line no-console
           console.warn('Fetch aborted by user');
         } else {
+          // eslint-disable-next-line no-console
           console.error(error);
         }
       });
@@ -320,7 +335,9 @@ export default class VariantPicker extends Component {
   get selectedOption() {
     const selectedOption = this.querySelector('select option[selected], fieldset input:checked');
 
-    if (!(selectedOption instanceof HTMLInputElement || selectedOption instanceof HTMLOptionElement)) {
+    if (
+      !(selectedOption instanceof HTMLInputElement || selectedOption instanceof HTMLOptionElement)
+    ) {
       return undefined;
     }
 
@@ -349,9 +366,11 @@ export default class VariantPicker extends Component {
    */
   get selectedOptionsValues() {
     /** @type HTMLElement[] */
-    const selectedOptions = Array.from(this.querySelectorAll('select option[selected], fieldset input:checked'));
+    const selectedOptions = Array.from(
+      this.querySelectorAll('select option[selected], fieldset input:checked')
+    );
 
-    return selectedOptions.map((option) => {
+    return selectedOptions.map(option => {
       const { optionValueId } = option.dataset;
 
       if (!optionValueId) throw new Error('No option value ID found');

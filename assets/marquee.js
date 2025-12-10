@@ -56,7 +56,7 @@ class MarqueeComponent extends Component {
       ...ANIMATION_OPTIONS,
       from: 1,
       to: 0,
-      onUpdate: (value) => animation.updatePlaybackRate(value),
+      onUpdate: value => animation.updatePlaybackRate(value),
       onComplete: () => {
         this.#animation = null;
       },
@@ -77,7 +77,7 @@ class MarqueeComponent extends Component {
       ...ANIMATION_OPTIONS,
       from,
       to: 1,
-      onUpdate: (value) => animation.updatePlaybackRate(value),
+      onUpdate: value => animation.updatePlaybackRate(value),
       onComplete: () => {
         this.#animation = null;
       },
@@ -101,7 +101,8 @@ class MarqueeComponent extends Component {
     const marqueeWidth = this.offsetWidth;
 
     const marqueeRepeatedItemWidth = marqueeItems[0]?.offsetWidth ?? 1;
-    const count = marqueeRepeatedItemWidth === 0 ? 1 : Math.ceil(marqueeWidth / marqueeRepeatedItemWidth);
+    const count =
+      marqueeRepeatedItemWidth === 0 ? 1 : Math.ceil(marqueeWidth / marqueeRepeatedItemWidth);
     const speed = Math.sqrt(count) * speedFactor;
 
     return speed;
@@ -186,7 +187,14 @@ class MarqueeComponent extends Component {
  * @param {function(number): number} [params.easing] - The easing function.
  * @param {function(): void} [params.onComplete] - The function to call when the animation completes.
  */
-function animateValue({ from, to, duration, onUpdate, easing = (t) => t * t * (3 - 2 * t), onComplete }) {
+function animateValue({
+  from,
+  to,
+  duration,
+  onUpdate,
+  easing = t => t * t * (3 - 2 * t),
+  onComplete,
+}) {
   const startTime = performance.now();
   let cancelled = false;
   let currentValue = from;

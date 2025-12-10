@@ -174,7 +174,11 @@
     "blog_posts_editorial": "Posts do blog: editorial",
     "excerpt": "Resumo",
     "footer_password": "Rodapé da página com senha",
-    "policies_and_links": "Políticas e links"
+    "policies_and_links": "Políticas e links",
+    "column": "Column",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote",
+    "size_guide": "Size guide"
   },
   "settings": {
     "alignment": "Alinhamento",
@@ -541,7 +545,21 @@
     "custom_mobile_media": "Mídia personalizada para celular",
     "stack_media_on_mobile": "Empilhar mídias",
     "media_type_1": "Tipo de mídia",
-    "media_type_2": "Tipo de mídia 2"
+    "media_type_2": "Tipo de mídia 2",
+    "backdrop_blur": "Backdrop blur",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote font size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Border weight",
+    "size_guide": {
+      "button_text": "Button text",
+      "icon": "Icon",
+      "icon_size": "Icon size",
+      "hide_title": "Hide title",
+      "title_size": "Title size"
+    },
+    "block_link": "Block link"
   },
   "options": {
     "adapt_to_image": "Adaptar à imagem",
@@ -925,7 +943,13 @@
     "email_signup": "Assinante de e-mail",
     "submissions_are_sent_to_store_email_address": "Os envios são encaminhados para o [endereço de e-mail do remetente](https://admin.shopify.com/settings/notifications) da sua loja",
     "mobile_media": "Mídia para celular",
-    "mobile_media_2": "Mídia para celular 2"
+    "mobile_media_2": "Mídia para celular 2",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo",
+    "button": "Button"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Compartilhe informações sobre a marca com clientes. Descreva um produto, faça comunicados ou dê as boas-vindas aos clientes na loja.</p>",
@@ -1004,7 +1028,11 @@
     "what_is_return_policy": "Qual é a política de devolução?",
     "when_will_order_arrive": "Quando receberei meu pedido?",
     "where_are_products_made": "Onde seus produtos são fabricados?",
-    "faq": "Perguntas frequentes"
+    "faq": {
+      "title": "Perguntas frequentes",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   },
   "info": {
     "video_alt_text": "Descreva o vídeo para usuários de tecnologia assistiva",
@@ -1030,7 +1058,10 @@
     "hover_effects": "Aplica-se a cartões de produto e coleção",
     "hide_logo_on_home_page_help": "O logo permanecerá visível quando o cabeçalho fixo estiver ativo",
     "media_type_info": "Os recursos são preenchidos com base nos seus links de menu",
-    "logo_height": "Afeta apenas o logo do cabeçalho"
+    "logo_height": "Afeta apenas o logo do cabeçalho",
+    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "categories": {
     "basic": "Basic",

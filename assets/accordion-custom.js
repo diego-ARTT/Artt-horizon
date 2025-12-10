@@ -56,7 +56,7 @@ class AccordionCustom extends HTMLElement {
    * Handles the click event.
    * @param {Event} event - The event.
    */
-  handleClick = (event) => {
+  handleClick = event => {
     const isMobile = isMobileBreakpoint();
     const isDesktop = !isMobile;
 

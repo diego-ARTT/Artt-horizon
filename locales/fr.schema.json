@@ -174,7 +174,11 @@
     "blog_posts_editorial": "Articles de blog : éditorial",
     "excerpt": "Extrait",
     "footer_password": "Pied de page de la page avec mot de passe",
-    "policies_and_links": "Politiques et liens"
+    "policies_and_links": "Politiques et liens",
+    "column": "Column",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote",
+    "size_guide": "Size guide"
   },
   "settings": {
     "autoplay": "Jeu automatique",
@@ -541,7 +545,21 @@
     "custom_mobile_media": "Support multimédia mobile personnalisé",
     "stack_media_on_mobile": "Empiler les supports multimédias",
     "media_type_1": "Type de support multimédia",
-    "media_type_2": "Type de support multimédia 2"
+    "media_type_2": "Type de support multimédia 2",
+    "backdrop_blur": "Backdrop blur",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote font size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Border weight",
+    "size_guide": {
+      "button_text": "Button text",
+      "icon": "Icon",
+      "icon_size": "Icon size",
+      "hide_title": "Hide title",
+      "title_size": "Title size"
+    },
+    "block_link": "Block link"
   },
   "options": {
     "adapt_to_image": "Adapter à l’image",
@@ -925,7 +943,13 @@
     "email_signup": "Inscription à la liste de diffusion",
     "submissions_are_sent_to_store_email_address": "Les soumissions sont envoyées à l’adresse e-mail de contact votre boutique [sender email address](https://admin.shopify.com/settings/notifications)",
     "mobile_media": "Support multimédia mobile",
-    "mobile_media_2": "Support multimédia mobile 2"
+    "mobile_media_2": "Support multimédia mobile 2",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo",
+    "button": "Button"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Partagez des informations sur votre marque. Décrivez un produit, partagez des annonces ou souhaitez la bienvenue à vos clients dans votre boutique.</p>",
@@ -1004,7 +1028,11 @@
     "what_is_return_policy": "Quelle est la politique de retour ?",
     "when_will_order_arrive": "Quand recevrai-je ma commande ?",
     "where_are_products_made": "Où sont fabriqués vos produits ?",
-    "faq": "FAQ"
+    "faq": {
+      "title": "FAQ",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   },
   "info": {
     "carousel_layout_on_mobile": "Le carrousel est utilisé sur mobile",
@@ -1030,7 +1058,10 @@
     "hover_effects": "S’applique à des cartes de produits et de collections",
     "hide_logo_on_home_page_help": "Le logo reste visible lorsque l’en-tête fixe est activé",
     "media_type_info": "Les fonctionnalités sont renseignées à partir des liens de votre menu",
-    "logo_height": "N’affecte que le logo de l’en-tête"
+    "logo_height": "N’affecte que le logo de l’en-tête",
+    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "categories": {
     "basic": "Basic",

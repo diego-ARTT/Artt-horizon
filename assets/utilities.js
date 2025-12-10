@@ -11,7 +11,7 @@ export const requestIdleCallback =
  * @see https://web.dev/articles/optimize-inp#yield_to_allow_rendering_work_to_occur_sooner
  * @param {() => any} callback - The callback to execute
  */
-export const requestYieldCallback = (callback) => {
+export const requestYieldCallback = callback => {
   requestAnimationFrame(() => {
     setTimeout(callback, 0);
   });
@@ -54,13 +54,16 @@ const viewTransitionTypes = {
 
     if (!grid || !productCards.length) return;
 
-    await new Promise((resolve) =>
+    await new Promise(resolve =>
       requestIdleCallback(() => {
         const cardsToAnimate = getCardsToAnimate(grid, productCards);
 
         productCards.forEach((card, index) => {
           if (index < cardsToAnimate) {
-            card.style.setProperty('view-transition-name', `product-card-${card.dataset.productId}`);
+            card.style.setProperty(
+              'view-transition-name',
+              `product-card-${card.dataset.productId}`
+            );
           } else {
             card.style.setProperty('content-visibility', 'hidden');
           }
@@ -71,7 +74,7 @@ const viewTransitionTypes = {
     );
 
     return () =>
-      productCards.forEach((card) => {
+      productCards.forEach(card => {
         card.style.removeProperty('view-transition-name');
         card.style.removeProperty('content-visibility');
       });
@@ -86,10 +89,10 @@ const viewTransitionTypes = {
  */
 export function startViewTransition(callback, types) {
   // eslint-disable-next-line no-async-promise-executor
-  return new Promise(async (resolve) => {
+  return new Promise(async resolve => {
     // Check if View Transitions API is supported
     if (supportsViewTransitions() && !prefersReducedMotion()) {
-      let cleanupFunctions = [];
+      const cleanupFunctions = [];
 
       if (types) {
         for (const type of types) {
@@ -106,11 +109,11 @@ export function startViewTransition(callback, types) {
         viewTransition.current = transition.finished;
       }
 
-      if (types) types.forEach((type) => transition.types.add(type));
+      if (types) types.forEach(type => transition.types.add(type));
 
       transition.finished.then(() => {
         viewTransition.current = undefined;
-        cleanupFunctions.forEach((cleanupFunction) => cleanupFunction());
+        cleanupFunctions.forEach(cleanupFunction => cleanupFunction());
         resolve();
       });
 
@@ -144,7 +147,11 @@ export function startViewTransition(callback, types) {
  */
 export function fetchConfig(type = 'json', config = {}) {
   /** @type {Headers} */
-  const headers = { 'Content-Type': 'application/json', Accept: `application/${type}`, ...config.headers };
+  const headers = {
+    'Content-Type': 'application/json',
+    Accept: `application/${type}`,
+    ...config.headers,
+  };
 
   if (type === 'javascript') {
     headers['X-Requested-With'] = 'XMLHttpRequest';
@@ -247,9 +254,10 @@ export function normalizeString(str) {
  * @returns {string} The formatted value
  */
 export function formatMoney(value) {
-  let valueWithNoSpaces = value.replace(' ', '');
+  const valueWithNoSpaces = value.replace(' ', '');
   if (valueWithNoSpaces.indexOf(',') === -1) return valueWithNoSpaces;
-  if (valueWithNoSpaces.indexOf(',') < valueWithNoSpaces.indexOf('.')) return valueWithNoSpaces.replace(',', '');
+  if (valueWithNoSpaces.indexOf(',') < valueWithNoSpaces.indexOf('.'))
+    return valueWithNoSpaces.replace(',', '');
   if (valueWithNoSpaces.indexOf('.') < valueWithNoSpaces.indexOf(','))
     return valueWithNoSpaces.replace('.', '').replace(',', '.');
   if (valueWithNoSpaces.indexOf(',') !== -1) return valueWithNoSpaces.replace(',', '.');
@@ -291,7 +299,7 @@ export function onDocumentReady(callback) {
  */
 export function onAnimationEnd(elements, callback, options = { subtree: true }) {
   const animations = Array.isArray(elements)
-    ? elements.flatMap((element) => element.getAnimations(options))
+    ? elements.flatMap(element => element.getAnimations(options))
     : elements.getAnimations(options);
   const animationPromises = animations.reduce((acc, animation) => {
     // Ignore ViewTimeline animations
@@ -433,7 +441,7 @@ export function getVisibleElements(root, elements, ratio = 1, axis) {
   if (!elements?.length) return [];
   const rootRect = root.getBoundingClientRect();
 
-  return elements.filter((element) => {
+  return elements.filter(element => {
     const { width, height, top, right, left, bottom } = element.getBoundingClientRect();
 
     if (ratio < 1) {
@@ -520,14 +528,18 @@ function getCardsToAnimate(grid, cards) {
   const cardSample = itemSample.querySelector('product-card');
   const gridStyle = getComputedStyle(grid);
 
-  const galleryAspectRatio = cardSample?.refs?.cardGallery?.style.getPropertyValue('--gallery-aspect-ratio') || '';
+  const galleryAspectRatio =
+    cardSample?.refs?.cardGallery?.style.getPropertyValue('--gallery-aspect-ratio') || '';
   let aspectRatio = parseFloat(galleryAspectRatio) || 0.5;
   if (galleryAspectRatio?.includes('/')) {
     const [width = '1', height = '2'] = galleryAspectRatio.split('/');
     aspectRatio = parseInt(width, 10) / parseInt(height, 10);
   }
 
-  const cardGap = parseInt(cardSample?.refs?.productCardLink?.style.getPropertyValue('--product-card-gap') || '') || 12;
+  const cardGap =
+    parseInt(
+      cardSample?.refs?.productCardLink?.style.getPropertyValue('--product-card-gap') || ''
+    ) || 12;
   const gridGap = parseInt(gridStyle.getPropertyValue('--product-grid-gap')) || 12;
 
   // Assume only a couple of lines of text in the card details (title and price).
@@ -543,7 +555,9 @@ function getCardsToAnimate(grid, cards) {
   // Calculate the number of cards that fit in the visible area:
   // - The width estimation is pretty accurate, we can ignore decimals.
   // - The height estimation needs to account for peeking rows, so we round up.
-  const columnsInGrid = isMobile ? 2 : Math.floor((gridRect.width + gridGap) / (cardWidth + gridGap));
+  const columnsInGrid = isMobile
+    ? 2
+    : Math.floor((gridRect.width + gridGap) / (cardWidth + gridGap));
   const rowsInGrid = Math.ceil((visibleHeight - gridGap) / (cardHeight + gridGap));
 
   return columnsInGrid * rowsInGrid;
@@ -574,7 +588,7 @@ if (!customElements.get('text-component')) {
  */
 export function resetShimmer(container = document.body) {
   const shimmer = container.querySelectorAll('[shimmer]');
-  shimmer.forEach((item) => item.removeAttribute('shimmer'));
+  shimmer.forEach(item => item.removeAttribute('shimmer'));
 }
 
 /**
@@ -604,7 +618,7 @@ class Scheduler {
   #scheduled = false;
 
   /** @param {() => void} task */
-  schedule = async (task) => {
+  schedule = async task => {
     this.#queue.add(task);
 
     if (!this.#scheduled) {

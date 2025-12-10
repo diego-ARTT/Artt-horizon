@@ -105,7 +105,7 @@ class HeaderComponent extends Component {
    * Handles the overflow minimum event from the header menu
    * @param {OverflowMinimumEvent} event
    */
-  #handleOverflowMinimum = (event) => {
+  #handleOverflowMinimum = event => {
     this.#updateMenuVisibility(event.detail.minimumReached);
   };
 
@@ -216,7 +216,9 @@ onDocumentLoaded(() => {
 
   // Update header group height on resize of any child
   if (headerGroup) {
-    const resizeObserver = new ResizeObserver(() => calculateHeaderGroupHeight(header, headerGroup));
+    const resizeObserver = new ResizeObserver(() =>
+      calculateHeaderGroupHeight(header, headerGroup)
+    );
 
     // Observe all children of the header group
     const children = headerGroup.children;
@@ -227,7 +229,7 @@ onDocumentLoaded(() => {
     }
 
     // Also observe the header group itself for child changes
-    const mutationObserver = new MutationObserver((mutations) => {
+    const mutationObserver = new MutationObserver(mutations => {
       for (const mutation of mutations) {
         if (mutation.type === 'childList') {
           // Re-observe all children when the list changes

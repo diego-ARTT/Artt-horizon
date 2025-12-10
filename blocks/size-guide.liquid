@@ -1,0 +1,540 @@
+{%- liquid
+  assign block_settings = block.settings
+  assign product = closest.product
+  
+  # Get size guide page from product metafield
+  assign size_guide_page = product.metafields.custom.size_guide_page.value
+  
+  # Only render if size guide page is set
+  if size_guide_page == blank
+    assign size_guide_page = null
+  endif
+-%}
+
+{%- if size_guide_page != blank -%}
+  <script
+    src="{{ 'dialog.js' | asset_url }}"
+    type="module"
+  ></script>
+
+  <dialog-component
+    class="size-guide"
+    {{ block.shopify_attributes }}
+  >
+    <button
+      on:click="/showDialog"
+      class="button button-unstyled size-guide__button spacing-style {{ block_settings.type_preset }}"
+      style="{% render 'spacing-style', settings: block_settings %} --icon-width: {{ block_settings.icon_width }}px;"
+      aria-haspopup="dialog"
+    >
+      {{- block_settings.button_text | default: 'Size Guide' -}}
+      {%- if block_settings.icon != 'none' and block_settings.icon != blank -%}
+        <svg
+          class="size-guide__icon"
+          aria-hidden="true"
+          focusable="false"
+          xmlns="http://www.w3.org/2000/svg"
+          width="{{ block_settings.icon_width }}"
+          height="{{ block_settings.icon_width }}"
+          viewBox="0 0 20 20"
+        >
+          {%- render 'icon', icon: block_settings.icon -%}
+        </svg>
+      {%- endif -%}
+    </button>
+
+    <dialog
+      ref="dialog"
+      class="size-guide__content dialog-modal color-{{ settings.popover_color_scheme }}{% if block_settings.behavior == 'drawer' %} size-guide__content--drawer dialog-drawer{% endif %}"
+      scroll-lock
+      aria-labelledby="size-guide-heading"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div class="size-guide__inner-wrapper">
+        <button
+          ref="closeButton"
+          on:click="/closeDialog"
+          class="button button-unstyled close-button size-guide__close"
+          aria-label="{{ 'accessibility.close_dialog' | t }}"
+        >
+          {{- 'icon-close.svg' | inline_asset_content -}}
+        </button>
+        
+        <div class="size-guide__header">
+          <h2
+            id="size-guide-heading"
+            class="size-guide__title{% if block_settings.title_size != blank and block_settings.title_size != 'custom' %} {{ block_settings.title_size }}{% endif %}{% if block_settings.hide_title %} visually-hidden{% endif %}"
+            style="{% if block_settings.title_size == 'custom' and block_settings.title_font_size != blank %}font-size: {{ block_settings.title_font_size }};{% endif %}"
+          >
+            {{ size_guide_page.title | default: 'Size Guide' }}
+          </h2>
+        </div>
+        
+        <div class="size-guide__content-wrapper">
+          <rte-formatter>
+            {{ size_guide_page.content }}
+          </rte-formatter>
+        </div>
+      </div>
+    </dialog>
+  </dialog-component>
+{%- endif -%}
+
+{% stylesheet %}
+  .size-guide__button {
+    text-align: left;
+  }
+
+  .size-guide__button svg {
+    display: inline-block;
+    position: relative;
+    top: var(--margin-2xs);
+    margin-inline-start: var(--margin-2xs);
+    width: var(--icon-width, 16px);
+    height: var(--icon-width, 16px);
+  }
+
+  .size-guide__content {
+    box-shadow: var(--shadow-popover);
+    border: var(--style-border-popover);
+    border-radius: var(--style-border-radius-popover);
+    background-color: var(--color-background);
+    padding: var(--padding-4xl) var(--padding-xl) var(--padding-xl);
+    max-width: var(--normal-content-width);
+    max-height: var(--modal-max-height);
+    overflow-y: auto;
+
+    @media screen and (min-width: 750px) {
+      padding: var(--padding-5xl);
+    }
+  }
+
+  .size-guide__content[open] {
+    animation: modalSlideInTop var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  .size-guide__content.dialog-closing {
+    animation: modalSlideOutTop var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  .size-guide__content--drawer {
+    position: fixed;
+    border-radius: 0;
+    width: var(--sidebar-width);
+    max-width: 95vw;
+    height: 100%;
+    margin: 0 0 0 auto;
+    padding: 0;
+    border-left: var(--style-border-drawer);
+    box-shadow: var(--shadow-drawer);
+  }
+
+  /* Override modal animations for drawer mode - use slide-in animations */
+  /* Right-side drawer: slides in from right (100% to 0) and slides out to right (0 to 100%) */
+  .size-guide__content--drawer[open] {
+    animation: slide-in-left var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  .size-guide__content--drawer.dialog-closing {
+    animation: slide-out-left var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  /* Needed to ensure the drawer is full height */
+  .size-guide__content--drawer:modal {
+    max-height: 100dvh;
+    overflow-y: hidden;
+  }
+
+  /* Drawer-specific inner wrapper structure */
+  .size-guide__content--drawer .size-guide__inner-wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+  }
+
+  .size-guide__content--drawer .size-guide__header {
+    flex-shrink: 0;
+    padding: var(--padding-xl) var(--padding-xl) var(--padding-md);
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  }
+
+  .size-guide__content--drawer .size-guide__content-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--padding-xl);
+  }
+
+  /* Modal mode - keep existing structure */
+  .size-guide__content:not(.size-guide__content--drawer) .size-guide__inner-wrapper {
+    display: block;
+  }
+
+  .size-guide__content:not(.size-guide__content--drawer) .size-guide__header {
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .size-guide__content:not(.size-guide__content--drawer) .size-guide__content-wrapper {
+    padding: 0;
+    overflow-y: visible;
+  }
+
+  .size-guide__close {
+    position: absolute;
+    top: var(--margin-2xs);
+    right: var(--margin-2xs);
+    opacity: 0.8;
+    animation: none;
+    z-index: var(--layer-raised);
+  }
+
+  .size-guide__close:active {
+    transform: scale(0.8);
+  }
+
+  .size-guide__title {
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+
+  /* Ensure type preset classes apply to title */
+  .size-guide__title.h1,
+  .size-guide__title.h2,
+  .size-guide__title.h3,
+  .size-guide__title.h4,
+  .size-guide__title.h5,
+  .size-guide__title.h6 {
+    /* Type preset styles are inherited from base.css .h1, .h2, etc. */
+  }
+
+  /* Drawer-specific title styling */
+  .size-guide__content--drawer .size-guide__title {
+    margin-block-end: 0;
+  }
+
+  .size-guide__inner {
+    width: 100%;
+  }
+
+  /* Ensure tables in size guides are responsive */
+  .size-guide__content-wrapper table,
+  .size-guide__inner table,
+  rte-formatter table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-block: var(--margin-md);
+  }
+
+  .size-guide__content-wrapper table th,
+  .size-guide__content-wrapper table td,
+  .size-guide__inner table th,
+  .size-guide__inner table td,
+  rte-formatter table th,
+  rte-formatter table td {
+    padding: var(--padding-sm);
+    text-align: left;
+    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  }
+
+  .size-guide__content-wrapper table th,
+  .size-guide__inner table th,
+  rte-formatter table th {
+    font-weight: 600;
+    background-color: rgb(var(--color-background-rgb) / var(--opacity-50));
+  }
+
+  @media screen and (max-width: 749px) {
+    .size-guide__content-wrapper table,
+    .size-guide__inner table,
+    rte-formatter table {
+      display: block;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.size_guide",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "t:settings.button_text",
+      "default": "Size Guide",
+      "info": "t:info.size_guide_button_text"
+    },
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "t:settings.icon",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
+        {
+          "value": "ruler",
+          "label": "t:options.ruler"
+        },
+        {
+          "value": "arrow",
+          "label": "t:options.arrow"
+        },
+        {
+          "value": "question_mark",
+          "label": "t:options.question_mark"
+        },
+        {
+          "value": "clipboard",
+          "label": "t:options.clipboard"
+        },
+        {
+          "value": "eye",
+          "label": "t:options.eye"
+        }
+      ],
+      "default": "ruler"
+    },
+    {
+      "type": "range",
+      "id": "icon_width",
+      "label": "t:settings.icon_size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ block.settings.icon != 'none' }}"
+    },
+    {
+      "type": "select",
+      "id": "type_preset",
+      "label": "t:settings.preset",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "paragraph",
+          "label": "t:options.paragraph"
+        },
+        {
+          "value": "link",
+          "label": "t:options.link"
+        },
+        {
+          "value": "h1",
+          "label": "t:options.h1"
+        },
+        {
+          "value": "h2",
+          "label": "t:options.h2"
+        },
+        {
+          "value": "h3",
+          "label": "t:options.h3"
+        },
+        {
+          "value": "h4",
+          "label": "t:options.h4"
+        },
+        {
+          "value": "h5",
+          "label": "t:options.h5"
+        },
+        {
+          "value": "h6",
+          "label": "t:options.h6"
+        }
+      ],
+      "default": "link",
+      "info": "t:info.edit_presets_in_theme_settings"
+    },
+    {
+      "type": "header",
+      "content": "t:content.popup"
+    },
+    {
+      "type": "select",
+      "id": "behavior",
+      "label": "t:settings.behavior",
+      "options": [
+        {
+          "value": "default",
+          "label": "t:options.default"
+        },
+        {
+          "value": "drawer",
+          "label": "t:options.drawer"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_title",
+      "label": "t:settings.hide_title",
+      "default": false,
+      "info": "t:info.size_guide_hide_title"
+    },
+    {
+      "type": "select",
+      "id": "title_size",
+      "label": "t:settings.title_size",
+      "options": [
+        {
+          "value": "h1",
+          "label": "t:options.h1"
+        },
+        {
+          "value": "h2",
+          "label": "t:options.h2"
+        },
+        {
+          "value": "h3",
+          "label": "t:options.h3"
+        },
+        {
+          "value": "h4",
+          "label": "t:options.h4"
+        },
+        {
+          "value": "h5",
+          "label": "t:options.h5"
+        },
+        {
+          "value": "h6",
+          "label": "t:options.h6"
+        },
+        {
+          "value": "custom",
+          "label": "t:options.custom"
+        }
+      ],
+      "default": "h2",
+      "visible_if": "{{ block.settings.hide_title == false }}"
+    },
+    {
+      "type": "select",
+      "id": "title_font_size",
+      "label": "t:settings.size",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "0.875rem",
+          "label": "14px"
+        },
+        {
+          "value": "1rem",
+          "label": "16px"
+        },
+        {
+          "value": "1.125rem",
+          "label": "18px"
+        },
+        {
+          "value": "1.25rem",
+          "label": "20px"
+        },
+        {
+          "value": "1.5rem",
+          "label": "24px"
+        },
+        {
+          "value": "2rem",
+          "label": "32px"
+        },
+        {
+          "value": "2.5rem",
+          "label": "40px"
+        },
+        {
+          "value": "3rem",
+          "label": "48px"
+        },
+        {
+          "value": "3.5rem",
+          "label": "56px"
+        },
+        {
+          "value": "4.5rem",
+          "label": "72px"
+        }
+      ],
+      "default": "1.5rem",
+      "visible_if": "{{ block.settings.title_size == 'custom' and block.settings.hide_title == false }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.link_padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.size_guide",
+      "category": "t:categories.product",
+      "settings": {
+        "button_text": "Size Guide",
+        "icon": "ruler",
+        "icon_width": 16,
+        "type_preset": "link",
+        "title_size": "h2"
+      }
+    }
+  ]
+}
+{% endschema %}
+

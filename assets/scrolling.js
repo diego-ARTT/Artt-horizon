@@ -196,7 +196,7 @@ export class Scroller {
       return;
     }
 
-    this.#promise = new Promise((resolve) => (this.#resolve = resolve));
+    this.#promise = new Promise(resolve => (this.#resolve = resolve));
   }
 
   #reset = () => {
@@ -238,7 +238,7 @@ export class Scroller {
     /**
      * @param {boolean} userEvent
      */
-    (userEvent) => {
+    userEvent => {
       this.#resolve?.();
       if (userEvent) this.#endCallback();
       this.#reset();
@@ -308,7 +308,10 @@ function calculatePaddingStart(element, axis) {
  * @param {'start' | 'center' | 'end'} [options.inline='start'] - The inline alignment of the element.
  * @param {Element} [options.ancestor] - The ancestor element to scroll into view.
  */
-export function scrollIntoView(element, { ancestor, behavior = 'smooth', block = 'start', inline = 'start' } = {}) {
+export function scrollIntoView(
+  element,
+  { ancestor, behavior = 'smooth', block = 'start', inline = 'start' } = {}
+) {
   if (!ancestor) {
     return element.scrollIntoView({ behavior, block, inline });
   }
@@ -326,7 +329,14 @@ export function scrollIntoView(element, { ancestor, behavior = 'smooth', block =
    * @param {number} currentScroll - The current scroll position.
    * @returns {number} The scroll offset.
    */
-  const calculateScrollOffset = (alignment, ancestorStart, ancestorLength, elemStart, elemLength, currentScroll) => {
+  const calculateScrollOffset = (
+    alignment,
+    ancestorStart,
+    ancestorLength,
+    elemStart,
+    elemLength,
+    currentScroll
+  ) => {
     switch (alignment) {
       case 'start':
         return currentScroll + elemStart - ancestorStart;

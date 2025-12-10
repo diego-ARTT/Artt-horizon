@@ -35,7 +35,7 @@ export function trapFocus(container) {
 
   // Keydown handler for cycling focus with Tab and Shift+Tab
   /** @type {(event: KeyboardEvent) => void} */
-  trapFocusHandlers.keydown = (event) => {
+  trapFocusHandlers.keydown = event => {
     if (event.key !== 'Tab') return;
 
     const activeEl = document.activeElement;
@@ -54,7 +54,7 @@ export function trapFocus(container) {
 
   // Focusin (capturing) handler to forcibly keep focus in the container
   /** @type {(event: FocusEvent) => void} */
-  trapFocusHandlers.focusin = (event) => {
+  trapFocusHandlers.focusin = event => {
     // If the newly focused element isn't inside the container, redirect focus back.
     if (event.target instanceof Node && !container.contains(event.target)) {
       event.stopPropagation();
@@ -76,8 +76,10 @@ export function trapFocus(container) {
  * Remove focus trap and optionally refocus another element.
  */
 export function removeTrapFocus() {
-  trapFocusHandlers.keydown && document.removeEventListener('keydown', trapFocusHandlers.keydown, true);
-  trapFocusHandlers.focusin && document.removeEventListener('focusin', trapFocusHandlers.focusin, true);
+  trapFocusHandlers.keydown &&
+    document.removeEventListener('keydown', trapFocusHandlers.keydown, true);
+  trapFocusHandlers.focusin &&
+    document.removeEventListener('focusin', trapFocusHandlers.focusin, true);
 }
 
 /**
@@ -87,7 +89,7 @@ export function removeTrapFocus() {
  * @param {number} increment
  */
 export function cycleFocus(items, increment) {
-  const currentIndex = items.findIndex((item) => item.matches(':focus'));
+  const currentIndex = items.findIndex(item => item.matches(':focus'));
   let targetIndex = currentIndex + increment;
 
   if (targetIndex >= items.length) {

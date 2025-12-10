@@ -1,6 +1,6 @@
 import { Component } from '@theme/component';
 import { onAnimationEnd } from '@theme/utilities';
-import { ThemeEvents, CartUpdateEvent } from '@theme/events';
+import { ThemeEvents } from '@theme/events';
 
 /**
  * A custom element that displays a cart icon.
@@ -41,7 +41,7 @@ class CartIcon extends Component {
    * Handles the cart update event.
    * @param {CartUpdateEvent} event - The cart update event.
    */
-  onCartUpdate = async (event) => {
+  onCartUpdate = async event => {
     const itemCount = event.detail.data?.itemCount ?? 0;
     const comingFromProductForm = event.detail.data?.source === 'product-form-component';
 
@@ -97,7 +97,7 @@ class CartIcon extends Component {
           this.renderCartBubble(count, false, false);
         }
       }
-    } catch (_) {
+    } catch {
       // no-op
     }
   };

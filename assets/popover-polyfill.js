@@ -106,7 +106,8 @@ function topmostAutoOrHintPopover(document2) {
   let topmostPopover;
   const hintPopovers = hintPopoverList.get(document2) || /* @__PURE__ */ new Set();
   const autoPopovers = autoPopoverList.get(document2) || /* @__PURE__ */ new Set();
-  const usedStack = hintPopovers.size > 0 ? hintPopovers : autoPopovers.size > 0 ? autoPopovers : null;
+  const usedStack =
+    hintPopovers.size > 0 ? hintPopovers : autoPopovers.size > 0 ? autoPopovers : null;
   if (usedStack) {
     topmostPopover = lastSetElement(usedStack);
     if (!topmostPopover.isConnected) {
@@ -136,10 +137,15 @@ function getRootNode(node) {
 }
 function nearestInclusiveOpenPopover(node) {
   while (node) {
-    if (node instanceof HTMLElement && node.popover === 'auto' && visibilityState.get(node) === 'showing') {
+    if (
+      node instanceof HTMLElement &&
+      node.popover === 'auto' &&
+      visibilityState.get(node) === 'showing'
+    ) {
       return node;
     }
-    node = (node instanceof Element && node.assignedSlot) || node.parentElement || getRootNode(node);
+    node =
+      (node instanceof Element && node.assignedSlot) || node.parentElement || getRootNode(node);
     if (node instanceof ShadowRoot) node = node.host;
     if (node instanceof Document) return;
   }
@@ -180,7 +186,10 @@ function topMostPopoverAncestor(newPopover, list) {
       }
     }
     candidatePosition = popoverPositions.get(candidateAncestor);
-    if (topMostPopoverAncestor2 === null || popoverPositions.get(topMostPopoverAncestor2) < candidatePosition) {
+    if (
+      topMostPopoverAncestor2 === null ||
+      popoverPositions.get(topMostPopoverAncestor2) < candidatePosition
+    ) {
       topMostPopoverAncestor2 = candidateAncestor;
     }
   }
@@ -271,10 +280,20 @@ function showPopover(element) {
   let shouldRestoreFocus = false;
   const originalType = element.popover;
   let stackToAppendTo = null;
-  const autoAncestor = topMostPopoverAncestor(element, autoPopoverList.get(document2) || /* @__PURE__ */ new Set());
-  const hintAncestor = topMostPopoverAncestor(element, hintPopoverList.get(document2) || /* @__PURE__ */ new Set());
+  const autoAncestor = topMostPopoverAncestor(
+    element,
+    autoPopoverList.get(document2) || /* @__PURE__ */ new Set()
+  );
+  const hintAncestor = topMostPopoverAncestor(
+    element,
+    hintPopoverList.get(document2) || /* @__PURE__ */ new Set()
+  );
   if (originalType === 'auto') {
-    closeAllOpenPopoversInList(hintPopoverList.get(document2) || /* @__PURE__ */ new Set(), shouldRestoreFocus, true);
+    closeAllOpenPopoversInList(
+      hintPopoverList.get(document2) || /* @__PURE__ */ new Set(),
+      shouldRestoreFocus,
+      true
+    );
     const ancestor = autoAncestor || document2;
     hideAllPopoversUntil(ancestor, shouldRestoreFocus, true);
     stackToAppendTo = 'auto';
@@ -284,7 +303,11 @@ function showPopover(element) {
       hideAllPopoversUntil(hintAncestor, shouldRestoreFocus, true);
       stackToAppendTo = 'hint';
     } else {
-      closeAllOpenPopoversInList(hintPopoverList.get(document2) || /* @__PURE__ */ new Set(), shouldRestoreFocus, true);
+      closeAllOpenPopoversInList(
+        hintPopoverList.get(document2) || /* @__PURE__ */ new Set(),
+        shouldRestoreFocus,
+        true
+      );
       if (autoAncestor) {
         hideAllPopoversUntil(autoAncestor, shouldRestoreFocus, true);
         stackToAppendTo = 'auto';
@@ -340,7 +363,8 @@ function hidePopover(element, focusPreviousElement = false, fireEvents = false) 
     }
   }
   const autoList = autoPopoverList.get(document2) || /* @__PURE__ */ new Set();
-  const autoPopoverListContainsElement = autoList.has(element) && lastSetElement(autoList) === element;
+  const autoPopoverListContainsElement =
+    autoList.has(element) && lastSetElement(autoList) === element;
   setInvokerAriaExpanded(popoverInvoker.get(element), false);
   popoverInvoker.delete(element);
   if (fireEvents) {
@@ -421,7 +445,12 @@ function hideAllPopoversUntil(endpoint, focusPreviousElement, fireEvents) {
     return closeAllOpenPopovers(document2, focusPreviousElement, fireEvents);
   }
   if ((_a = hintPopoverList.get(document2)) == null ? void 0 : _a.has(endpoint)) {
-    hidePopoverStackUntil(endpoint, hintPopoverList.get(document2), focusPreviousElement, fireEvents);
+    hidePopoverStackUntil(
+      endpoint,
+      hintPopoverList.get(document2),
+      focusPreviousElement,
+      fireEvents
+    );
     return;
   }
   closeAllOpenPopoversInList(
@@ -638,7 +667,10 @@ function apply() {
         if (typeof options === 'boolean') {
           options = { force: options };
         }
-        if ((visibilityState.get(this) === 'showing' && options.force === void 0) || options.force === false) {
+        if (
+          (visibilityState.get(this) === 'showing' && options.force === void 0) ||
+          options.force === false
+        ) {
           hidePopover(this, true, true);
         } else if (options.force === void 0 || options.force === true) {
           showPopover(this);
@@ -700,7 +732,12 @@ function apply() {
           if (this.localName !== 'button' && this.localName !== 'input') {
             return null;
           }
-          if (this.localName === 'input' && this.type !== 'reset' && this.type !== 'image' && this.type !== 'button') {
+          if (
+            this.localName === 'input' &&
+            this.type !== 'reset' &&
+            this.type !== 'image' &&
+            this.type !== 'button'
+          ) {
             return null;
           }
           if (this.disabled) {
@@ -740,7 +777,7 @@ function apply() {
   }
   applyPopoverInvokerElementMixin(HTMLButtonElement);
   applyPopoverInvokerElementMixin(HTMLInputElement);
-  const handleInvokerActivation = (event) => {
+  const handleInvokerActivation = event => {
     if (event.defaultPrevented) {
       return;
     }
@@ -753,9 +790,11 @@ function apply() {
     if (!(root instanceof ShadowRoot2 || root instanceof Document)) {
       return;
     }
-    const invoker = composedPath.find((el) => {
+    const invoker = composedPath.find(el => {
       var _a;
-      return (_a = el.matches) == null ? void 0 : _a.call(el, '[popovertargetaction],[popovertarget]');
+      return (_a = el.matches) == null
+        ? void 0
+        : _a.call(el, '[popovertargetaction],[popovertarget]');
     });
     if (invoker) {
       popoverTargetAttributeActivationBehavior(invoker);
@@ -763,14 +802,14 @@ function apply() {
       return;
     }
   };
-  const onKeydown = (event) => {
+  const onKeydown = event => {
     const key = event.key;
     const target = event.target;
     if (!event.defaultPrevented && target && (key === 'Escape' || key === 'Esc')) {
       hideAllPopoversUntil(target.ownerDocument, true, true);
     }
   };
-  const addEventListeners = (root) => {
+  const addEventListeners = root => {
     root.addEventListener('click', handleInvokerActivation);
     root.addEventListener('keydown', onKeydown);
     root.addEventListener('pointerdown', lightDismissOpenPopovers);

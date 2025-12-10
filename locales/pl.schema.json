@@ -174,7 +174,11 @@
     "blog_posts_editorial": "Posty na blogu: artykuł wstępny",
     "excerpt": "Fragment",
     "footer_password": "Stopka na stronie z hasłem",
-    "policies_and_links": "Polityki i linki"
+    "policies_and_links": "Polityki i linki",
+    "column": "Column",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote",
+    "size_guide": "Size guide"
   },
   "settings": {
     "autoplay": "Autoodtwarzanie",
@@ -539,7 +543,23 @@
     "auto_load_products": "Automatyczne ładowanie produktów podczas przewijania",
     "products_per_page": "Produktów na stronę",
     "custom_mobile_media": "Niestandardowe media mobilne",
-    "stack_media_on_mobile": "Układaj media w stos"
+    "stack_media_on_mobile": "Układaj media w stos",
+    "backdrop_blur": "Backdrop blur",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote font size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Border weight",
+    "media_type_1": "Media type",
+    "media_type_2": "Media 2 type",
+    "size_guide": {
+      "button_text": "Button text",
+      "icon": "Icon",
+      "icon_size": "Icon size",
+      "hide_title": "Hide title",
+      "title_size": "Title size"
+    },
+    "block_link": "Block link"
   },
   "options": {
     "adapt_to_image": "Dostosuj do obrazu",
@@ -922,7 +942,14 @@
     "cart_features": "Funkcje koszyka",
     "email_signup": "Rejestracja – mailing",
     "mobile_media": "Media mobilne",
-    "mobile_media_2": "Media mobilne 2"
+    "mobile_media_2": "Media mobilne 2",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo",
+    "button": "Button",
+    "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Udostępnij klientom informacje o swojej marce. Opisz produkt, udostępnij ogłoszenia lub przywitaj klientów w swoim sklepie.</p>",
@@ -1001,7 +1028,11 @@
     "what_is_return_policy": "Jaka jest polityka zwrotów?",
     "when_will_order_arrive": "Kiedy otrzymam moje zamówienie?",
     "where_are_products_made": "Gdzie są produkowane wasze produkty?",
-    "faq": "FAQ"
+    "faq": {
+      "title": "FAQ",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   },
   "info": {
     "video_alt_text": "Opisz film dla użytkowników technologii asystujących",
@@ -1027,7 +1058,10 @@
     "pills_usage": "Używane przez zastosowane filtry, kody rabatowe i sugestie wyszukiwania",
     "hide_logo_on_home_page_help": "Logo pozostanie widoczne, gdy przypięty nagłówek będzie aktywny",
     "media_type_info": "Funkcje są wypełniane na podstawie Twoich linków menu",
-    "logo_height": "Wpływa tylko na logo nagłówka"
+    "logo_height": "Wpływa tylko na logo nagłówka",
+    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "categories": {
     "product_list": "Polecana kolekcja",

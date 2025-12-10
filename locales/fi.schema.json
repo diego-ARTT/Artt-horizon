@@ -174,7 +174,11 @@
     "blog_posts_editorial": "Blogipostaukset: Editoriaali",
     "excerpt": "Ote",
     "footer_password": "Salasanasivun alatunniste",
-    "policies_and_links": "Käytännöt ja linkit"
+    "policies_and_links": "Käytännöt ja linkit",
+    "column": "Column",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote",
+    "size_guide": "Size guide"
   },
   "settings": {
     "alignment": "Tasaus",
@@ -541,7 +545,21 @@
     "custom_mobile_media": "Mukautettu mobiilimedia",
     "stack_media_on_mobile": "Pinoa media",
     "media_type_1": "Median tyyppi",
-    "media_type_2": "Median 2 tyyppi"
+    "media_type_2": "Median 2 tyyppi",
+    "backdrop_blur": "Backdrop blur",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote font size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Border weight",
+    "size_guide": {
+      "button_text": "Button text",
+      "icon": "Icon",
+      "icon_size": "Icon size",
+      "hide_title": "Hide title",
+      "title_size": "Title size"
+    },
+    "block_link": "Block link"
   },
   "options": {
     "adapt_to_image": "Sovita kuvaan",
@@ -925,7 +943,13 @@
     "email_signup": "Sähköpostirekisteröityminen",
     "submissions_are_sent_to_store_email_address": "Lähetykset lähetetään kauppasi [myyjän sähköpostiosoitteeseen](https://admin.shopify.com/settings/notifications)",
     "mobile_media": "Mobiilimedia",
-    "mobile_media_2": "Mobiilimedia 2"
+    "mobile_media_2": "Mobiilimedia 2",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo",
+    "button": "Button"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Kerro brändiäsi koskevia tietoja asiakkaillesi. Kuvaile tuotetta, jaa ilmoituksia tai toivota asiakkaat tervetulleiksi kauppaasi.</p>",
@@ -1004,7 +1028,11 @@
     "what_is_return_policy": "Mikä on palautuskäytäntö?",
     "when_will_order_arrive": "Milloin saan tilaukseni?",
     "where_are_products_made": "Missä tuotteenne valmistetaan?",
-    "faq": "UKK"
+    "faq": {
+      "title": "UKK",
+      "item_heading": "Item heading",
+      "item_content": "Item content"
+    }
   },
   "info": {
     "carousel_layout_on_mobile": "Karusellia käytetään mobiililaitteessa",
@@ -1030,7 +1058,10 @@
     "hover_effects": "Käytetään tuote- ja kokoelmakorteissa",
     "hide_logo_on_home_page_help": "Logo pysyy näkyvissä, kun paikallaan pysyvä ylätunniste on aktiivinen",
     "media_type_info": "Ominaisuudet täytetään valikkolinkeistäsi",
-    "logo_height": "Vaikuttaa vain ylätunnisteen logoon"
+    "logo_height": "Vaikuttaa vain ylätunnisteen logoon",
+    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
+    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
+    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
   },
   "categories": {
     "basic": "Basic",

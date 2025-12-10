@@ -1,5 +1,5 @@
 import { Component } from '@theme/component';
-import { ThemeEvents, VariantUpdateEvent, ZoomMediaSelectedEvent } from '@theme/events';
+import { ThemeEvents } from '@theme/events';
 
 /**
  * A custom element that renders a media gallery.
@@ -19,9 +19,13 @@ export class MediaGallery extends Component {
     const target = this.closest('.shopify-section, dialog');
 
     target?.addEventListener(ThemeEvents.variantUpdate, this.#handleVariantUpdate, { signal });
-    this.refs.zoomDialogComponent?.addEventListener(ThemeEvents.zoomMediaSelected, this.#handleZoomMediaSelected, {
-      signal,
-    });
+    this.refs.zoomDialogComponent?.addEventListener(
+      ThemeEvents.zoomMediaSelected,
+      this.#handleZoomMediaSelected,
+      {
+        signal,
+      }
+    );
   }
 
   #controller = new AbortController();
@@ -37,7 +41,7 @@ export class MediaGallery extends Component {
    *
    * @param {VariantUpdateEvent} event - The variant update event.
    */
-  #handleVariantUpdate = (event) => {
+  #handleVariantUpdate = event => {
     const source = event.detail.data.html;
 
     if (!source) return;
@@ -52,7 +56,7 @@ export class MediaGallery extends Component {
    * Handles the 'zoom-media:selected' event.
    * @param {ZoomMediaSelectedEvent} event - The zoom-media:selected event.
    */
-  #handleZoomMediaSelected = async (event) => {
+  #handleZoomMediaSelected = async event => {
     this.slideshow?.select(event.detail.index, undefined, { animate: false });
   };
 

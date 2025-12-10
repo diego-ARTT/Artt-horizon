@@ -58,9 +58,11 @@ export class ZoomDialog extends Component {
     };
 
     /** @type {HTMLElement | null} */
-    const sourceImage = event.target instanceof Element ? event.target.closest('li,slideshow-slide') : null;
+    const sourceImage =
+      event.target instanceof Element ? event.target.closest('li,slideshow-slide') : null;
 
-    if (!supportsViewTransitions() || isLowPowerDevice() || !sourceImage || !targetImage) return open();
+    if (!supportsViewTransitions() || isLowPowerDevice() || !sourceImage || !targetImage)
+      return open();
 
     const transitionName = `gallery-item`;
     sourceImage.style.setProperty('view-transition-name', transitionName);
@@ -147,7 +149,9 @@ export class ZoomDialog extends Component {
 
     const slideshowActive = mediaGallery?.presentation === 'carousel';
 
-    const slide = slideshowActive ? mediaGallery.slideshow?.slides?.[activeIndex] : mediaGallery?.media?.[activeIndex];
+    const slide = slideshowActive
+      ? mediaGallery.slideshow?.slides?.[activeIndex]
+      : mediaGallery?.media?.[activeIndex];
 
     if (!slide) return this.closeDialog();
 
@@ -256,9 +260,9 @@ if (!customElements.get('zoom-dialog')) {
  * @returns {Promise<HTMLElement>} A promise that resolves to the most visible element.
  */
 function getMostVisibleElement(elements) {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const observer = new IntersectionObserver(
-      (entries) => {
+      entries => {
         const mostVisible = entries.reduce((prev, current) =>
           current.intersectionRatio > prev.intersectionRatio ? current : prev
         );

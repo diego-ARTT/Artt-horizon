@@ -210,7 +210,8 @@ export class QuantitySelectorComponent extends Component {
    */
   selectInputValue(event) {
     const { quantityInput } = this.refs;
-    if (!(event.target instanceof HTMLInputElement) || document.activeElement !== quantityInput) return;
+    if (!(event.target instanceof HTMLInputElement) || document.activeElement !== quantityInput)
+      return;
 
     quantityInput.select();
   }
@@ -254,7 +255,9 @@ export class QuantitySelectorComponent extends Component {
     const { quantityInput } = this.refs;
     const newValue = parseInt(quantityInput.value);
 
-    quantityInput.dispatchEvent(new QuantitySelectorUpdateEvent(newValue, Number(quantityInput.dataset.cartLine)));
+    quantityInput.dispatchEvent(
+      new QuantitySelectorUpdateEvent(newValue, Number(quantityInput.dataset.cartLine))
+    );
   }
 
   /**
@@ -267,10 +270,7 @@ export class QuantitySelectorComponent extends Component {
     const effectiveMax = this.getEffectiveMax();
 
     // Clamp value to new effective max if necessary
-    const clampedValue = Math.min(
-      effectiveMax ?? Infinity,
-      Math.max(min, value)
-    );
+    const clampedValue = Math.min(effectiveMax ?? Infinity, Math.max(min, value));
 
     if (clampedValue !== value) {
       quantityInput.value = clampedValue.toString();
@@ -285,7 +285,9 @@ export class QuantitySelectorComponent extends Component {
    */
   get quantityInput() {
     if (!this.refs.quantityInput) {
-      throw new Error('Missing <input ref="quantityInput" /> inside <quantity-selector-component />');
+      throw new Error(
+        'Missing <input ref="quantityInput" /> inside <quantity-selector-component />'
+      );
     }
 
     return this.refs.quantityInput;

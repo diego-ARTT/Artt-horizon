@@ -26,8 +26,8 @@ class JumboText extends HTMLElement {
   #setIntersectionObserver() {
     // The threshold could be different based on the repetition of the animation.
     this.intersectionObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             this.classList.add('jumbo-text-visible');
             if (this.dataset.animationRepeat === 'false') {
@@ -117,7 +117,10 @@ function findOptimalFontSize(element, containerWidth) {
 
   // Initial guess based on container width and text length
   const textLength = element.textContent?.length || 0;
-  let fontSize = Math.min(maxSize, Math.sqrt(containerWidth) * (15 / Math.sqrt(Math.max(1, textLength))));
+  let fontSize = Math.min(
+    maxSize,
+    Math.sqrt(containerWidth) * (15 / Math.sqrt(Math.max(1, textLength)))
+  );
 
   // Adjust initial bounds based on first check
   if (checkTextOverflow(element, containerWidth, fontSize)) {

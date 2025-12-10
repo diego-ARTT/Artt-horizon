@@ -10,22 +10,26 @@
   /**
    * @param {PageSwapEvent} event
    */
-  window.addEventListener('pageswap', async (event) => {
+  window.addEventListener('pageswap', async event => {
     if (!hasViewTransition(event)) return;
 
     const { viewTransition } = event;
 
     // Cancel view transition on user interaction to improve INP (Interaction to Next Paint)
     ['pointerdown', 'keydown'].forEach(eventName => {
-      document.addEventListener(eventName, () => {
-        viewTransition.skipTransition();
-      }, { once: true });
+      document.addEventListener(
+        eventName,
+        () => {
+          viewTransition.skipTransition();
+        },
+        { once: true }
+      );
     });
 
     // Clean in case you landed on the pdp first. We want to remove the default transition type on the PDP media gallery so there is no duplicate transition name
     document
       .querySelectorAll('[data-view-transition-type]:not([data-view-transition-triggered])')
-      .forEach((element) => {
+      .forEach(element => {
         element.removeAttribute('data-view-transition-type');
       });
 
@@ -46,7 +50,7 @@
   /**
    * @param {PageRevealEvent} event
    */
-  window.addEventListener('pagereveal', async (event) => {
+  window.addEventListener('pagereveal', async event => {
     if (!hasViewTransition(event)) return;
 
     const { viewTransition } = event;
@@ -63,7 +67,7 @@
 
       idleCallback(() => {
         sessionStorage.removeItem('custom-transition-type');
-        document.querySelectorAll('[data-view-transition-type]').forEach((element) => {
+        document.querySelectorAll('[data-view-transition-type]').forEach(element => {
           element.removeAttribute('data-view-transition-type');
         });
       });
