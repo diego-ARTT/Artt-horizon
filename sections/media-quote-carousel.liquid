@@ -279,6 +279,7 @@ role="region" aria-roledescription="carousel" aria-live="{% if autoplay_enabled 
   .media-quote-carousel__logo-image {
     max-height: var(--logo-max-height, clamp(1.75rem, 3vw, 2.5rem));
     width: auto;
+    filter:invert(100%);
   }
 
   .media-quote-carousel__outlet {
@@ -364,6 +365,7 @@ role="region" aria-roledescription="carousel" aria-live="{% if autoplay_enabled 
 
     .media-quote-carousel__slide {
       padding: clamp(1.25rem, 6vw, 2rem);
+      padding-bottom:0;
     }
   }
 
