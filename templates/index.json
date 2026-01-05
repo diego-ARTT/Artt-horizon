@@ -461,7 +461,7 @@
         "quote_rH7YNc"
       ],
       "custom_css": [
-        ".media-quote-carousel__logo-image{}"
+        ".media-quote-carousel__logo-image {}"
       ],
       "name": "t:names.media_quote_carousel",
       "settings": {
