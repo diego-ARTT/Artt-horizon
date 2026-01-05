@@ -460,9 +460,7 @@
         "quote_c4wVnA",
         "quote_rH7YNc"
       ],
-      "custom_css": [
-        ".media-quote-carousel__logo-image {}"
-      ],
+      "custom_css": [],
       "name": "t:names.media_quote_carousel",
       "settings": {
         "heading": "",
