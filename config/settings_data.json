@@ -156,6 +156,11 @@
         "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
         "disabled": false,
         "settings": {}
+      },
+      "15710897563947040993": {
+        "type": "shopify://apps/avada-boost-sales-trust-badge/blocks/app-embed/45454b7f-f6a7-4852-b770-8e0c3992a226",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_schemes": {
