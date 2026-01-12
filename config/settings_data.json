@@ -161,6 +161,11 @@
         "type": "shopify://apps/avada-boost-sales-trust-badge/blocks/app-embed/45454b7f-f6a7-4852-b770-8e0c3992a226",
         "disabled": false,
         "settings": {}
+      },
+      "6143736321357441667": {
+        "type": "shopify://apps/tidio-live-chat-chatbots/blocks/app-embed/1002274d-fb18-4939-98f6-5f05a8deeadc",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_schemes": {
