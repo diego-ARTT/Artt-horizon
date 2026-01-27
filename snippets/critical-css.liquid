@@ -1,0 +1,434 @@
+<style>
+  /* Critical CSS - Above the Fold Styles */
+  /* Reset & Base */
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--color-foreground-rgb) / var(--opacity-40)) var(--color-background);
+    scroll-behavior: smooth;
+  }
+
+  html[scroll-lock] {
+    overflow: hidden;
+  }
+
+  body {
+    color: var(--color-foreground);
+    background: var(--color-background);
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    min-height: 100svh;
+    font-variation-settings: 'slnt' 0;
+    font-family: var(--font-paragraph--family);
+    font-style: var(--font-paragraph--style);
+    font-weight: var(--font-paragraph--weight);
+    font-size: var(--font-paragraph--size);
+    line-height: var(--font-paragraph--line-height);
+    text-transform: var(--font-paragraph--case);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Layout */
+  .content-for-layout {
+    flex: 1;
+  }
+
+  /* Page width variables */
+  .page-width-wide,
+  .page-width-normal,
+  .page-width-narrow,
+  .page-width-content {
+    --page-margin: 16px;
+  }
+
+  @media screen and (width >= 750px) {
+    .page-width-wide,
+    .page-width-normal,
+    .page-width-narrow,
+    .page-width-content {
+      --page-margin: 40px;
+    }
+  }
+
+  .page-width-wide {
+    --page-content-width: var(--wide-page-width);
+    --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+  }
+
+  .page-width-normal {
+    --page-content-width: var(--normal-page-width);
+    --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+  }
+
+  .page-width-narrow,
+  .page-width-content {
+    --page-content-width: var(--narrow-page-width);
+    --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2));
+  }
+
+  .page-width-content {
+    --page-content-width: var(--normal-content-width);
+  }
+
+  /* Section Grid Layout */
+  .section {
+    --full-page-grid-central-column-width: min(
+      var(--page-width) - var(--page-margin) * 2,
+      calc(100% - var(--page-margin) * 2)
+    );
+    --full-page-grid-margin: minmax(var(--page-margin), 1fr);
+    --full-page-grid-with-margins: var(--full-page-grid-margin)
+      var(--full-page-grid-central-column-width) var(--full-page-grid-margin);
+    --util-page-margin-offset: max(
+      var(--page-margin),
+      calc((100% - min(var(--page-content-width), calc(100% - (var(--page-margin) * 2)))) / 2)
+    );
+    width: 100%;
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--full-page-grid-with-margins);
+    min-height: var(--section-min-height, 'auto');
+  }
+
+  .section > * {
+    grid-column: 2;
+  }
+
+  .section--page-width > * {
+    grid-column: 2;
+  }
+
+  .section--full-width > * {
+    grid-column: 1 / -1;
+  }
+
+  .shopify-section:not(.header-section) :is(.section, .cart__summary-container) {
+    background: transparent;
+  }
+
+  .shopify-section:not(.header-section):has(.section) {
+    position: relative;
+  }
+
+  .shopify-section:not(.header-section) .section-background {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: var(--layer-section-background);
+  }
+
+  /* Typography */
+  h1,
+  .h1.h1 {
+    font-family: var(--font-h1--family);
+    font-style: var(--font-h1--style);
+    font-weight: var(--font-h1--weight);
+    font-size: var(--font-h1--size);
+    line-height: var(--font-h1--line-height);
+    letter-spacing: var(--font-h1--letter-spacing);
+    text-transform: var(--font-h1--case);
+    color: var(--color, var(--font-h1-color));
+  }
+
+  h2,
+  .h2.h2 {
+    font-family: var(--font-h2--family);
+    font-style: var(--font-h2--style);
+    font-weight: var(--font-h2--weight);
+    font-size: var(--font-h2--size);
+    line-height: var(--font-h2--line-height);
+    letter-spacing: var(--font-h2--letter-spacing);
+    text-transform: var(--font-h2--case);
+    color: var(--color, var(--font-h2-color));
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
+
+  p:empty {
+    display: none;
+  }
+
+  /* Images */
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Utility Classes */
+  .hidden {
+    display: none !important;
+  }
+
+  @media screen and (width <= 749px) {
+    .hidden--mobile,
+    .mobile\:hidden {
+      display: none !important;
+    }
+  }
+
+  @media screen and (width >= 750px) {
+    .hidden--desktop,
+    .desktop\:hidden {
+      display: none !important;
+    }
+  }
+
+  .visually-hidden:not(:focus, :active) {
+    position: absolute !important;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip-path: inset(50%);
+    overflow-wrap: normal !important;
+  }
+
+  .text-center {
+    --text-align: center;
+    text-align: center;
+  }
+
+  .text-left {
+    --text-align: left;
+    text-align: left;
+  }
+
+  .text-right {
+    --text-align: right;
+    text-align: right;
+  }
+
+  /* Focus States */
+  *:focus-visible {
+    outline: var(--focus-outline-width) solid currentcolor;
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  @supports not selector(:focus-visible) {
+    *:focus {
+      outline: var(--focus-outline-width) solid currentcolor;
+      outline-offset: var(--focus-outline-offset);
+    }
+  }
+
+  .focus-inset {
+    outline-offset: calc(var(--focus-outline-width) * -1);
+  }
+
+  /* Skip to Content Link */
+  .skip-to-content-link {
+    position: absolute;
+    overflow: hidden;
+    height: 1px;
+    left: -99999px;
+    overflow-wrap: normal !important;
+  }
+
+  .skip-to-content-link:focus {
+    z-index: var(--layer-temporary);
+    overflow: auto;
+    width: auto;
+    height: auto;
+    padding: var(--padding-lg) var(--padding-4xl);
+    left: var(--margin-lg);
+    top: var(--margin-lg);
+    background-color: var(--color-background);
+    box-shadow: 0 0 0 var(--focus-outline-offset) var(--color-background);
+  }
+
+  /* Form Elements */
+  input,
+  textarea,
+  select {
+    font: inherit;
+    border-radius: var(--style-border-radius-inputs);
+  }
+
+  input:hover {
+    background-color: var(--color-input-hover-background);
+  }
+
+  select {
+    background-color: var(--color-background);
+    color: currentcolor;
+  }
+
+  /* Dialog/Modal Base */
+  dialog {
+    --backdrop-color-rgb: var(--color-shadow-rgb);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  /* List reset */
+  .list-unstyled {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Flex utilities */
+  .flex {
+    display: flex;
+    gap: var(--gap-md);
+  }
+
+  .contents {
+    display: contents;
+  }
+
+  .relative {
+    position: relative;
+  }
+
+  /* Background Images */
+  .background-image-container {
+    overflow: hidden;
+    position: absolute;
+    inset: 0;
+    opacity: var(--image-opacity);
+  }
+
+  .background-image-container img,
+  .background-image-container svg {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Header & Navigation - Critical for mobile menu */
+  body:has(.header[transparent]) .content-for-layout > .shopify-section:first-child {
+    margin-top: calc(var(--header-group-height) * -1);
+  }
+
+  body:has(.header[transparent]) #header-group > .header-section {
+    z-index: var(--layer-sticky);
+  }
+
+  body:has(.header[transparent]) #header-group > *:not(.header-section) {
+    z-index: calc(var(--layer-sticky) - 1);
+  }
+
+  /* Drawer Base Styles - Critical for mobile menu */
+  .drawer {
+    background-color: var(--color-background);
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    z-index: var(--layer-raised);
+    transform: translateX(-120%);
+    transition: transform var(--animation-speed) var(--animation-easing);
+  }
+
+  .drawer[data-open='true'] {
+    transform: translateX(0);
+  }
+
+  .drawer-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .drawer__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--drawer-header-block-padding) var(--drawer-inline-padding);
+  }
+
+  .drawer__title {
+    font-size: var(--font-h2--size);
+    margin: 0;
+  }
+
+  .drawer__close {
+    width: var(--minimum-touch-target);
+    height: var(--minimum-touch-target);
+  }
+
+  .drawer__content {
+    display: block;
+    padding: var(--drawer-content-block-padding) var(--drawer-inline-padding);
+    width: 100%;
+  }
+
+  /* Dialog Drawer - Critical for mobile menu overlay */
+  .dialog-drawer {
+    --dialog-drawer-opening-animation: slide-in-left;
+    --dialog-drawer-closing-animation: slide-out-left;
+  }
+
+  .dialog-drawer--right {
+    --dialog-drawer-opening-animation: slide-in-right;
+    --dialog-drawer-closing-animation: slide-out-right;
+  }
+
+  .dialog-drawer[open] {
+    animation: var(--dialog-drawer-opening-animation) var(--animation-speed) var(--animation-easing)
+      forwards;
+  }
+
+  .dialog-drawer.dialog-closing {
+    animation: var(--dialog-drawer-closing-animation) var(--animation-speed) var(--animation-easing);
+  }
+
+  .dialog-drawer::backdrop {
+    backdrop-filter: blur(var(--drawer-backdrop-blur, 8px)) brightness(1);
+    background: rgb(var(--backdrop-color-rgb) / var(--backdrop-opacity));
+    transition:
+      backdrop-filter var(--animation-speed) var(--animation-easing),
+      opacity var(--animation-speed) var(--animation-easing);
+  }
+
+  .dialog-drawer[open]::backdrop {
+    animation: backdrop-filter var(--animation-speed) var(--animation-easing) forwards;
+  }
+
+  .dialog-drawer.dialog-closing::backdrop {
+    opacity: 0;
+  }
+
+  /* Details/Summary - For accordions and dropdowns */
+  details[open] .summary-closed {
+    display: none;
+  }
+
+  details:not([open]) .summary-open {
+    display: none;
+  }
+
+  details[open] > summary .icon-animated > svg {
+    transform: rotate(180deg);
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

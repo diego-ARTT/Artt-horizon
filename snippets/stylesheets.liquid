@@ -1,2 +1,26 @@
-{{ 'overflow-list.css' | asset_url | preload_tag: as: 'style' }}
-{{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
+{% comment %}
+  Async CSS loading pattern:
+  1. Preload base.css with fetchpriority low
+  2. Load with media="print" trick to prevent render blocking
+  3. Use onload handler to switch to media="all"
+  4. Provide noscript fallback
+{% endcomment %}
+
+{%- liquid
+  assign base_css_url = 'base.css' | asset_url
+  assign overflow_list_css_url = 'overflow-list.css' | asset_url
+-%}
+
+{%- comment -%} Preload for faster discovery {%- endcomment -%}
+<link rel="preload" href="{{ base_css_url }}" as="style" fetchpriority="low">
+<link rel="preload" href="{{ overflow_list_css_url }}" as="style" fetchpriority="low">
+
+{%- comment -%} Async loading with media print trick {%- endcomment -%}
+<link rel="stylesheet" href="{{ overflow_list_css_url }}" media="print" onload="this.media='all';this.onload=null;">
+<link rel="stylesheet" href="{{ base_css_url }}" media="print" onload="this.media='all';this.onload=null;">
+
+{%- comment -%} Fallback for browsers with JavaScript disabled {%- endcomment -%}
+<noscript>
+  <link rel="stylesheet" href="{{ overflow_list_css_url }}">
+  <link rel="stylesheet" href="{{ base_css_url }}">
+</noscript>
