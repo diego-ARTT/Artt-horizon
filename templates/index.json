@@ -56,7 +56,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<p>Heat for the coldest month</p>",
+                "text": "<p>No Roses. Just Heat.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",

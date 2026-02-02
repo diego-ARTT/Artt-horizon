@@ -13,11 +13,10 @@
   "sections": {
     "header_marquee_98qecc": {
       "type": "header-marquee",
-      "disabled": true,
       "name": "t:names.marquee",
       "settings": {
         "enable_marquee": true,
-        "message": "December never got any better – Gift art. Not things. Up to 40% OFF //",
+        "message": "FOR LOVERS & HEARTBREAKERS — UP TO 40% OFF ///",
         "text_size": "small",
         "link": "",
         "speed": 40,
