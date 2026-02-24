@@ -1235,12 +1235,24 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "custom_liquid_dbVdgq": {
+      "type": "custom-liquid",
+      "name": "t:names.custom_liquid",
+      "settings": {
+        "custom_liquid": "<!-- BEGIN MerchantWidget Code -->\n\n<script id='merchantWidgetScript'\n\n        src=\"https://www.gstatic.com/shopping/merchant/merchantwidget.js\"\n\n        defer>\n\n</script>\n\n<script type=\"text/javascript\">\n\n  merchantWidgetScript.addEventListener('load', function () {\n\n    merchantwidget.start({\n\n     position: 'LEFT_BOTTOM'\n\n   });\n\n  });\n\n</script>\n\n<!-- END MerchantWidget Code -->",
+        "color_scheme": "",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
     "main",
     "17708710206a711dd8",
     "product_recommendations_qggXJq",
-    "1762667559af628af6"
+    "1762667559af628af6",
+    "custom_liquid_dbVdgq"
   ]
 }
