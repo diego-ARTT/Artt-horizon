@@ -1,22 +1,30 @@
 (function () {
-  //Remove the view transition render blocker if the user has reduced motion enabled
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const viewTransitionRenderBlocker = document.getElementById('view-transition-render-blocker');
-    if (viewTransitionRenderBlocker) viewTransitionRenderBlocker.remove();
+  const viewTransitionRenderBlocker = document.getElementById('view-transition-render-blocker');
+  // Remove the view transition render blocker if the user has reduced motion enabled or is on a low power device.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || isLowPowerDevice()) {
+    viewTransitionRenderBlocker?.remove();
+  } else {
+    // If the browser didn't manage to parse the main content quickly, at least let the user see something.
+    // We're aiming for the FCP to be under 1.8 seconds since the navigation started.
+    const RENDER_BLOCKER_TIMEOUT_MS = Math.max(0, 1800 - performance.now());
+
+    setTimeout(() => {
+      viewTransitionRenderBlocker?.remove();
+    }, RENDER_BLOCKER_TIMEOUT_MS);
   }
 
   const idleCallback = typeof requestIdleCallback === 'function' ? requestIdleCallback : setTimeout;
 
-  /**
-   * @param {PageSwapEvent} event
-   */
-  window.addEventListener('pageswap', async event => {
-    if (!hasViewTransition(event)) return;
+  window.addEventListener('pageswap', async (event) => {
+    const { viewTransition } = /** @type {PageSwapEvent} */ (event);
 
-    const { viewTransition } = event;
+    if (shouldSkipViewTransition(viewTransition)) {
+      /** @type {ViewTransition | null} */ (viewTransition)?.skipTransition();
+      return;
+    }
 
     // Cancel view transition on user interaction to improve INP (Interaction to Next Paint)
-    ['pointerdown', 'keydown'].forEach(eventName => {
+    ['pointerdown', 'keydown'].forEach((eventName) => {
       document.addEventListener(
         eventName,
         () => {
@@ -29,7 +37,7 @@
     // Clean in case you landed on the pdp first. We want to remove the default transition type on the PDP media gallery so there is no duplicate transition name
     document
       .querySelectorAll('[data-view-transition-type]:not([data-view-transition-triggered])')
-      .forEach(element => {
+      .forEach((element) => {
         element.removeAttribute('data-view-transition-type');
       });
 
@@ -47,13 +55,14 @@
     }
   });
 
-  /**
-   * @param {PageRevealEvent} event
-   */
-  window.addEventListener('pagereveal', async event => {
-    if (!hasViewTransition(event)) return;
+  window.addEventListener('pagereveal', async (event) => {
+    const { viewTransition } = /** @type {PageRevealEvent} */ (event);
 
-    const { viewTransition } = event;
+    if (shouldSkipViewTransition(viewTransition)) {
+      /** @type {ViewTransition | null} */ (viewTransition)?.skipTransition();
+      return;
+    }
+
     const customTransitionType = sessionStorage.getItem('custom-transition-type');
 
     if (customTransitionType) {
@@ -67,7 +76,7 @@
 
       idleCallback(() => {
         sessionStorage.removeItem('custom-transition-type');
-        document.querySelectorAll('[data-view-transition-type]').forEach(element => {
+        document.querySelectorAll('[data-view-transition-type]').forEach((element) => {
           element.removeAttribute('data-view-transition-type');
         });
       });
@@ -78,14 +87,19 @@
   });
 
   /**
-   * Checks whether an Event object is carrying a `viewTransition` property
-   * (as used by the View Transition API) and narrows the type accordingly.
-   *
-   * @template {Event} T
-   * @param {T} event
-   * @returns {event is T & { viewTransition: ViewTransition }}
+   * @param {ViewTransition | null} viewTransition
+   * @returns {viewTransition is null}
    */
-  function hasViewTransition(event) {
-    return 'viewTransition' in event && event.viewTransition instanceof ViewTransition;
+  function shouldSkipViewTransition(viewTransition) {
+    return !(viewTransition instanceof ViewTransition) || isLowPowerDevice();
+  }
+
+  /*
+   * We can't import this logic from utilities.js here, but we should keep them in sync.
+   */
+  function isLowPowerDevice() {
+    /* Skip ESLint compatibility check. Number(undefined) <= 2 is always false anyway. */
+    // eslint-disable-next-line no-undef
+    return Number(navigator.hardwareConcurrency) <= 2 || Number(navigator.deviceMemory) <= 2;
   }
 })();

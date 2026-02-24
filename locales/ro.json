@@ -16,7 +16,8 @@
       "post_success": "Îți mulțumim că ne-ai contactat. Vom reveni cât mai curând posibil.",
       "error_heading": "Ajustează următoarele:"
     },
-    "payment_methods": "Metode de plată"
+    "payment_methods": "Metode de plată",
+    "slider_label": "Cursor"
   },
   "accessibility": {
     "play_model": "Redă modelul 3D",
@@ -61,7 +62,12 @@
     "quantity": "Cantitate",
     "rating": "Evaluarea acestui produs este de {{ rating }} din 5",
     "nested_product": "{{ product_title }} pentru {{ parent_title }}",
-    "discount_menu": "Coduri de reduceri"
+    "discount_menu": "Coduri de reduceri",
+    "remove": "Elimină",
+    "view_pricing_info": "Vezi informațiile de tarifare",
+    "open_hotspot": "Pornește hotspot",
+    "slideshow": "Prezentare de diapozitive",
+    "header_navigation_label": "principală"
   },
   "actions": {
     "add_to_cart": "Adaugă în coș",
@@ -239,13 +245,30 @@
       "next": "Următorul",
       "page": "Pagina {{ page }}"
     },
-    "share_information_about_your": "Share information about your brand with your customers",
-    "media_quote_carousel": "Media Quote Carousel",
-    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
-    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
-    "media_quote_logo_alt": "Media outlet logo",
-    "button": "Button",
-    "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)"
+    "volume_pricing_available": "Tarifarea în funcție de volum este disponibilă",
+    "volume_pricing": "Tarifare în funcție de volum",
+    "at_price_each": "la {{ price }}/buc.",
+    "each": "{{ price }}/buc.",
+    "each_abbreviation": "buc.",
+    "price_at": "la",
+    "price_range": "Intervalul de prețuri",
+    "cancel": "Anulează",
+    "product_subtotal": "Subtotal produs",
+    "quantity_per_item": "/buc",
+    "remove_all": "Elimină tot",
+    "remove_all_items_confirmation": "Elimini toate cele {{ count }} articole din coș?",
+    "remove_one_item_confirmation": "Elimini 1 articol din coș?",
+    "total_items": "Total articole",
+    "variant": "Variantă",
+    "variant_total": "Total variantă",
+    "view_cart": "Vizualizează coșul",
+    "your_cart": "Coșul tău",
+    "items_added_to_cart": {
+      "one": "1 articol a fost adăugat în coș",
+      "other": "{{ count }} articole au fost adăugate în coș",
+      "few": "{{ count }} articole au fost adăugate în coș"
+    },
+    "item_count_cutoff": "Peste {{ count }} articole"
   },
   "gift_cards": {
     "issued": {
@@ -260,36 +283,6 @@
       "copy_code_success": "Codul a fost copiat cu succes",
       "expired": "Expirat"
     }
-  },
-  "placeholders": {
-    "password": "Parolă",
-    "search": "Caută",
-    "product_title": "Titlul produsului",
-    "collection_title": "Titlul colecției",
-    "blog_posts": "Postări pe blog",
-    "blog_post_title": "Titlu",
-    "blog_post_author": "Autor",
-    "blog_post_date": "Data",
-    "blog_post_description": "Un fragment din postarea pe blog"
-  },
-  "products": {
-    "product": {
-      "add_to_cart": "Adaugă în coș",
-      "added_to_cart": "Adăugat în coș",
-      "adding_to_cart": "Se adaugă...",
-      "add_to_cart_error": "Eroare la adăugarea în coș",
-      "sold_out": "Stoc epuizat",
-      "unavailable": "Indisponibil",
-      "quantity_error_max": "Acest produs are un maxim de {{ maximum }}",
-      "quantity": "Cantitate",
-      "quantity_increments": "Incrementări de {{ increment }}",
-      "quantity_minimum": "Minim {{ minimum }}",
-      "quantity_maximum": "Maxim {{ maximum }}",
-      "in_cart": "în coș"
-    }
-  },
-  "fields": {
-    "separator": "la"
   },
   "blogs": {
     "article": {
@@ -312,32 +305,36 @@
       "success": "Comentariu postat"
     }
   },
-  "info": {
-    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
-    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
-    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
+  "fields": {
+    "separator": "la"
   },
-  "names": {
-    "column": "Column",
-    "media_quote_carousel": "Media quote carousel",
-    "media_quote_carousel_block": "Quote",
-    "size_guide": "Size guide"
+  "placeholders": {
+    "password": "Parolă",
+    "search": "Caută",
+    "product_title": "Titlul produsului",
+    "collection_title": "Titlul colecției",
+    "blog_posts": "Postări pe blog",
+    "blog_post_title": "Titlu",
+    "blog_post_author": "Autor",
+    "blog_post_date": "Data",
+    "blog_post_description": "Un fragment din postarea pe blog"
   },
-  "settings": {
-    "backdrop_blur": "Backdrop blur",
-    "logo_max_height": "Logo max height",
-    "quote_alignment": "Quote alignment",
-    "quote_font_size": "Quote font size",
-    "slide_background_style": "Slide background",
-    "slide_border_weight": "Border weight",
-    "media_type_1": "Media type",
-    "media_type_2": "Media 2 type",
-    "size_guide": {
-      "button_text": "Button text",
-      "icon": "Icon",
-      "icon_size": "Icon size",
-      "hide_title": "Hide title",
-      "title_size": "Title size"
+  "products": {
+    "product": {
+      "add_to_cart": "Adaugă în coș",
+      "adding_to_cart": "Se adaugă...",
+      "added_to_cart": "Adăugat în coș",
+      "add_to_cart_error": "Eroare la adăugarea în coș",
+      "quantity_error_max": "Acest articol are maxim {{ maximum }}",
+      "sold_out": "Stoc epuizat",
+      "unavailable": "Indisponibil",
+      "quantity": "Cantitate",
+      "quantity_increments": "Creșteri de {{ increment }}",
+      "quantity_minimum": "Minim {{ minimum }}",
+      "quantity_maximum": "Maxim {{ maximum }}",
+      "in_cart": "în coș",
+      "default_title": "Titlu implicit",
+      "sticky_add_to_cart": "Bara de adăugare rapidă în coș"
     }
   }
 }

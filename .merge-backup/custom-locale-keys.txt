@@ -1,0 +1,19 @@
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo"
+  },
+  "html_defaults": {
+    "join_our_email_list": "<h2>Join our email list</h2>",
+    "get_exclusive_deals_and_early_access_to_new_products": "<p>Get exclusive deals and early access to new products.</p>",
+    "bestseller_h2": "<h2>Bestsellers</h2>",
+    "bestseller_h3": "<h3>Bestsellers</h3>",
+--
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote",
+    "media_with_text": "Media with text",
+    "menu": "Menu",
+    "mobile_layout": "Mobile layout",
+    "multicolumn": "Multicolumn",
+    "rich_text_section": "Rich text",
+    "overlapping_blocks": "Overlapping blocks",

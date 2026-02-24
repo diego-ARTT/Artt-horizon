@@ -16,7 +16,8 @@
       "comment": "Commentaire",
       "post_success": "Merci de nous avoir contactés. Nous vous répondrons dès que possible.",
       "error_heading": "Veuillez ajuster les éléments suivants :"
-    }
+    },
+    "slider_label": "Carrousel"
   },
   "accessibility": {
     "play_model": "Jouer le modèle 3D",
@@ -61,7 +62,12 @@
     "increase_quantity": "Augmenter la quantité",
     "quantity": "Quantité",
     "rating": "La note de ce produit est {{ rating }} sur 5",
-    "nested_product": "{{ product_title }} pour {{ parent_title }}"
+    "nested_product": "{{ product_title }} pour {{ parent_title }}",
+    "remove": "Retirer",
+    "view_pricing_info": "Afficher les informations de tarification",
+    "open_hotspot": "Ouvrir le point d’accès",
+    "slideshow": "Diaporama",
+    "header_navigation_label": "Principale"
   },
   "actions": {
     "add_to_cart": "Ajouter au panier",
@@ -239,13 +245,30 @@
       "next": "Suivant",
       "page": "Page {{ page }}"
     },
-    "share_information_about_your": "Share information about your brand with your customers",
-    "media_quote_carousel": "Media Quote Carousel",
-    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
-    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
-    "media_quote_logo_alt": "Media outlet logo",
-    "button": "Button",
-    "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)"
+    "volume_pricing_available": "La tarification basée sur la quantité est disponible",
+    "volume_pricing": "Tarification basée sur la quantité",
+    "at_price_each": "à {{ price }}/pièce",
+    "each": "{{ price }}/pièce",
+    "each_abbreviation": "pièce",
+    "price_at": "à",
+    "price_range": "Fourchette de prix",
+    "item_count_cutoff": "Plus de {{ count }} articles",
+    "cancel": "Annuler",
+    "product_subtotal": "Sous-total des produits",
+    "quantity_per_item": "/pièce",
+    "remove_all": "Tout retirer",
+    "remove_all_items_confirmation": "Retirer les {{ count }} articles de votre panier ?",
+    "remove_one_item_confirmation": "Retirer 1 article de votre panier ?",
+    "total_items": "Total des articles",
+    "variant": "Variante",
+    "variant_total": "Total des variantes",
+    "view_cart": "Voir le panier",
+    "your_cart": "Votre panier",
+    "items_added_to_cart": {
+      "one": "1 article ajouté au panier",
+      "other": "{{ count }} articles ajoutés au panier",
+      "many": "{{ count }} articles ajoutés au panier"
+    }
   },
   "gift_cards": {
     "issued": {
@@ -285,7 +308,9 @@
       "quantity_increments": "Incréments de {{ increment }}",
       "quantity_minimum": "Minimum de {{ minimum }}",
       "quantity_maximum": "Maximum de {{ maximum }}",
-      "in_cart": "dans le panier"
+      "in_cart": "dans le panier",
+      "default_title": "Titre par défaut",
+      "sticky_add_to_cart": "Barre d’ajout rapide au panier"
     }
   },
   "fields": {
@@ -310,34 +335,6 @@
       "post": "Publier le commentaire",
       "success_moderated": "Commentaire publié, en attente de modération",
       "success": "Commentaire publié"
-    }
-  },
-  "info": {
-    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
-    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
-    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
-  },
-  "names": {
-    "column": "Column",
-    "media_quote_carousel": "Media quote carousel",
-    "media_quote_carousel_block": "Quote",
-    "size_guide": "Size guide"
-  },
-  "settings": {
-    "backdrop_blur": "Backdrop blur",
-    "logo_max_height": "Logo max height",
-    "quote_alignment": "Quote alignment",
-    "quote_font_size": "Quote font size",
-    "slide_background_style": "Slide background",
-    "slide_border_weight": "Border weight",
-    "media_type_1": "Media type",
-    "media_type_2": "Media 2 type",
-    "size_guide": {
-      "button_text": "Button text",
-      "icon": "Icon",
-      "icon_size": "Icon size",
-      "hide_title": "Hide title",
-      "title_size": "Title size"
     }
   }
 }

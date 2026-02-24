@@ -16,7 +16,8 @@
       "comment": "Kommentar",
       "post_success": "Tak for din henvendelse. Vi kontakter dig hurtigst muligt.",
       "error_heading": "Juster følgende:"
-    }
+    },
+    "slider_label": "Billedkarrusel"
   },
   "accessibility": {
     "play_model": "Afspil 3D-model",
@@ -60,7 +61,12 @@
     "increase_quantity": "Øg antal",
     "quantity": "Antal",
     "rating": "Bedømmelsen af dette produkt er {{ rating }} ud af 5",
-    "nested_product": "{{ product_title }} for {{ parent_title }}"
+    "nested_product": "{{ product_title }} for {{ parent_title }}",
+    "remove": "Fjern",
+    "view_pricing_info": "Vis prisoplysninger",
+    "open_hotspot": "Åbn hotspot",
+    "slideshow": "Diasshow",
+    "header_navigation_label": "Primær"
   },
   "actions": {
     "add_to_cart": "Læg i indkøbskurven",
@@ -234,13 +240,29 @@
       "next": "Næste",
       "page": "Side {{ page }}"
     },
-    "share_information_about_your": "Share information about your brand with your customers",
-    "media_quote_carousel": "Media Quote Carousel",
-    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
-    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
-    "media_quote_logo_alt": "Media outlet logo",
-    "button": "Button",
-    "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)"
+    "volume_pricing_available": "Mængdebaseret pris er tilgængelig",
+    "volume_pricing": "Mængdebaseret pris",
+    "at_price_each": "til {{ price }} pr. stk.",
+    "each": "{{ price }}/stk.",
+    "each_abbreviation": "stk.",
+    "price_at": "til",
+    "price_range": "Prisinterval",
+    "cancel": "Annuller",
+    "product_subtotal": "Subtotal for produkt",
+    "quantity_per_item": " pr. stk.",
+    "remove_all": "Fjern alle",
+    "remove_all_items_confirmation": "Vil du fjerne alle {{ count }} varer fra din indkøbskurv?",
+    "remove_one_item_confirmation": "Vil du fjerne 1 vare fra din indkøbskurv?",
+    "total_items": "Varer i alt",
+    "variant": "Variant",
+    "variant_total": "Variant i alt",
+    "view_cart": "Se indkøbskurv",
+    "your_cart": "Din indkøbskurv",
+    "items_added_to_cart": {
+      "one": "1 vare er lagt i indkøbskurven",
+      "other": "{{ count }} varer lagt i indkøbskurven"
+    },
+    "item_count_cutoff": "Mere end {{ count }} varer"
   },
   "gift_cards": {
     "issued": {
@@ -280,7 +302,9 @@
       "quantity_increments": "Intervaller på {{ increment }}",
       "quantity_minimum": "Minimum på {{ minimum }}",
       "quantity_maximum": "Maksimum på {{ maximum }}",
-      "in_cart": "i indkøbskurv"
+      "in_cart": "i indkøbskurv",
+      "default_title": "Standardtitel",
+      "sticky_add_to_cart": "Bjælken “Læg hurtigt i indkøbskurv”"
     }
   },
   "fields": {
@@ -304,34 +328,6 @@
       "post": "Send kommentar",
       "success_moderated": "Kommentaren blev indsendt og afventer moderering",
       "success": "Kommentaren blev indsendt"
-    }
-  },
-  "info": {
-    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
-    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
-    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
-  },
-  "names": {
-    "column": "Column",
-    "media_quote_carousel": "Media quote carousel",
-    "media_quote_carousel_block": "Quote",
-    "size_guide": "Size guide"
-  },
-  "settings": {
-    "backdrop_blur": "Backdrop blur",
-    "logo_max_height": "Logo max height",
-    "quote_alignment": "Quote alignment",
-    "quote_font_size": "Quote font size",
-    "slide_background_style": "Slide background",
-    "slide_border_weight": "Border weight",
-    "media_type_1": "Media type",
-    "media_type_2": "Media 2 type",
-    "size_guide": {
-      "button_text": "Button text",
-      "icon": "Icon",
-      "icon_size": "Icon size",
-      "hide_title": "Hide title",
-      "title_size": "Title size"
     }
   }
 }

@@ -16,7 +16,8 @@
       "comment": "Kommentti",
       "post_success": "Kiitos yhteydenotostasi. Vastaamme sinulle mahdollisimman pian.",
       "error_heading": "Muokkaa seuraavia:"
-    }
+    },
+    "slider_label": "Liukusäädin"
   },
   "accessibility": {
     "play_model": "Toista 3D-malli",
@@ -60,7 +61,12 @@
     "increase_quantity": "Suurenna määrää",
     "quantity": "Määrä",
     "rating": "Tämän tuoteen tuotearvio on {{ rating }}/5",
-    "nested_product": "{{ product_title }} – {{ parent_title }}"
+    "nested_product": "{{ product_title }} – {{ parent_title }}",
+    "remove": "Poista",
+    "view_pricing_info": "Näytä hinnoittelutiedot",
+    "open_hotspot": "Avoin yhteyspiste",
+    "slideshow": "Diaesitys",
+    "header_navigation_label": "Ensisijainen"
   },
   "actions": {
     "add_to_cart": "Lisää ostoskoriin",
@@ -228,19 +234,35 @@
     "recipient_form_error": "Lomakkeen lähettämisessä tapahtui virhe",
     "product_custom_property_character_count": "{{ used_chars }}/{{ max_chars }} merkkiä käytetty",
     "terms_and_policies": "Ehdot ja käytännöt",
+    "item_count_cutoff": "Yli {{ count }} tuotetta",
     "pagination": {
       "nav_label": "Sivunumerointinavigointi",
       "previous": "Edellinen",
       "next": "Seuraava",
       "page": "Sivu {{ page }}"
     },
-    "share_information_about_your": "Share information about your brand with your customers",
-    "media_quote_carousel": "Media Quote Carousel",
-    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
-    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
-    "media_quote_logo_alt": "Media outlet logo",
-    "button": "Button",
-    "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)"
+    "volume_pricing_available": "Volyymihinnoittelu saatavilla",
+    "volume_pricing": "Volyymihinnoittelu",
+    "at_price_each": "{{ price }}/kpl",
+    "each": "{{ price }}/kpl",
+    "each_abbreviation": "kpl",
+    "price_at": "hintaan",
+    "price_range": "Hintahaarukka",
+    "cancel": "Peruuta",
+    "product_subtotal": "Tuotteen välisumma",
+    "quantity_per_item": "/kpl",
+    "remove_all": "Poista kaikki",
+    "remove_all_items_confirmation": "Poistetaanko kaikki {{ count }} tuotetta ostoskorista?",
+    "remove_one_item_confirmation": "Poistetaanko 1 tuote ostoskorista?",
+    "total_items": "Tuotteita yhteensä",
+    "variant": "Versio",
+    "variant_total": "Versioiden summa",
+    "view_cart": "Näytä ostoskori",
+    "your_cart": "Ostoskorisi",
+    "items_added_to_cart": {
+      "one": "Yksi tuote lisätty ostoskoriin",
+      "other": "{{ count }} tuotetta lisätty ostoskoriin"
+    }
   },
   "gift_cards": {
     "issued": {
@@ -280,7 +302,9 @@
       "quantity_increments": "Lisäysten koko: {{ increment }}",
       "quantity_minimum": "Vähimmäismäärä {{ minimum }}",
       "quantity_maximum": "Enimmäismäärä {{ maximum }}",
-      "in_cart": "ostoskorissa"
+      "in_cart": "ostoskorissa",
+      "default_title": "Oletusotsikko",
+      "sticky_add_to_cart": "Pikalisäys ostoskoririville"
     }
   },
   "fields": {
@@ -304,34 +328,6 @@
       "post": "Julkaise kommentti",
       "success_moderated": "Kommentti on julkaistu; odotetaan moderointia",
       "success": "Kommentti on julkaistu"
-    }
-  },
-  "info": {
-    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
-    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
-    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
-  },
-  "names": {
-    "column": "Column",
-    "media_quote_carousel": "Media quote carousel",
-    "media_quote_carousel_block": "Quote",
-    "size_guide": "Size guide"
-  },
-  "settings": {
-    "backdrop_blur": "Backdrop blur",
-    "logo_max_height": "Logo max height",
-    "quote_alignment": "Quote alignment",
-    "quote_font_size": "Quote font size",
-    "slide_background_style": "Slide background",
-    "slide_border_weight": "Border weight",
-    "media_type_1": "Media type",
-    "media_type_2": "Media 2 type",
-    "size_guide": {
-      "button_text": "Button text",
-      "icon": "Icon",
-      "icon_size": "Icon size",
-      "hide_title": "Hide title",
-      "title_size": "Title size"
     }
   }
 }

@@ -16,7 +16,8 @@
       "comment": "Komentaras",
       "post_success": "Dėkojame, kad kreipėtės. Atsakysime kaip galėdami greičiau.",
       "error_heading": "Pakoreguokite toliau pateiktą informaciją:"
-    }
+    },
+    "slider_label": "Slankiklis"
   },
   "accessibility": {
     "play_model": "Paleisti 3D modelį",
@@ -62,7 +63,12 @@
     "rating": "Šio produkto vertinimas: {{ rating }} iš 5",
     "quantity": "Kiekis",
     "nested_product": "{{ product_title }} ({{ parent_title }})",
-    "discount_menu": "Nuolaidų kodai"
+    "discount_menu": "Nuolaidų kodai",
+    "remove": "Pašalinti",
+    "view_pricing_info": "Peržiūrėti kainodaros informaciją",
+    "open_hotspot": "Atverti interneto prieigos tašką",
+    "slideshow": "Skaidrių demonstracija",
+    "header_navigation_label": "Pagrindinis"
   },
   "actions": {
     "add_to_cart": "Įdėti į krepšelį",
@@ -244,13 +250,31 @@
       "next": "Kitas",
       "page": "{{ page }} puslapis"
     },
-    "share_information_about_your": "Share information about your brand with your customers",
-    "media_quote_carousel": "Media Quote Carousel",
-    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
-    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
-    "media_quote_logo_alt": "Media outlet logo",
-    "button": "Button",
-    "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)"
+    "volume_pricing_available": "Galima kiekiu pagrįsta kainodara",
+    "volume_pricing": "Kiekiu pagrįsta kainodara",
+    "at_price_each": "po {{ price }}/vnt.",
+    "each": "{{ price }}/vnt.",
+    "each_abbreviation": "vnt.",
+    "price_at": "po",
+    "price_range": "Kainų intervalas",
+    "cancel": "Atšaukti",
+    "product_subtotal": "Produktų tarpinė suma",
+    "quantity_per_item": "/vnt.",
+    "remove_all": "Pašalinti visus",
+    "remove_all_items_confirmation": "Pašalinti visas {{ count }} prekes (-ių) iš krepšelio?",
+    "remove_one_item_confirmation": "Pašalinti 1 prekę iš krepšelio?",
+    "total_items": "Iš viso prekių",
+    "variant": "Variantas",
+    "variant_total": "Variantų bendroji suma",
+    "view_cart": "Peržiūrėti krepšelį",
+    "your_cart": "Jūsų krepšelis",
+    "items_added_to_cart": {
+      "one": "1 prekė pridėta prie krepšelio",
+      "other": "{{ count }} prekių pridėta prie krepšelio",
+      "few": "{{ count }} prekių pridėta prie krepšelio",
+      "many": "{{ count }} prekių pridėta prie krepšelio"
+    },
+    "item_count_cutoff": "Daugiau kaip {{ count }} prekės (-ių)"
   },
   "gift_cards": {
     "issued": {
@@ -265,36 +289,6 @@
       "copy_code_success": "Kodą pavyko nukopijuoti",
       "expired": "Nebegalioja"
     }
-  },
-  "placeholders": {
-    "password": "Slaptažodis",
-    "search": "Ieškoti",
-    "product_title": "Gaminio pavadinimas",
-    "collection_title": "Kolekcijos pavadinimas",
-    "blog_posts": "Tinklaraščio įrašai",
-    "blog_post_title": "Pavadinimas",
-    "blog_post_author": "Autorius",
-    "blog_post_date": "Data",
-    "blog_post_description": "Jūsų tinklaraščio įrašo turinio ištrauka"
-  },
-  "products": {
-    "product": {
-      "add_to_cart": "Įdėti į krepšelį",
-      "added_to_cart": "Įdėta į krepšelį",
-      "adding_to_cart": "Pridedama…",
-      "add_to_cart_error": "Dedant į krepšelį įvyko klaida",
-      "sold_out": "Išparduota",
-      "unavailable": "Nėra",
-      "quantity_error_max": "Nustatytas didžiausias šios prekės kiekis: {{ maximum }}",
-      "quantity": "Kiekis",
-      "quantity_increments": "Kiekis didėja kas {{ increment }}",
-      "quantity_minimum": "Mažiausiai {{ minimum }}",
-      "quantity_maximum": "Daugiausiai {{ maximum }}",
-      "in_cart": "krepšelyje"
-    }
-  },
-  "fields": {
-    "separator": "iki"
   },
   "blogs": {
     "article": {
@@ -318,32 +312,36 @@
       "success": "Komentaras paskelbtas"
     }
   },
-  "info": {
-    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
-    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
-    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
+  "fields": {
+    "separator": "iki"
   },
-  "names": {
-    "column": "Column",
-    "media_quote_carousel": "Media quote carousel",
-    "media_quote_carousel_block": "Quote",
-    "size_guide": "Size guide"
+  "placeholders": {
+    "password": "Slaptažodis",
+    "search": "Ieškoti",
+    "product_title": "Gaminio pavadinimas",
+    "collection_title": "Kolekcijos pavadinimas",
+    "blog_posts": "Tinklaraščio įrašai",
+    "blog_post_title": "Pavadinimas",
+    "blog_post_author": "Autorius",
+    "blog_post_date": "Data",
+    "blog_post_description": "Jūsų tinklaraščio įrašo turinio ištrauka"
   },
-  "settings": {
-    "backdrop_blur": "Backdrop blur",
-    "logo_max_height": "Logo max height",
-    "quote_alignment": "Quote alignment",
-    "quote_font_size": "Quote font size",
-    "slide_background_style": "Slide background",
-    "slide_border_weight": "Border weight",
-    "media_type_1": "Media type",
-    "media_type_2": "Media 2 type",
-    "size_guide": {
-      "button_text": "Button text",
-      "icon": "Icon",
-      "icon_size": "Icon size",
-      "hide_title": "Hide title",
-      "title_size": "Title size"
+  "products": {
+    "product": {
+      "add_to_cart": "Įdėti į krepšelį",
+      "adding_to_cart": "Pridedama…",
+      "added_to_cart": "Įdėta į krepšelį",
+      "add_to_cart_error": "Dedant į krepšelį įvyko klaida",
+      "quantity_error_max": "Nustatytas didžiausias šios prekės kiekis: {{ maximum }}",
+      "sold_out": "Išparduota",
+      "unavailable": "Nėra",
+      "quantity": "Kiekis",
+      "quantity_increments": "Kiekis didėja kas {{ increment }}",
+      "quantity_minimum": "Mažiausiai {{ minimum }}",
+      "quantity_maximum": "Daugiausiai {{ maximum }}",
+      "in_cart": "krepšelyje",
+      "default_title": "Numatytasis pavadinimas",
+      "sticky_add_to_cart": "Greito pridėjimo į krepšelį juosta"
     }
   }
 }
