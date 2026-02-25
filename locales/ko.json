@@ -16,7 +16,8 @@
       "comment": "댓글",
       "post_success": "문의해 주셔서 감사합니다. 최대한 빨리 답변드리겠습니다.",
       "error_heading": "다음을 조정하세요."
-    }
+    },
+    "slider_label": "슬라이더"
   },
   "accessibility": {
     "play_model": "3D 모델 재생",
@@ -60,7 +61,12 @@
     "increase_quantity": "수량 증가",
     "quantity": "수량",
     "rating": "이 제품의 평점은 5점 만점에 {{ rating }}점입니다",
-    "nested_product": "{{ parent_title }}용 {{ product_title }}"
+    "nested_product": "{{ parent_title }}용 {{ product_title }}",
+    "remove": "제거",
+    "view_pricing_info": "가격 정보 보기",
+    "open_hotspot": "핫스팟 열기",
+    "slideshow": "슬라이드 쇼",
+    "header_navigation_label": "기본"
   },
   "actions": {
     "add_to_cart": "카트에 추가",
@@ -234,13 +240,29 @@
       "next": "다음",
       "page": "{{ page }}페이지"
     },
-    "share_information_about_your": "Share information about your brand with your customers",
-    "media_quote_carousel": "Media Quote Carousel",
-    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
-    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
-    "media_quote_logo_alt": "Media outlet logo",
-    "button": "Button",
-    "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)"
+    "volume_pricing_available": "수량별 가격 책정 사용 가능",
+    "volume_pricing": "수량별 가격 책정",
+    "at_price_each": "개당 {{ price }}",
+    "each": "개당 {{ price }}",
+    "each_abbreviation": "각",
+    "price_at": "가격",
+    "price_range": "가격 범위",
+    "cancel": "취소",
+    "product_subtotal": "제품 소계",
+    "quantity_per_item": "/개",
+    "remove_all": "모두 제거",
+    "remove_all_items_confirmation": "카트에서 {{ count }}개 품목을 모두 제거하시겠습니까?",
+    "remove_one_item_confirmation": "카트에서 1개 품목을 제거하시겠습니까?",
+    "total_items": "총 품목 수",
+    "variant": "이형 상품",
+    "variant_total": "이형 상품 합계",
+    "view_cart": "카트 보기",
+    "your_cart": "카트",
+    "items_added_to_cart": {
+      "one": "카트에 1개 품목이 추가됨",
+      "other": "카트에 {{ count }}개 품목이 추가됨"
+    },
+    "item_count_cutoff": "{{ count }}개 이상의 품목"
   },
   "gift_cards": {
     "issued": {
@@ -275,12 +297,14 @@
       "add_to_cart_error": "카트에 추가하는 중 오류 발생",
       "sold_out": "품절",
       "unavailable": "사용할 수 없음",
-      "quantity_error_max": "이 상품의 최대 수량은 {{ maximum }}개입니다",
+      "quantity_error_max": "이 품목의 최대 개수는 {{ maximum }}개입니다.",
       "quantity": "수량",
-      "quantity_increments": "{{ increment }}씩 증가",
+      "quantity_increments": "{{ increment }}개씩 증가",
       "quantity_minimum": "최소 {{ minimum }}개",
       "quantity_maximum": "최대 {{ maximum }}개",
-      "in_cart": "장바구니에"
+      "in_cart": "카트에 있음",
+      "default_title": "기본 이름",
+      "sticky_add_to_cart": "빠른 카트 추가 바"
     }
   },
   "fields": {
@@ -304,34 +328,6 @@
       "post": "댓글 달기",
       "success_moderated": "댓글이 게시되었습니다. 조정 대기 중입니다",
       "success": "댓글 게시됨"
-    }
-  },
-  "info": {
-    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
-    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
-    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
-  },
-  "names": {
-    "column": "Column",
-    "media_quote_carousel": "Media quote carousel",
-    "media_quote_carousel_block": "Quote",
-    "size_guide": "Size guide"
-  },
-  "settings": {
-    "backdrop_blur": "Backdrop blur",
-    "logo_max_height": "Logo max height",
-    "quote_alignment": "Quote alignment",
-    "quote_font_size": "Quote font size",
-    "slide_background_style": "Slide background",
-    "slide_border_weight": "Border weight",
-    "media_type_1": "Media type",
-    "media_type_2": "Media 2 type",
-    "size_guide": {
-      "button_text": "Button text",
-      "icon": "Icon",
-      "icon_size": "Icon size",
-      "hide_title": "Hide title",
-      "title_size": "Title size"
     }
   }
 }

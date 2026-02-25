@@ -16,7 +16,8 @@
       "comment": "Komentar",
       "post_success": "Hvala za vaše sporočilo. Z vami bomo v stiku takoj, ko bo mogoče.",
       "error_heading": "Prilagodite naslednje:"
-    }
+    },
+    "slider_label": "Drsnik"
   },
   "accessibility": {
     "play_model": "Predvajaj 3D-model",
@@ -62,7 +63,12 @@
     "quantity": "Količina",
     "rating": "Ocena tega izdelka je {{ rating }} od 5",
     "nested_product": "{{ product_title }} za {{ parent_title }}",
-    "discount_menu": "Kode za popust"
+    "discount_menu": "Kode za popust",
+    "remove": "Odstrani",
+    "view_pricing_info": "Prikaži podatke o cenah",
+    "open_hotspot": "Odpri hotspot",
+    "slideshow": "Slikovni prikaz",
+    "header_navigation_label": "Primarno"
   },
   "actions": {
     "add_to_cart": "Dodaj v košarico",
@@ -244,13 +250,31 @@
       "next": "Naprej",
       "page": "Stran {{ page }}"
     },
-    "share_information_about_your": "Share information about your brand with your customers",
-    "media_quote_carousel": "Media Quote Carousel",
-    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
-    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
-    "media_quote_logo_alt": "Media outlet logo",
-    "button": "Button",
-    "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)"
+    "volume_pricing_available": "Na voljo je količinski popust",
+    "volume_pricing": "Količinski popust",
+    "at_price_each": "po ceni {{ price }}/kos",
+    "each": "{{ price }}/kos",
+    "each_abbreviation": "kos",
+    "price_at": "po",
+    "price_range": "Cenovni razpon",
+    "item_count_cutoff": "več kot {{ count }} artiklov",
+    "cancel": "Prekliči",
+    "product_subtotal": "Vmesna vsota",
+    "quantity_per_item": "/kos",
+    "remove_all": "Odstrani vse",
+    "remove_all_items_confirmation": "Ali želite iz košarice odstraniti vse izdelke ({{ count }})?",
+    "remove_one_item_confirmation": "Ali želite iz košarice odstraniti 1 izdelek?",
+    "total_items": "Skupno število izdelkov",
+    "variant": "Različica",
+    "variant_total": "Skupna cena različice",
+    "view_cart": "Prikaži košarico",
+    "your_cart": "Vaša košarica",
+    "items_added_to_cart": {
+      "one": "1 izdelek je dodan v košarico",
+      "other": "Toliko izdelkov je dodanih v košarico: {{ count }}",
+      "few": "Toliko izdelkov je dodanih v košarico: {{ count }}",
+      "two": "Toliko izdelkov je dodanih v košarico: {{ count }}"
+    }
   },
   "gift_cards": {
     "issued": {
@@ -290,7 +314,9 @@
       "quantity_increments": "V korakih po {{ increment }}",
       "quantity_minimum": "Najmanj od {{ minimum }}",
       "quantity_maximum": "Največ od {{ maximum }}",
-      "in_cart": "v košarici"
+      "in_cart": "v košarici",
+      "default_title": "Privzeti naslov",
+      "sticky_add_to_cart": "Vrstica »Hitro dodajanje v košarico«"
     }
   },
   "fields": {
@@ -316,34 +342,6 @@
       "post": "Objavi komentar",
       "success_moderated": "Komentar je bil objavljen, čakanje na odobritev",
       "success": "Komentar je bil objavljen"
-    }
-  },
-  "info": {
-    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
-    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
-    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
-  },
-  "names": {
-    "column": "Column",
-    "media_quote_carousel": "Media quote carousel",
-    "media_quote_carousel_block": "Quote",
-    "size_guide": "Size guide"
-  },
-  "settings": {
-    "backdrop_blur": "Backdrop blur",
-    "logo_max_height": "Logo max height",
-    "quote_alignment": "Quote alignment",
-    "quote_font_size": "Quote font size",
-    "slide_background_style": "Slide background",
-    "slide_border_weight": "Border weight",
-    "media_type_1": "Media type",
-    "media_type_2": "Media 2 type",
-    "size_guide": {
-      "button_text": "Button text",
-      "icon": "Icon",
-      "icon_size": "Icon size",
-      "hide_title": "Hide title",
-      "title_size": "Title size"
     }
   }
 }

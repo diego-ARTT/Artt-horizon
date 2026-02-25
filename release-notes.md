@@ -1,29 +1,24 @@
-# Release Notes - Version 3.1.0
+# Release Notes - Version 3.4.0
 
-This release introduces the ability to add mobile-specific media in the Hero section. It also includes several Safari bug fixes, and improved handling of transparent headers.
+This release adds a text option for header links as an alternative for the current icons as well as updates to customer accounts. It also includes UX and accessibility improvements, and bugfixes.
 
 ## What's Changed
 
 ### Added
 
-- [Hero section] Set custom mobile media and layout settings
+* [Header] Added text style for header links (Search, Account and Cart)
+* [Product card] Added width control settings for desktop and mobile
 
 ### Changed
 
-- [Product] Quantity rules are shown on product pages
-- [Footer] Rename "Utilities" to "Policies and links"
-- [Product grid] Removed price from zoomed out grid view
-- [Filters] Filter count always shown in vertical filters
+* [Header] Changed existing account menu in favor of new web component version
+* [Accessibility] Marked the footer section as a semantic footer element
+* [Accessibility] Improved accessibility of the header menu with better aria roles
+* [Product] Allow product details column to expand on larger viewports
+* [Product] Display single-value variant options as text instead of dropdown
 
 ### Fixes and improvements
 
-- [Featured product carousel] Fix starting position on mobile Safari
-- [Slideshows] Ensure slideshow control buttons are circular on Safari
-- [Accessibility] Add background color to skip links for better visibility
-- [Product page] Shop Pay Instalments messaging no longer inherits custom typography from price block
-- [Product page] "Constrain image heights to viewport" accounts for transparent headers
-- [Header] Announcement bar visibility fix when used with transparent headers
-- [Collection links section] Links stack vertically on mobile
-- [Marquee] Fixed disappearing text
-- [Footer] Fixed email signup button icon color
-- [Footer] Menu block respects group block's vertical layout on mobile
+* [Product] Fixed flash of disabled buttons when changing a variant
+* [Cart] Fixed cart drawer spacing and line wrapping
+* [Page] Fixed inconsistent vertical spacing between heading presets and RTE headings

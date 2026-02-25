@@ -1,6 +1,5 @@
 {% if shop.policies.size > 0 %}
   <anchored-popover-component
-    class="footer-utilities__policy-list footer-utilities__text"
     data-hover-triggered="true"
   >
     <button
@@ -88,7 +87,7 @@
     opacity: 0;
     scale: 0.94;
     translate: 0 6px;
-    transform-origin: 6ch 100%;
+    transform-origin: 3.9em 100%;
   }
 
   .terms-policies-popover.\:popover-open,
@@ -98,7 +97,7 @@
     scale: 1;
   }
 
-  @media screen and (max-width: 750px) {
+  @media screen and (max-width: 749px) {
     .terms-policies-popover {
       left: anchor(center);
       transform: translate(-50%, 0);
@@ -113,13 +112,15 @@
       left: calc(var(--anchor-left) * 1px);
       transform: translate(0, calc(-100% - 1.25rem));
     }
-    @media screen and (max-width: 750px) {
+
+    @media screen and (max-width: 749px) {
       .terms-policies-popover {
         left: calc((var(--anchor-left) + (var(--anchor-width) / 2)) * 1px);
         transform: translate(-50%, calc(-100% - 1.25rem));
       }
     }
   }
+
   @media (prefers-reduced-motion: no-preference) {
     .terms-policies-popover {
       transition-property: display, overlay, opacity, scale, translate;
@@ -127,6 +128,7 @@
       transition-duration: 0.3s;
       transition-timing-function: var(--ease-out-quad);
     }
+
     @starting-style {
       .terms-policies-popover.\:popover-open,
       .terms-policies-popover:popover-open {

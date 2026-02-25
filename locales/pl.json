@@ -16,7 +16,8 @@
       "comment": "Komentarz",
       "post_success": "Dziękujemy za skontaktowanie się z nami. Odpowiemy tak szybko, jak to możliwe.",
       "error_heading": "Dostosuj następujące dane:"
-    }
+    },
+    "slider_label": "Suwak"
   },
   "accessibility": {
     "play_model": "Odtwórz model 3D",
@@ -62,7 +63,12 @@
     "increase_quantity": "Zwiększ ilość",
     "rating": "Ocena tego produktu to: {{ rating }} na 5",
     "quantity": "Ilość",
-    "nested_product": "{{ product_title }}: {{ parent_title }}"
+    "nested_product": "{{ product_title }}: {{ parent_title }}",
+    "remove": "Usuń",
+    "view_pricing_info": "Wyświetl informacje o cenach",
+    "open_hotspot": "Otwarty hotspot",
+    "slideshow": "Pokaz slajdów",
+    "header_navigation_label": "Główna"
   },
   "actions": {
     "add_to_cart": "Dodaj do koszyka",
@@ -244,13 +250,31 @@
       "next": "Dalej",
       "page": "Strona {{ page }}"
     },
-    "share_information_about_your": "Share information about your brand with your customers",
-    "media_quote_carousel": "Media Quote Carousel",
-    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
-    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
-    "media_quote_logo_alt": "Media outlet logo",
-    "button": "Button",
-    "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)"
+    "volume_pricing_available": "Ceny zależne od wolumenu są dostępne",
+    "volume_pricing": "Ceny zależne od wolumenu",
+    "at_price_each": "za {{ price }}/szt.",
+    "each": "{{ price }}/szt.",
+    "each_abbreviation": "szt.",
+    "price_at": "za",
+    "price_range": "Przedział cenowy",
+    "cancel": "Anuluj",
+    "product_subtotal": "Suma częściowa dla produktu",
+    "quantity_per_item": "/szt.",
+    "remove_all": "Usuń wszystko",
+    "remove_all_items_confirmation": "Usunąć z koszyka wszystkie pozycje ({{ count }})?",
+    "remove_one_item_confirmation": "Usunąć 1 pozycję z koszyka?",
+    "total_items": "Pozycje łącznie",
+    "variant": "Wariant",
+    "variant_total": "Suma wariantów",
+    "view_cart": "Wyświetl koszyk",
+    "your_cart": "Twój koszyk",
+    "items_added_to_cart": {
+      "one": "Dodano 1 pozycję do koszyka",
+      "other": "Dodano {{ count }} pozycje(-i) do koszyka",
+      "few": "Dodano {{ count }} pozycje(-i) do koszyka",
+      "many": "Dodano {{ count }} pozycje(-i) do koszyka"
+    },
+    "item_count_cutoff": "Więcej niż {{ count }} pozycje(-i)"
   },
   "gift_cards": {
     "issued": {
@@ -265,36 +289,6 @@
       "copy_code_success": "Kod został skopiowany",
       "expired": "Ważność wygasła"
     }
-  },
-  "products": {
-    "product": {
-      "add_to_cart": "Dodaj do koszyka",
-      "adding_to_cart": "Trwa dodawanie...",
-      "added_to_cart": "Dodano do koszyka",
-      "add_to_cart_error": "Błąd podczas dodawania do koszyka",
-      "sold_out": "Wyprzedane",
-      "unavailable": "Niedostępny",
-      "quantity_error_max": "Ten produkt ma maksimum {{ maximum }}",
-      "quantity": "Ilość",
-      "quantity_increments": "Przyrosty o {{ increment }}",
-      "quantity_minimum": "Minimum {{ minimum }}",
-      "quantity_maximum": "Maksimum {{ maximum }}",
-      "in_cart": "w koszyku"
-    }
-  },
-  "placeholders": {
-    "password": "Hasło",
-    "search": "Szukaj",
-    "product_title": "Tytuł produktu",
-    "collection_title": "Tytuł kolekcji",
-    "blog_posts": "Posty na blogu",
-    "blog_post_title": "Tytuł",
-    "blog_post_author": "Autor",
-    "blog_post_date": "Data",
-    "blog_post_description": "Fragment Twojego posta na blogu"
-  },
-  "fields": {
-    "separator": "do"
   },
   "blogs": {
     "article": {
@@ -318,32 +312,36 @@
       "success": "Opublikowano komentarz"
     }
   },
-  "info": {
-    "size_guide_button_text": "Text displayed on the button that opens the size guide modal",
-    "size_guide_hide_title": "Hide the page title in the modal. Useful if the title is already included in the page content",
-    "drawer_backdrop_blur": "Adds a blur effect to the background behind drawers. Higher values create more blur. Set to 0 to disable."
+  "fields": {
+    "separator": "do"
   },
-  "names": {
-    "column": "Column",
-    "media_quote_carousel": "Media quote carousel",
-    "media_quote_carousel_block": "Quote",
-    "size_guide": "Size guide"
+  "placeholders": {
+    "password": "Hasło",
+    "search": "Szukaj",
+    "product_title": "Tytuł produktu",
+    "collection_title": "Tytuł kolekcji",
+    "blog_posts": "Posty na blogu",
+    "blog_post_title": "Tytuł",
+    "blog_post_author": "Autor",
+    "blog_post_date": "Data",
+    "blog_post_description": "Fragment Twojego posta na blogu"
   },
-  "settings": {
-    "backdrop_blur": "Backdrop blur",
-    "logo_max_height": "Logo max height",
-    "quote_alignment": "Quote alignment",
-    "quote_font_size": "Quote font size",
-    "slide_background_style": "Slide background",
-    "slide_border_weight": "Border weight",
-    "media_type_1": "Media type",
-    "media_type_2": "Media 2 type",
-    "size_guide": {
-      "button_text": "Button text",
-      "icon": "Icon",
-      "icon_size": "Icon size",
-      "hide_title": "Hide title",
-      "title_size": "Title size"
+  "products": {
+    "product": {
+      "add_to_cart": "Dodaj do koszyka",
+      "adding_to_cart": "Trwa dodawanie...",
+      "added_to_cart": "Dodano do koszyka",
+      "add_to_cart_error": "Błąd podczas dodawania do koszyka",
+      "quantity_error_max": "Pozycja ma maksymalny limit {{ maximum }}",
+      "sold_out": "Wyprzedane",
+      "unavailable": "Niedostępny",
+      "quantity": "Ilość",
+      "quantity_increments": "Przyrost o {{ increment }}",
+      "quantity_minimum": "Minimum {{ minimum }}",
+      "quantity_maximum": "Maksimum {{ maximum }}",
+      "in_cart": "w koszyku",
+      "default_title": "Tytuł domyślny",
+      "sticky_add_to_cart": "Pasek szybkiego dodawania do koszyka"
     }
   }
 }

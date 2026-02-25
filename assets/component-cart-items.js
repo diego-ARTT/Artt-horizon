@@ -5,9 +5,16 @@ import {
   onAnimationEnd,
   prefersReducedMotion,
   resetShimmer,
+  startViewTransition,
 } from '@theme/utilities';
 import { morphSection, sectionRenderer } from '@theme/section-renderer';
-import { ThemeEvents, CartUpdateEvent, DiscountUpdateEvent } from '@theme/events';
+import {
+  ThemeEvents,
+  CartUpdateEvent,
+  QuantitySelectorUpdateEvent,
+  CartAddEvent,
+  DiscountUpdateEvent,
+} from '@theme/events';
 import { cartPerformance } from '@theme/performance';
 
 /** @typedef {import('./utilities').TextComponent} TextComponent */
@@ -45,8 +52,11 @@ class CartItemsComponent extends Component {
    * @param {QuantitySelectorUpdateEvent} event - The event.
    */
   #onQuantityChange(event) {
+    if (!(event.target instanceof Node) || !this.contains(event.target)) return;
+
     const { quantity, cartLine: line } = event.detail;
 
+    // Cart items require a line number
     if (!line) return;
 
     if (quantity === 0) {
@@ -62,9 +72,7 @@ class CartItemsComponent extends Component {
 
     if (!lineItemRow) return;
 
-    const textComponent = /** @type {TextComponent | undefined} */ (
-      lineItemRow.querySelector('text-component')
-    );
+    const textComponent = /** @type {TextComponent | undefined} */ (lineItemRow.querySelector('text-component'));
     textComponent?.shimmer();
   }
 
@@ -86,13 +94,25 @@ class CartItemsComponent extends Component {
     const rowsToRemove = [
       cartItemRowToRemove,
       // Get all nested lines of the row to remove
-      ...this.refs.cartItemRows.filter(
-        row => row.dataset.parentKey === cartItemRowToRemove.dataset.key
-      ),
+      ...this.refs.cartItemRows.filter((row) => row.dataset.parentKey === cartItemRowToRemove.dataset.key),
     ];
 
+    // If the cart item row is the last row, optimistically trigger the cart empty state
+    const isEmptyCart = rowsToRemove.length == this.refs.cartItemRows.length;
+
+    const template = document.getElementById('empty-cart-template');
+    if (isEmptyCart && template instanceof HTMLTemplateElement) {
+      const clone = document.importNode(template.content, true);
+
+      startViewTransition(() => {
+        this.replaceChildren(clone);
+      }, [this.isDrawer ? 'empty-cart-drawer' : 'empty-cart-page']);
+
+      return;
+    }
+
     // Add class to the row to trigger the animation
-    rowsToRemove.forEach(row => {
+    rowsToRemove.forEach((row) => {
       const remove = () => row.remove();
 
       if (prefersReducedMotion()) return remove();
@@ -113,9 +133,7 @@ class CartItemsComponent extends Component {
    * @param {string} config.action - The action.
    */
   updateQuantity(config) {
-    const cartPerformaceUpdateMarker = cartPerformance.createStartingMarker(
-      `${config.action}:user-action`
-    );
+    const cartPerformaceUpdateMarker = cartPerformance.createStartingMarker(`${config.action}:user-action`);
 
     this.#disableCartItems();
 
@@ -124,7 +142,7 @@ class CartItemsComponent extends Component {
 
     const cartItemsComponents = document.querySelectorAll('cart-items-component');
     const sectionsToUpdate = new Set([this.sectionId]);
-    cartItemsComponents.forEach(item => {
+    cartItemsComponents.forEach((item) => {
       if (item instanceof HTMLElement && item.dataset.sectionId) {
         sectionsToUpdate.add(item.dataset.sectionId);
       }
@@ -140,10 +158,10 @@ class CartItemsComponent extends Component {
     cartTotal?.shimmer();
 
     fetch(`${Theme.routes.cart_change_url}`, fetchConfig('json', { body }))
-      .then(response => {
+      .then((response) => {
         return response.text();
       })
-      .then(responseText => {
+      .then((responseText) => {
         const parsedResponseText = JSON.parse(responseText);
 
         resetShimmer(this);
@@ -159,27 +177,25 @@ class CartItemsComponent extends Component {
         );
 
         // Grab the new cart item count from a hidden element
-        const newCartHiddenItemCount =
-          newSectionHTML.querySelector('[ref="cartItemCount"]')?.textContent;
+        const newCartHiddenItemCount = newSectionHTML.querySelector('[ref="cartItemCount"]')?.textContent;
         const newCartItemCount = newCartHiddenItemCount ? parseInt(newCartHiddenItemCount, 10) : 0;
 
         // Update data-cart-quantity for all matching variants
         this.#updateQuantitySelectors(parsedResponseText);
 
         this.dispatchEvent(
-          new CartUpdateEvent({}, this.sectionId, {
+          new CartUpdateEvent(parsedResponseText, this.sectionId, {
             itemCount: newCartItemCount,
             source: 'cart-items-component',
             sections: parsedResponseText.sections,
           })
         );
 
-        morphSection(this.sectionId, parsedResponseText.sections[this.sectionId]);
+        morphSection(this.sectionId, parsedResponseText.sections[this.sectionId], this.isDrawer ? 'hydration' : 'full');
 
         this.#updateCartQuantitySelectorButtonStates();
       })
-      .catch(error => {
-        // eslint-disable-next-line no-console
+      .catch((error) => {
         console.error(error);
       })
       .finally(() => {
@@ -192,7 +208,7 @@ class CartItemsComponent extends Component {
    * Handles the discount update.
    * @param {DiscountUpdateEvent} event - The event.
    */
-  handleDiscountUpdate = event => {
+  handleDiscountUpdate = (event) => {
     this.#handleCartUpdate(event);
   };
 
@@ -214,8 +230,7 @@ class CartItemsComponent extends Component {
     const cartItemErrorContainer = this.refs[`cartItemErrorContainer-${line}`];
 
     if (!(cartItemError instanceof HTMLElement)) throw new Error('Cart item error not found');
-    if (!(cartItemErrorContainer instanceof HTMLElement))
-      throw new Error('Cart item error container not found');
+    if (!(cartItemErrorContainer instanceof HTMLElement)) throw new Error('Cart item error container not found');
 
     cartItemError.textContent = parsedResponseText.errors;
     cartItemErrorContainer.classList.remove('hidden');
@@ -226,7 +241,7 @@ class CartItemsComponent extends Component {
    *
    * @param {DiscountUpdateEvent | CartUpdateEvent | CartAddEvent} event
    */
-  #handleCartUpdate = event => {
+  #handleCartUpdate = (event) => {
     if (event instanceof DiscountUpdateEvent) {
       sectionRenderer.renderSection(this.sectionId, { cache: false });
       return;
@@ -268,9 +283,7 @@ class CartItemsComponent extends Component {
 
     for (const item of updatedCart.items) {
       const variantId = item.variant_id.toString();
-      const selectors = document.querySelectorAll(
-        `quantity-selector-component[data-variant-id="${variantId}"], cart-quantity-selector-component[data-variant-id="${variantId}"]`
-      );
+      const selectors = document.querySelectorAll(`quantity-selector-component[data-variant-id="${variantId}"]`);
 
       for (const selector of selectors) {
         const input = selector.querySelector('input[data-cart-quantity]');
@@ -290,11 +303,8 @@ class CartItemsComponent extends Component {
    * Updates button states for all cart quantity selector components.
    */
   #updateCartQuantitySelectorButtonStates() {
-    const cartQuantitySelectors = document.querySelectorAll('cart-quantity-selector-component');
-    for (const selector of cartQuantitySelectors) {
-      if ('updateButtonStates' in selector && typeof selector.updateButtonStates === 'function') {
-        selector.updateButtonStates();
-      }
+    for (const selector of document.querySelectorAll('cart-quantity-selector-component')) {
+      /** @type {any} */ (selector).updateButtonStates?.();
     }
   }
 
@@ -308,6 +318,13 @@ class CartItemsComponent extends Component {
     if (!sectionId) throw new Error('Section id missing');
 
     return sectionId;
+  }
+
+  /**
+   * @returns {boolean} Whether the component is a drawer.
+   */
+  get isDrawer() {
+    return this.dataset.drawer !== undefined;
   }
 }
 

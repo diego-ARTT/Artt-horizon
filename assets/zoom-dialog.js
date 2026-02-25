@@ -64,15 +64,21 @@ export class ZoomDialog extends Component {
     if (!supportsViewTransitions() || isLowPowerDevice() || !sourceImage || !targetImage)
       return open();
 
-    const transitionName = `gallery-item`;
-    sourceImage.style.setProperty('view-transition-name', transitionName);
+    const itemTransitionName = `gallery-item-open`;
+    sourceImage.style.setProperty('view-transition-name', itemTransitionName);
+
+    const focalPoint = sourceImage.dataset.focalPoint;
+    if (focalPoint) {
+      document.documentElement.style.setProperty('--gallery-media-focal-point', focalPoint);
+    }
 
     await startViewTransition(() => {
       open();
       sourceImage.style.removeProperty('view-transition-name');
-      targetImage.style.setProperty('view-transition-name', transitionName);
+      targetImage.style.setProperty('view-transition-name', itemTransitionName);
     });
 
+    document.documentElement.style.removeProperty('--gallery-media-focal-point');
     targetImage.style.removeProperty('view-transition-name');
 
     this.selectThumbnail(index, { behavior: 'instant' });
@@ -82,7 +88,7 @@ export class ZoomDialog extends Component {
    * Loads a high-resolution image for a specific media container
    * @param {HTMLElement} mediaContainer - The media container element
    */
-  #loadHighResolutionImage(mediaContainer) {
+  loadHighResolutionImage(mediaContainer) {
     if (!mediaContainer.classList.contains('product-media-container--image')) return false;
 
     const image = mediaContainer.querySelector('img.product-media__image');
@@ -97,6 +103,7 @@ export class ZoomDialog extends Component {
     newImage.className = image.className;
     newImage.alt = image.alt;
     newImage.setAttribute('data_max_resolution', highResolutionUrl);
+    newImage.setAttribute('ref', 'image');
 
     // When the high-resolution image loads, replace the existing image
     newImage.onload = () => {
@@ -124,7 +131,7 @@ export class ZoomDialog extends Component {
       button.setAttribute('aria-selected', `${i === activeIndex}`);
     });
 
-    this.#loadHighResolutionImage(mostVisibleElement);
+    this.loadHighResolutionImage(mostVisibleElement);
     this.dispatchEvent(new ZoomMediaSelectedEvent(activeIndex));
   }, 50);
 
@@ -141,7 +148,7 @@ export class ZoomDialog extends Component {
 
     // Get the index and set up transition
     const activeIndex = media.indexOf(mostVisibleElement);
-    const transitionName = `gallery-item`;
+    const itemTransitionName = `gallery-item-close`;
 
     const mediaGallery = /** @type {import('./media-gallery').MediaGallery | undefined} */ (
       this.closest('media-gallery')
@@ -154,21 +161,26 @@ export class ZoomDialog extends Component {
       : mediaGallery?.media?.[activeIndex];
 
     if (!slide) return this.closeDialog();
+    const focalPoint = slide.dataset.focalPoint;
+    if (focalPoint) {
+      document.documentElement.style.setProperty('--gallery-media-focal-point', focalPoint);
+    }
 
     dialog.classList.add('dialog--closed');
 
     await onAnimationEnd(this.refs.thumbnails);
 
-    mostVisibleElement.style.setProperty('view-transition-name', transitionName);
+    mostVisibleElement.style.setProperty('view-transition-name', itemTransitionName);
 
     await startViewTransition(() => {
       mostVisibleElement.style.removeProperty('view-transition-name');
-      slide.style.setProperty('view-transition-name', transitionName);
+      slide.style.setProperty('view-transition-name', itemTransitionName);
       this.closeDialog();
     });
 
     slide.style.removeProperty('view-transition-name');
     dialog.classList.remove('dialog--closed');
+    document.documentElement.style.removeProperty('--gallery-media-focal-point');
   }
 
   closeDialog() {
@@ -206,7 +218,7 @@ export class ZoomDialog extends Component {
     const { media } = this.refs;
     if (!media[index]) return;
 
-    this.#loadHighResolutionImage(media[index]);
+    this.loadHighResolutionImage(media[index]);
   }
 
   /**
@@ -244,7 +256,7 @@ export class ZoomDialog extends Component {
         behavior: options.behavior,
       });
 
-      this.#loadHighResolutionImage(targetImage);
+      this.loadHighResolutionImage(targetImage);
     }
     this.dispatchEvent(new ZoomMediaSelectedEvent(index));
   }

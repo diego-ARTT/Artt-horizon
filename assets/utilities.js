@@ -6,14 +6,19 @@ export const requestIdleCallback =
   typeof window.requestIdleCallback == 'function' ? window.requestIdleCallback : setTimeout;
 
 /**
- * Executes a callback in a separate task after the next frame.
- * Using to defer non-critical tasks until after the interaction is complete.
- * @see https://web.dev/articles/optimize-inp#yield_to_allow_rendering_work_to_occur_sooner
- * @param {() => any} callback - The callback to execute
+ * Returns a promise that resolves after yielding to the main thread.
+ * @see https://web.dev/articles/optimize-long-tasks#scheduler-yield
  */
-export const requestYieldCallback = callback => {
-  requestAnimationFrame(() => {
-    setTimeout(callback, 0);
+export const yieldToMainThread = () => {
+  if ('yield' in scheduler) {
+    // @ts-ignore - TypeScript doesn't recognize the yield method yet.
+    return scheduler.yield();
+  }
+
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => {
+      setTimeout(resolve, 0);
+    });
   });
 };
 
@@ -54,16 +59,13 @@ const viewTransitionTypes = {
 
     if (!grid || !productCards.length) return;
 
-    await new Promise(resolve =>
+    await new Promise((resolve) =>
       requestIdleCallback(() => {
         const cardsToAnimate = getCardsToAnimate(grid, productCards);
 
         productCards.forEach((card, index) => {
           if (index < cardsToAnimate) {
-            card.style.setProperty(
-              'view-transition-name',
-              `product-card-${card.dataset.productId}`
-            );
+            card.style.setProperty('view-transition-name', `product-card-${card.dataset.productId}`);
           } else {
             card.style.setProperty('content-visibility', 'hidden');
           }
@@ -74,7 +76,7 @@ const viewTransitionTypes = {
     );
 
     return () =>
-      productCards.forEach(card => {
+      productCards.forEach((card) => {
         card.style.removeProperty('view-transition-name');
         card.style.removeProperty('content-visibility');
       });
@@ -88,41 +90,38 @@ const viewTransitionTypes = {
  * @returns {Promise<void>} A promise that resolves when the view transition finishes
  */
 export function startViewTransition(callback, types) {
-  // eslint-disable-next-line no-async-promise-executor
-  return new Promise(async resolve => {
-    // Check if View Transitions API is supported
-    if (supportsViewTransitions() && !prefersReducedMotion()) {
-      const cleanupFunctions = [];
+  // Check if the API is supported and transitions are desired
+  if (!supportsViewTransitions() || isLowPowerDevice() || prefersReducedMotion()) {
+    callback();
+    return Promise.resolve();
+  }
 
-      if (types) {
-        for (const type of types) {
-          if (viewTransitionTypes[type]) {
-            const cleanupFunction = await viewTransitionTypes[type]();
-            if (cleanupFunction) cleanupFunctions.push(cleanupFunction);
-          }
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve) => {
+    let cleanupFunctions = [];
+
+    if (types) {
+      for (const type of types) {
+        if (viewTransitionTypes[type]) {
+          const cleanupFunction = await viewTransitionTypes[type]();
+          if (cleanupFunction) cleanupFunctions.push(cleanupFunction);
         }
       }
-
-      const transition = document.startViewTransition(callback);
-
-      if (!viewTransition.current) {
-        viewTransition.current = transition.finished;
-      }
-
-      if (types) types.forEach(type => transition.types.add(type));
-
-      transition.finished.then(() => {
-        viewTransition.current = undefined;
-        cleanupFunctions.forEach(cleanupFunction => cleanupFunction());
-        resolve();
-      });
-
-      return;
     }
 
-    // Fallback for browsers that don't support this API yet
-    callback();
-    resolve();
+    const transition = document.startViewTransition(callback);
+
+    if (!viewTransition.current) {
+      viewTransition.current = transition.finished;
+    }
+
+    if (types) types.forEach((type) => transition.types.add(type));
+
+    transition.finished.then(() => {
+      viewTransition.current = undefined;
+      cleanupFunctions.forEach((cleanupFunction) => cleanupFunction());
+      resolve();
+    });
   });
 }
 
@@ -147,11 +146,7 @@ export function startViewTransition(callback, types) {
  */
 export function fetchConfig(type = 'json', config = {}) {
   /** @type {Headers} */
-  const headers = {
-    'Content-Type': 'application/json',
-    Accept: `application/${type}`,
-    ...config.headers,
-  };
+  const headers = { 'Content-Type': 'application/json', Accept: `application/${type}`, ...config.headers };
 
   if (type === 'javascript') {
     headers['X-Requested-With'] = 'XMLHttpRequest';
@@ -249,23 +244,6 @@ export function normalizeString(str) {
 }
 
 /**
- * Format a money value
- * @param {string} value The value to format
- * @returns {string} The formatted value
- */
-export function formatMoney(value) {
-  const valueWithNoSpaces = value.replace(' ', '');
-  if (valueWithNoSpaces.indexOf(',') === -1) return valueWithNoSpaces;
-  if (valueWithNoSpaces.indexOf(',') < valueWithNoSpaces.indexOf('.'))
-    return valueWithNoSpaces.replace(',', '');
-  if (valueWithNoSpaces.indexOf('.') < valueWithNoSpaces.indexOf(','))
-    return valueWithNoSpaces.replace('.', '').replace(',', '.');
-  if (valueWithNoSpaces.indexOf(',') !== -1) return valueWithNoSpaces.replace(',', '.');
-
-  return valueWithNoSpaces;
-}
-
-/**
  * Check if the document is ready/loaded and call the callback when it is.
  * @param {() => void} callback The function to call when the document is ready.
  */
@@ -291,6 +269,19 @@ export function onDocumentReady(callback) {
 }
 
 /**
+ * Removes will-change from an element after an animation ends.
+ * Intended to be used as an animationend event listener.
+ * @param {AnimationEvent} event The animation event.
+ */
+export function removeWillChangeOnAnimationEnd(event) {
+  const target = event.target;
+  if (target && target instanceof HTMLElement) {
+    target.style.setProperty('will-change', 'unset');
+    target.removeEventListener('animationend', removeWillChangeOnAnimationEnd);
+  }
+}
+
+/**
  * Wait for all animations to finish before calling the callback.
  * @param {Element | Element[]} elements The element(s) whose animations to wait for.
  * @param {() => void} [callback] The function to call when all animations are finished.
@@ -299,7 +290,7 @@ export function onDocumentReady(callback) {
  */
 export function onAnimationEnd(elements, callback, options = { subtree: true }) {
   const animations = Array.isArray(elements)
-    ? elements.flatMap(element => element.getAnimations(options))
+    ? elements.flatMap((element) => element.getAnimations(options))
     : elements.getAnimations(options);
   const animationPromises = animations.reduce((acc, animation) => {
     // Ignore ViewTimeline animations
@@ -360,6 +351,14 @@ export function isMobileBreakpoint() {
  */
 export function isDesktopBreakpoint() {
   return mediaQueryLarge.matches;
+}
+
+/**
+ * Check if the device is a touch device independently ot the screen size
+ * @returns {boolean} True if the device is a touch device, false otherwise
+ */
+export function isTouchDevice() {
+  return 'ontouchstart' in window && navigator.maxTouchPoints > 0;
 }
 
 /**
@@ -441,7 +440,7 @@ export function getVisibleElements(root, elements, ratio = 1, axis) {
   if (!elements?.length) return [];
   const rootRect = root.getBoundingClientRect();
 
-  return elements.filter(element => {
+  return elements.filter((element) => {
     const { width, height, top, right, left, bottom } = element.getBoundingClientRect();
 
     if (ratio < 1) {
@@ -528,18 +527,14 @@ function getCardsToAnimate(grid, cards) {
   const cardSample = itemSample.querySelector('product-card');
   const gridStyle = getComputedStyle(grid);
 
-  const galleryAspectRatio =
-    cardSample?.refs?.cardGallery?.style.getPropertyValue('--gallery-aspect-ratio') || '';
+  const galleryAspectRatio = cardSample?.refs?.cardGallery?.style.getPropertyValue('--gallery-aspect-ratio') || '';
   let aspectRatio = parseFloat(galleryAspectRatio) || 0.5;
   if (galleryAspectRatio?.includes('/')) {
     const [width = '1', height = '2'] = galleryAspectRatio.split('/');
     aspectRatio = parseInt(width, 10) / parseInt(height, 10);
   }
 
-  const cardGap =
-    parseInt(
-      cardSample?.refs?.productCardLink?.style.getPropertyValue('--product-card-gap') || ''
-    ) || 12;
+  const cardGap = parseInt(cardSample?.refs?.productCardLink?.style.getPropertyValue('--product-card-gap') || '') || 12;
   const gridGap = parseInt(gridStyle.getPropertyValue('--product-grid-gap')) || 12;
 
   // Assume only a couple of lines of text in the card details (title and price).
@@ -555,9 +550,7 @@ function getCardsToAnimate(grid, cards) {
   // Calculate the number of cards that fit in the visible area:
   // - The width estimation is pretty accurate, we can ignore decimals.
   // - The height estimation needs to account for peeking rows, so we round up.
-  const columnsInGrid = isMobile
-    ? 2
-    : Math.floor((gridRect.width + gridGap) / (cardWidth + gridGap));
+  const columnsInGrid = isMobile ? 2 : Math.floor((gridRect.width + gridGap) / (cardWidth + gridGap));
   const rowsInGrid = Math.ceil((visibleHeight - gridGap) / (cardHeight + gridGap));
 
   return columnsInGrid * rowsInGrid;
@@ -588,17 +581,18 @@ if (!customElements.get('text-component')) {
  */
 export function resetShimmer(container = document.body) {
   const shimmer = container.querySelectorAll('[shimmer]');
-  shimmer.forEach(item => item.removeAttribute('shimmer'));
+  shimmer.forEach((item) => item.removeAttribute('shimmer'));
 }
 
 /**
- * Change the meta theme color of the header.
- * @param {Element} colorSourceElement - The HTML element whose background-color will determine the new theme-color.
+ * Change the meta theme color of the browser.
+ * @param {string} color - The color value (e.g., 'rgb(255, 255, 255)')
  */
-export function changeMetaThemeColor(colorSourceElement) {
+export function changeMetaThemeColor(color) {
   const metaThemeColor = document.head.querySelector('meta[name="theme-color"]');
-  const containerStyle = window.getComputedStyle(colorSourceElement);
-  if (metaThemeColor) metaThemeColor.setAttribute('content', containerStyle.backgroundColor);
+  if (metaThemeColor && color) {
+    metaThemeColor.setAttribute('content', color);
+  }
 }
 
 /**
@@ -611,6 +605,22 @@ export function getViewParameterValue() {
   return new URLSearchParams(window.location.search).get('view');
 }
 
+/**
+ * Helper to parse integer with a default fallback
+ * Handles the case where 0 is a valid value (not falsy)
+ * @template {number|null} T
+ * @param {string|number|null|undefined} value - The value to parse
+ * @param {T} defaultValue - The default value (number or null)
+ * @returns {number|T} The parsed integer or default value
+ */
+export function parseIntOrDefault(value, defaultValue) {
+  if (value === null || value === undefined || value === '') {
+    return defaultValue;
+  }
+  const parsed = parseInt(value.toString());
+  return isNaN(parsed) ? defaultValue : parsed;
+}
+
 class Scheduler {
   /** @type {Set<() => void>} */
   #queue = new Set();
@@ -618,7 +628,7 @@ class Scheduler {
   #scheduled = false;
 
   /** @param {() => void} task */
-  schedule = async task => {
+  schedule = async (task) => {
     this.#queue.add(task);
 
     if (!this.#scheduled) {
@@ -633,7 +643,7 @@ class Scheduler {
 
   flush = () => {
     for (const task of this.#queue) {
-      task();
+      setTimeout(task, 0);
     }
 
     this.#queue.clear();
@@ -643,7 +653,147 @@ class Scheduler {
 
 export const scheduler = new Scheduler();
 
-Theme.utilities = {
-  ...Theme.utilities,
-  scheduler: scheduler,
-};
+/**
+ * Executes a callback once per session when in the Shopify theme editor
+ * @param {HTMLElement} element - The element to check for the shopify editor block id
+ * @param {string} sessionKeyName - Unique key for the session storage
+ * @param {() => void} callback - Function to execute
+ * @returns {void} - Void if the callback was executed, undefined if it wasn't
+ */
+export function oncePerEditorSession(element, sessionKeyName, callback) {
+  const isInThemeEditor = window.Shopify?.designMode;
+  const shopifyEditorSectionId = JSON.parse(element.dataset.shopifyEditorSection || '{}').id;
+  const shopifyEditorBlockId = JSON.parse(element.dataset.shopifyEditorBlock || '{}').id;
+  const editorId = shopifyEditorSectionId || shopifyEditorBlockId;
+  const uniqueSessionKey = `${sessionKeyName}-${editorId}`;
+
+  if (isInThemeEditor && sessionStorage.getItem(uniqueSessionKey)) return;
+
+  callback();
+
+  if (isInThemeEditor) sessionStorage.setItem(uniqueSessionKey, 'true');
+
+  return;
+}
+
+/**
+ * A custom ResizeObserver that only calls the callback when the element is resized.
+ * By default the ResizeObserver callback is called when the element is first observed.
+ */
+export class ResizeNotifier extends ResizeObserver {
+  #initialized = false;
+
+  /**
+   * @param {ResizeObserverCallback} callback
+   */
+  constructor(callback) {
+    super((entries) => {
+      if (this.#initialized) return callback(entries, this);
+      this.#initialized = true;
+    });
+  }
+
+  disconnect() {
+    this.#initialized = false;
+    super.disconnect();
+  }
+}
+
+/**
+ * Sets the menuStyle dataset attribute on the header component element.
+ */
+export function setHeaderMenuStyle() {
+  const headerComponent = /** @type {HTMLElement} | null */ (document.querySelector('#header-component'));
+  if (headerComponent) {
+    window.requestAnimationFrame(() => {
+      const overflowList = headerComponent?.querySelector('overflow-list');
+      const hasReachedMinimum = overflowList && overflowList.hasAttribute('minimum-reached');
+      headerComponent.dataset.menuStyle = isTouchDevice() || hasReachedMinimum ? 'drawer' : 'menu';
+    });
+  }
+}
+
+/**
+ * Header group includes the header (with the menu, etc) and other sections like announcements, dividers, etc.
+ * @param {HTMLElement | null} header - The header element
+ * @param {HTMLElement | null} headerGroup - The header group element, defaults to the #header-group element
+ * @returns {number} The height of the header group
+ */
+export function calculateHeaderGroupHeight(
+  header = document.querySelector('#header-component'),
+  headerGroup = document.querySelector('#header-group')
+) {
+  if (!headerGroup) return 0;
+
+  let totalHeight = 0;
+  const children = headerGroup.children;
+  for (let i = 0; i < children.length; i++) {
+    const element = children[i];
+    if (element === header || !(element instanceof HTMLElement)) continue;
+    totalHeight += element.offsetHeight;
+  }
+
+  // If the header is transparent and has a sibling section, add the height of the header to the total height
+  if (header instanceof HTMLElement && header.hasAttribute('transparent') && header.parentElement?.nextElementSibling) {
+    return totalHeight + header.offsetHeight;
+  }
+
+  return totalHeight;
+}
+
+/**
+ * Updates CSS custom properties for transparent header offset calculation
+ * Avoids expensive :has() selectors
+ */
+function updateTransparentHeaderOffset() {
+  const header = document.querySelector('#header-component');
+  const headerGroup = document.querySelector('#header-group');
+  const hasHeaderSection = headerGroup?.querySelector('.header-section');
+  if (!hasHeaderSection || !header?.hasAttribute('transparent')) {
+    document.body.style.setProperty('--transparent-header-offset-boolean', '0');
+    return;
+  }
+
+  const hasImmediateSection = hasHeaderSection.nextElementSibling?.classList.contains('shopify-section');
+
+  const shouldApplyOffset = !hasImmediateSection ? '1' : '0';
+  document.body.style.setProperty('--transparent-header-offset-boolean', shouldApplyOffset);
+}
+
+/**
+ * Initialize and maintain header height CSS variables.
+ */
+function updateHeaderHeights() {
+  const header = document.querySelector('header-component');
+
+  // Early exit if no header - nothing to do
+  if (!(header instanceof HTMLElement)) return;
+
+  // Calculate initial heights
+  const headerHeight = header.offsetHeight;
+  const headerGroupHeight = calculateHeaderGroupHeight(header);
+  const headerTopRow = /** @type {HTMLElement} | null */ (header.querySelector('.header__row--top'));
+
+  document.body.style.setProperty('--header-height', `${headerHeight}px`);
+  document.body.style.setProperty('--header-group-height', `${headerGroupHeight}px`);
+
+  if (headerTopRow) {
+    window.requestAnimationFrame(function () {
+      header.style.setProperty('--top-row-height', `${headerTopRow.offsetHeight}px`);
+    });
+  }
+}
+
+export function updateAllHeaderCustomProperties() {
+  updateHeaderHeights();
+  updateTransparentHeaderOffset();
+  setHeaderMenuStyle();
+}
+
+// Theme is not defined in some layouts, like the gift card page
+if (typeof Theme !== 'undefined') {
+  Theme.utilities = {
+    ...Theme.utilities,
+    scheduler: scheduler,
+  };
+}
