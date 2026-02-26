@@ -815,6 +815,7 @@
           "block_order": []
         }
       },
+      "disabled": true,
       "name": "t:names.blog_posts_editorial",
       "settings": {
         "blog": "news",
@@ -1021,9 +1022,9 @@
     "product_list_CYHNbA",
     "media_quote_carousel_WqXEGm",
     "product_list_fa6P9H",
+    "176470076918a92115",
     "featured_blog_posts_MDhNY7",
     "1762500074df78f604",
-    "1763967075d2c6bd68",
-    "176470076918a92115"
+    "1763967075d2c6bd68"
   ]
 }
