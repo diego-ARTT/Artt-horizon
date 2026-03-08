@@ -173,7 +173,11 @@
                   "blocks": {}
                 }
               },
-              "block_order": ["text_pF6rVi", "text_HafH7P", "email_signup_mxPC77"]
+              "block_order": [
+                "text_pF6rVi",
+                "text_HafH7P",
+                "email_signup_mxPC77"
+              ]
             },
             "group_HbjwLj": {
               "type": "group",
@@ -258,7 +262,10 @@
                   "blocks": {}
                 }
               },
-              "block_order": ["menu_8XrJQP", "menu_nTbrtA"]
+              "block_order": [
+                "menu_8XrJQP",
+                "menu_nTbrtA"
+              ]
             },
             "group_c7MT3w": {
               "type": "group",
@@ -350,13 +357,22 @@
                   "blocks": {}
                 }
               },
-              "block_order": ["image_J8maax", "text_nXLKgp"]
+              "block_order": [
+                "image_J8maax",
+                "text_nXLKgp"
+              ]
             }
           },
-          "block_order": ["group_QmJkQb", "group_HbjwLj", "group_c7MT3w"]
+          "block_order": [
+            "group_QmJkQb",
+            "group_HbjwLj",
+            "group_c7MT3w"
+          ]
         }
       },
-      "block_order": ["group_N6QQDw"],
+      "block_order": [
+        "group_N6QQDw"
+      ],
       "name": "t:names.footer",
       "settings": {
         "section_width": "page-width",
@@ -390,9 +406,9 @@
           "type": "social-links",
           "settings": {
             "facebook_url": "https://www.facebook.com",
-            "instagram_url": "https://www.instagram.com",
+            "instagram_url": "https://www.instagram.com/arttitudelifestyle",
             "youtube_url": "https://www.youtube.com",
-            "tiktok_url": "https://www.tiktok.com",
+            "tiktok_url": "https://www.tiktok.com/@arttitudelifestyle",
             "twitter_url": "https://www.twitter.com",
             "threads_url": "",
             "linkedin_url": "",
@@ -406,7 +422,11 @@
           "blocks": {}
         }
       },
-      "block_order": ["copyright", "policy_list", "social_icons"],
+      "block_order": [
+        "copyright",
+        "policy_list",
+        "social_icons"
+      ],
       "settings": {
         "section_width": "page-width",
         "gap": 24,
@@ -417,5 +437,8 @@
       }
     }
   },
-  "order": ["footer", "utilities"]
+  "order": [
+    "footer",
+    "utilities"
+  ]
 }
