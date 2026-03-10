@@ -56,13 +56,13 @@ export class LayeredSlideshowComponent extends Component {
 
     this.#active = Math.max(
       0,
-      tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true')
+      tabs.findIndex(t => t.getAttribute('aria-selected') === 'true')
     );
 
     this.#isMobile = isMobileBreakpoint();
     mediaQueryLarge.addEventListener('change', this.#handleMediaQueryChange);
 
-    this.#containerObserver = new ResizeObserver((entries) => {
+    this.#containerObserver = new ResizeObserver(entries => {
       for (const entry of entries) {
         if (entry.contentBoxSize) {
           // Use contentBoxSize if available for better precision, or fallback to contentRect
@@ -93,18 +93,21 @@ export class LayeredSlideshowComponent extends Component {
     const opts = { signal: this.#abort.signal };
     const { container, tabs } = this.refs;
 
-    this.addEventListener('keydown', (e) => this.#handleKeydown(e), opts);
+    this.addEventListener('keydown', e => this.#handleKeydown(e), opts);
 
     for (const [i, tab] of tabs.entries()) {
-      tab.addEventListener('click', (e) => this.#handleTabClick(e, i), opts);
-      tab.addEventListener('focus', (e) => this.#handleTabFocus(e, i), opts);
+      tab.addEventListener('click', e => this.#handleTabClick(e, i), opts);
+      tab.addEventListener('focus', e => this.#handleTabFocus(e, i), opts);
     }
 
     this.#setupPanelFocusManagement(opts);
 
     if (!this.#isMobile) {
-      container.addEventListener('pointerdown', (e) => this.#startDrag(e), opts);
-      container.addEventListener('click', (e) => this.#preventClickDuringDrag(e), { ...opts, capture: true });
+      container.addEventListener('pointerdown', e => this.#startDrag(e), opts);
+      container.addEventListener('click', e => this.#preventClickDuringDrag(e), {
+        ...opts,
+        capture: true,
+      });
     }
   }
 
@@ -152,7 +155,7 @@ export class LayeredSlideshowComponent extends Component {
     if (!panels) return;
 
     for (const [index, panel] of panels.entries()) {
-      panel.addEventListener('keydown', (event) => this.#handlePanelKeydown(event, index), opts);
+      panel.addEventListener('keydown', event => this.#handlePanelKeydown(event, index), opts);
     }
   }
 
@@ -212,8 +215,8 @@ export class LayeredSlideshowComponent extends Component {
    */
   #getFocusableElements(panel) {
     return Array.from(panel.querySelectorAll(FOCUSABLE_SELECTOR))
-      .filter((el) => !el.closest('[inert]'))
-      .map((el) => /** @type {HTMLElement} */ (el));
+      .filter(el => !el.closest('[inert]'))
+      .map(el => /** @type {HTMLElement} */ (el));
   }
 
   #preventClickDuringDrag(/** @type {MouseEvent} */ e) {
@@ -322,9 +325,13 @@ export class LayeredSlideshowComponent extends Component {
     const inactiveSize = this.#inactiveSize;
     const size =
       containerSize ??
-      (this.#isMobile ? container.getBoundingClientRect().height : container.getBoundingClientRect().width);
+      (this.#isMobile
+        ? container.getBoundingClientRect().height
+        : container.getBoundingClientRect().width);
     const activeSize = size - inactiveSize * (tabs.length - 1);
-    const sizes = tabs.map((_, i) => (i === this.#active ? `${activeSize}px` : `${inactiveSize}px`));
+    const sizes = tabs.map((_, i) =>
+      i === this.#active ? `${activeSize}px` : `${inactiveSize}px`
+    );
     container.style.setProperty('--active-tab', sizes.join(' '));
   }
 
@@ -375,7 +382,7 @@ export class LayeredSlideshowComponent extends Component {
     const ac = new AbortController();
     const opts = { signal: ac.signal };
 
-    document.addEventListener('pointermove', (e) => this.#handleDrag(e), opts);
+    document.addEventListener('pointermove', e => this.#handleDrag(e), opts);
     document.addEventListener('pointerup', () => this.#endDrag(ac), opts);
     document.addEventListener('pointercancel', () => this.#endDrag(ac), opts);
 
@@ -511,7 +518,7 @@ export class LayeredSlideshowComponent extends Component {
 
     if (isAuto) {
       // Auto mode: fit to content height
-      let minHeightTemp = Math.max(contentHeight, 150);
+      const minHeightTemp = Math.max(contentHeight, 150);
       container.style.height = `${minHeightTemp}px`;
       this.style.minHeight = `${minHeightTemp}px`;
     } else {
@@ -551,7 +558,9 @@ export class LayeredSlideshowComponent extends Component {
     } else {
       // CSS variable is set on component, try reading from container (inherited) or component directly
       const inheritedValue = containerStyles.getPropertyValue('--layered-panel-height-mobile');
-      const componentValue = getComputedStyle(this).getPropertyValue('--layered-panel-height-mobile');
+      const componentValue = getComputedStyle(this).getPropertyValue(
+        '--layered-panel-height-mobile'
+      );
       minPanelHeight = parseFloat(inheritedValue || componentValue) || 260;
     }
 
@@ -577,7 +586,9 @@ export class LayeredSlideshowComponent extends Component {
       const content = panel.querySelector('.layered-slideshow__content');
       if (!content) continue;
 
-      const inner = /** @type {HTMLElement} */ (content.querySelector('.group-block-content') ?? content);
+      const inner = /** @type {HTMLElement} */ (
+        content.querySelector('.group-block-content') ?? content
+      );
 
       // Temporarily set height to auto for accurate measurement
       // This is needed because height: 100% collapses when parent has no height

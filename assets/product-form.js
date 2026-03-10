@@ -1,6 +1,12 @@
 import { Component } from '@theme/component';
 import { fetchConfig, preloadImage, onAnimationEnd, yieldToMainThread } from '@theme/utilities';
-import { ThemeEvents, CartAddEvent, CartErrorEvent, CartUpdateEvent, VariantUpdateEvent } from '@theme/events';
+import {
+  ThemeEvents,
+  CartAddEvent,
+  CartErrorEvent,
+  CartUpdateEvent,
+  VariantUpdateEvent,
+} from '@theme/events';
 import { cartPerformance } from '@theme/performance';
 import { morph } from '@theme/morph';
 
@@ -44,7 +50,9 @@ export class AddToCartComponent extends Component {
     super.disconnectedCallback();
 
     if (this.#resetTimeouts) {
-      this.#resetTimeouts.forEach(/** @param {number} timeoutId */ (timeoutId) => clearTimeout(timeoutId));
+      this.#resetTimeouts.forEach(
+        /** @param {number} timeoutId */ timeoutId => clearTimeout(timeoutId)
+      );
     }
     this.removeEventListener('pointerenter', this.#preloadImage);
   }
@@ -72,7 +80,9 @@ export class AddToCartComponent extends Component {
     if (!form?.checkValidity()) return;
 
     // Check if adding would exceed max before animating
-    const productForm = /** @type {ProductFormComponent | null} */ (this.closest('product-form-component'));
+    const productForm = /** @type {ProductFormComponent | null} */ (
+      this.closest('product-form-component')
+    );
     const quantitySelector = productForm?.refs.quantitySelector;
     if (quantitySelector?.canAddToCart) {
       const validation = quantitySelector.canAddToCart();
@@ -111,7 +121,7 @@ export class AddToCartComponent extends Component {
 
     const flyToCartElement = /** @type {FlyToCart} */ (document.createElement('fly-to-cart'));
 
-    let flyToCartClass = addToCartButton.classList.contains('quick-add__button')
+    const flyToCartClass = addToCartButton.classList.contains('quick-add__button')
       ? 'fly-to-cart--quick'
       : 'fly-to-cart--main';
 
@@ -136,7 +146,9 @@ export class AddToCartComponent extends Component {
     }
 
     // Clear all existing timeouts
-    this.#resetTimeouts.forEach(/** @param {number} timeoutId */ (timeoutId) => clearTimeout(timeoutId));
+    this.#resetTimeouts.forEach(
+      /** @param {number} timeoutId */ timeoutId => clearTimeout(timeoutId)
+    );
     this.#resetTimeouts = [];
 
     if (addToCartButton.dataset.added !== 'true') {
@@ -154,7 +166,7 @@ export class AddToCartComponent extends Component {
       // Remove this timeout from the array
       const index = this.#resetTimeouts.indexOf(timeoutId);
       if (index > -1) {
-        this.#resetTimeouts.splice(index, 1); 
+        this.#resetTimeouts.splice(index, 1);
       }
     }, 800);
 
@@ -225,14 +237,20 @@ class ProductFormComponent extends Component {
    * @returns {number} The cart quantity for the current variant
    */
   #updateCartQuantityFromData(cart) {
-    const variantIdInput = /** @type {HTMLInputElement | null} */ (this.querySelector('input[name="id"]'));
+    const variantIdInput = /** @type {HTMLInputElement | null} */ (
+      this.querySelector('input[name="id"]')
+    );
     if (!variantIdInput?.value || !cart?.items) return 0;
 
-    const cartItem = cart.items.find((item) => item.variant_id.toString() === variantIdInput.value.toString());
+    const cartItem = cart.items.find(
+      item => item.variant_id.toString() === variantIdInput.value.toString()
+    );
     const cartQty = cartItem ? cartItem.quantity : 0;
 
     // Use public API to update quantity selector
-    const quantitySelector = /** @type {any | undefined} */ (this.querySelector('quantity-selector-component'));
+    const quantitySelector = /** @type {any | undefined} */ (
+      this.querySelector('quantity-selector-component')
+    );
     if (quantitySelector?.setCartQuantity) {
       quantitySelector.setCartQuantity(cartQty);
     }
@@ -248,7 +266,9 @@ class ProductFormComponent extends Component {
    * @returns {Promise<number>} The cart quantity for the current variant
    */
   async #fetchAndUpdateCartQuantity() {
-    const variantIdInput = /** @type {HTMLInputElement | null} */ (this.querySelector('input[name="id"]'));
+    const variantIdInput = /** @type {HTMLInputElement | null} */ (
+      this.querySelector('input[name="id"]')
+    );
     if (!variantIdInput?.value) return 0;
 
     try {
@@ -266,9 +286,13 @@ class ProductFormComponent extends Component {
    * Updates data-cart-quantity when cart is updated from elsewhere
    * @param {CartUpdateEvent|CartAddEvent} event
    */
-  #onCartUpdate = async (event) => {
+  #onCartUpdate = async event => {
     // Skip if this event came from this component
-    if (event.detail?.sourceId === this.id || event.detail?.data?.source === 'product-form-component') return;
+    if (
+      event.detail?.sourceId === this.id ||
+      event.detail?.data?.source === 'product-form-component'
+    )
+      return;
 
     const cart = /** @type {Cart} */ (event.detail?.resource);
     if (cart?.items) {
@@ -299,12 +323,18 @@ class ProductFormComponent extends Component {
 
   /** @returns {string | undefined} */
   #getIntendedVariantId() {
-    return new URL(window.location.href).searchParams.get('variant') || this.refs.variantId?.value || undefined;
+    return (
+      new URL(window.location.href).searchParams.get('variant') ||
+      this.refs.variantId?.value ||
+      undefined
+    );
   }
 
   /** @returns {number} */
   #getQuantity() {
-    return Number(this.refs.quantitySelector?.getValue?.()) || Number(this.dataset.quantityDefault) || 1;
+    return (
+      Number(this.refs.quantitySelector?.getValue?.()) || Number(this.dataset.quantityDefault) || 1
+    );
   }
 
   /**
@@ -323,7 +353,7 @@ class ProductFormComponent extends Component {
 
     if (!overrideVariantId) {
       const anyButtonDisabled = Array.from(allAddToCartContainers).some(
-        (container) => container.refs.addToCartButton?.disabled
+        container => container.refs.addToCartButton?.disabled
       );
       if (anyButtonDisabled) return;
     }
@@ -340,7 +370,10 @@ class ProductFormComponent extends Component {
         }
 
         const errorTemplate = this.dataset.quantityErrorMax || '';
-        const errorMessage = errorTemplate.replace('{{ maximum }}', validation.maxQuantity?.toString() || '');
+        const errorMessage = errorTemplate.replace(
+          '{{ maximum }}',
+          validation.maxQuantity?.toString() || ''
+        );
         if (addToCartTextError) {
           addToCartTextError.classList.remove('hidden');
 
@@ -382,8 +415,8 @@ class ProductFormComponent extends Component {
     }
 
     const cartItemsComponents = document.querySelectorAll('cart-items-component');
-    let cartItemComponentsSectionIds = [];
-    cartItemsComponents.forEach((item) => {
+    const cartItemComponentsSectionIds = [];
+    cartItemsComponents.forEach(item => {
       if (item instanceof HTMLElement && item.dataset.sectionId) {
         cartItemComponentsSectionIds.push(item.dataset.sectionId);
       }
@@ -399,11 +432,16 @@ class ProductFormComponent extends Component {
         Accept: 'text/html',
       },
     })
-      .then((response) => response.json())
-      .then(async (response) => {
+      .then(response => response.json())
+      .then(async response => {
         if (response.status) {
           this.dispatchEvent(
-            new CartErrorEvent(form.getAttribute('id') || '', response.message, response.description, response.errors)
+            new CartErrorEvent(
+              form.getAttribute('id') || '',
+              response.message,
+              response.description,
+              response.errors
+            )
           );
 
           if (!addToCartTextError) return;
@@ -478,7 +516,7 @@ class ProductFormComponent extends Component {
           );
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       })
       .finally(() => {
@@ -505,7 +543,7 @@ class ProductFormComponent extends Component {
     }
 
     const payload = {
-      items: items.map((item) => ({
+      items: items.map(item => ({
         id: Number(item.variantId),
         quantity: item.quantity,
       })),
@@ -520,8 +558,8 @@ class ProductFormComponent extends Component {
       },
       body: JSON.stringify(payload),
     })
-      .then((response) => response.json())
-      .then(async (response) => {
+      .then(response => response.json())
+      .then(async response => {
         if (response.status) {
           this.dispatchEvent(
             new CartErrorEvent(this.id, response.message, response.description, response.errors)
@@ -582,7 +620,7 @@ class ProductFormComponent extends Component {
           })
         );
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
   }
@@ -629,14 +667,17 @@ class ProductFormComponent extends Component {
     } else if (currentElement && !newElement) {
       currentElement.remove();
     } else if (!currentElement && newElement && insertReferenceElement) {
-      insertReferenceElement.insertAdjacentElement('beforebegin', /** @type {Element} */ (newElement.cloneNode(true)));
+      insertReferenceElement.insertAdjacentElement(
+        'beforebegin',
+        /** @type {Element} */ (newElement.cloneNode(true))
+      );
     }
   }
 
   /**
    * @param {VariantUpdateEvent} event
    */
-  #onVariantUpdate = async (event) => {
+  #onVariantUpdate = async event => {
     if (event.detail.data.newProduct) {
       this.dataset.productId = event.detail.data.newProduct.id;
     } else if (event.detail.data.productId !== this.dataset.productId) {
@@ -654,11 +695,18 @@ class ProductFormComponent extends Component {
       this.#processBatchAddToCart(queuedItems);
     }
 
-    const { addToCartButtonContainer: currentAddToCartButtonContainer, acceleratedCheckoutButtonContainer } = this.refs;
+    const {
+      addToCartButtonContainer: currentAddToCartButtonContainer,
+      acceleratedCheckoutButtonContainer,
+    } = this.refs;
     const currentAddToCartButton = currentAddToCartButtonContainer?.refs.addToCartButton;
 
     // Update state and text for add-to-cart button
-    if (!currentAddToCartButtonContainer || (!currentAddToCartButton && !acceleratedCheckoutButtonContainer)) return;
+    if (
+      !currentAddToCartButtonContainer ||
+      (!currentAddToCartButton && !acceleratedCheckoutButtonContainer)
+    )
+      return;
 
     // Update the button state
     if (event.detail.resource == null || event.detail.resource.available == false) {
@@ -667,7 +715,9 @@ class ProductFormComponent extends Component {
       currentAddToCartButtonContainer.enable();
     }
 
-    const newAddToCartButton = event.detail.data.html.querySelector('product-form-component [ref="addToCartButton"]');
+    const newAddToCartButton = event.detail.data.html.querySelector(
+      'product-form-component [ref="addToCartButton"]'
+    );
     if (newAddToCartButton && currentAddToCartButton) {
       morph(currentAddToCartButton, newAddToCartButton);
     }
@@ -707,7 +757,11 @@ class ProductFormComponent extends Component {
     );
 
     if (quantitySelector?.updateConstraints && newQuantityInput) {
-      quantitySelector.updateConstraints(newQuantityInput.min, newQuantityInput.max || null, newQuantityInput.step);
+      quantitySelector.updateConstraints(
+        newQuantityInput.min,
+        newQuantityInput.max || null,
+        newQuantityInput.step
+      );
     }
 
     const newQuantityRules = event.detail.data.html.querySelector('.quantity-rules');
@@ -727,10 +781,16 @@ class ProductFormComponent extends Component {
 
         // Get the NEW quantity selector after morphing and update its constraints
         const newQuantityInputElement = /** @type {HTMLInputElement | null} */ (
-          event.detail.data.html.querySelector('quantity-selector-component input[ref="quantityInput"]')
+          event.detail.data.html.querySelector(
+            'quantity-selector-component input[ref="quantityInput"]'
+          )
         );
 
-        if (this.refs.quantitySelector?.updateConstraints && newQuantityInputElement && currentQuantityValue) {
+        if (
+          this.refs.quantitySelector?.updateConstraints &&
+          newQuantityInputElement &&
+          currentQuantityValue
+        ) {
           // Temporarily set the old value so updateConstraints can snap it properly
           this.refs.quantitySelector.setValue(currentQuantityValue);
           // updateConstraints will snap to valid increment if needed
@@ -751,17 +811,30 @@ class ProductFormComponent extends Component {
       ];
 
       for (const [selector, currentElement, fallback] of morphTargets) {
-        this.#morphOrUpdateElement(currentElement, event.detail.data.html.querySelector(selector), fallback);
+        this.#morphOrUpdateElement(
+          currentElement,
+          event.detail.data.html.querySelector(selector),
+          fallback
+        );
       }
     }
 
     // Morph volume pricing if it exists
     const currentVolumePricing = this.refs.volumePricing;
     const newVolumePricing = event.detail.data.html.querySelector('volume-pricing');
-    this.#morphOrUpdateElement(currentVolumePricing, newVolumePricing, this.refs.productFormButtons);
+    this.#morphOrUpdateElement(
+      currentVolumePricing,
+      newVolumePricing,
+      this.refs.productFormButtons
+    );
 
     const hasB2BFeatures =
-      quantityRules || newQuantityRules || pricePerItem || newPricePerItem || currentVolumePricing || newVolumePricing;
+      quantityRules ||
+      newQuantityRules ||
+      pricePerItem ||
+      newPricePerItem ||
+      currentVolumePricing ||
+      newVolumePricing;
 
     if (!hasB2BFeatures) return;
 
@@ -770,7 +843,7 @@ class ProductFormComponent extends Component {
   };
 
   /** @param {import('./events').VariantSelectedEvent} _event */
-  #onVariantSelected = (_event) => {
+  #onVariantSelected = _event => {
     this.#variantChangeInProgress = true;
   };
 }

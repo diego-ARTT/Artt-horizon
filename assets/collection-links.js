@@ -41,7 +41,7 @@ class CollectionLinks extends Component {
   }
 
   get currentIndex() {
-    return this.links.findIndex((link) => link.getAttribute('aria-current') === 'true');
+    return this.links.findIndex(link => link.getAttribute('aria-current') === 'true');
   }
 
   /**
@@ -75,7 +75,7 @@ class CollectionLinks extends Component {
    *
    * @param {SlideshowSelectEvent} event
    */
-  #handleSlideshowSelect = async (event) => {
+  #handleSlideshowSelect = async event => {
     if (!event.detail.userInitiated) return;
 
     const { index } = event.detail;
@@ -123,7 +123,7 @@ class CollectionLinks extends Component {
     const visibleLinks = getVisibleElements(this, links, 0.1);
 
     if (visibleLinks.length === 0) return;
-    const centers = visibleLinks.map((link) => center(link, 'x'));
+    const centers = visibleLinks.map(link => center(link, 'x'));
     const referencePoint = center(container, 'x');
     const closestCenter = closest(centers, referencePoint);
     const closestVisibleLink = visibleLinks[centers.indexOf(closestCenter)];
@@ -175,14 +175,14 @@ class CollectionLinks extends Component {
     if (!selectedImage) return;
 
     // Cache image dimensions to avoid repeated layout reads
-    let cachedImageHeight = selectedImage.offsetHeight;
-    let cachedImageWidth = selectedImage.offsetWidth;
+    const cachedImageHeight = selectedImage.offsetHeight;
+    const cachedImageWidth = selectedImage.offsetWidth;
 
     /** @type {number | null} */
     let rafId = null;
 
     /** @param {PointerEvent} event */
-    const updateImagePosition = (event) => {
+    const updateImagePosition = event => {
       // Throttle with requestAnimationFrame to avoid layout thrashing
       if (rafId !== null) return;
 
@@ -194,9 +194,14 @@ class CollectionLinks extends Component {
         const offset = 15;
 
         const wouldBeCutOff = event.clientY + cachedImageHeight + offset > viewportHeight;
-        const yPos = wouldBeCutOff ? event.clientY - cachedImageHeight - offset : event.clientY + offset;
+        const yPos = wouldBeCutOff
+          ? event.clientY - cachedImageHeight - offset
+          : event.clientY + offset;
 
-        const xPos = Math.min(Math.max(offset, event.clientX + offset), viewportWidth - cachedImageWidth - offset);
+        const xPos = Math.min(
+          Math.max(offset, event.clientX + offset),
+          viewportWidth - cachedImageWidth - offset
+        );
 
         selectedImage.style.setProperty('--x', `${xPos}px`);
         selectedImage.style.setProperty('--y', `${yPos}px`);
