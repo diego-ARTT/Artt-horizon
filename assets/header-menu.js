@@ -256,9 +256,9 @@ class HeaderMenu extends Component {
 
     const headerVisibleHeight =
       isOverlapSituation && this.headerComponent.offsetHeight > 0
-        ? /** @type {HTMLElement | null} */ ((
-            this.headerComponent.querySelector('.header__row--top')
-          )?.offsetHeight ?? 0)
+        ? /** @type {HTMLElement | null} */ (
+            this.headerComponent.querySelector('.header__row--top')?.offsetHeight ?? 0
+          )
         : this.headerComponent.offsetHeight;
 
     const nothingToOpen = submenuHeight === 0;

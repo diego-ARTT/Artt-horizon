@@ -35,12 +35,15 @@ class ProductSkuComponent extends Component {
    * Updates the SKU.
    * @param {VariantUpdateEvent} event - The variant update event.
    */
-  updateSku = (event) => {
+  updateSku = event => {
     if (event.detail.data.newProduct) {
       this.dataset.productId = event.detail.data.newProduct.id;
     }
 
-    if (event.target instanceof HTMLElement && event.target.dataset.productId !== this.dataset.productId) {
+    if (
+      event.target instanceof HTMLElement &&
+      event.target.dataset.productId !== this.dataset.productId
+    ) {
       return;
     }
 

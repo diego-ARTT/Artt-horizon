@@ -183,7 +183,10 @@ export class QuantitySelectorComponent extends Component {
     const { min, step, value } = this.getCurrentValues();
     const effectiveMax = this.getEffectiveMax();
 
-    const newValue = Math.min(effectiveMax ?? Infinity, Math.max(min, value + step * stepMultiplier));
+    const newValue = Math.min(
+      effectiveMax ?? Infinity,
+      Math.max(min, value + step * stepMultiplier)
+    );
 
     quantityInput.value = newValue.toString();
     this.onQuantityChange();
@@ -216,7 +219,8 @@ export class QuantitySelectorComponent extends Component {
    */
   selectInputValue(event) {
     const { quantityInput } = this.refs;
-    if (!(event.target instanceof HTMLInputElement) || document.activeElement !== quantityInput) return;
+    if (!(event.target instanceof HTMLInputElement) || document.activeElement !== quantityInput)
+      return;
 
     quantityInput.select();
   }
@@ -235,7 +239,10 @@ export class QuantitySelectorComponent extends Component {
     const effectiveMax = this.getEffectiveMax();
 
     // Snap to bounds
-    const quantity = Math.min(effectiveMax ?? Infinity, Math.max(min, parseInt(event.target.value) || 0));
+    const quantity = Math.min(
+      effectiveMax ?? Infinity,
+      Math.max(min, parseInt(event.target.value) || 0)
+    );
 
     // Validate step increment
     if ((quantity - min) % step !== 0) {
@@ -257,7 +264,9 @@ export class QuantitySelectorComponent extends Component {
     const { quantityInput } = this.refs;
     const newValue = parseInt(quantityInput.value);
 
-    this.dispatchEvent(new QuantitySelectorUpdateEvent(newValue, Number(quantityInput.dataset.cartLine) || undefined));
+    this.dispatchEvent(
+      new QuantitySelectorUpdateEvent(newValue, Number(quantityInput.dataset.cartLine) || undefined)
+    );
   }
 
   /**
@@ -285,7 +294,9 @@ export class QuantitySelectorComponent extends Component {
    */
   get quantityInput() {
     if (!this.refs.quantityInput) {
-      throw new Error('Missing <input ref="quantityInput" /> inside <quantity-selector-component />');
+      throw new Error(
+        'Missing <input ref="quantityInput" /> inside <quantity-selector-component />'
+      );
     }
 
     return this.refs.quantityInput;

@@ -48,7 +48,8 @@ export class ComparisonSliderComponent extends Component {
     // Skip sync during animation to prevent lag
     if (this.isAnimating) return;
 
-    const val = (Number(slider.value) - Number(slider.min)) / (Number(slider.max) - Number(slider.min));
+    const val =
+      (Number(slider.value) - Number(slider.min)) / (Number(slider.max) - Number(slider.min));
     const compareValue = Math.round(val * 100);
 
     // Set the CSS custom property on the media wrapper
@@ -133,7 +134,7 @@ export class ComparisonSliderComponent extends Component {
    * @param {IntersectionObserverEntry[]} entries
    */
   handleIntersection(entries) {
-    entries.forEach((entry) => {
+    entries.forEach(entry => {
       if (entry.isIntersecting && !this.hasAnimated) {
         // Add a small delay to ensure everything is rendered
         setTimeout(() => {

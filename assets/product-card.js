@@ -1,8 +1,18 @@
 import { OverflowList } from '@theme/overflow-list';
 import VariantPicker from '@theme/variant-picker';
 import { Component } from '@theme/component';
-import { debounce, isDesktopBreakpoint, mediaQueryLarge, yieldToMainThread } from '@theme/utilities';
-import { ThemeEvents, VariantSelectedEvent, VariantUpdateEvent, SlideshowSelectEvent } from '@theme/events';
+import {
+  debounce,
+  isDesktopBreakpoint,
+  mediaQueryLarge,
+  yieldToMainThread,
+} from '@theme/utilities';
+import {
+  ThemeEvents,
+  VariantSelectedEvent,
+  VariantUpdateEvent,
+  SlideshowSelectEvent,
+} from '@theme/events';
 import { morph } from '@theme/morph';
 
 /**
@@ -38,7 +48,9 @@ export class ProductCardLink extends Component {
 
     // If the event was on an interactive element, don't do anything, this is not a navigation
     if (event.target instanceof Element) {
-      const interactiveElement = event.target.closest('button, input, label, select, [tabindex="1"]');
+      const interactiveElement = event.target.closest(
+        'button, input, label, select, [tabindex="1"]'
+      );
       if (interactiveElement) return;
     }
 
@@ -141,7 +153,8 @@ export class ProductCard extends ProductCardLink {
   #navigateToURL = (event, url) => {
     // Check for modifier keys that should open in new tab/window (only for mouse events)
     const shouldOpenInNewTab =
-      event instanceof MouseEvent && (event.metaKey || event.ctrlKey || event.shiftKey || event.button === 1);
+      event instanceof MouseEvent &&
+      (event.metaKey || event.ctrlKey || event.shiftKey || event.button === 1);
 
     if (shouldOpenInNewTab) {
       event.preventDefault();
@@ -181,7 +194,9 @@ export class ProductCard extends ProductCardLink {
 
   #preloadNextPreviewImage() {
     const currentSlide = this.refs.slideshow?.slides?.[this.refs.slideshow?.current];
-    currentSlide?.nextElementSibling?.querySelector('img[loading="lazy"]')?.removeAttribute('loading');
+    currentSlide?.nextElementSibling
+      ?.querySelector('img[loading="lazy"]')
+      ?.removeAttribute('loading');
   }
 
   /**
@@ -201,7 +216,7 @@ export class ProductCard extends ProductCardLink {
    * Handles the variant selected event.
    * @param {VariantSelectedEvent} event - The variant selected event.
    */
-  #handleVariantSelected = (event) => {
+  #handleVariantSelected = event => {
     if (event.target !== this.variantPicker) {
       this.variantPicker?.updateSelectedOption(event.detail.resource.id);
     }
@@ -212,7 +227,7 @@ export class ProductCard extends ProductCardLink {
    * Updates price, checks for unavailable variants, and updates product URL.
    * @param {VariantUpdateEvent} event - The variant update event.
    */
-  #handleVariantUpdate = (event) => {
+  #handleVariantUpdate = event => {
     // Stop the event from bubbling up to the section, variant updates triggered from product cards are fully handled
     // by this component and should not affect anything outside the card.
     event.stopPropagation();
@@ -265,7 +280,9 @@ export class ProductCard extends ProductCardLink {
    */
   updatePrice(event) {
     const priceContainer = this.querySelectorAll(`product-price [ref='priceContainer']`)[1];
-    const newPriceElement = event.detail.data.html.querySelector(`product-price [ref='priceContainer']`);
+    const newPriceElement = event.detail.data.html.querySelector(
+      `product-price [ref='priceContainer']`
+    );
 
     if (newPriceElement && priceContainer) {
       morph(priceContainer, newPriceElement);
@@ -375,7 +392,7 @@ export class ProductCard extends ProductCardLink {
    * Handles the slideshow select event.
    * @param {SlideshowSelectEvent} event - The slideshow select event.
    */
-  #handleSlideshowSelect = (event) => {
+  #handleSlideshowSelect = event => {
     if (event.detail.userInitiated) {
       this.#previousSlideIndex = event.detail.index;
     }
@@ -474,7 +491,7 @@ export class ProductCard extends ProductCardLink {
    *
    * @param {Event} event
    */
-  navigateToProduct = (event) => {
+  navigateToProduct = event => {
     if (!(event.target instanceof Element)) return;
 
     // Don't navigate if this product card is marked as no-navigation (e.g., in theme editor)
@@ -564,7 +581,8 @@ class SwatchesVariantPickerComponent extends VariantPicker {
     if (!(event.target instanceof HTMLElement)) return;
 
     // Check if this is a swatch input
-    const isSwatchInput = event.target instanceof HTMLInputElement && event.target.name?.includes('-swatch');
+    const isSwatchInput =
+      event.target instanceof HTMLInputElement && event.target.name?.includes('-swatch');
     const clickedSwatch = event.target;
     const availableCount = parseInt(clickedSwatch.dataset.availableCount || '0');
     const firstAvailableVariantId = clickedSwatch.dataset.firstAvailableOrFirstVariantId;

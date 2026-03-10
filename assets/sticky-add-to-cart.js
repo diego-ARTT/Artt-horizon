@@ -80,7 +80,9 @@ class StickyAddToCartComponent extends Component {
 
     document.addEventListener(ThemeEvents.cartUpdate, this.#handleCartAddComplete, { signal });
     document.addEventListener(ThemeEvents.cartError, this.#handleCartAddComplete, { signal });
-    document.addEventListener(ThemeEvents.quantitySelectorUpdate, this.#handleQuantityUpdate, { signal });
+    document.addEventListener(ThemeEvents.quantitySelectorUpdate, this.#handleQuantityUpdate, {
+      signal,
+    });
 
     this.#getInitialQuantity();
   }
@@ -106,11 +108,12 @@ class StickyAddToCartComponent extends Component {
     if (!buyButtonsBlock) return;
 
     // In themes migrated from 2.0, the footer element doesn't exist
-    const footer = document.querySelector('footer') ?? document.querySelector('[class*="footer-group"]');
+    const footer =
+      document.querySelector('footer') ?? document.querySelector('[class*="footer-group"]');
     if (!footer) return;
 
     // Observer for buy buttons visibility
-    this.#buyButtonsIntersectionObserver = new IntersectionObserver((entries) => {
+    this.#buyButtonsIntersectionObserver = new IntersectionObserver(entries => {
       const [entry] = entries;
       if (!entry) return;
 
@@ -131,7 +134,7 @@ class StickyAddToCartComponent extends Component {
 
     // Observer for footer visibility - hides sticky bar at page bottom
     this.#mainBottomObserver = new IntersectionObserver(
-      (entries) => {
+      entries => {
         const [entry] = entries;
         if (!entry) return;
 
@@ -196,7 +199,7 @@ class StickyAddToCartComponent extends Component {
    * Handles variant update events
    * @param {CustomEvent} event - The variant update event
    */
-  #handleVariantUpdate = (event) => {
+  #handleVariantUpdate = event => {
     if (event.detail.data.productId !== this.dataset.productId) return;
 
     const variant = event.detail.resource;
@@ -241,7 +244,7 @@ class StickyAddToCartComponent extends Component {
    * Handles variant selected events
    * @param {CustomEvent} event - The variant selected event
    */
-  #handleVariantSelected = (event) => {
+  #handleVariantSelected = event => {
     // The variant update event will follow and handle all updates via morph
     // We just update the dataset here for tracking
     const variantId = event.detail.resource?.id;
@@ -260,8 +263,8 @@ class StickyAddToCartComponent extends Component {
     if (!variantTitleElement || !variantPicker) return;
 
     const selectedOptions = Array.from(variantPicker.querySelectorAll('input:checked'))
-      .map((option) => /** @type {HTMLInputElement} */ (option).value)
-      .filter((value) => value !== '')
+      .map(option => /** @type {HTMLInputElement} */ (option).value)
+      .filter(value => value !== '')
       .join(' / ');
     if (!selectedOptions) return;
     variantTitleElement.textContent = selectedOptions;
@@ -271,7 +274,7 @@ class StickyAddToCartComponent extends Component {
    * Handles cart add complete (success or error) - resets puppet flag
    * @param {CustomEvent} _event - The cart event (unused)
    */
-  #handleCartAddComplete = (_event) => {
+  #handleCartAddComplete = _event => {
     // Reset the puppet flag after cart operation
     if (this.#targetAddToCartButton) {
       this.#targetAddToCartButton.dataset.puppet = 'false';
@@ -282,7 +285,7 @@ class StickyAddToCartComponent extends Component {
    * Handles quantity selector update events
    * @param {QuantitySelectorUpdateEvent} event - The quantity update event
    */
-  #handleQuantityUpdate = (event) => {
+  #handleQuantityUpdate = event => {
     // Only respond to product page quantity selector updates, not cart drawer
     if (event.detail.cartLine) return;
 
