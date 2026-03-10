@@ -188,7 +188,10 @@
     "product_hotspots": "商品ホットスポット",
     "hotspot_product": "ホットスポット",
     "product_sku": "SKU",
-    "layered_slideshow": "レイヤースライドショー"
+    "layered_slideshow": "レイヤースライドショー",
+    "size_guide": "Size guide",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote"
   },
   "settings": {
     "alignment": "配置",
@@ -970,7 +973,12 @@
     "resource_reference_product_sku": "親商品のSKUを表示します",
     "content_layout": "コンテンツレイアウト",
     "mobile_media_1": "モバイルメディア1",
-    "utilities": "ユーティリティ"
+    "utilities": "ユーティリティ",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo"
   },
   "html_defaults": {
     "share_information_about_your": "<p>ブランドに関する情報をお客様に伝えましょう。商品の説明、お知らせ、ストアへのお客様への歓迎メッセージなどに使用します。</p>",
