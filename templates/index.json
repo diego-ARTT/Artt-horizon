@@ -79,7 +79,9 @@
               "blocks": {}
             }
           },
-          "block_order": ["text_pKXg8w"]
+          "block_order": [
+            "text_pKXg8w"
+          ]
         },
         "group_n9JCfz": {
           "type": "group",
@@ -152,10 +154,16 @@
               "blocks": {}
             }
           },
-          "block_order": ["button_QFiR43", "button_qTim7y"]
+          "block_order": [
+            "button_QFiR43",
+            "button_qTim7y"
+          ]
         }
       },
-      "block_order": ["group_7RWxJ6", "group_n9JCfz"],
+      "block_order": [
+        "group_7RWxJ6",
+        "group_n9JCfz"
+      ],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "video",
@@ -283,7 +291,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_list_text_gPBAJD", "product_list_button_EYmGCt"]
+          "block_order": [
+            "product_list_text_gPBAJD",
+            "product_list_button_EYmGCt"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -368,13 +379,19 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_card_gallery_ey8mzd", "product_title_JNDbtY", "price_XjW4Ff"]
+          "block_order": [
+            "product_card_gallery_ey8mzd",
+            "product_title_JNDbtY",
+            "price_XjW4Ff"
+          ]
         }
       },
-      "block_order": ["button_LVmccw"],
+      "block_order": [
+        "button_LVmccw"
+      ],
       "name": "t:names.featured_collection",
       "settings": {
-        "collection": "memento-mori",
+        "collection": "seven-deadly-sins",
         "layout_type": "carousel",
         "carousel_on_mobile": false,
         "max_products": 8,
@@ -398,7 +415,7 @@
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
-        "image_1": "shopify://shop_images/7DS_banner.jpg",
+        "image_1": "shopify://shop_images/Banner_7DS_jars.jpg",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
         "custom_mobile_media": false,
@@ -472,7 +489,12 @@
           }
         }
       },
-      "block_order": ["quote_NaxN7L", "quote_akmJTT", "quote_c4wVnA", "quote_rH7YNc"],
+      "block_order": [
+        "quote_NaxN7L",
+        "quote_akmJTT",
+        "quote_c4wVnA",
+        "quote_rH7YNc"
+      ],
       "disabled": true,
       "custom_css": [],
       "name": "t:names.media_quote_carousel",
@@ -588,7 +610,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_list_text_YFtzcL", "product_list_button_MWeP9V"]
+          "block_order": [
+            "product_list_text_YFtzcL",
+            "product_list_button_MWeP9V"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -673,10 +698,16 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_card_gallery_677WP3", "product_title_YXxMTj", "price_JQzVV4"]
+          "block_order": [
+            "product_card_gallery_677WP3",
+            "product_title_YXxMTj",
+            "price_JQzVV4"
+          ]
         }
       },
-      "block_order": ["button_nJaQcT"],
+      "block_order": [
+        "button_nJaQcT"
+      ],
       "name": "t:names.featured_collection",
       "settings": {
         "collection": "man-fw25",
@@ -732,7 +763,9 @@
           }
         }
       },
-      "block_order": ["judge_me_reviews_testimonials_carousel_F8K8Ft"],
+      "block_order": [
+        "judge_me_reviews_testimonials_carousel_F8K8Ft"
+      ],
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -927,7 +960,9 @@
           }
         }
       },
-      "block_order": ["lookfy_gallery_lookfy_gallery_GcEgLR"],
+      "block_order": [
+        "lookfy_gallery_lookfy_gallery_GcEgLR"
+      ],
       "disabled": true,
       "settings": {
         "content_direction": "column",
@@ -987,7 +1022,9 @@
           }
         }
       },
-      "block_order": ["moast_carousel_HTa9Xh"],
+      "block_order": [
+        "moast_carousel_HTa9Xh"
+      ],
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
