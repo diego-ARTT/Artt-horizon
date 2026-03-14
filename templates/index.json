@@ -56,7 +56,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<p>Seven Sins, Eternal Style</p>",
+                "text": "<p>Virtue Was Never the Plan.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -77,10 +77,37 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "text_y88DqX": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>Callot gave the seven deadly sins a face. <br/>We gave them a fit. </p>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
             }
           },
           "block_order": [
-            "text_pKXg8w"
+            "text_pKXg8w",
+            "text_y88DqX"
           ]
         },
         "group_n9JCfz": {
