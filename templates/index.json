@@ -533,6 +533,7 @@
         "button_nJaQcT": {
           "type": "button",
           "name": "t:names.button",
+          "disabled": true,
           "settings": {
             "label": "See All",
             "link": "shopify://collections/memento-mori",
@@ -582,8 +583,9 @@
             "product_list_text_YFtzcL": {
               "type": "_product-list-text",
               "name": "t:names.collection_title",
+              "disabled": true,
               "settings": {
-                "text": "<h3>{{ closest.collection.title }}</h3>",
+                "text": "<h3>Best Sellers</h3>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
