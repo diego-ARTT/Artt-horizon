@@ -62,11 +62,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "forms_inline_kaVUam",
-        "heading",
-        "page-content"
-      ],
+      "block_order": ["forms_inline_kaVUam", "heading", "page-content"],
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -76,7 +72,5 @@
       }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }

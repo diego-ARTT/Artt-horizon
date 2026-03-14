@@ -188,7 +188,10 @@
     "product_hotspots": "제품 핫스팟",
     "hotspot_product": "핫스팟",
     "product_sku": "SKU(재고 관리 코드)",
-    "layered_slideshow": "레이어드 슬라이드 쇼"
+    "layered_slideshow": "레이어드 슬라이드 쇼",
+    "size_guide": "Size guide",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote"
   },
   "settings": {
     "autoplay": "자동 재생",
@@ -970,7 +973,12 @@
     "resource_reference_product_sku": "상위 제품의 SKU(재고 관리 코드)를 표시합니다",
     "content_layout": "콘텐츠 레이아웃",
     "mobile_media_1": "모바일 미디어 1",
-    "utilities": "유틸리티"
+    "utilities": "유틸리티",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo"
   },
   "html_defaults": {
     "share_information_about_your": "<p>고객과 브랜드에 대한 정보를 공유하세요. 제품을 설명하거나, 공지 사항을 알리거나, 스토어를 방문하는 고객을 환영할 수 있습니다.</p>",

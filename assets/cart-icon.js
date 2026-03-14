@@ -43,7 +43,7 @@ class CartIcon extends Component {
    * Handles the page show event when the page is restored from cache.
    * @param {PageTransitionEvent} event - The page show event.
    */
-  onPageShow = (event) => {
+  onPageShow = event => {
     if (event.persisted) {
       this.ensureCartBubbleIsCorrect();
     }
@@ -87,7 +87,7 @@ class CartIcon extends Component {
 
     // Ensure element is visible before starting animation
     // Use requestAnimationFrame to ensure the browser sees the state change
-    await new Promise((resolve) => requestAnimationFrame(resolve));
+    await new Promise(resolve => requestAnimationFrame(resolve));
 
     this.refs.cartBubble.classList.add('cart-bubble--animating');
     await onAnimationEnd(this.refs.cartBubbleText);

@@ -188,7 +188,10 @@
     "product_hotspots": "ฮอตสปอตสินค้า",
     "hotspot_product": "ฮอตสปอต",
     "product_sku": "SKU",
-    "layered_slideshow": "สไลด์โชว์แบบซ้อน"
+    "layered_slideshow": "สไลด์โชว์แบบซ้อน",
+    "size_guide": "Size guide",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote"
   },
   "settings": {
     "alignment": "การจัดตำแหน่ง",
@@ -970,7 +973,12 @@
     "resource_reference_product_sku": "แสดง SKU จากสินค้าหลัก",
     "content_layout": "เลย์เอาต์เนื้อหา",
     "mobile_media_1": "สื่อสำหรับมือถือ 1",
-    "utilities": "ยูทิลิตี"
+    "utilities": "ยูทิลิตี",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo"
   },
   "html_defaults": {
     "share_information_about_your": "<p>แชร์ข้อมูลเกี่ยวกับแบรนด์ของคุณกับลูกค้า อธิบายสินค้า ประกาศข่าวสาร หรือต้อนรับลูกค้าสู่ร้านค้าของคุณ</p>",

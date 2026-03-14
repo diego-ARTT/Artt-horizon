@@ -105,7 +105,7 @@ export class DragZoomWrapper extends Component {
   /**
    * @param {TouchEvent} event
    */
-  #handleTouchStart = (event) => {
+  #handleTouchStart = event => {
     preventDefault(event);
 
     const touchCount = event.touches.length;
@@ -243,7 +243,7 @@ export class DragZoomWrapper extends Component {
   /**
    * @param {TouchEvent} event
    */
-  #handleTouchMove = (event) => {
+  #handleTouchMove = event => {
     preventDefault(event);
 
     const touchCount = event.touches.length;
@@ -331,7 +331,7 @@ export class DragZoomWrapper extends Component {
   /**
    * @param {TouchEvent} event
    */
-  #handleTouchEnd = (event) => {
+  #handleTouchEnd = event => {
     if (event.touches.length === 0) {
       this.#isDragging = false;
       this.#requestUpdateTransform();

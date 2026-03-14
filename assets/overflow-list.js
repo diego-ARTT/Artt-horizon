@@ -66,7 +66,7 @@ export class OverflowList extends DeclarativeShadowElement {
       return Promise.resolve();
     }
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       styles.addEventListener('load', resolve);
     });
   }
@@ -109,7 +109,7 @@ export class OverflowList extends DeclarativeShadowElement {
     // Add event listener for reflow requests
     this.addEventListener(
       'reflow',
-      /** @param {CustomEvent<{lastVisibleElement?: HTMLElement}>} event */ (event) => {
+      /** @param {CustomEvent<{lastVisibleElement?: HTMLElement}>} event */ event => {
         this.#reflowItems(0, event.detail.lastVisibleElement);
       }
     );
@@ -117,7 +117,9 @@ export class OverflowList extends DeclarativeShadowElement {
     // When <overflow-list> is dynamically injected, the browser doesn't remove its <template> automatically.
     // In theory, we could get rid of it now, or in DeclarativeShadowElement, but that would invalidate the layout.
     // Instead, we ignore it for now and remove it later on the first reflow.
-    const elements = defaultSlot.assignedElements().filter((element) => !(element instanceof HTMLTemplateElement));
+    const elements = defaultSlot
+      .assignedElements()
+      .filter(element => !(element instanceof HTMLTemplateElement));
     const firstElement = elements[0];
     const lastElement = elements[elements.length - 1];
 
@@ -140,7 +142,7 @@ export class OverflowList extends DeclarativeShadowElement {
   get schedule() {
     return typeof Theme?.utilities?.scheduler?.schedule === 'function'
       ? Theme.utilities.scheduler.schedule
-      : /** @param {FrameRequestCallback} callback */ (callback) =>
+      : /** @param {FrameRequestCallback} callback */ callback =>
           requestAnimationFrame(() => setTimeout(callback, 0));
   }
 
@@ -168,7 +170,7 @@ export class OverflowList extends DeclarativeShadowElement {
   /**
    * @param {IntersectionObserverEntry[]} entries
    */
-  #handleIntersection = (entries) => {
+  #handleIntersection = entries => {
     const entry = entries[0];
     if (entry?.isIntersecting) {
       this.#intersectionObserver.disconnect();
@@ -273,9 +275,9 @@ export class OverflowList extends DeclarativeShadowElement {
     }
 
     /** @type {Element[]} */
-    let visibleElements = [];
+    const visibleElements = [];
     /** @type {Element[]} */
-    let overflowingElements = [];
+    const overflowingElements = [];
     let placeholderWidth = 0;
     let hasOverflow = false;
 
@@ -295,7 +297,7 @@ export class OverflowList extends DeclarativeShadowElement {
 
     const moreSlotRect = moreSlot.getBoundingClientRect();
 
-    elements.forEach((element) => {
+    elements.forEach(element => {
       const elementRect = element.getBoundingClientRect();
 
       if (elementRect.top > moreSlotRect.top) {
@@ -317,7 +319,9 @@ export class OverflowList extends DeclarativeShadowElement {
 
     // Move the elements to the correct slot.
     for (const element of elements) {
-      const targetSlot = overflowingElements.includes(element) ? overflowSlot.name : defaultSlot.name;
+      const targetSlot = overflowingElements.includes(element)
+        ? overflowSlot.name
+        : defaultSlot.name;
       if (element.slot !== targetSlot) {
         element.slot = targetSlot;
       }

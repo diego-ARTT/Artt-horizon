@@ -188,7 +188,10 @@
     "product_hotspots": "产品热点",
     "hotspot_product": "热点",
     "product_sku": "SKU",
-    "layered_slideshow": "分层幻灯片"
+    "layered_slideshow": "分层幻灯片",
+    "size_guide": "Size guide",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote"
   },
   "settings": {
     "alignment": "对齐方式",
@@ -970,7 +973,12 @@
     "resource_reference_product_sku": "显示主产品的 SKU",
     "content_layout": "内容布局",
     "mobile_media_1": "移动版媒体文件 1",
-    "utilities": "实用工具"
+    "utilities": "实用工具",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo"
   },
   "html_defaults": {
     "share_information_about_your": "<p>与您的客户分享有关您品牌的信息。描述产品、发布公告或欢迎客户光临您的商店。</p>",

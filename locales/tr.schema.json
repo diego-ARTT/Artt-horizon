@@ -188,7 +188,10 @@
     "product_hotspots": "Ürün hotspot'ları",
     "hotspot_product": "Hotspot",
     "product_sku": "SKU",
-    "layered_slideshow": "Katmanlı slayt gösterisi"
+    "layered_slideshow": "Katmanlı slayt gösterisi",
+    "size_guide": "Size guide",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote"
   },
   "settings": {
     "autoplay": "Otomatik oynatma",
@@ -970,7 +973,12 @@
     "resource_reference_product_sku": "Ana üründeki SKU'yu görüntüler",
     "content_layout": "İçerik düzeni",
     "mobile_media_1": "Mobil medya 1",
-    "utilities": "Araçlar"
+    "utilities": "Araçlar",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Markanızla ilgili bilgileri müşterilerinizle paylaşın. Bir ürünü açıklayın, duyurular yapın veya mağazanıza gelen müşterileri karşılayın.</p>",

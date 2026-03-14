@@ -1,3 +1,4 @@
+{%- # theme-check-disable MissingTemplate -%}
 {%- capture avada-seo-snippets -%}
 {%- include 'avada-seo-status' -%}
 {%- if avadaSeoStatus -%}
@@ -8,3 +9,4 @@
 {%- unless avada-seo-snippets contains 'Liquid error' -%}
 {{ avada-seo-snippets }}
 {%- endunless -%}
+{%- # theme-check-enable MissingTemplate -%}

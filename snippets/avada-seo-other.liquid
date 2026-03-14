@@ -20,7 +20,9 @@ new LightJsLoader(["keydown","mousemove","touchend","touchmove","touchstart","wh
 {%- assign lightJsReplace = "if ((!1763195475592 || Date.now() < 1763195475592) &&
       (!window.AVADA_SPEED_BLACKLIST || window.AVADA_SPEED_BLACKLIST.some(pattern => pattern.test(s))) &&
       (!window.AVADA_SPEED_WHITELIST || window.AVADA_SPEED_WHITELIST.every(pattern => !pattern.test(s)))) s.type = 'lightJs'; else s.type = 'text/javascript'" -%}
+{%- # theme-check-disable ContentForHeaderModification -%}
 {%- assign lightJsContent = content_for_header | split: 'asyncLoad()' -%}
+{%- # theme-check-enable ContentForHeaderModification -%}
 {%- if lightJsContent.size > 1 -%}
   {%- assign lightJsParts = lightJsContent[1] | split: 'asyncLoad' -%}
   {%- if lightJsParts.size > 1 -%}

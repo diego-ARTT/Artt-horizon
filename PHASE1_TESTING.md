@@ -247,8 +247,8 @@ After Phase 1 is validated:
 - [ ] Dev theme deployed and tested
 - [ ] Ready for production deployment
 
-**Tester:** ******\_\_\_******  
-**Date:** ******\_\_\_******  
-**Lighthouse Score Before:** **_  
-**Lighthouse Score After:** _**  
+**Tester:** **\*\***\_\_\_**\*\***  
+**Date:** **\*\***\_\_\_**\*\***  
+**Lighthouse Score Before:** **\_  
+**Lighthouse Score After:** \_**  
 **Approved for Production:** ☐ Yes ☐ No

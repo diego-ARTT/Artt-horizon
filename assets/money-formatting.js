@@ -138,7 +138,7 @@ function formatCents(moneyValue, thousandsSeparator, decimalSeparator, precision
   if (!b) b = '';
 
   // Split by groups of 3 digits
-  a = a.replace(/\d(?=(\d\d\d)+(?!\d))/g, (digit) => digit + thousandsSeparator);
+  a = a.replace(/\d(?=(\d\d\d)+(?!\d))/g, digit => digit + thousandsSeparator);
 
   return precision <= 0 ? a : a + decimalSeparator + b.padEnd(precision, '0');
 }
@@ -165,40 +165,40 @@ export function formatMoney(moneyValue, format, currency) {
 
     switch (placeholder) {
       case 'amount':
-      // Check first since it's the most common, use defaults.
+        // Check first since it's the most common, use defaults.
         break;
       case 'amount_no_decimals':
         precision = 0;
         break;
       case 'amount_with_comma_separator':
-      thousandsSeparator = '.';
-      decimalSeparator = ',';
-      break;
+        thousandsSeparator = '.';
+        decimalSeparator = ',';
+        break;
       case 'amount_no_decimals_with_comma_separator':
-      // Weirdly, this is correct. It uses amount_with_comma_separator's
-      // behaviour but removes decimals, resulting in an unintuitive
-      // output that can't possibly include commas, despite the name.
-      thousandsSeparator = '.';
-      precision = 0;
-      break;
-    case 'amount_no_decimals_with_space_separator':
-      thousandsSeparator = ' ';
-      precision = 0;
-      break;
-    case 'amount_with_space_separator':
-      thousandsSeparator = ' ';
-      decimalSeparator = ',';
-      break;
-    case 'amount_with_period_and_space_separator':
-      thousandsSeparator = ' ';
-      decimalSeparator = '.';
-      break;
-    case 'amount_with_apostrophe_separator':
-      thousandsSeparator = "'";
-      decimalSeparator = '.';
-      break;
-    default:
-      break;
+        // Weirdly, this is correct. It uses amount_with_comma_separator's
+        // behaviour but removes decimals, resulting in an unintuitive
+        // output that can't possibly include commas, despite the name.
+        thousandsSeparator = '.';
+        precision = 0;
+        break;
+      case 'amount_no_decimals_with_space_separator':
+        thousandsSeparator = ' ';
+        precision = 0;
+        break;
+      case 'amount_with_space_separator':
+        thousandsSeparator = ' ';
+        decimalSeparator = ',';
+        break;
+      case 'amount_with_period_and_space_separator':
+        thousandsSeparator = ' ';
+        decimalSeparator = '.';
+        break;
+      case 'amount_with_apostrophe_separator':
+        thousandsSeparator = "'";
+        decimalSeparator = '.';
+        break;
+      default:
+        break;
     }
 
     return formatCents(moneyValue, thousandsSeparator, decimalSeparator, precision, divisor);

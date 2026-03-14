@@ -64,7 +64,9 @@ class PricePerItemComponent extends Component {
     const { signal } = this.#abortController;
 
     // Listen on document to catch all events (more reliable than form-only)
-    document.addEventListener(ThemeEvents.quantitySelectorUpdate, this.#handleQuantityUpdate, { signal });
+    document.addEventListener(ThemeEvents.quantitySelectorUpdate, this.#handleQuantityUpdate, {
+      signal,
+    });
     document.addEventListener(ThemeEvents.cartUpdate, this.#handleCartUpdate, { signal });
   }
 
@@ -72,7 +74,7 @@ class PricePerItemComponent extends Component {
    * Handles quantity selector updates
    * @param {Event} event
    */
-  #handleQuantityUpdate = (event) => {
+  #handleQuantityUpdate = event => {
     // Only respond to updates for our variant's quantity selector
     const form = this.closest('product-form-component');
     if (!form || !(event.target instanceof Node) || !form.contains(event.target)) return;
@@ -93,7 +95,9 @@ class PricePerItemComponent extends Component {
    */
   #getCurrentQuantity() {
     const form = this.closest('product-form-component');
-    const quantityInput = /** @type {HTMLInputElement | null} */ (form?.querySelector('input[name="quantity"]'));
+    const quantityInput = /** @type {HTMLInputElement | null} */ (
+      form?.querySelector('input[name="quantity"]')
+    );
     if (!quantityInput) return 1;
 
     // Read the current cart quantity from the data attribute
@@ -114,7 +118,8 @@ class PricePerItemComponent extends Component {
 
     // Price breaks are sorted descending, find first tier that quantity qualifies for
     const priceBreak =
-      this.#priceBreaks.find((pb) => quantity >= pb.quantity) ?? this.#priceBreaks[this.#priceBreaks.length - 1];
+      this.#priceBreaks.find(pb => quantity >= pb.quantity) ??
+      this.#priceBreaks[this.#priceBreaks.length - 1];
 
     if (priceBreak) {
       this.refs.pricePerItemText.innerHTML = `${this.dataset.atText} ${priceBreak.price}/${this.dataset.eachText}`;

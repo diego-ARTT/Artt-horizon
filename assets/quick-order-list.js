@@ -78,7 +78,10 @@ class QuickOrderListComponent extends Component {
   disconnectedCallback() {
     super.disconnectedCallback();
 
-    this.removeEventListener(ThemeEvents.quantitySelectorUpdate, this.#debouncedHandleQuantityUpdate);
+    this.removeEventListener(
+      ThemeEvents.quantitySelectorUpdate,
+      this.#debouncedHandleQuantityUpdate
+    );
     document.removeEventListener(ThemeEvents.cartUpdate, this.#boundHandleCartUpdate);
     this.removeEventListener('keydown', this.#handleKeyDown, true);
     this.removeEventListener('keyup', this.#handleKeyup, true);
@@ -91,7 +94,10 @@ class QuickOrderListComponent extends Component {
    * @returns {target is HTMLInputElement}
    */
   #isQuantityInput(target) {
-    return target instanceof HTMLInputElement && target.matches('input[type="number"][data-cart-quantity]');
+    return (
+      target instanceof HTMLInputElement &&
+      target.matches('input[type="number"][data-cart-quantity]')
+    );
   }
 
   /**
@@ -100,18 +106,18 @@ class QuickOrderListComponent extends Component {
    * Shift+Enter selects previous quantity input
    * @param {KeyboardEvent} event
    */
-  #handleKeyDown = (event) => {
+  #handleKeyDown = event => {
     if (event.key !== 'Enter' || !this.#isQuantityInput(event.target)) {
       return;
     }
     event.preventDefault();
 
     // Get all VISIBLE quantity inputs (exclude hidden mobile/desktop variants)
-    const allQuantityInputs = Array.from(this.querySelectorAll('input[type="number"][data-cart-quantity]')).filter(
-      (input) => {
-        return input instanceof HTMLElement && input.offsetParent !== null;
-      }
-    );
+    const allQuantityInputs = Array.from(
+      this.querySelectorAll('input[type="number"][data-cart-quantity]')
+    ).filter(input => {
+      return input instanceof HTMLElement && input.offsetParent !== null;
+    });
 
     if (allQuantityInputs.length <= 1) {
       return;
@@ -135,7 +141,7 @@ class QuickOrderListComponent extends Component {
   /**
    * @param {KeyboardEvent} event
    */
-  #handleKeyup = (event) => {
+  #handleKeyup = event => {
     if ((event.key === 'Tab' || event.key === 'Enter') && this.#isQuantityInput(event.target)) {
       this.#scrollToCenter(event.target);
     }
@@ -184,13 +190,17 @@ class QuickOrderListComponent extends Component {
   async onLineItemRemove(variantId, event) {
     event.preventDefault();
 
-    const targetRow = this.refs.variantRows.find((row) => row.dataset.variantId === String(variantId));
+    const targetRow = this.refs.variantRows.find(
+      row => row.dataset.variantId === String(variantId)
+    );
     if (!(targetRow instanceof HTMLElement)) return;
 
     const quantityInput = targetRow.querySelector('input[type="number"]');
     if (quantityInput instanceof HTMLInputElement) {
       quantityInput.value = '0';
-      quantityInput.dispatchEvent(new QuantitySelectorUpdateEvent(0, Number(quantityInput.dataset.cartLine)));
+      quantityInput.dispatchEvent(
+        new QuantitySelectorUpdateEvent(0, Number(quantityInput.dataset.cartLine))
+      );
     }
   }
 
@@ -279,7 +289,7 @@ class QuickOrderListComponent extends Component {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
 
-    const variantRow = this.refs.variantRows.find((row) => {
+    const variantRow = this.refs.variantRows.find(row => {
       return row.contains(target);
     });
 
@@ -288,8 +298,12 @@ class QuickOrderListComponent extends Component {
     const variantId = variantRow.dataset.variantId;
     if (!variantId) return;
 
-    const quantityInput = /** @type {HTMLInputElement|null} */ (variantRow.querySelector('input[data-cart-quantity]'));
-    const currentCartQuantity = quantityInput ? parseInt(quantityInput.dataset.cartQuantity || '0') || 0 : 0;
+    const quantityInput = /** @type {HTMLInputElement|null} */ (
+      variantRow.querySelector('input[data-cart-quantity]')
+    );
+    const currentCartQuantity = quantityInput
+      ? parseInt(quantityInput.dataset.cartQuantity || '0') || 0
+      : 0;
 
     this.#clearSuccessMessage();
     this.#clearErrorMessage();
@@ -453,9 +467,13 @@ class QuickOrderListComponent extends Component {
     this.#clearErrorMessage();
 
     const oneItemText = Theme?.translations?.items_added_to_cart_one || '1 item added to cart';
-    const itemsText = Theme?.translations?.items_added_to_cart_other || '{{ count }} items added to cart';
+    const itemsText =
+      Theme?.translations?.items_added_to_cart_other || '{{ count }} items added to cart';
 
-    const message = quantityAdded === 1 ? oneItemText : itemsText.replace('{{ count }}', quantityAdded.toString());
+    const message =
+      quantityAdded === 1
+        ? oneItemText
+        : itemsText.replace('{{ count }}', quantityAdded.toString());
 
     this.refs.successText.textContent = message;
     this.refs.successContainer.classList.remove('hidden');
@@ -471,7 +489,9 @@ class QuickOrderListComponent extends Component {
    */
   #applyShimmerEffects(variantIds) {
     for (const variantId of variantIds) {
-      const variantRow = this.refs.variantRows.find((row) => row.dataset.variantId === String(variantId));
+      const variantRow = this.refs.variantRows.find(
+        row => row.dataset.variantId === String(variantId)
+      );
       if (variantRow) {
         const variantTotal = /** @type {import('./utilities').TextComponent|null} */ (
           variantRow.querySelector('.variant-item__total-price')

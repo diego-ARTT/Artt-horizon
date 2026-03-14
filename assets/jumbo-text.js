@@ -29,7 +29,7 @@ class JumboText extends Component {
   #setIntersectionObserver() {
     // The threshold could be different based on the repetition of the animation.
     this.#intersectionObserver = new IntersectionObserver(
-      (entries) => {
+      entries => {
         // We observe a single element, so we only need the latest entry.
         const entry = entries[entries.length - 1];
 
@@ -42,7 +42,11 @@ class JumboText extends Component {
           this.#handleResize(entry.boundingClientRect.width);
         }
 
-        if (this.dataset.textEffect && this.dataset.textEffect !== 'none' && !prefersReducedMotion()) {
+        if (
+          this.dataset.textEffect &&
+          this.dataset.textEffect !== 'none' &&
+          !prefersReducedMotion()
+        ) {
           if (entry.intersectionRatio >= 0.3) {
             this.classList.add('ready');
             if (this.dataset.animationRepeat === 'false') {
@@ -67,14 +71,16 @@ class JumboText extends Component {
    * Calculates the optimal font size to make the text fit the container.
    * @param {number} containerWidth - The width of the jumbo-text element.
    */
-  #calculateOptimalFontSize = (containerWidth) => {
-    const { widestChild: firstPassWidestChild, widestChildWidth: firstPassWidestChildWidth } = this.#findWidestChild();
+  #calculateOptimalFontSize = containerWidth => {
+    const { widestChild: firstPassWidestChild, widestChildWidth: firstPassWidestChildWidth } =
+      this.#findWidestChild();
     if (!firstPassWidestChild || !firstPassWidestChildWidth) {
       return;
     }
 
     const currentFontSize = parseFloat(window.getComputedStyle(firstPassWidestChild).fontSize);
-    const firstPassFontSize = Math.round(((currentFontSize * containerWidth) / firstPassWidestChildWidth) * 100) / 100;
+    const firstPassFontSize =
+      Math.round(((currentFontSize * containerWidth) / firstPassWidestChildWidth) * 100) / 100;
 
     // Disconnect the resize observer
     this.#resizeObserver.disconnect();
@@ -91,7 +97,8 @@ class JumboText extends Component {
 
     // The -0.15 was chosen by trial and error. It doesn't influence large font sizes much, but helps smaller ones fit better.
     const secondPassFontSize =
-      Math.floor(((firstPassFontSize * containerWidth) / secondPassWidestChildWidth) * 100) / 100 - 0.15;
+      Math.floor(((firstPassFontSize * containerWidth) / secondPassWidestChildWidth) * 100) / 100 -
+      0.15;
 
     if (secondPassFontSize !== firstPassFontSize) {
       this.style.fontSize = this.#clampFontSize(secondPassFontSize);
@@ -126,7 +133,7 @@ class JumboText extends Component {
    * @param {number} fontSize - The font size to clamp.
    * @returns {string} The clamped font size with pixels suffix.
    */
-  #clampFontSize = (fontSize) => {
+  #clampFontSize = fontSize => {
     const minFontSize = 1;
     const maxFontSize = 500;
 
@@ -180,7 +187,9 @@ class JumboText extends Component {
 
   #windowResizeListener = () => this.#handleResize();
 
-  #resizeObserver = new ResizeNotifier((entries) => this.#handleResize(entries[0]?.borderBoxSize?.[0]?.inlineSize));
+  #resizeObserver = new ResizeNotifier(entries =>
+    this.#handleResize(entries[0]?.borderBoxSize?.[0]?.inlineSize)
+  );
   /**
    * @type {IntersectionObserver | null}
    */

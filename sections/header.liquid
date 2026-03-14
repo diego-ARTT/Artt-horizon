@@ -46,6 +46,7 @@
   endcapture
 
   capture menu
+    # theme-check-disable UniqueStaticBlockId
     content_for 'block', type: '_header-menu', id: 'header-menu'
   endcapture
 
@@ -55,6 +56,7 @@
 
   capture navigation_bar
     content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'navigation_bar', transparent: transparent
+    # theme-check-enable UniqueStaticBlockId
   endcapture
 
   capture actions

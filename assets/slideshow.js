@@ -48,7 +48,7 @@ class SlideshowViewportObserver {
   observe(slideshow) {
     if (!this.#observer) {
       this.#observer = new IntersectionObserver(
-        (entries) => {
+        entries => {
           for (const entry of entries) {
             const slideshowElement = /** @type {Slideshow} */ (entry.target);
             if (entry.isIntersecting) {
@@ -866,7 +866,7 @@ export class Slideshow extends Component {
     }
 
     this.#intersectionObserver = new IntersectionObserver(
-      (entries) => {
+      entries => {
         const allEntries = [
           ...entries,
           ...(this.#intersectionObserver ? this.#intersectionObserver.takeRecords() : []),
@@ -899,7 +899,7 @@ export class Slideshow extends Component {
     );
 
     // Observe all slides - observer will fire initial callback asynchronously
-    slides.forEach((slide) => {
+    slides.forEach(slide => {
       this.#intersectionObserver?.observe(slide);
     });
   }

@@ -188,7 +188,10 @@
     "product_hotspots": "商品熱點",
     "hotspot_product": "熱點",
     "product_sku": "存貨單位 (SKU)",
-    "layered_slideshow": "分層輪播"
+    "layered_slideshow": "分層輪播",
+    "size_guide": "Size guide",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote"
   },
   "settings": {
     "alignment": "對齊",
@@ -970,7 +973,12 @@
     "resource_reference_product_sku": "顯示父商品的存貨單位 (SKU)",
     "content_layout": "內容版面配置",
     "mobile_media_1": "行動裝置用多媒體檔案 1",
-    "utilities": "公用程式"
+    "utilities": "公用程式",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo"
   },
   "html_defaults": {
     "share_information_about_your": "<p>向顧客分享您的品牌故事。可用來敘述產品、發布公告，或歡迎顧客造訪您的商店。</p>",

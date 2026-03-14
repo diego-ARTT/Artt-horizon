@@ -66,7 +66,7 @@ class MarqueeComponent extends Component {
       ...ANIMATION_OPTIONS,
       from: 1,
       to: 0,
-      onUpdate: (value) => animation.updatePlaybackRate(value),
+      onUpdate: value => animation.updatePlaybackRate(value),
       onComplete: () => {
         this.#animation = null;
       },
@@ -87,7 +87,7 @@ class MarqueeComponent extends Component {
       ...ANIMATION_OPTIONS,
       from,
       to: 1,
-      onUpdate: (value) => animation.updatePlaybackRate(value),
+      onUpdate: value => animation.updatePlaybackRate(value),
       onComplete: () => {
         this.#animation = null;
       },
@@ -111,14 +111,14 @@ class MarqueeComponent extends Component {
   async #queryNumberOfCopies() {
     const { marqueeItems } = this.refs;
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       if (!marqueeItems[0]) {
         // Wrapping the resolve in a setTimeout here and below splits each marquee reflow into a separate task.
         return setTimeout(() => resolve({ numberOfCopies: 1, isHorizontalResize: true }), 0);
       }
 
       const intersectionObserver = new IntersectionObserver(
-        (entries) => {
+        entries => {
           const firstEntry = entries[0];
           if (!firstEntry) return;
           intersectionObserver.disconnect();
@@ -131,7 +131,8 @@ class MarqueeComponent extends Component {
 
           setTimeout(() => {
             resolve({
-              numberOfCopies: marqueeItemsWidth === 0 ? 1 : Math.ceil(marqueeWidth / marqueeItemsWidth),
+              numberOfCopies:
+                marqueeItemsWidth === 0 ? 1 : Math.ceil(marqueeWidth / marqueeItemsWidth),
               isHorizontalResize,
             });
           }, 0);
@@ -234,7 +235,14 @@ class MarqueeComponent extends Component {
  * @param {function(number): number} [params.easing] - The easing function.
  * @param {function(): void} [params.onComplete] - The function to call when the animation completes.
  */
-function animateValue({ from, to, duration, onUpdate, easing = (t) => t * t * (3 - 2 * t), onComplete }) {
+function animateValue({
+  from,
+  to,
+  duration,
+  onUpdate,
+  easing = t => t * t * (3 - 2 * t),
+  onComplete,
+}) {
   const startTime = performance.now();
   let cancelled = false;
   let currentValue = from;

@@ -51,7 +51,10 @@ class PredictiveSearchComponent extends Component {
     if (dialog) {
       document.addEventListener('keydown', this.#handleKeyboardShortcut, { signal });
       dialog.addEventListener(DialogCloseEvent.eventName, this.#handleDialogClose, { signal });
-      dialog.addEventListener(DialogOpenEvent.eventName, this.#handleDialogOpen, { signal, once: true });
+      dialog.addEventListener(DialogOpenEvent.eventName, this.#handleDialogOpen, {
+        signal,
+        once: true,
+      });
 
       this.addEventListener('click', this.#handleModalClick, { signal });
     }
@@ -67,7 +70,7 @@ class PredictiveSearchComponent extends Component {
    * Handles clicks within the predictive search modal to maintain focus on the input
    * @param {MouseEvent} event - The mouse event
    */
-  #handleModalClick = (event) => {
+  #handleModalClick = event => {
     const target = /** @type {HTMLElement} */ (event.target);
     const isInteractiveElement =
       target instanceof HTMLButtonElement ||
@@ -91,7 +94,7 @@ class PredictiveSearchComponent extends Component {
    * Handles the CMD+K key combination.
    * @param {KeyboardEvent} event - The keyboard event.
    */
-  #handleKeyboardShortcut = (event) => {
+  #handleKeyboardShortcut = event => {
     if (event.metaKey && event.key === 'k') {
       this.dialog?.toggleDialog();
     }
@@ -126,13 +129,15 @@ class PredictiveSearchComponent extends Component {
     );
 
     const allItems = containers
-      .flatMap((container) => {
+      .flatMap(container => {
         if (container.classList.contains('predictive-search-results__wrapper-products')) {
           return Array.from(container.querySelectorAll('.predictive-search-results__card'));
         }
-        return Array.from(container.querySelectorAll('[ref="resultsItems[]"], .predictive-search-results__card'));
+        return Array.from(
+          container.querySelectorAll('[ref="resultsItems[]"], .predictive-search-results__card')
+        );
       })
-      .filter((item) => item instanceof HTMLElement);
+      .filter(item => item instanceof HTMLElement);
 
     return /** @type {HTMLElement[]} */ (allItems);
   }
@@ -144,7 +149,9 @@ class PredictiveSearchComponent extends Component {
   #isKeyboardNavigation = false;
 
   get #currentIndex() {
-    return this.#allResultsItems?.findIndex((item) => item.getAttribute('aria-selected') === 'true') ?? -1;
+    return (
+      this.#allResultsItems?.findIndex(item => item.getAttribute('aria-selected') === 'true') ?? -1
+    );
   }
 
   set #currentIndex(index) {
@@ -152,7 +159,7 @@ class PredictiveSearchComponent extends Component {
 
     let activeItem = null;
 
-    this.#allResultsItems.forEach((item) => {
+    this.#allResultsItems.forEach(item => {
       item.classList.remove('keyboard-focus');
     });
 
@@ -168,7 +175,10 @@ class PredictiveSearchComponent extends Component {
       }
     }
 
-    activeItem?.scrollIntoView({ behavior: prefersReducedMotion() ? 'instant' : 'smooth', block: 'nearest' });
+    activeItem?.scrollIntoView({
+      behavior: prefersReducedMotion() ? 'instant' : 'smooth',
+      block: 'nearest',
+    });
     this.refs.searchInput.focus();
   }
 
@@ -180,7 +190,7 @@ class PredictiveSearchComponent extends Component {
    * Navigate through the predictive search results using arrow keys or close them with the Escape key.
    * @param {KeyboardEvent} event - The keyboard event.
    */
-  onSearchKeyDown = (event) => {
+  onSearchKeyDown = event => {
     if (event.key === 'Escape') {
       this.#resetSearch();
       return;
@@ -219,8 +229,13 @@ class PredictiveSearchComponent extends Component {
         break;
 
       case 'Enter': {
-        const singleResultContainer = this.refs.predictiveSearchResults.querySelector('[data-single-result-url]');
-        if (singleResultContainer instanceof HTMLElement && singleResultContainer.dataset.singleResultUrl) {
+        const singleResultContainer = this.refs.predictiveSearchResults.querySelector(
+          '[data-single-result-url]'
+        );
+        if (
+          singleResultContainer instanceof HTMLElement &&
+          singleResultContainer.dataset.singleResultUrl
+        ) {
           event.preventDefault();
           window.location.href = singleResultContainer.dataset.singleResultUrl;
           return;
@@ -250,7 +265,10 @@ class PredictiveSearchComponent extends Component {
 
     const { recentlyViewedItems, recentlyViewedTitle, recentlyViewedWrapper } = this.refs;
 
-    const allRecentlyViewedElements = [...(recentlyViewedItems || []), ...(recentlyViewedTitle || [])];
+    const allRecentlyViewedElements = [
+      ...(recentlyViewedItems || []),
+      ...(recentlyViewedTitle || []),
+    ];
 
     if (allRecentlyViewedElements.length === 0) {
       return;
@@ -280,7 +298,7 @@ class PredictiveSearchComponent extends Component {
    * Debounce the search handler to fetch and display search results based on the input value.
    * Reset the current selection index and close results if the search term is empty.
    */
-  search = debounce((event) => {
+  search = debounce(event => {
     // If the input is not a text input (like using the Escape key), don't search
     if (!event.inputType) return;
 
@@ -301,7 +319,9 @@ class PredictiveSearchComponent extends Component {
    */
   #resetScrollPositions() {
     requestAnimationFrame(() => {
-      this.refs.predictiveSearchResults.querySelector('.predictive-search-results__inner')?.scrollTo(0, 0);
+      this.refs.predictiveSearchResults
+        .querySelector('.predictive-search-results__inner')
+        ?.scrollTo(0, 0);
       this.querySelector('.predictive-search-form__content')?.scrollTo(0, 0);
     });
   }
@@ -323,7 +343,7 @@ class PredictiveSearchComponent extends Component {
 
     sectionRenderer
       .getSectionHTML(this.dataset.sectionId, false, url)
-      .then((resultsMarkup) => {
+      .then(resultsMarkup => {
         if (!resultsMarkup) return;
 
         if (abortController.signal.aborted) return;
@@ -332,7 +352,7 @@ class PredictiveSearchComponent extends Component {
 
         this.#resetScrollPositions();
       })
-      .catch((error) => {
+      .catch(error => {
         if (abortController.signal.aborted) return;
         throw error;
       });
@@ -349,7 +369,10 @@ class PredictiveSearchComponent extends Component {
     if (viewedProducts.length === 0) return null;
 
     const url = new URL(Theme.routes.search_url, location.origin);
-    url.searchParams.set('q', viewedProducts.map(/** @param {string} id */ (id) => `id:${id}`).join(' OR '));
+    url.searchParams.set(
+      'q',
+      viewedProducts.map(/** @param {string} id */ id => `id:${id}`).join(' OR ')
+    );
     url.searchParams.set('resources[type]', 'product');
 
     return sectionRenderer.getSectionHTML(this.dataset.sectionId, false, url);
@@ -403,8 +426,13 @@ class PredictiveSearchComponent extends Component {
       const recentlyViewedMarkup = await this.#getRecentlyViewedProductsMarkup();
       if (!recentlyViewedMarkup) return;
 
-      const parsedRecentlyViewedMarkup = new DOMParser().parseFromString(recentlyViewedMarkup, 'text/html');
-      const recentlyViewedProductsHtml = parsedRecentlyViewedMarkup.getElementById('predictive-search-products');
+      const parsedRecentlyViewedMarkup = new DOMParser().parseFromString(
+        recentlyViewedMarkup,
+        'text/html'
+      );
+      const recentlyViewedProductsHtml = parsedRecentlyViewedMarkup.getElementById(
+        'predictive-search-products'
+      );
       if (!recentlyViewedProductsHtml) return;
 
       for (const child of recentlyViewedProductsHtml.children) {
@@ -413,7 +441,9 @@ class PredictiveSearchComponent extends Component {
         }
       }
 
-      const collectionElement = parsedEmptySectionMarkup.querySelector('#predictive-search-products');
+      const collectionElement = parsedEmptySectionMarkup.querySelector(
+        '#predictive-search-products'
+      );
       if (!collectionElement) return;
       collectionElement.prepend(...recentlyViewedProductsHtml.children);
     }

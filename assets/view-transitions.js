@@ -15,7 +15,7 @@
 
   const idleCallback = typeof requestIdleCallback === 'function' ? requestIdleCallback : setTimeout;
 
-  window.addEventListener('pageswap', async (event) => {
+  window.addEventListener('pageswap', async event => {
     const { viewTransition } = /** @type {PageSwapEvent} */ (event);
 
     if (shouldSkipViewTransition(viewTransition)) {
@@ -24,7 +24,7 @@
     }
 
     // Cancel view transition on user interaction to improve INP (Interaction to Next Paint)
-    ['pointerdown', 'keydown'].forEach((eventName) => {
+    ['pointerdown', 'keydown'].forEach(eventName => {
       document.addEventListener(
         eventName,
         () => {
@@ -37,7 +37,7 @@
     // Clean in case you landed on the pdp first. We want to remove the default transition type on the PDP media gallery so there is no duplicate transition name
     document
       .querySelectorAll('[data-view-transition-type]:not([data-view-transition-triggered])')
-      .forEach((element) => {
+      .forEach(element => {
         element.removeAttribute('data-view-transition-type');
       });
 
@@ -55,7 +55,7 @@
     }
   });
 
-  window.addEventListener('pagereveal', async (event) => {
+  window.addEventListener('pagereveal', async event => {
     const { viewTransition } = /** @type {PageRevealEvent} */ (event);
 
     if (shouldSkipViewTransition(viewTransition)) {
@@ -76,7 +76,7 @@
 
       idleCallback(() => {
         sessionStorage.removeItem('custom-transition-type');
-        document.querySelectorAll('[data-view-transition-type]').forEach((element) => {
+        document.querySelectorAll('[data-view-transition-type]').forEach(element => {
           element.removeAttribute('data-view-transition-type');
         });
       });
@@ -99,7 +99,7 @@
    */
   function isLowPowerDevice() {
     /* Skip ESLint compatibility check. Number(undefined) <= 2 is always false anyway. */
-    // eslint-disable-next-line no-undef
+
     return Number(navigator.hardwareConcurrency) <= 2 || Number(navigator.deviceMemory) <= 2;
   }
 })();

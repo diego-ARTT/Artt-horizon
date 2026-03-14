@@ -46,7 +46,9 @@ class CartDrawerComponent extends DialogComponent {
     }
 
     this.#historyAbortController = new AbortController();
-    window.addEventListener('popstate', this.#handlePopState, { signal: this.#historyAbortController.signal });
+    window.addEventListener('popstate', this.#handlePopState, {
+      signal: this.#historyAbortController.signal,
+    });
   };
 
   #handleHistoryClose = () => {

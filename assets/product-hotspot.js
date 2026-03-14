@@ -1,6 +1,11 @@
 import { Component } from '@theme/component';
 import { QuickAddComponent } from '@theme/quick-add';
-import { isClickedOutside, isMobileBreakpoint, isTouchDevice, mediaQueryLarge } from '@theme/utilities';
+import {
+  isClickedOutside,
+  isMobileBreakpoint,
+  isTouchDevice,
+  mediaQueryLarge,
+} from '@theme/utilities';
 
 /**
  * A custom element that manages a dialog.
@@ -42,7 +47,9 @@ export class ProductHotspotComponent extends Component {
    * @returns {void}
    */
   #openQuickAddModal() {
-    const quickAddComponent = /** @type {QuickAddComponent | null} */ (this.querySelector('quick-add-component'));
+    const quickAddComponent = /** @type {QuickAddComponent | null} */ (
+      this.querySelector('quick-add-component')
+    );
 
     if (!quickAddComponent) return;
     quickAddComponent.handleClick(new MouseEvent('click', { bubbles: true, cancelable: true }));
@@ -215,7 +222,7 @@ export class ProductHotspotComponent extends Component {
     }
 
     // Return a promise that resolves after a few ticks to ensure styles are applied
-    return new Promise((resolve) => setTimeout(resolve, 100));
+    return new Promise(resolve => setTimeout(resolve, 100));
   }
 
   /**
@@ -223,7 +230,7 @@ export class ProductHotspotComponent extends Component {
    * @param {PointerEvent} e - The event.
    * @returns {void}
    */
-  #handlePointerLeave = (e) => {
+  #handlePointerLeave = e => {
     const { dialog, trigger } = this.refs;
 
     // Clear open timer if leaving trigger before dialog opens
@@ -259,7 +266,7 @@ export class ProductHotspotComponent extends Component {
    * @param {MouseEvent} e - The click event
    * @returns {void}
    */
-  handleHotspotClick = (e) => {
+  handleHotspotClick = e => {
     // Check if it's a touch device (tablets) or mobile breakpoint
     if (isMobileBreakpoint() || isTouchDevice()) {
       e.preventDefault();
@@ -298,7 +305,7 @@ export class ProductHotspotComponent extends Component {
     trigger.removeEventListener('pointerleave', this.#handlePointerLeave);
     // we need to use a data-attribute to keep transition-behavior working only when open
     const animations = dialog.getAnimations({ subtree: true });
-    await Promise.allSettled(animations.map((a) => a.finished));
+    await Promise.allSettled(animations.map(a => a.finished));
     if (!dialog.open) {
       delete dialog.dataset.showing;
       delete dialog.dataset.closing;
@@ -311,7 +318,7 @@ export class ProductHotspotComponent extends Component {
    * @param {MouseEvent} event - The event.
    * @returns {void}
    */
-  lightDismissMouse = (event) => {
+  lightDismissMouse = event => {
     const { dialog } = this.refs;
     if (isClickedOutside(event, dialog)) {
       this.closeDialog();
@@ -323,7 +330,7 @@ export class ProductHotspotComponent extends Component {
    * @param {KeyboardEvent} event - The event.
    * @returns {void}
    */
-  lightDismissKeyboard = (event) => {
+  lightDismissKeyboard = event => {
     const { dialog } = this.refs;
     if (
       (event.type === 'keydown' && event.key === 'Escape') ||

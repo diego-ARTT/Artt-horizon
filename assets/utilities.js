@@ -15,7 +15,7 @@ export const yieldToMainThread = () => {
     return scheduler.yield();
   }
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     requestAnimationFrame(() => {
       setTimeout(resolve, 0);
     });
@@ -59,13 +59,16 @@ const viewTransitionTypes = {
 
     if (!grid || !productCards.length) return;
 
-    await new Promise((resolve) =>
+    await new Promise(resolve =>
       requestIdleCallback(() => {
         const cardsToAnimate = getCardsToAnimate(grid, productCards);
 
         productCards.forEach((card, index) => {
           if (index < cardsToAnimate) {
-            card.style.setProperty('view-transition-name', `product-card-${card.dataset.productId}`);
+            card.style.setProperty(
+              'view-transition-name',
+              `product-card-${card.dataset.productId}`
+            );
           } else {
             card.style.setProperty('content-visibility', 'hidden');
           }
@@ -76,7 +79,7 @@ const viewTransitionTypes = {
     );
 
     return () =>
-      productCards.forEach((card) => {
+      productCards.forEach(card => {
         card.style.removeProperty('view-transition-name');
         card.style.removeProperty('content-visibility');
       });
@@ -97,8 +100,8 @@ export function startViewTransition(callback, types) {
   }
 
   // eslint-disable-next-line no-async-promise-executor
-  return new Promise(async (resolve) => {
-    let cleanupFunctions = [];
+  return new Promise(async resolve => {
+    const cleanupFunctions = [];
 
     if (types) {
       for (const type of types) {
@@ -115,11 +118,11 @@ export function startViewTransition(callback, types) {
       viewTransition.current = transition.finished;
     }
 
-    if (types) types.forEach((type) => transition.types.add(type));
+    if (types) types.forEach(type => transition.types.add(type));
 
     transition.finished.then(() => {
       viewTransition.current = undefined;
-      cleanupFunctions.forEach((cleanupFunction) => cleanupFunction());
+      cleanupFunctions.forEach(cleanupFunction => cleanupFunction());
       resolve();
     });
   });
@@ -146,7 +149,11 @@ export function startViewTransition(callback, types) {
  */
 export function fetchConfig(type = 'json', config = {}) {
   /** @type {Headers} */
-  const headers = { 'Content-Type': 'application/json', Accept: `application/${type}`, ...config.headers };
+  const headers = {
+    'Content-Type': 'application/json',
+    Accept: `application/${type}`,
+    ...config.headers,
+  };
 
   if (type === 'javascript') {
     headers['X-Requested-With'] = 'XMLHttpRequest';
@@ -290,7 +297,7 @@ export function removeWillChangeOnAnimationEnd(event) {
  */
 export function onAnimationEnd(elements, callback, options = { subtree: true }) {
   const animations = Array.isArray(elements)
-    ? elements.flatMap((element) => element.getAnimations(options))
+    ? elements.flatMap(element => element.getAnimations(options))
     : elements.getAnimations(options);
   const animationPromises = animations.reduce((acc, animation) => {
     // Ignore ViewTimeline animations
@@ -440,7 +447,7 @@ export function getVisibleElements(root, elements, ratio = 1, axis) {
   if (!elements?.length) return [];
   const rootRect = root.getBoundingClientRect();
 
-  return elements.filter((element) => {
+  return elements.filter(element => {
     const { width, height, top, right, left, bottom } = element.getBoundingClientRect();
 
     if (ratio < 1) {
@@ -527,14 +534,18 @@ function getCardsToAnimate(grid, cards) {
   const cardSample = itemSample.querySelector('product-card');
   const gridStyle = getComputedStyle(grid);
 
-  const galleryAspectRatio = cardSample?.refs?.cardGallery?.style.getPropertyValue('--gallery-aspect-ratio') || '';
+  const galleryAspectRatio =
+    cardSample?.refs?.cardGallery?.style.getPropertyValue('--gallery-aspect-ratio') || '';
   let aspectRatio = parseFloat(galleryAspectRatio) || 0.5;
   if (galleryAspectRatio?.includes('/')) {
     const [width = '1', height = '2'] = galleryAspectRatio.split('/');
     aspectRatio = parseInt(width, 10) / parseInt(height, 10);
   }
 
-  const cardGap = parseInt(cardSample?.refs?.productCardLink?.style.getPropertyValue('--product-card-gap') || '') || 12;
+  const cardGap =
+    parseInt(
+      cardSample?.refs?.productCardLink?.style.getPropertyValue('--product-card-gap') || ''
+    ) || 12;
   const gridGap = parseInt(gridStyle.getPropertyValue('--product-grid-gap')) || 12;
 
   // Assume only a couple of lines of text in the card details (title and price).
@@ -550,7 +561,9 @@ function getCardsToAnimate(grid, cards) {
   // Calculate the number of cards that fit in the visible area:
   // - The width estimation is pretty accurate, we can ignore decimals.
   // - The height estimation needs to account for peeking rows, so we round up.
-  const columnsInGrid = isMobile ? 2 : Math.floor((gridRect.width + gridGap) / (cardWidth + gridGap));
+  const columnsInGrid = isMobile
+    ? 2
+    : Math.floor((gridRect.width + gridGap) / (cardWidth + gridGap));
   const rowsInGrid = Math.ceil((visibleHeight - gridGap) / (cardHeight + gridGap));
 
   return columnsInGrid * rowsInGrid;
@@ -581,7 +594,7 @@ if (!customElements.get('text-component')) {
  */
 export function resetShimmer(container = document.body) {
   const shimmer = container.querySelectorAll('[shimmer]');
-  shimmer.forEach((item) => item.removeAttribute('shimmer'));
+  shimmer.forEach(item => item.removeAttribute('shimmer'));
 }
 
 /**
@@ -628,7 +641,7 @@ class Scheduler {
   #scheduled = false;
 
   /** @param {() => void} task */
-  schedule = async (task) => {
+  schedule = async task => {
     this.#queue.add(task);
 
     if (!this.#scheduled) {
@@ -687,7 +700,7 @@ export class ResizeNotifier extends ResizeObserver {
    * @param {ResizeObserverCallback} callback
    */
   constructor(callback) {
-    super((entries) => {
+    super(entries => {
       if (this.#initialized) return callback(entries, this);
       this.#initialized = true;
     });
@@ -703,7 +716,9 @@ export class ResizeNotifier extends ResizeObserver {
  * Sets the menuStyle dataset attribute on the header component element.
  */
 export function setHeaderMenuStyle() {
-  const headerComponent = /** @type {HTMLElement} | null */ (document.querySelector('#header-component'));
+  const headerComponent = /** @type {HTMLElement} | null */ (
+    document.querySelector('#header-component')
+  );
   if (headerComponent) {
     window.requestAnimationFrame(() => {
       const overflowList = headerComponent?.querySelector('overflow-list');
@@ -734,7 +749,11 @@ export function calculateHeaderGroupHeight(
   }
 
   // If the header is transparent and has a sibling section, add the height of the header to the total height
-  if (header instanceof HTMLElement && header.hasAttribute('transparent') && header.parentElement?.nextElementSibling) {
+  if (
+    header instanceof HTMLElement &&
+    header.hasAttribute('transparent') &&
+    header.parentElement?.nextElementSibling
+  ) {
     return totalHeight + header.offsetHeight;
   }
 
@@ -754,7 +773,8 @@ function updateTransparentHeaderOffset() {
     return;
   }
 
-  const hasImmediateSection = hasHeaderSection.nextElementSibling?.classList.contains('shopify-section');
+  const hasImmediateSection =
+    hasHeaderSection.nextElementSibling?.classList.contains('shopify-section');
 
   const shouldApplyOffset = !hasImmediateSection ? '1' : '0';
   document.body.style.setProperty('--transparent-header-offset-boolean', shouldApplyOffset);
@@ -772,7 +792,9 @@ function updateHeaderHeights() {
   // Calculate initial heights
   const headerHeight = header.offsetHeight;
   const headerGroupHeight = calculateHeaderGroupHeight(header);
-  const headerTopRow = /** @type {HTMLElement} | null */ (header.querySelector('.header__row--top'));
+  const headerTopRow = /** @type {HTMLElement} | null */ (
+    header.querySelector('.header__row--top')
+  );
 
   document.body.style.setProperty('--header-height', `${headerHeight}px`);
   document.body.style.setProperty('--header-group-height', `${headerGroupHeight}px`);

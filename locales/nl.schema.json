@@ -188,7 +188,10 @@
     "product_hotspots": "Producthotspots",
     "hotspot_product": "Hotspot",
     "product_sku": "SKU",
-    "layered_slideshow": "Gelaagde diavoorstelling"
+    "layered_slideshow": "Gelaagde diavoorstelling",
+    "size_guide": "Size guide",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote"
   },
   "settings": {
     "autoplay": "Automatisch afspelen",
@@ -970,7 +973,12 @@
     "resource_reference_product_sku": "Toont de SKU van het bovenliggende product",
     "content_layout": "Contentopmaak",
     "mobile_media_1": "Mobiele media 1",
-    "utilities": "Hulpmiddelen"
+    "utilities": "Hulpmiddelen",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Deel informatie over je merk met je klanten. Beschrijf een product, doe aankondigingen of heet klanten welkom in je winkel.</p>",

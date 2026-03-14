@@ -17,13 +17,13 @@ class FlyToCart extends Component {
 
   connectedCallback() {
     super.connectedCallback();
-    const intersectionObserver = new IntersectionObserver((entries) => {
+    const intersectionObserver = new IntersectionObserver(entries => {
       /** @type {DOMRectReadOnly | null} */
       let sourceRect = null;
       /** @type {DOMRectReadOnly | null} */
       let destinationRect = null;
 
-      entries.forEach((entry) => {
+      entries.forEach(entry => {
         if (entry.target === this.source) {
           sourceRect = entry.boundingClientRect;
         } else if (entry.target === this.destination) {
@@ -70,7 +70,7 @@ class FlyToCart extends Component {
 
     await yieldToMainThread();
 
-    await Promise.allSettled(this.getAnimations().map((a) => a.finished));
+    await Promise.allSettled(this.getAnimations().map(a => a.finished));
     this.remove();
   };
 }

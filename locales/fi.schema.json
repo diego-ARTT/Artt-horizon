@@ -188,7 +188,10 @@
     "product_hotspots": "Tuotteen hotspotit",
     "hotspot_product": "Hotspot",
     "product_sku": "SKU-koodi",
-    "layered_slideshow": "Kerroksittainen diaesitys"
+    "layered_slideshow": "Kerroksittainen diaesitys",
+    "size_guide": "Size guide",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote"
   },
   "settings": {
     "alignment": "Tasaus",
@@ -970,7 +973,12 @@
     "resource_reference_product_sku": "Näyttää SKU-koodin päätuotteesta",
     "content_layout": "Sisällön asettelu",
     "mobile_media_1": "Mobiilimedia 1",
-    "utilities": "Aputoiminnot"
+    "utilities": "Aputoiminnot",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Jaa tietoja brändistäsi asiakkaillesi. Kuvaile tuotetta, tee ilmoituksia tai toivota asiakkaat tervetulleiksi kauppaasi.</p>",

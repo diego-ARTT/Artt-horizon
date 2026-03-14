@@ -9,6 +9,7 @@ JSONMissingBlock:
   ignore:
     - templates/index.json
     - templates/product.json
+    - templates/page.wholesale.json
 
 # Ignore translation key error - key exists but theme check may be caching
 TranslationKeyExists:

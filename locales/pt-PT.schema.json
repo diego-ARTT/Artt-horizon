@@ -188,7 +188,10 @@
     "product_hotspots": "Pontos de interesse do produto",
     "hotspot_product": "Ponto de interesse",
     "product_sku": "SKU",
-    "layered_slideshow": "Apresentação em camadas"
+    "layered_slideshow": "Apresentação em camadas",
+    "size_guide": "Size guide",
+    "media_quote_carousel": "Media quote carousel",
+    "media_quote_carousel_block": "Quote"
   },
   "settings": {
     "alignment": "Alinhamento",
@@ -970,7 +973,12 @@
     "resource_reference_product_sku": "Apresenta o SKU do produto principal",
     "content_layout": "Esquema do conteúdo",
     "mobile_media_1": "Conteúdo multimédia para telemóvel 1",
-    "utilities": "Utilitários"
+    "utilities": "Utilitários",
+    "share_information_about_your": "Share information about your brand with your customers",
+    "media_quote_carousel": "Media Quote Carousel",
+    "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
+    "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
+    "media_quote_logo_alt": "Media outlet logo"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Partilhe informações sobre a sua marca com os seus clientes. Descreva um produto, faça anúncios ou dê as boas-vindas aos clientes na sua loja.</p>",
