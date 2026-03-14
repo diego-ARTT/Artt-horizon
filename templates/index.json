@@ -721,7 +721,7 @@
       ],
       "name": "t:names.featured_collection",
       "settings": {
-        "collection": "man-fw25",
+        "collection": "all-garments",
         "layout_type": "carousel",
         "carousel_on_mobile": false,
         "max_products": 8,
