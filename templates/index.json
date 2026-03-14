@@ -127,23 +127,8 @@
               "type": "button",
               "name": "t:names.button",
               "settings": {
-                "label": "Men's",
-                "link": "shopify://collections/man",
-                "open_in_new_tab": false,
-                "style_class": "button-secondary",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "custom",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            },
-            "button_qTim7y": {
-              "type": "button",
-              "name": "t:names.button",
-              "settings": {
-                "label": "Women's",
-                "link": "shopify://collections/woman",
+                "label": "See Collection",
+                "link": "shopify://collections/seven-deadly-sins",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
@@ -155,8 +140,7 @@
             }
           },
           "block_order": [
-            "button_QFiR43",
-            "button_qTim7y"
+            "button_QFiR43"
           ]
         }
       },
