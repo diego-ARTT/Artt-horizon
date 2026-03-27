@@ -1,12 +1,42 @@
 {% liquid
   assign product = closest.product
+
+  assign target_variant_url = nil
+  assign gender_context = section.settings.gender_context | default: 'all'
+  if gender_context != 'all'
+    assign target_fit = nil
+    if gender_context == 'men'
+      assign target_fit = 'Unisex'
+    elsif gender_context == 'women'
+      assign target_fit = 'Female'
+    endif
+
+    assign fit_option_index = nil
+    for opt in product.options
+      assign opt_lower = opt | downcase
+      if opt_lower == 'fit'
+        assign fit_option_index = forloop.index
+        break
+      endif
+    endfor
+
+    if fit_option_index != nil
+      assign fit_option_key = 'option' | append: fit_option_index
+      for v in product.variants
+        if v[fit_option_key] == target_fit
+          assign target_variant_url = v.url
+          break
+        endif
+      endfor
+    endif
+  endif
 -%}
 
 {% capture children %}
   {% content_for 'blocks', closest.product: product %}
 {% endcapture %}
 
-{% render 'product-card', children: children, product: product %}
+{% render 'product-card', children: children, product: product, target_variant_url: target_variant_url %}
 
 {% schema %}
 {

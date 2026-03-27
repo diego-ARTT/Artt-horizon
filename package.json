@@ -12,7 +12,11 @@
     "lint": "npm run lint:js && npm run lint:css && npm run lint:theme",
     "format": "prettier --write \"**/*.{js,css,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,css,json,md}\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "build": "NODE_ENV=production node scripts/build.js",
+    "build:css": "NODE_ENV=production node scripts/build-css.js",
+    "build:js": "NODE_ENV=production node scripts/build-js.js",
+    "build:clean": "find assets -name '*.min.js' -o -name '*.min.css' | xargs rm -f 2>/dev/null; exit 0"
   },
   "repository": {
     "type": "git",
@@ -29,7 +33,11 @@
     "@eslint/js": "^9.39.1",
     "@shopify/cli": "^3.91.1",
     "@shopify/theme-check-node": "^3.23.0",
+    "csso-cli": "^4.0.2",
+    "esbuild": "^0.27.4",
     "eslint": "^9.39.1",
+    "fs-extra": "^11.3.4",
+    "glob": "^13.0.6",
     "globals": "^16.5.0",
     "husky": "^9.1.7",
     "keyv": "^5.5.3",

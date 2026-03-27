@@ -7,8 +7,15 @@
 {% endcomment %}
 
 {%- liquid
-  assign base_css_url = 'base.css' | asset_url
-  assign overflow_list_css_url = 'overflow-list.css' | asset_url
+  if request.design_mode
+    assign base_css = 'base.css'
+    assign overflow_list_css = 'overflow-list.css'
+  else
+    assign base_css = 'base.min.css'
+    assign overflow_list_css = 'overflow-list.min.css'
+  endif
+  assign base_css_url = base_css | asset_url
+  assign overflow_list_css_url = overflow_list_css | asset_url
 -%}
 
 {%- comment -%} Preload for faster discovery {%- endcomment -%}
