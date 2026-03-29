@@ -1,6 +1,6 @@
 <script
   type="module"
-  src="{{ 'cart-icon.js' | asset_url }}"
+  src="{{ 'cart-icon.aio.min.js' | asset_url }}"
   fetchpriority="low"
 ></script>
 
@@ -101,7 +101,7 @@
 
   {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
     <script
-      src="{{ 'cart-drawer.js' | asset_url }}"
+      src="{{ 'cart-drawer.aio.min.js' | asset_url }}"
       type="module"
       fetchpriority="low"
     ></script>

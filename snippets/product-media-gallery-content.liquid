@@ -18,7 +18,7 @@
 {% enddoc %}
 {%- if block_settings.zoom -%}
   <script
-    src="{{ 'zoom-dialog.js' | asset_url }}"
+    src="{{ 'zoom-dialog.aio.min.js' | asset_url }}"
     type="module"
   ></script>
 {%- endif -%}
@@ -175,7 +175,7 @@
 -%}
 {%- if has_image_drop -%}
   <script
-    src="{{ 'drag-zoom-wrapper.js' | asset_url }}"
+    src="{{ 'drag-zoom-wrapper.aio.min.js' | asset_url }}"
     type="module"
   ></script>
 {%- endif -%}
