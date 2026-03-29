@@ -296,3 +296,17 @@
     },
   };
 </script>
+
+<script>
+function onTidioChatApiReady() {
+tidioChatApi.adjustStyles('#tidio { bottom: 120px !important; }');
+tidioChatApi.adjustStyles(
+'@media only screen and (max-width: 980px) { #tidio { bottom: 50px !important;} }',
+);
+}
+if (window.tidioChatApi) {
+window.tidioChatApi.on('ready', onTidioChatApiReady);
+} else {
+document.addEventListener('tidioChat-ready', onTidioChatApiReady);
+}
+</script>
