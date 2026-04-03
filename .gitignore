@@ -37,5 +37,8 @@ yarn-error.log*
 # Shopify CLI
 .shopify/
 
+# Playwright
+.playwright-mcp/
+
 # Config files (if they contain sensitive data)
 config.yml
