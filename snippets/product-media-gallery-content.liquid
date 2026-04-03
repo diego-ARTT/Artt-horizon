@@ -834,24 +834,24 @@
     }
 
     ::view-transition-new(gallery-item-open) {
-      animation: fade-in var(--spring-d180-b0-duration) var(--spring-d180-b0-easing) forwards;
+      animation: gallery-fade-in var(--spring-d180-b0-duration) var(--spring-d180-b0-easing) forwards;
       animation-timing-function: var(--spring-d180-b0-easing);
       animation-duration: var(--spring-d180-b0-duration);
     }
 
     ::view-transition-old(gallery-item-close) {
-      animation: fade-out 0.08s linear forwards;
+      animation: gallery-fade-out 0.08s linear forwards;
     }
   }
 
-  @keyframes fade-in {
+  @keyframes gallery-fade-in {
     from {
       scale: 0.98;
       opacity: 0.8;
     }
   }
 
-  @keyframes fade-out {
+  @keyframes gallery-fade-out {
     to {
       opacity: 0;
     }
