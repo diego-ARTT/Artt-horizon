@@ -23,10 +23,6 @@ Thumbs.db
 dist/
 build/
 
-# Production asset build outputs (run `npm run build` before deploying)
-assets/**/*.min.js
-assets/**/*.min.css
-
 # Logs
 logs/
 *.log
