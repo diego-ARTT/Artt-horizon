@@ -1,37 +1,40 @@
+{%- liquid
+  assign _js_ext = '.js'
+-%}
 <script type="importmap">
   {
     "imports": {
-      "@theme/overflow-list": "{{ 'overflow-list.js' | asset_url }}",
-      "@theme/product-title": "{{ 'product-title-truncation.js' | asset_url }}",
-      "@theme/component": "{{ 'component.js' | asset_url }}",
-      "@theme/dialog": "{{ 'dialog.js' | asset_url }}",
-      "@theme/events": "{{ 'events.js' | asset_url }}",
-      "@theme/focus": "{{ 'focus.js' | asset_url }}",
-      "@theme/morph": "{{ 'morph.js' | asset_url }}",
-      "@theme/paginated-list": "{{ 'paginated-list.js' | asset_url }}",
-      "@theme/performance": "{{ 'performance.js' | asset_url }}",
-      "@theme/product-form": "{{ 'product-form.js' | asset_url }}",
-      "@theme/recently-viewed-products": "{{ 'recently-viewed-products.js' | asset_url }}",
-      "@theme/scrolling": "{{ 'scrolling.js' | asset_url }}",
-      "@theme/section-renderer": "{{ 'section-renderer.js' | asset_url }}",
-      "@theme/section-hydration": "{{ 'section-hydration.js' | asset_url }}",
-      "@theme/money-formatting": "{{ 'money-formatting.js' | asset_url }}",
-      "@theme/utilities": "{{ 'utilities.js' | asset_url }}",
-      "@theme/variant-picker": "{{ 'variant-picker.js' | asset_url }}",
-      "@theme/media-gallery": "{{ 'media-gallery.js' | asset_url }}",
-      "@theme/quick-add": "{{ 'quick-add.js' | asset_url }}",
-      "@theme/paginated-list-aspect-ratio": "{{ 'paginated-list-aspect-ratio.js' | asset_url }}",
+      "@theme/overflow-list": "{{ 'overflow-list' | append: _js_ext | asset_url }}",
+      "@theme/product-title": "{{ 'product-title-truncation' | append: _js_ext | asset_url }}",
+      "@theme/component": "{{ 'component' | append: _js_ext | asset_url }}",
+      "@theme/dialog": "{{ 'dialog' | append: _js_ext | asset_url }}",
+      "@theme/events": "{{ 'events' | append: _js_ext | asset_url }}",
+      "@theme/focus": "{{ 'focus' | append: _js_ext | asset_url }}",
+      "@theme/morph": "{{ 'morph' | append: _js_ext | asset_url }}",
+      "@theme/paginated-list": "{{ 'paginated-list' | append: _js_ext | asset_url }}",
+      "@theme/performance": "{{ 'performance' | append: _js_ext | asset_url }}",
+      "@theme/product-form": "{{ 'product-form' | append: _js_ext | asset_url }}",
+      "@theme/recently-viewed-products": "{{ 'recently-viewed-products' | append: _js_ext | asset_url }}",
+      "@theme/scrolling": "{{ 'scrolling' | append: _js_ext | asset_url }}",
+      "@theme/section-renderer": "{{ 'section-renderer' | append: _js_ext | asset_url }}",
+      "@theme/section-hydration": "{{ 'section-hydration' | append: _js_ext | asset_url }}",
+      "@theme/money-formatting": "{{ 'money-formatting' | append: _js_ext | asset_url }}",
+      "@theme/utilities": "{{ 'utilities' | append: _js_ext | asset_url }}",
+      "@theme/variant-picker": "{{ 'variant-picker' | append: _js_ext | asset_url }}",
+      "@theme/media-gallery": "{{ 'media-gallery' | append: _js_ext | asset_url }}",
+      "@theme/quick-add": "{{ 'quick-add' | append: _js_ext | asset_url }}",
+      "@theme/paginated-list-aspect-ratio": "{{ 'paginated-list-aspect-ratio' | append: _js_ext | asset_url }}",
       "@theme/popover-polyfill": "{{ 'popover-polyfill.js' | asset_url }}",
-      "@theme/component-quantity-selector": "{{ 'component-quantity-selector.js' | asset_url }}",
-      "@theme/comparison-slider": "{{ 'comparison-slider.js' | asset_url }}",
-      "@theme/sticky-add-to-cart": "{{ 'sticky-add-to-cart.js' | asset_url }}",
-      "@theme/fly-to-cart": "{{ 'fly-to-cart.js' | asset_url }}"
+      "@theme/component-quantity-selector": "{{ 'component-quantity-selector' | append: _js_ext | asset_url }}",
+      "@theme/comparison-slider": "{{ 'comparison-slider' | append: _js_ext | asset_url }}",
+      "@theme/sticky-add-to-cart": "{{ 'sticky-add-to-cart' | append: _js_ext | asset_url }}",
+      "@theme/fly-to-cart": "{{ 'fly-to-cart' | append: _js_ext | asset_url }}"
     }
   }
 </script>
 
 <script
-  src="{{ 'view-transitions.js' | asset_url }}"
+  src="{{ 'view-transitions' | append: _js_ext | asset_url }}"
   async
   {% if settings.page_transition_enabled or settings.transition_to_main_product %}
     blocking="render"
@@ -40,67 +43,67 @@
 
 <link
   rel="modulepreload"
-  href="{{ 'utilities.js' | asset_url }}"
+  href="{{ 'utilities' | append: _js_ext | asset_url }}"
   fetchpriority="low"
 >
 <link
   rel="modulepreload"
-  href="{{ 'component.js' | asset_url }}"
+  href="{{ 'component' | append: _js_ext | asset_url }}"
   fetchpriority="low"
 >
 <link
   rel="modulepreload"
-  href="{{ 'section-renderer.js' | asset_url }}"
+  href="{{ 'section-renderer' | append: _js_ext | asset_url }}"
   fetchpriority="low"
 >
 <link
   rel="modulepreload"
-  href="{{ 'section-hydration.js' | asset_url }}"
+  href="{{ 'section-hydration' | append: _js_ext | asset_url }}"
   fetchpriority="low"
 >
 <link
   rel="modulepreload"
-  href="{{ 'morph.js' | asset_url }}"
+  href="{{ 'morph' | append: _js_ext | asset_url }}"
   fetchpriority="low"
 >
 
 {% if template.name == 'collection' or template.name == 'search' %}
   <link
     rel="modulepreload"
-    href="{{ 'paginated-list-aspect-ratio.js' | asset_url }}"
+    href="{{ 'paginated-list-aspect-ratio' | append: _js_ext | asset_url }}"
     fetchpriority="low"
   >
   <link
     rel="modulepreload"
-    href="{{ 'paginated-list.js' | asset_url }}"
+    href="{{ 'paginated-list' | append: _js_ext | asset_url }}"
     fetchpriority="low"
   >
 
   <link
     rel="modulepreload"
-    href="{{ 'product-title-truncation.js' | asset_url }}"
+    href="{{ 'product-title-truncation' | append: _js_ext | asset_url }}"
     fetchpriority="low"
   >
 {% endif %}
 
 <link
   rel="modulepreload"
-  href="{{ 'focus.js' | asset_url }}"
+  href="{{ 'focus' | append: _js_ext | asset_url }}"
   fetchpriority="low"
 >
 <link
   rel="modulepreload"
-  href="{{ 'recently-viewed-products.js' | asset_url }}"
+  href="{{ 'recently-viewed-products' | append: _js_ext | asset_url }}"
   fetchpriority="low"
 >
 <link
   rel="modulepreload"
-  href="{{ 'scrolling.js' | asset_url }}"
+  href="{{ 'scrolling' | append: _js_ext | asset_url }}"
   fetchpriority="low"
 >
 <link
   rel="modulepreload"
-  href="{{ 'events.js' | asset_url }}"
+  href="{{ 'events' | append: _js_ext | asset_url }}"
   fetchpriority="low"
 >
 <script
@@ -109,142 +112,132 @@
   fetchpriority="low"
 ></script>
 <script
-  src="{{ 'overflow-list.js' | asset_url }}"
+  src="{{ 'overflow-list' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
-<script
-  src="{{ 'quick-add.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
+<script type="module">
+  // Defer quick-add until user hovers or focuses a product card
+  const loadQuickAdd = () => import({{ 'quick-add' | append: _js_ext | asset_url | json }});
+  document.querySelectorAll('.product-card, quick-add-component').forEach((el) => {
+    el.addEventListener('mouseenter', loadQuickAdd, { once: true, passive: true });
+    el.addEventListener('focusin', loadQuickAdd, { once: true });
+  });
+</script>
 {% if settings.show_add_discount_code %}
   <script
-    src="{{ 'cart-discount.js' | asset_url }}"
+    src="{{ 'cart-discount' | append: _js_ext | asset_url }}"
     type="module"
     fetchpriority="low"
   ></script>
 {% endif %}
 
 <script
-  src="{{ 'dialog.js' | asset_url }}"
+  src="{{ 'dialog' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
 <script
-  src="{{ 'variant-picker.js' | asset_url }}"
+  src="{{ 'variant-picker' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
 <script
-  src="{{ 'product-card.js' | asset_url }}"
+  src="{{ 'product-card' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
 <script
-  src="{{ 'product-form.js' | asset_url }}"
+  src="{{ 'product-form' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
 <script
-  src="{{ 'fly-to-cart.js' | asset_url }}"
+  src="{{ 'fly-to-cart' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
 <script
-  src="{{ 'accordion-custom.js' | asset_url }}"
+  src="{{ 'accordion-custom' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
 <script
-  src="{{ 'media.js' | asset_url }}"
+  src="{{ 'media' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
 <script
-  src="{{ 'product-price.js' | asset_url }}"
+  src="{{ 'product-price' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
 <script
-  src="{{ 'product-sku.js' | asset_url }}"
+  src="{{ 'product-sku' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
 <script
-  src="{{ 'product-title-truncation.js' | asset_url }}"
+  src="{{ 'product-title-truncation' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
 <script
-  src="{{ 'product-inventory.js' | asset_url }}"
+  src="{{ 'product-inventory' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>
-<script
-  src="{{ 'show-more.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-<script
-  src="{{ 'slideshow.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-<script
-  src="{{ 'layered-slideshow.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-<script
-  src="{{ 'anchored-popover.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-<script
-  src="{{ 'floating-panel.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-<script
-  src="{{ 'video-background.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-<script
-  src="{{ 'component-quantity-selector.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-<script
-  src="{{ 'media-gallery.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-<script
-  src="{{ 'rte-formatter.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-<script
-  src="{{ 'volume-pricing.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-<script
-  src="{{ 'price-per-item.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-<script
-  src="{{ 'volume-pricing-info.js' | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
+<script type="module">
+  // Defer viewport-based scripts: load when their custom element scrolls near view
+  const viewportDeferred = [
+    { selector: 'slideshow-component', url: {{ 'slideshow' | append: _js_ext | asset_url | json }} },
+    { selector: 'layered-slideshow-component', url: {{ 'layered-slideshow' | append: _js_ext | asset_url | json }} },
+    { selector: 'video-background-component', url: {{ 'video-background' | append: _js_ext | asset_url | json }} },
+    { selector: 'media-gallery', url: {{ 'media-gallery' | append: _js_ext | asset_url | json }} },
+  ];
+
+  viewportDeferred.forEach(({ selector, url }) => {
+    const elements = document.querySelectorAll(selector);
+    if (!elements.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          import(url);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    elements.forEach((el) => observer.observe(el));
+  });
+
+  // Defer interaction-based scripts: load on first user gesture
+  const interactionDeferred = [
+    {{ 'show-more' | append: _js_ext | asset_url | json }},
+    {{ 'anchored-popover' | append: _js_ext | asset_url | json }},
+    {{ 'floating-panel' | append: _js_ext | asset_url | json }},
+    {{ 'rte-formatter' | append: _js_ext | asset_url | json }},
+    {{ 'volume-pricing' | append: _js_ext | asset_url | json }},
+    {{ 'volume-pricing-info' | append: _js_ext | asset_url | json }},
+    {{ 'price-per-item' | append: _js_ext | asset_url | json }},
+    {{ 'component-quantity-selector' | append: _js_ext | asset_url | json }},
+  ];
+
+  let interactionLoaded = false;
+  const loadOnInteraction = () => {
+    if (interactionLoaded) return;
+    interactionLoaded = true;
+    interactionDeferred.forEach((url) => import(url));
+  };
+
+  ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach((event) => {
+    document.addEventListener(event, loadOnInteraction, { once: true, passive: true });
+  });
+</script>
 
 {% if localization.available_countries.size > 1 or localization.available_languages.size > 1 %}
   <script
-    src="{{ 'localization.js' | asset_url }}"
+    src="{{ 'localization' | append: _js_ext | asset_url }}"
     type="module"
     fetchpriority="low"
   ></script>
@@ -252,12 +245,12 @@
 
 {% if template == 'product' or template.name == 'product' or request.page_type == 'product' %}
   <script
-    src="{{ 'fly-to-cart.js' | asset_url }}"
+    src="{{ 'fly-to-cart' | append: _js_ext | asset_url }}"
     type="module"
     fetchpriority="low"
   ></script>
   <script
-    src="{{ 'sticky-add-to-cart.js' | asset_url }}"
+    src="{{ 'sticky-add-to-cart' | append: _js_ext | asset_url }}"
     type="module"
     fetchpriority="low"
   ></script>
@@ -268,7 +261,7 @@
 {% endif %}
 
 <script
-  src="{{ 'auto-close-details.js' | asset_url }}"
+  src="{{ 'auto-close-details' | append: _js_ext | asset_url }}"
   defer="defer"
 ></script>
 
