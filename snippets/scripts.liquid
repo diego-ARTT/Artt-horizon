@@ -116,14 +116,16 @@
   type="module"
   fetchpriority="low"
 ></script>
-<script type="module">
-  // Defer quick-add until user hovers or focuses a product card
-  const loadQuickAdd = () => import({{ 'quick-add' | append: _js_ext | asset_url | json }});
-  document.querySelectorAll('.product-card, quick-add-component').forEach((el) => {
-    el.addEventListener('mouseenter', loadQuickAdd, { once: true, passive: true });
-    el.addEventListener('focusin', loadQuickAdd, { once: true });
-  });
-</script>
+<script
+  src="{{ 'quick-add' | append: _js_ext | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+<script
+  src="{{ 'zoom-dialog' | append: _js_ext | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
 {% if settings.show_add_discount_code %}
   <script
     src="{{ 'cart-discount' | append: _js_ext | asset_url }}"
