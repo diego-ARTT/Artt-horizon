@@ -97,6 +97,16 @@ export class QuickAddComponent extends Component {
   }
 
   /**
+   * Loads behavior required by product markup that can be injected into the quick-add modal.
+   * @param {Element} productGrid - The product grid element
+   */
+  async #loadProductGridComponents(productGrid) {
+    if (productGrid.querySelector('media-gallery') && !customElements.get('media-gallery')) {
+      await import('@theme/media-gallery');
+    }
+  }
+
+  /**
    * Handles quick add button click
    * @param {Event} event - The click event
    */
@@ -220,6 +230,8 @@ export class QuickAddComponent extends Component {
     const modalContent = document.getElementById('quick-add-modal-content');
 
     if (!productGrid || !modalContent) return;
+
+    await this.#loadProductGridComponents(productGrid);
 
     if (isMobileBreakpoint()) {
       const productDetails = productGrid.querySelector('.product-details');
