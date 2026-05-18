@@ -195,6 +195,20 @@ const updateButton = (product) => {
 };
 ```
 
+**Guard optional rendered blocks before calling component methods:**
+
+```javascript
+// Product templates can omit optional blocks such as variant pickers.
+// Check both the current DOM and replacement markup before delegating.
+const updateOptionalPicker = (container, source) => {
+  const picker = container.querySelector('variant-picker');
+  const sourcePicker = source.querySelector('variant-picker');
+  if (!picker || !sourcePicker) return;
+
+  picker.updateVariantPicker(source);
+};
+```
+
 ## Simplification Patterns
 
 **Ternary operators for simple conditions:**
