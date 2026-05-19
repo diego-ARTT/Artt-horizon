@@ -948,3 +948,8 @@ class SearchInput extends Component {
 
 customElements.define('search-input', SearchInput);
 ```
+
+## Correctness Pitfalls
+
+- When an async component update gates a form submission, include the selected business identifier in the initial selection event. Do not rely on URL params or hidden form inputs that are updated only after the async render completes, or queued submissions can use stale IDs.
+- If a component sets an "update in progress" flag before a fetch, pair every non-aborted failure path with a recovery event or reset. Missing recovery can permanently wedge purchase forms after a failed section render.

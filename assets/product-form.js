@@ -6,6 +6,7 @@ import {
   CartErrorEvent,
   CartUpdateEvent,
   VariantUpdateEvent,
+  VariantUpdateErrorEvent,
 } from '@theme/events';
 import { cartPerformance } from '@theme/performance';
 import { morph } from '@theme/morph';
@@ -213,12 +214,18 @@ class ProductFormComponent extends Component {
   /** @type {Array<{variantId: string, quantity: number}>} */
   #addToCartQueue = [];
 
+  /** @type {string | null | undefined} */
+  #pendingVariantId;
+
   connectedCallback() {
     super.connectedCallback();
 
     const { signal } = this.#abortController;
     const target = this.closest('.shopify-section, dialog, product-card');
     target?.addEventListener(ThemeEvents.variantUpdate, this.#onVariantUpdate, { signal });
+    target?.addEventListener(ThemeEvents.variantUpdateError, this.#onVariantUpdateError, {
+      signal,
+    });
     target?.addEventListener(ThemeEvents.variantSelected, this.#onVariantSelected, { signal });
 
     // Listen for cart updates to sync data-cart-quantity
@@ -323,6 +330,10 @@ class ProductFormComponent extends Component {
 
   /** @returns {string | undefined} */
   #getIntendedVariantId() {
+    if (this.#pendingVariantId !== undefined) {
+      return this.#pendingVariantId ?? undefined;
+    }
+
     return (
       new URL(window.location.href).searchParams.get('variant') ||
       this.refs.variantId?.value ||
@@ -687,6 +698,7 @@ class ProductFormComponent extends Component {
     const { variantId } = this.refs;
     variantId.value = event.detail.resource?.id ?? '';
 
+    this.#pendingVariantId = undefined;
     this.#variantChangeInProgress = false;
 
     if (this.#addToCartQueue.length > 0) {
@@ -842,9 +854,26 @@ class ProductFormComponent extends Component {
     await this.#fetchAndUpdateCartQuantity();
   };
 
-  /** @param {import('./events').VariantSelectedEvent} _event */
-  #onVariantSelected = _event => {
+  /** @param {import('./events').VariantSelectedEvent} event */
+  #onVariantSelected = event => {
+    this.#pendingVariantId = event.detail.resource.variantId || null;
+    this.refs.variantId.value = this.#pendingVariantId ?? '';
     this.#variantChangeInProgress = true;
+  };
+
+  /**
+   * @param {VariantUpdateErrorEvent} event
+   */
+  #onVariantUpdateError = event => {
+    if (event.detail.data.productId !== this.dataset.productId) return;
+
+    this.#variantChangeInProgress = false;
+
+    if (this.#addToCartQueue.length === 0) return;
+
+    const queuedItems = [...this.#addToCartQueue];
+    this.#addToCartQueue = [];
+    this.#processBatchAddToCart(queuedItems);
   };
 }
 

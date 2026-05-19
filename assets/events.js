@@ -10,6 +10,8 @@ export class ThemeEvents {
   static variantSelected = 'variant:selected';
   /** @static @constant {string} Event triggered when a variant is changed */
   static variantUpdate = 'variant:update';
+  /** @static @constant {string} Event triggered when a selected variant cannot finish updating */
+  static variantUpdateError = 'variant:update-error';
   /** @static @constant {string} Event triggered when the cart items or quantities are updated */
   static cartUpdate = 'cart:update';
   /** @static @constant {string} Event triggered when a cart update fails */
@@ -37,6 +39,7 @@ export class VariantSelectedEvent extends Event {
    * Creates a new VariantSelectedEvent
    * @param {Object} resource - The new variant object
    * @param {string} resource.id - The option value id
+   * @param {string} [resource.variantId] - The selected variant id, when known
    */
   constructor(resource) {
     super(ThemeEvents.variantSelected, { bubbles: true });
@@ -79,6 +82,28 @@ export class VariantUpdateEvent extends Event {
         html: data.html,
         productId: data.productId,
         newProduct: data.newProduct,
+      },
+    };
+  }
+}
+
+/**
+ * Event fired when a selected variant cannot finish updating
+ * @extends {Event}
+ */
+export class VariantUpdateErrorEvent extends Event {
+  /**
+   * Creates a new VariantUpdateErrorEvent
+   * @param {string} sourceId - The id of the element the action was triggered from
+   * @param {Object} data - Additional event data
+   * @param {string} data.productId - The product ID of the variant picker
+   */
+  constructor(sourceId, data) {
+    super(ThemeEvents.variantUpdateError, { bubbles: true });
+    this.detail = {
+      sourceId,
+      data: {
+        productId: data.productId,
       },
     };
   }

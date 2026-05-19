@@ -1,5 +1,5 @@
 import { Component } from '@theme/component';
-import { VariantSelectedEvent, VariantUpdateEvent } from '@theme/events';
+import { VariantSelectedEvent, VariantUpdateEvent, VariantUpdateErrorEvent } from '@theme/events';
 import { morph, MORPH_OPTIONS } from '@theme/morph';
 import { yieldToMainThread, getViewParameterValue, ResizeNotifier } from '@theme/utilities';
 
@@ -72,6 +72,7 @@ export default class VariantPicker extends Component {
     this.dispatchEvent(
       new VariantSelectedEvent({
         id: selectedOption.dataset.optionValueId ?? '',
+        variantId: selectedOption.dataset.variantId,
       })
     );
 
@@ -326,8 +327,9 @@ export default class VariantPicker extends Component {
     // We use this to abort the previous fetch request if it's still pending.
     this.#abortController?.abort();
     this.#abortController = new AbortController();
+    const abortSignal = this.#abortController.signal;
 
-    fetch(requestUrl, { signal: this.#abortController.signal })
+    fetch(requestUrl, { signal: abortSignal })
       .then(response => response.text())
       .then(responseText => {
         this.#pendingRequestUrl = undefined;
@@ -338,7 +340,10 @@ export default class VariantPicker extends Component {
         const textContent = html.querySelector(
           `variant-picker script[type="application/json"]`
         )?.textContent;
-        if (!textContent) return;
+        if (!textContent) {
+          this.#dispatchVariantUpdateError(abortSignal);
+          return;
+        }
 
         let newProduct;
 
@@ -366,8 +371,23 @@ export default class VariantPicker extends Component {
           console.warn('Fetch aborted by user');
         } else {
           console.error(error);
+          this.#dispatchVariantUpdateError(abortSignal);
         }
       });
+  }
+
+  /**
+   * Lets product forms recover when the latest variant update cannot complete.
+   * @param {AbortSignal} signal
+   */
+  #dispatchVariantUpdateError(signal) {
+    if (signal !== this.#abortController?.signal || !this.selectedOptionId) return;
+
+    this.dispatchEvent(
+      new VariantUpdateErrorEvent(this.selectedOptionId, {
+        productId: this.dataset.productId ?? '',
+      })
+    );
   }
 
   /**
