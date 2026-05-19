@@ -6,7 +6,6 @@ import {
   CartErrorEvent,
   CartUpdateEvent,
   VariantUpdateEvent,
-  VariantUpdateErrorEvent,
 } from '@theme/events';
 import { cartPerformance } from '@theme/performance';
 import { morph } from '@theme/morph';
@@ -862,7 +861,7 @@ class ProductFormComponent extends Component {
   };
 
   /**
-   * @param {VariantUpdateErrorEvent} event
+   * @param {import('./events').VariantUpdateErrorEvent} event
    */
   #onVariantUpdateError = event => {
     if (event.detail.data.productId !== this.dataset.productId) return;
