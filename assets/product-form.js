@@ -5,6 +5,7 @@ import {
   CartAddEvent,
   CartErrorEvent,
   CartUpdateEvent,
+  VariantUpdateFailureEvent,
   VariantUpdateEvent,
 } from '@theme/events';
 import { cartPerformance } from '@theme/performance';
@@ -213,12 +214,18 @@ class ProductFormComponent extends Component {
   /** @type {Array<{variantId: string, quantity: number}>} */
   #addToCartQueue = [];
 
+  /** @type {string | undefined} */
+  #pendingVariantId;
+
   connectedCallback() {
     super.connectedCallback();
 
     const { signal } = this.#abortController;
     const target = this.closest('.shopify-section, dialog, product-card');
     target?.addEventListener(ThemeEvents.variantUpdate, this.#onVariantUpdate, { signal });
+    target?.addEventListener(ThemeEvents.variantUpdateFailure, this.#onVariantUpdateFailure, {
+      signal,
+    });
     target?.addEventListener(ThemeEvents.variantSelected, this.#onVariantSelected, { signal });
 
     // Listen for cart updates to sync data-cart-quantity
@@ -312,9 +319,9 @@ class ProductFormComponent extends Component {
 
       if (intendedVariantId) {
         this.#addToCartQueue.push({ variantId: intendedVariantId, quantity });
+        this.refs.addToCartButtonContainer?.animateAddToCart?.();
       }
 
-      this.refs.addToCartButtonContainer?.animateAddToCart?.();
       return;
     }
 
@@ -323,6 +330,10 @@ class ProductFormComponent extends Component {
 
   /** @returns {string | undefined} */
   #getIntendedVariantId() {
+    if (this.#variantChangeInProgress) {
+      return this.#pendingVariantId;
+    }
+
     return (
       new URL(window.location.href).searchParams.get('variant') ||
       this.refs.variantId?.value ||
@@ -688,6 +699,7 @@ class ProductFormComponent extends Component {
     variantId.value = event.detail.resource?.id ?? '';
 
     this.#variantChangeInProgress = false;
+    this.#pendingVariantId = undefined;
 
     if (this.#addToCartQueue.length > 0) {
       const queuedItems = [...this.#addToCartQueue];
@@ -842,9 +854,28 @@ class ProductFormComponent extends Component {
     await this.#fetchAndUpdateCartQuantity();
   };
 
-  /** @param {import('./events').VariantSelectedEvent} _event */
-  #onVariantSelected = _event => {
+  /** @param {VariantUpdateFailureEvent} event */
+  #onVariantUpdateFailure = event => {
+    if (event.detail.data.productId !== this.dataset.productId) return;
+
+    const variantId = event.detail.resource.variantId || this.#pendingVariantId;
+    this.refs.variantId.value = variantId ?? '';
+    this.#variantChangeInProgress = false;
+    this.#pendingVariantId = undefined;
+
+    if (this.#addToCartQueue.length === 0) return;
+
+    const queuedItems = [...this.#addToCartQueue];
+    this.#addToCartQueue = [];
+    this.#processBatchAddToCart(queuedItems);
+  };
+
+  /** @param {import('./events').VariantSelectedEvent} event */
+  #onVariantSelected = event => {
+    if (event.detail.resource.productId !== this.dataset.productId) return;
+
     this.#variantChangeInProgress = true;
+    this.#pendingVariantId = event.detail.resource.variantId || undefined;
   };
 }
 
