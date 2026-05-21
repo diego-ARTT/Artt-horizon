@@ -5,7 +5,6 @@ import {
   CartAddEvent,
   CartErrorEvent,
   CartUpdateEvent,
-  VariantUpdateFailureEvent,
   VariantUpdateEvent,
 } from '@theme/events';
 import { cartPerformance } from '@theme/performance';
@@ -854,7 +853,7 @@ class ProductFormComponent extends Component {
     await this.#fetchAndUpdateCartQuantity();
   };
 
-  /** @param {VariantUpdateFailureEvent} event */
+  /** @param {import('./events').VariantUpdateFailureEvent} event */
   #onVariantUpdateFailure = event => {
     if (event.detail.data.productId !== this.dataset.productId) return;
 
