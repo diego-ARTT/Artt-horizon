@@ -105,7 +105,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["text_pKXg8w", "text_y88DqX"]
+          "block_order": [
+            "text_pKXg8w",
+            "text_y88DqX"
+          ]
         },
         "group_n9JCfz": {
           "type": "group",
@@ -163,10 +166,15 @@
               "blocks": {}
             }
           },
-          "block_order": ["button_QFiR43"]
+          "block_order": [
+            "button_QFiR43"
+          ]
         }
       },
-      "block_order": ["group_7RWxJ6", "group_n9JCfz"],
+      "block_order": [
+        "group_7RWxJ6",
+        "group_n9JCfz"
+      ],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "video",
@@ -256,7 +264,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<h3>{{ closest.collection.title }}</h3>",
+                "text": "<h3>Tees for the summer</h3>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -294,7 +302,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_list_text_gPBAJD", "product_list_button_EYmGCt"]
+          "block_order": [
+            "product_list_text_gPBAJD",
+            "product_list_button_EYmGCt"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -379,13 +390,19 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_card_gallery_ey8mzd", "product_title_JNDbtY", "price_XjW4Ff"]
+          "block_order": [
+            "product_card_gallery_ey8mzd",
+            "product_title_JNDbtY",
+            "price_XjW4Ff"
+          ]
         }
       },
-      "block_order": ["button_LVmccw"],
+      "block_order": [
+        "button_LVmccw"
+      ],
       "name": "t:names.featured_collection",
       "settings": {
-        "collection": "seven-deadly-sins",
+        "collection": "man-clothing-t-shirts",
         "layout_type": "carousel",
         "carousel_on_mobile": false,
         "max_products": 8,
@@ -402,41 +419,6 @@
         "color_scheme": "scheme-1",
         "padding-block-start": 48,
         "padding-block-end": 48
-      }
-    },
-    "hero_p9Ry9J": {
-      "type": "hero",
-      "name": "t:names.hero",
-      "settings": {
-        "media_type_1": "image",
-        "image_1": "shopify://shop_images/Banner_7DS_jars.jpg",
-        "media_type_2": "image",
-        "stack_media_on_mobile": false,
-        "custom_mobile_media": false,
-        "media_type_1_mobile": "image",
-        "media_type_2_mobile": "image",
-        "link": "",
-        "open_in_new_tab": false,
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 16,
-        "section_width": "page-width",
-        "section_height": "medium",
-        "section_height_custom": 50,
-        "color_scheme": "scheme-5",
-        "toggle_overlay": true,
-        "overlay_color": "#00000026",
-        "overlay_style": "gradient",
-        "gradient_direction": "to top",
-        "blurred_reflection": false,
-        "reflection_opacity": 75,
-        "padding-block-start": 40,
-        "padding-block-end": 40
       }
     },
     "media_quote_carousel_WqXEGm": {
@@ -483,7 +465,12 @@
           }
         }
       },
-      "block_order": ["quote_NaxN7L", "quote_akmJTT", "quote_c4wVnA", "quote_rH7YNc"],
+      "block_order": [
+        "quote_NaxN7L",
+        "quote_akmJTT",
+        "quote_c4wVnA",
+        "quote_rH7YNc"
+      ],
       "disabled": true,
       "custom_css": [],
       "name": "t:names.media_quote_carousel",
@@ -601,7 +588,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_list_text_YFtzcL", "product_list_button_MWeP9V"]
+          "block_order": [
+            "product_list_text_YFtzcL",
+            "product_list_button_MWeP9V"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -686,10 +676,16 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_card_gallery_677WP3", "product_title_YXxMTj", "price_JQzVV4"]
+          "block_order": [
+            "product_card_gallery_677WP3",
+            "product_title_YXxMTj",
+            "price_JQzVV4"
+          ]
         }
       },
-      "block_order": ["button_nJaQcT"],
+      "block_order": [
+        "button_nJaQcT"
+      ],
       "name": "t:names.featured_collection",
       "settings": {
         "collection": "all-garments",
@@ -745,7 +741,9 @@
           }
         }
       },
-      "block_order": ["judge_me_reviews_testimonials_carousel_F8K8Ft"],
+      "block_order": [
+        "judge_me_reviews_testimonials_carousel_F8K8Ft"
+      ],
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -940,7 +938,9 @@
           }
         }
       },
-      "block_order": ["lookfy_gallery_lookfy_gallery_GcEgLR"],
+      "block_order": [
+        "lookfy_gallery_lookfy_gallery_GcEgLR"
+      ],
       "disabled": true,
       "settings": {
         "content_direction": "column",
@@ -1001,7 +1001,9 @@
           }
         }
       },
-      "block_order": ["moast_carousel_HTa9Xh"],
+      "block_order": [
+        "moast_carousel_HTa9Xh"
+      ],
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -1029,17 +1031,74 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "1779484371a6c61b69": {
+      "type": "_blocks",
+      "blocks": {
+        "moast_grid_6gWg3y": {
+          "type": "shopify://apps/moast/blocks/grid/1ac7547b-5443-446c-868c-7fab4566ee16",
+          "settings": {
+            "dynamic": false,
+            "feed": "",
+            "feed_usage": "back_up",
+            "autoplay_mode": "none",
+            "product_cards": "none",
+            "show_captions": false,
+            "background_color": "#ffffff",
+            "slide_rounding": "20",
+            "padding_top": 40,
+            "slide_spacing": 32,
+            "custom_css": "",
+            "columns_desktop": 5,
+            "columns_tablet": 3,
+            "columns_mobile": 2,
+            "click_action": "fullscreen",
+            "float_location": "bottom_right",
+            "float_size": "medium"
+          }
+        }
+      },
+      "block_order": [
+        "moast_grid_6gWg3y"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
     "hero_jVaWmY",
     "product_list_CYHNbA",
-    "hero_p9Ry9J",
     "media_quote_carousel_WqXEGm",
     "product_list_fa6P9H",
     "176470076918a92115",
     "featured_blog_posts_MDhNY7",
     "1762500074df78f604",
-    "1763967075d2c6bd68"
+    "1763967075d2c6bd68",
+    "1779484371a6c61b69"
   ]
 }
