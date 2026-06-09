@@ -200,6 +200,24 @@
         "padding-block-end": 40
       }
     },
+    "current_drop_aRTt01": {
+      "type": "current-drop",
+      "settings": {
+        "drop_number": "01",
+        "drop_name": "Seven Deadly Sins",
+        "artist_name": "Sylvain Castet",
+        "edition_total": 80,
+        "release_date": "March 14, 2026",
+        "drop_artwork_url": "https://cdn.shopify.com/s/files/1/0702/7913/5544/files/seven-deadly-sins-superbia-hero.jpg?v=1780982565",
+        "artwork_alt": "Seven Deadly Sins drop hero artwork: Superbia (Pride)",
+        "media_position": "left",
+        "drop_status": "live",
+        "drop_collection": "seven-deadly-sins",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
     "product_list_CYHNbA": {
       "type": "product-list",
       "blocks": {
@@ -1053,6 +1071,7 @@
   },
   "order": [
     "hero_jVaWmY",
+    "current_drop_aRTt01",
     "product_list_CYHNbA",
     "media_quote_carousel_WqXEGm",
     "176470076918a92115",
