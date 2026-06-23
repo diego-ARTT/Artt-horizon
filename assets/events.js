@@ -10,6 +10,8 @@ export class ThemeEvents {
   static variantSelected = 'variant:selected';
   /** @static @constant {string} Event triggered when a variant is changed */
   static variantUpdate = 'variant:update';
+  /** @static @constant {string} Event triggered when a variant update fails */
+  static variantUpdateFailure = 'variant:update-failed';
   /** @static @constant {string} Event triggered when the cart items or quantities are updated */
   static cartUpdate = 'cart:update';
   /** @static @constant {string} Event triggered when a cart update fails */
@@ -37,11 +39,39 @@ export class VariantSelectedEvent extends Event {
    * Creates a new VariantSelectedEvent
    * @param {Object} resource - The new variant object
    * @param {string} resource.id - The option value id
+   * @param {string} [resource.variantId] - The selected variant id, if available
+   * @param {string} [resource.productId] - The selected product id, if available
    */
   constructor(resource) {
     super(ThemeEvents.variantSelected, { bubbles: true });
     this.detail = {
       resource,
+    };
+  }
+}
+
+/**
+ * Event fired when a variant update fails before the DOM can be refreshed
+ * @extends {Event}
+ */
+export class VariantUpdateFailureEvent extends Event {
+  /**
+   * Creates a new VariantUpdateFailureEvent
+   * @param {Object} resource - The failed variant selection
+   * @param {string} resource.id - The option value id
+   * @param {string} [resource.variantId] - The selected variant id, if available
+   * @param {string} sourceId - The id of the element the action was triggered from
+   * @param {Object} data - Additional event data
+   * @param {string} data.productId - The product ID of the failed update
+   */
+  constructor(resource, sourceId, data) {
+    super(ThemeEvents.variantUpdateFailure, { bubbles: true });
+    this.detail = {
+      resource,
+      sourceId,
+      data: {
+        productId: data.productId,
+      },
     };
   }
 }

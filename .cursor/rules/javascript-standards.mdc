@@ -786,6 +786,37 @@ class DataLoader extends Component {
 }
 ```
 
+**Clear async gates on success and failure:**
+
+When user actions are gated behind async DOM refreshes, emit and handle a failure signal for non-abort failures. Do not leave forms or buttons permanently queued behind a success-only event, and keep any hidden submitted values aligned with the user's selected value before flushing queued actions.
+
+```javascript
+class VariantConsumer extends Component {
+  #changeInProgress = false;
+  #pendingVariantId;
+  #queuedSubmissions = [];
+
+  handleVariantSelected(event) {
+    this.#changeInProgress = true;
+    this.#pendingVariantId = event.detail.resource.variantId;
+  }
+
+  handleVariantUpdate(event) {
+    this.refs.variantId.value = event.detail.resource.id;
+    this.#changeInProgress = false;
+    this.#pendingVariantId = undefined;
+    this.#flushQueuedSubmissions();
+  }
+
+  handleVariantUpdateFailure() {
+    this.refs.variantId.value = this.#pendingVariantId ?? '';
+    this.#changeInProgress = false;
+    this.#pendingVariantId = undefined;
+    this.#flushQueuedSubmissions();
+  }
+}
+```
+
 ### 5. **Strengthen Web Components Pattern**
 
 Your current web components section is good but could benefit from the new guidance on refs and type safety:
