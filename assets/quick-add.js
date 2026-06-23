@@ -90,9 +90,11 @@ export class QuickAddComponent extends Component {
   #updateVariantPicker(newHtml) {
     const modalContent = document.getElementById('quick-add-modal-content');
     if (!modalContent) return;
-    const variantPicker = /** @type {VariantPicker} */ (
-      modalContent.querySelector('variant-picker')
-    );
+
+    const variantPicker = modalContent.querySelector('variant-picker');
+    if (!(variantPicker instanceof VariantPicker)) return;
+    if (!newHtml.querySelector('variant-picker')) return;
+
     variantPicker.updateVariantPicker(newHtml);
   }
 
