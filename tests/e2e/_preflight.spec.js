@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { dismissPopups, expectNotPasswordWall } from '../helpers.js';
+import { dismissPopups, expectNotPasswordWall, gotoStable } from '../helpers.js';
 
 /**
  * Preflight: fail loudly (rather than letting every spec silently `test.skip()`) when the
@@ -9,7 +9,9 @@ import { dismissPopups, expectNotPasswordWall } from '../helpers.js';
  * Runs first (filename sorts ahead of the others).
  */
 test('preflight: staging store is seeded for the purchase-path suite', async ({ page }) => {
-  await page.goto('/collections/all', { waitUntil: 'domcontentloaded' });
+  // Warm theme dev up (it compiles routes on first hit) before asserting.
+  await gotoStable(page, '/');
+  await gotoStable(page, '/collections/all');
   await expectNotPasswordWall(page);
   await dismissPopups(page);
 
@@ -30,7 +32,7 @@ test('preflight: staging store is seeded for the purchase-path suite', async ({ 
   // At least one multi-variant product is required for the quick-add / variant-cart specs.
   let multiVariant = 0;
   for (const path of productPaths.slice(0, 8)) {
-    await page.goto(path, { waitUntil: 'domcontentloaded' });
+    await gotoStable(page, path);
     const count = await page.locator('variant-picker input[type="radio"][data-variant-id]').count();
     if (count > 1) multiVariant++;
   }

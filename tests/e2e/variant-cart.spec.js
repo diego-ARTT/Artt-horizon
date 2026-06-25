@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { dismissPopups, findMultiVariantProductPath } from '../helpers.js';
+import { dismissPopups, findMultiVariantProductPath, gotoStable } from '../helpers.js';
 
 test.describe('variant cart-gate (#6)', () => {
   test('selecting a variant then immediately adding to cart adds the selected variant', async ({
@@ -8,7 +8,7 @@ test.describe('variant cart-gate (#6)', () => {
     const productPath = await findMultiVariantProductPath(page);
     test.skip(!productPath, 'no multi-variant product found on this store');
 
-    await page.goto(/** @type {string} */ (productPath));
+    await gotoStable(page, /** @type {string} */ (productPath));
     await dismissPopups(page);
 
     // Resolve a non-default, in-stock variant to target, and clear the cart first.

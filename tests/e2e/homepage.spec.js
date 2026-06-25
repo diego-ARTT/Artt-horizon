@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { dismissPopups, expectNotPasswordWall } from '../helpers.js';
+import { dismissPopups, expectNotPasswordWall, gotoStable } from '../helpers.js';
 
 test.describe('homepage gender tiles (#7)', () => {
   test('each full-card link matches its visible button label', async ({ page }) => {
-    await page.goto('/');
+    await gotoStable(page, '/');
     await expectNotPasswordWall(page);
     await dismissPopups(page);
 
@@ -35,7 +35,7 @@ test.describe('homepage gender tiles (#7)', () => {
   });
 
   test('clicking the Menswear tile navigates to the men collection', async ({ page }) => {
-    await page.goto('/');
+    await gotoStable(page, '/');
     await dismissPopups(page);
 
     const menswear = page.locator('a.group-block__link[href$="/collections/man"]').first();

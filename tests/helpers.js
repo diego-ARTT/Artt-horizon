@@ -1,6 +1,31 @@
 import { expect } from '@playwright/test';
 
 /**
+ * `shopify theme dev` compiles pages on first hit and can drop/abort the first request
+ * for a route (seen as net::ERR_ABORTED), especially right after startup. Retry the
+ * navigation a few times so cold-start flakiness doesn't fail a run.
+ * @param {import('@playwright/test').Page} page
+ * @param {string} path
+ * @param {{ tries?: number }} [opts]
+ */
+export async function gotoStable(page, path, opts = {}) {
+  const tries = opts.tries ?? 4;
+  let lastErr;
+  for (let i = 0; i < tries; i++) {
+    try {
+      const res = await page.goto(path, { waitUntil: 'domcontentloaded', timeout: 30_000 });
+      // theme dev sometimes returns a transient 5xx while warming up — retry those too.
+      if (res && res.status() >= 500) throw new Error(`status ${res.status()}`);
+      return res;
+    } catch (err) {
+      lastErr = err;
+      await page.waitForTimeout(1500 * (i + 1));
+    }
+  }
+  throw lastErr;
+}
+
+/**
  * Storefront apps on the store (Klaviyo, etc.) render overlays that intercept clicks.
  * Dismiss any that are present so interactions don't flake.
  * @param {import('@playwright/test').Page} page
@@ -49,7 +74,7 @@ export function collectThemeConsoleErrors(page) {
  * @returns {Promise<string | null>} pathname of a multi-variant product, or null
  */
 export async function findMultiVariantProductPath(page, collectionPath = '/collections/all') {
-  await page.goto(collectionPath, { waitUntil: 'domcontentloaded' });
+  await gotoStable(page, collectionPath);
   const handles = await page.evaluate(() =>
     [...document.querySelectorAll('a[href*="/products/"]')]
       .map(a => new URL(/** @type {HTMLAnchorElement} */ (a).href).pathname.split('?')[0])
@@ -58,7 +83,7 @@ export async function findMultiVariantProductPath(page, collectionPath = '/colle
   );
 
   for (const path of handles) {
-    await page.goto(path, { waitUntil: 'domcontentloaded' });
+    await gotoStable(page, path);
     const variantCount = await page
       .locator('variant-picker input[type="radio"][data-variant-id]')
       .count();

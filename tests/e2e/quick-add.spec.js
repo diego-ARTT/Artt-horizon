@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { dismissPopups, collectThemeConsoleErrors } from '../helpers.js';
+import { dismissPopups, collectThemeConsoleErrors, gotoStable } from '../helpers.js';
 
 test.describe('quick-add (#3/#4)', () => {
   test('quick-add modal opens, upgrades media-gallery, and throws no theme errors', async ({
@@ -7,7 +7,7 @@ test.describe('quick-add (#3/#4)', () => {
   }) => {
     const errors = collectThemeConsoleErrors(page);
 
-    await page.goto('/collections/all');
+    await gotoStable(page, '/collections/all');
     await dismissPopups(page);
 
     // A "Choose" quick-add button => a multi-variant product (opens the variant-picker modal).
