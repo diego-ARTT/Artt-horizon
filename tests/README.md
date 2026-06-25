@@ -44,6 +44,19 @@ and waits for `http://127.0.0.1:9292`. `tests/global-setup.js` logs in past the 
 password once and saves the session to `tests/.auth/state.json` (gitignored). If you already
 have `shopify theme dev` running locally, the config reuses it (outside CI).
 
+## Staging store must be seeded
+
+`_preflight.spec.js` fails the run if the store isn't usable, so a green run means the
+purchase path was actually exercised. The staging store needs:
+
+1. **Published products** — Active and published to the **Online Store** sales channel
+   (imported-but-Draft products do not appear on `/collections/all` and everything skips).
+2. **At least one multi-variant product** — required for the quick-add and variant-cart specs.
+3. **Quick add enabled** — Theme settings → product cards/grid, so cards render a quick-add button.
+
+Quickest seed: from the live store admin export products to CSV, import into staging, then
+bulk-set them Active + publish to Online Store.
+
 ## Notes
 
 - Tests target the **staging** store only — they clear the cart and add items, which you do
