@@ -39,6 +39,10 @@ yarn-error.log*
 
 # Playwright
 .playwright-mcp/
+playwright-report/
+test-results/
+/playwright/.cache/
+tests/.auth/
 
 # Config files (if they contain sensitive data)
 config.yml

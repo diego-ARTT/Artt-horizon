@@ -22,11 +22,24 @@ export default [
     },
   },
   {
+    // E2E tests run in Node (Playwright runner) but their page.evaluate() callbacks
+    // run in the browser, so allow both global sets here.
+    files: ['tests/**/*.js', 'playwright.config.js'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+      },
+    },
+  },
+  {
     ignores: [
       'node_modules/',
       '*.min.js',
       'assets/popover-polyfill.js',
       'assets/qr-code-generator.js',
+      'playwright-report/',
+      'test-results/',
     ],
   },
 ];

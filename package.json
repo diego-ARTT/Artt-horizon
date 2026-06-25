@@ -12,6 +12,9 @@
     "lint": "npm run lint:js && npm run lint:css && npm run lint:theme",
     "format": "prettier --write \"**/*.{js,css,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,css,json,md}\"",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
     "prepare": "husky"
   },
   "repository": {
@@ -27,6 +30,7 @@
   "homepage": "https://github.com/diego-ARTT/Artt-horizon#readme",
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.61.1",
     "@shopify/cli": "^3.91.1",
     "@shopify/theme-check-node": "^3.23.0",
     "eslint": "^9.39.1",

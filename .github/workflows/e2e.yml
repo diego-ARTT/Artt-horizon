@@ -1,0 +1,55 @@
+name: E2E
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# A run spins up `shopify theme dev` against a shared staging dev theme; don't let
+# concurrent runs on the same ref clobber each other.
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SHOPIFY_FLAG_STORE: ${{ secrets.SHOPIFY_FLAG_STORE }}
+      SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+      SHOPIFY_STOREFRONT_PASSWORD: ${{ secrets.SHOPIFY_STOREFRONT_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Verify required secrets are set
+        run: |
+          missing=()
+          [ -z "$SHOPIFY_FLAG_STORE" ] && missing+=("SHOPIFY_FLAG_STORE")
+          [ -z "$SHOPIFY_CLI_THEME_TOKEN" ] && missing+=("SHOPIFY_CLI_THEME_TOKEN")
+          [ -z "$SHOPIFY_STOREFRONT_PASSWORD" ] && missing+=("SHOPIFY_STOREFRONT_PASSWORD")
+          if [ ${#missing[@]} -ne 0 ]; then
+            echo "::error::Missing required repository secrets: ${missing[*]}. See tests/README.md."
+            exit 1
+          fi
+
+      - run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
