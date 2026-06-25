@@ -14,6 +14,10 @@ concurrency:
 jobs:
   e2e:
     runs-on: ubuntu-latest
+    # Run inside the official Playwright image so the browser + OS deps are baked in
+    # (no flaky apt-get at runtime). Tag MUST match @playwright/test in package.json.
+    container:
+      image: mcr.microsoft.com/playwright:v1.61.1-jammy
     timeout-minutes: 20
     env:
       SHOPIFY_FLAG_STORE: ${{ secrets.SHOPIFY_FLAG_STORE }}
@@ -21,11 +25,6 @@ jobs:
       SHOPIFY_STOREFRONT_PASSWORD: ${{ secrets.SHOPIFY_STOREFRONT_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
 
       - name: Verify required secrets are set
         run: |
@@ -40,8 +39,8 @@ jobs:
 
       - run: npm ci
 
-      - name: Install Playwright browser
-        run: npx playwright install --with-deps chromium
+      # Browsers ship in the container; this just confirms the matching build is present.
+      - run: npx playwright install chromium
 
       - name: Run E2E tests
         run: npm run test:e2e
