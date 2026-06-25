@@ -18,6 +18,10 @@ jobs:
     # (no flaky apt-get at runtime). Tag MUST match @playwright/test in package.json.
     container:
       image: mcr.microsoft.com/playwright:v1.61.1-jammy
+    # The container's default shell is `sh` (dash); force bash so scripts below work.
+    defaults:
+      run:
+        shell: bash
     timeout-minutes: 20
     env:
       SHOPIFY_FLAG_STORE: ${{ secrets.SHOPIFY_FLAG_STORE }}
