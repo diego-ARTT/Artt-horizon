@@ -17,6 +17,10 @@ export const BASE_URL = `http://127.0.0.1:${PORT}`;
 export const STORAGE_STATE = 'tests/.auth/state.json';
 
 const store = process.env.SHOPIFY_FLAG_STORE;
+// Password-protected (dev) stores: `theme dev` needs this to unlock the preview,
+// otherwise it prompts interactively and never starts in CI. Distinct from the
+// Theme Access token (SHOPIFY_CLI_THEME_TOKEN), which is Admin-API auth.
+const storePassword = process.env.SHOPIFY_STOREFRONT_PASSWORD;
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -39,7 +43,15 @@ export default defineConfig({
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
     // The CLI reads SHOPIFY_CLI_THEME_TOKEN from the environment for headless auth.
-    command: `npx shopify theme dev --store=${store ?? ''} --port=${PORT}`,
+    // --store-password unlocks the password-protected storefront non-interactively.
+    command: [
+      'npx shopify theme dev',
+      `--store=${store ?? ''}`,
+      storePassword ? `--store-password=${storePassword}` : '',
+      `--port=${PORT}`,
+    ]
+      .filter(Boolean)
+      .join(' '),
     url: BASE_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,

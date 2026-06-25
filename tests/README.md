@@ -16,11 +16,11 @@ hardcoding IDs, and `test.skip()` when a store lacks the data a test needs.
 
 ## Required secrets / env
 
-| Name                          | What it is                                                    | Where to get it                                      |
-| ----------------------------- | ------------------------------------------------------------- | ---------------------------------------------------- |
-| `SHOPIFY_FLAG_STORE`          | `your-staging-store.myshopify.com`                            | Partner dashboard → your dev store                   |
-| `SHOPIFY_CLI_THEME_TOKEN`     | Theme Access token (`shptka_…`) for headless `theme dev`      | Install the **Theme Access** app → "Create password" |
-| `SHOPIFY_STOREFRONT_PASSWORD` | Storefront "Restrict access" password (for the password wall) | Online Store → Preferences → Restrict access         |
+| Name                          | What it is                                                                                            | Where to get it                                      |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `SHOPIFY_FLAG_STORE`          | `your-staging-store.myshopify.com`                                                                    | Partner dashboard → your dev store                   |
+| `SHOPIFY_CLI_THEME_TOKEN`     | Theme Access token (`shptka_…`) for headless `theme dev`                                              | Install the **Theme Access** app → "Create password" |
+| `SHOPIFY_STOREFRONT_PASSWORD` | Storefront "Restrict access" password — unlocks `theme dev` (`--store-password`) and the preview wall | Online Store → Preferences → Restrict access         |
 
 In CI these are GitHub **repository secrets** (Settings → Secrets and variables → Actions).
 
