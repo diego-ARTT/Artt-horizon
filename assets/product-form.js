@@ -873,8 +873,14 @@ class ProductFormComponent extends Component {
   #onVariantSelected = event => {
     if (event.detail.resource.productId !== this.dataset.productId) return;
 
+    const nextPendingVariantId = event.detail.resource.variantId || undefined;
+
+    if (this.#variantChangeInProgress && this.#pendingVariantId !== nextPendingVariantId) {
+      this.#addToCartQueue = [];
+    }
+
     this.#variantChangeInProgress = true;
-    this.#pendingVariantId = event.detail.resource.variantId || undefined;
+    this.#pendingVariantId = nextPendingVariantId;
   };
 }
 
