@@ -56,7 +56,7 @@
               "type": "text",
               "name": "t:names.heading",
               "settings": {
-                "text": "<p>The summer edit</p>",
+                "text": "<p>Every icon leaves a question.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -82,7 +82,7 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<p>Virtue Was Never the Plan.</p>",
+                "text": "<p>Limited editions inspired by the minds that shaped culture. An exploration of identity, obsession, image, and reinvention.</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
