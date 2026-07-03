@@ -18,8 +18,8 @@
         "enable_marquee": true,
         "message": "4th of July sales are on - 25% Off the 7 Deadly Sins Collection + Free Shipping on Orders $100+",
         "text_size": "small",
-        "link": "",
-        "speed": 40,
+        "link": "shopify://collections/seven-deadly-sins",
+        "speed": 72,
         "direction": "normal",
         "color_scheme": "scheme-2"
       }

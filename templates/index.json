@@ -154,8 +154,8 @@
               "type": "button",
               "name": "t:names.button",
               "settings": {
-                "label": "See Artt Originals",
-                "link": "shopify://collections/man-fw25",
+                "label": "Shop Sale",
+                "link": "shopify://collections/seven-deadly-sins",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",
