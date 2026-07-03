@@ -13,11 +13,10 @@
   "sections": {
     "header_marquee_98qecc": {
       "type": "header-marquee",
-      "disabled": true,
       "name": "t:names.marquee",
       "settings": {
         "enable_marquee": true,
-        "message": "VALENTINE’S SALE — UP TO 40% OFF /// FOR LOVERS & HEARTBREAKERS ///",
+        "message": "4th of July sales are on - 25% Off the 7 Deadly Sins Collection + Free Shipping on Orders $100+",
         "text_size": "small",
         "link": "",
         "speed": 40,
