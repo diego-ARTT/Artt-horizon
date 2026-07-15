@@ -15,7 +15,24 @@
     {% if s.hero_cta != blank %}<a class="icons-lp__cta" href="#icons-subscribe">{{ s.hero_cta | escape }}</a>{% endif %}
   </header>
 
-  {%- comment -%} Task 3 inserts the lookbook grid here {%- endcomment -%}
+  {%- assign looks = section.blocks | where: "type", "look" -%}
+  {% if looks.size > 0 %}
+    <section class="icons-lp__grid" aria-label="ICONS lookbook">
+      {% for block in looks %}
+        {% if block.settings.image != blank %}
+          <figure class="icons-lp__look" {{ block.shopify_attributes }}>
+            <img
+              src="{{ block.settings.image | asset_url }}"
+              alt="{{ block.settings.alt | default: 'ARTTITUDE ICONS look' | escape }}"
+              width="1530"
+              height="2048"
+              loading="lazy"
+              decoding="async">
+          </figure>
+        {% endif %}
+      {% endfor %}
+    </section>
+  {% endif %}
   {%- comment -%} Task 4 inserts the subscribe section here {%- endcomment -%}
 
   <footer class="icons-lp__footer">
@@ -128,6 +145,35 @@
     letter-spacing: 0.18em;
     font-size: 0.72rem;
     margin-left: 1.25rem;
+  }
+
+  .icons-lp__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    width: 100%;
+  }
+  @media screen and (min-width: 750px) {
+    .icons-lp__grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media screen and (min-width: 1200px) {
+    .icons-lp__grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  .icons-lp__look {
+    margin: 0;
+    overflow: hidden;
+    background: var(--lp-ink);
+    aspect-ratio: 3 / 4;
+  }
+  .icons-lp__look img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .icons-lp__look img { transition: transform 0.6s ease; }
+    .icons-lp__look:hover img { transform: scale(1.03); }
   }
 {% endstylesheet %}
 
