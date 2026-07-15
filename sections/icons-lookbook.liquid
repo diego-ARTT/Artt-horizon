@@ -72,8 +72,8 @@
     <span class="icons-lp__kicker">{{ s.utility_left | escape }}</span>
     {% if s.footer_note != blank %}<span class="icons-lp__footnote">{{ s.footer_note | escape }}</span>{% endif %}
     <span class="icons-lp__footlinks">
-      {% if s.instagram_url != blank %}<a href="{{ s.instagram_url }}">Instagram</a>{% endif %}
-      {% if s.shop_url != blank %}<a href="{{ s.shop_url }}">Shop</a>{% endif %}
+      {% if s.instagram_url != blank %}<a href="{{ s.instagram_url | escape }}">Instagram</a>{% endif %}
+      {% if s.shop_url != blank %}<a href="{{ s.shop_url | escape }}">Shop</a>{% endif %}
     </span>
   </footer>
 </div>
@@ -345,6 +345,14 @@
           button.disabled = false;
           setStatus(form.dataset.msgError, 'error');
         });
+      });
+    });
+
+    var ctas = document.querySelectorAll('.icons-lp__cta[href="#icons-subscribe"]');
+    ctas.forEach(function (cta) {
+      cta.addEventListener('click', function () {
+        var el = document.getElementById('icons-email');
+        if (el) { setTimeout(function () { el.focus({ preventScroll: true }); }, 500); }
       });
     });
   })();
