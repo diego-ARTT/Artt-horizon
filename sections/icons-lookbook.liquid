@@ -1,0 +1,180 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<div class="icons-lp" data-icons-lp>
+  <div class="icons-lp__utility">
+    <span class="icons-lp__kicker">{{ s.utility_left | escape }}</span>
+    <span class="icons-lp__kicker">{{ s.utility_right | escape }}</span>
+  </div>
+
+  <header class="icons-lp__hero">
+    {% if s.hero_kicker != blank %}<p class="icons-lp__kicker">{{ s.hero_kicker | escape }}</p>{% endif %}
+    {% if s.hero_heading != blank %}<h1 class="icons-lp__headline">{{ s.hero_heading | escape }}</h1>{% endif %}
+    {% if s.hero_subline != blank %}<p class="icons-lp__subline">{{ s.hero_subline | escape }}</p>{% endif %}
+    {% if s.hero_scarcity != blank %}<p class="icons-lp__scarcity">{{ s.hero_scarcity | escape }}</p>{% endif %}
+    {% if s.hero_cta != blank %}<a class="icons-lp__cta" href="#icons-subscribe">{{ s.hero_cta | escape }}</a>{% endif %}
+  </header>
+
+  {%- comment -%} Task 3 inserts the lookbook grid here {%- endcomment -%}
+  {%- comment -%} Task 4 inserts the subscribe section here {%- endcomment -%}
+
+  <footer class="icons-lp__footer">
+    <span class="icons-lp__kicker">{{ s.utility_left | escape }}</span>
+    {% if s.footer_note != blank %}<span class="icons-lp__footnote">{{ s.footer_note | escape }}</span>{% endif %}
+    <span class="icons-lp__footlinks">
+      {% if s.instagram_url != blank %}<a href="{{ s.instagram_url }}">Instagram</a>{% endif %}
+      {% if s.shop_url != blank %}<a href="{{ s.shop_url }}">Shop</a>{% endif %}
+    </span>
+  </footer>
+</div>
+
+{% stylesheet %}
+  .icons-lp {
+    --lp-bg: #0A0A0A;
+    --lp-ink: #111111;
+    --lp-fg: #E4E1DA;
+    --lp-muted: #9A948B;
+    --lp-hairline: rgba(228, 225, 218, 0.14);
+    background: var(--lp-bg);
+    color: var(--lp-fg);
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .icons-lp * { box-sizing: border-box; }
+
+  .icons-lp__kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.7rem;
+    color: var(--lp-muted);
+    margin: 0;
+  }
+
+  .icons-lp__utility {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem clamp(1rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--lp-hairline);
+  }
+
+  .icons-lp__hero {
+    min-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.5rem;
+    padding: 6rem clamp(1.25rem, 6vw, 4rem);
+  }
+  .icons-lp__headline {
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    line-height: 0.95;
+    font-weight: 600;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    max-width: 14ch;
+    margin: 0;
+  }
+  .icons-lp__subline {
+    color: var(--lp-fg);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    margin: 0;
+    opacity: 0.85;
+  }
+  .icons-lp__scarcity {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    color: var(--lp-muted);
+    margin: 0.5rem 0 0;
+  }
+  .icons-lp__cta {
+    margin-top: 1.5rem;
+    display: inline-block;
+    background: var(--lp-fg);
+    color: var(--lp-bg);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    padding: 1rem 2.25rem;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .icons-lp__cta { transition: opacity 0.25s ease; }
+  }
+  .icons-lp__cta:hover { opacity: 0.82; }
+
+  html:has(.icons-lp) { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html:has(.icons-lp) { scroll-behavior: auto; }
+  }
+
+  .icons-lp__footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem clamp(1rem, 4vw, 3rem);
+    border-top: 1px solid var(--lp-hairline);
+  }
+  .icons-lp__footnote { color: var(--lp-muted); font-size: 0.72rem; }
+  .icons-lp__footlinks a {
+    color: var(--lp-fg);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    margin-left: 1.25rem;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "ICONS Lookbook",
+  "tag": "section",
+  "class": "icons-lp-section",
+  "settings": [
+    { "type": "header", "content": "Klaviyo" },
+    { "type": "text", "id": "klaviyo_public_key", "label": "Klaviyo public API key (company id)", "info": "Public/site key only — never a private key." },
+    { "type": "text", "id": "klaviyo_list_id", "label": "Klaviyo list ID (ICONS – Launch Notify)" },
+    { "type": "header", "content": "Top bar" },
+    { "type": "text", "id": "utility_left", "label": "Left label", "default": "ARTTITUDE" },
+    { "type": "text", "id": "utility_right", "label": "Right label", "default": "ICONS — COMING SOON" },
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "hero_kicker", "label": "Kicker", "default": "A New Collection" },
+    { "type": "text", "id": "hero_heading", "label": "Headline", "default": "You already know these faces." },
+    { "type": "text", "id": "hero_subline", "label": "Subline", "default": "You just can't place them all yet." },
+    { "type": "text", "id": "hero_scarcity", "label": "Scarcity line", "default": "Twelve icons · Five hundred of each · Then never again" },
+    { "type": "text", "id": "hero_cta", "label": "CTA label", "default": "Get Notified" },
+    { "type": "header", "content": "Subscribe" },
+    { "type": "text", "id": "subscribe_kicker", "label": "Kicker", "default": "Be First" },
+    { "type": "text", "id": "subscribe_line", "label": "Supporting line", "default": "The drop is limited to five hundred of each. Subscribers hear first." },
+    { "type": "text", "id": "subscribe_placeholder", "label": "Input placeholder", "default": "Email address" },
+    { "type": "text", "id": "subscribe_button", "label": "Button label", "default": "Notify Me" },
+    { "type": "text", "id": "msg_success", "label": "Success message", "default": "You're on the list." },
+    { "type": "text", "id": "msg_invalid", "label": "Invalid-email message", "default": "Enter a valid email address." },
+    { "type": "text", "id": "msg_error", "label": "Error message", "default": "Something went wrong. Please try again." },
+    { "type": "text", "id": "msg_loading", "label": "Submitting message", "default": "Adding…" },
+    { "type": "header", "content": "Footer" },
+    { "type": "text", "id": "footer_note", "label": "Footer note", "default": "© ARTTITUDE. All rights reserved." },
+    { "type": "url", "id": "instagram_url", "label": "Instagram URL" },
+    { "type": "url", "id": "shop_url", "label": "Shop URL" }
+  ],
+  "blocks": [
+    {
+      "type": "look",
+      "name": "Look",
+      "settings": [
+        { "type": "text", "id": "image", "label": "Asset filename", "info": "e.g. icons-look-01.webp (uploaded to theme assets)" },
+        { "type": "text", "id": "alt", "label": "Alt text", "default": "ARTTITUDE ICONS look" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "ICONS Lookbook", "blocks": [] }
+  ]
+}
+{% endschema %}
