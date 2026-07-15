@@ -430,8 +430,6 @@ When deploying theme updates to production:
 - **Testing Status:** Needs comprehensive testing
 - **Usage:** Can be added to any template via theme editor
 
-### Added Files
-
 ### ICONS Pre-Launch Landing Page (2026-07-14)
 
 - **Added:** `sections/icons-lookbook.liquid` — self-contained ICONS teaser section (utility bar, type-only hero, full-bleed lookbook grid, Klaviyo client-side subscribe form). Scoped under `.icons-lp`; zero web fonts.
