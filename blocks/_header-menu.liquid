@@ -383,10 +383,36 @@
     transition: clip-path var(--submenu-animation-speed) var(--ease-out-cubic); /* stylelint-disable-line */
   }
 
+  /*
+    The submenu opens on hover and only stays open while the pointer remains inside the <li>
+    (including its ::after bridge) or the submenu itself — for mouse users none of the JS
+    "keep open" guards in header-menu.js apply. The stock clip-path above starts the submenu's
+    hoverable region exactly at --header-height, leaving only ~1px of overlap with the menu bar.
+    Because --header-height is rounded to the nearest pixel in JS (and sub-pixel / browser-zoom /
+    Retina DPR rounding shifts things further), that overlap can collapse to zero, opening a dead
+    gap between the bar and the dropdown: moving the cursor down fires pointerleave and closes the
+    whole menu. The stock ::after bridge is also only as wide as each link, leaving dead zones at
+    the row's left/right edges. Raise the clipped hover region up into the header's bottom padding
+    so the full-width submenu robustly overlaps the bar. The submenu element is transparent, so
+    this only enlarges the invisible pointer-catching area — it has no visual effect.
+  */
+  .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__submenu {
+    clip-path: rect(
+      calc(var(--header-height) - var(--header-padding) - 4px) 100% var(--full-open-header-height) 0
+    ); /* stylelint-disable-line */
+  }
+
   [data-submenu-overlap-bottom-row] {
     .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__submenu,
     .overflow-menu::part(overflow) {
       clip-path: rect(var(--top-row-height) 100% var(--full-open-header-height) 0); /* stylelint-disable-line */
+    }
+
+    /* Same hover-bridge fix as above, for the two-row (menu-in-top-row) layout. */
+    .menu-list__list-item:where(:not([slot='overflow'])) > .menu-list__submenu {
+      clip-path: rect(
+        calc(var(--top-row-height) - var(--header-padding) - 4px) 100% var(--full-open-header-height) 0
+      ); /* stylelint-disable-line */
     }
   }
 
