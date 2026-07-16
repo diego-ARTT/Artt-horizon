@@ -430,6 +430,15 @@ When deploying theme updates to production:
 - **Testing Status:** Needs comprehensive testing
 - **Usage:** Can be added to any template via theme editor
 
+### ICONS Pre-Launch Landing Page (2026-07-14)
+
+- **Added:** `sections/icons-lookbook.liquid` — self-contained ICONS teaser section (utility bar, type-only hero, full-bleed lookbook grid, Klaviyo client-side subscribe form). Scoped under `.icons-lp`; zero web fonts.
+- **Added:** `templates/page.icons.json` — page template pre-populated with 24 `look` blocks.
+- **Added:** `assets/icons-look-01.webp` … `assets/icons-look-24.webp` — lookbook imagery (neutral filenames; mystery-preserving).
+- **Reason:** Pre-launch "notify me" page for the ICONS collection; on-site companion to the Klaviyo teaser email series.
+- **Merge strategy:** Additive — no core files modified. Safe across upstream syncs.
+- **Config:** Set `klaviyo_public_key` + `klaviyo_list_id` (list `ICONS – Launch Notify`) in the section settings.
+
 ---
 
 ## 🔧 Development Tooling Setup
