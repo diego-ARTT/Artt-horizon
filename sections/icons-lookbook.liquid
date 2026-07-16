@@ -2,11 +2,6 @@
   assign s = section.settings
 -%}
 <div class="icons-lp" data-icons-lp>
-  <div class="icons-lp__utility">
-    <span class="icons-lp__kicker">{{ s.utility_left | escape }}</span>
-    <span class="icons-lp__kicker">{{ s.utility_right | escape }}</span>
-  </div>
-
   <header class="icons-lp__hero">
     {% if s.hero_kicker != blank %}<p class="icons-lp__kicker">{{ s.hero_kicker | escape }}</p>{% endif %}
     {% if s.hero_heading != blank %}<h1 class="icons-lp__headline">{{ s.hero_heading | escape }}</h1>{% endif %}
@@ -67,15 +62,6 @@
       <p class="icons-lp__status" data-status role="status" aria-live="polite"></p>
     </form>
   </section>
-
-  <footer class="icons-lp__footer">
-    <span class="icons-lp__kicker">{{ s.utility_left | escape }}</span>
-    {% if s.footer_note != blank %}<span class="icons-lp__footnote">{{ s.footer_note | escape }}</span>{% endif %}
-    <span class="icons-lp__footlinks">
-      {% if s.instagram_url != blank %}<a href="{{ s.instagram_url | escape }}">Instagram</a>{% endif %}
-      {% if s.shop_url != blank %}<a href="{{ s.shop_url | escape }}">Shop</a>{% endif %}
-    </span>
-  </footer>
 </div>
 
 {% stylesheet %}
@@ -98,14 +84,6 @@
     font-size: 0.7rem;
     color: var(--lp-muted);
     margin: 0;
-  }
-
-  .icons-lp__utility {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem clamp(1rem, 4vw, 3rem);
-    border-bottom: 1px solid var(--lp-hairline);
   }
 
   .icons-lp__hero {
@@ -159,25 +137,6 @@
   html:has(.icons-lp) { scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) {
     html:has(.icons-lp) { scroll-behavior: auto; }
-  }
-
-  .icons-lp__footer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: space-between;
-    align-items: center;
-    padding: 2.5rem clamp(1rem, 4vw, 3rem);
-    border-top: 1px solid var(--lp-hairline);
-  }
-  .icons-lp__footnote { color: var(--lp-muted); font-size: 0.72rem; }
-  .icons-lp__footlinks a {
-    color: var(--lp-fg);
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    font-size: 0.72rem;
-    margin-left: 1.25rem;
   }
 
   .icons-lp__grid {
@@ -367,9 +326,6 @@
     { "type": "header", "content": "Klaviyo" },
     { "type": "text", "id": "klaviyo_public_key", "label": "Klaviyo public API key (company id)", "info": "Public/site key only — never a private key." },
     { "type": "text", "id": "klaviyo_list_id", "label": "Klaviyo list ID (ICONS – Launch Notify)" },
-    { "type": "header", "content": "Top bar" },
-    { "type": "text", "id": "utility_left", "label": "Left label", "default": "ARTTITUDE" },
-    { "type": "text", "id": "utility_right", "label": "Right label", "default": "ICONS — COMING SOON" },
     { "type": "header", "content": "Hero" },
     { "type": "text", "id": "hero_kicker", "label": "Kicker", "default": "A New Collection" },
     { "type": "text", "id": "hero_heading", "label": "Headline", "default": "You already know these faces." },
@@ -384,11 +340,7 @@
     { "type": "text", "id": "msg_success", "label": "Success message", "default": "You're on the list." },
     { "type": "text", "id": "msg_invalid", "label": "Invalid-email message", "default": "Enter a valid email address." },
     { "type": "text", "id": "msg_error", "label": "Error message", "default": "Something went wrong. Please try again." },
-    { "type": "text", "id": "msg_loading", "label": "Submitting message", "default": "Adding…" },
-    { "type": "header", "content": "Footer" },
-    { "type": "text", "id": "footer_note", "label": "Footer note", "default": "© ARTTITUDE. All rights reserved." },
-    { "type": "url", "id": "instagram_url", "label": "Instagram URL" },
-    { "type": "url", "id": "shop_url", "label": "Shop URL" }
+    { "type": "text", "id": "msg_loading", "label": "Submitting message", "default": "Adding…" }
   ],
   "blocks": [
     {
