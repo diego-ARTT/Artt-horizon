@@ -460,8 +460,11 @@
       words.forEach(function (word, i) {
         var w = document.createElement('span'); w.className = 'w';
         var inner = document.createElement('span'); inner.className = 'i';
-        inner.textContent = word + (i < words.length - 1 ? ' ' : '');
+        inner.textContent = word;
         w.appendChild(inner); qEl.appendChild(w);
+        // inter-word space as a text node OUTSIDE the overflow:hidden .w, so it
+        // renders and offers a wrap opportunity (a trailing space inside .w is clipped)
+        if (i < words.length - 1) { qEl.appendChild(document.createTextNode(' ')); }
       });
       return qEl.querySelectorAll('.i');
     }
