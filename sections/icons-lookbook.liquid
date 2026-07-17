@@ -32,6 +32,7 @@
         </div>
       </div>
       <script type="application/json" data-hero-questions>[{% for b in questions %}{{ b.settings.text | json }}{% unless forloop.last %},{% endunless %}{% endfor %}]</script>
+      <script src="{{ 'gsap.min.js' | asset_url }}" defer></script>
     </section>
   {% else %}
     <header class="icons-lp__hero">
@@ -336,6 +337,10 @@
     .icons-hero__q { width:min(12ch, 90vw); }
     .icons-hero__scarcity { display:none; }
   }
+  @media (prefers-reduced-motion: reduce) {
+    .icons-hero__q .w { overflow: visible; }
+    .icons-hero__q .i { filter: none !important; transform: none !important; }
+  }
 {% endstylesheet %}
 
 {% javascript %}
@@ -417,6 +422,93 @@
         if (el) { setTimeout(function () { el.focus({ preventScroll: true }); }, 500); }
       });
     });
+  })();
+
+  (function () {
+    var root = document.querySelector('[data-icons-hero]');
+    if (!root || root.dataset.heroBound === 'true') return;
+    root.dataset.heroBound = 'true';
+
+    var qEl = root.querySelector('[data-hero-q]');
+    var dotsEl = root.querySelector('[data-hero-dots]');
+    var dataEl = root.querySelector('[data-hero-questions]');
+    if (!qEl || !dataEl) return;
+
+    var QUESTIONS;
+    try { QUESTIONS = JSON.parse(dataEl.textContent) || []; } catch (e) { QUESTIONS = []; }
+    if (QUESTIONS.length === 0) { QUESTIONS = [qEl.textContent]; }
+
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var idx = 0, busy = false, timer = null, started = false;
+
+    // dots (buttons, keyboard-operable)
+    var dots = [];
+    QUESTIONS.forEach(function (_, i) {
+      var b = document.createElement('button');
+      b.className = 'icons-hero__dot';
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Question ' + (i + 1));
+      if (i === 0) b.setAttribute('aria-current', 'true');
+      b.addEventListener('click', function () { go(i); });
+      dotsEl.appendChild(b); dots.push(b);
+    });
+    function setDots(n) { dots.forEach(function (d, i) { if (i === n) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); }); }
+
+    function build(text) {
+      qEl.innerHTML = '';
+      var words = text.split(' ');
+      words.forEach(function (word, i) {
+        var w = document.createElement('span'); w.className = 'w';
+        var inner = document.createElement('span'); inner.className = 'i';
+        inner.textContent = word + (i < words.length - 1 ? ' ' : '');
+        w.appendChild(inner); qEl.appendChild(w);
+      });
+      return qEl.querySelectorAll('.i');
+    }
+
+    function enter(text) {
+      var inners = build(text);
+      if (reduce || !window.gsap) { qEl.style.opacity = 0; requestAnimationFrame(function () { qEl.style.transition = 'opacity .4s ease'; qEl.style.opacity = 1; }); return; }
+      window.gsap.set(inners, { yPercent: 118, opacity: 0, filter: 'blur(7px)' });
+      window.gsap.to(inners, { yPercent: 0, opacity: 1, filter: 'blur(0px)', duration: 0.95, ease: 'expo.out', stagger: 0.055 });
+    }
+
+    function go(n) {
+      if (busy || n === idx) return; busy = true;
+      if (reduce || !window.gsap) {
+        qEl.style.transition = 'opacity .3s ease'; qEl.style.opacity = 0;
+        setTimeout(function () { idx = n; setDots(n); enter(QUESTIONS[n]); busy = false; }, 300);
+        return;
+      }
+      var inners = qEl.querySelectorAll('.i');
+      window.gsap.to(inners, { yPercent: -72, opacity: 0, filter: 'blur(7px)', duration: 0.44, ease: 'power2.in', stagger: 0.022,
+        onComplete: function () { idx = n; setDots(n); enter(QUESTIONS[n]); busy = false; } });
+    }
+    function next() { go((idx + 1) % QUESTIONS.length); }
+
+    function startAuto() {
+      if (reduce || started) return; started = true;
+      // qEl already shows QUESTIONS[0] server-side; wrap it for animation parity
+      enter(QUESTIONS[0]);
+      timer = setInterval(next, 4600);
+      root.addEventListener('pointerenter', function () { clearInterval(timer); });
+      root.addEventListener('pointerleave', function () { clearInterval(timer); timer = setInterval(next, 4600); });
+    }
+
+    // lazy-init when in view; GSAP may still be loading (deferred) — poll briefly
+    function boot() {
+      var tries = 0;
+      (function waitGsap() {
+        if (window.gsap || reduce || tries > 40) { startAuto(); return; }
+        tries++; setTimeout(waitGsap, 50);
+      })();
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { io.disconnect(); boot(); } });
+      }, { rootMargin: '0px' });
+      io.observe(root);
+    } else { boot(); }
   })();
 {% endjavascript %}
 
