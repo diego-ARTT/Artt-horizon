@@ -2,13 +2,46 @@
   assign s = section.settings
 -%}
 <div class="icons-lp" data-icons-lp>
-  <header class="icons-lp__hero">
-    {% if s.hero_kicker != blank %}<p class="icons-lp__kicker">{{ s.hero_kicker | escape }}</p>{% endif %}
-    {% if s.hero_heading != blank %}<h1 class="icons-lp__headline">{{ s.hero_heading | escape }}</h1>{% endif %}
-    {% if s.hero_subline != blank %}<p class="icons-lp__subline">{{ s.hero_subline | escape }}</p>{% endif %}
-    {% if s.hero_scarcity != blank %}<p class="icons-lp__scarcity">{{ s.hero_scarcity | escape }}</p>{% endif %}
-    {% if s.hero_cta != blank %}<a class="icons-lp__cta" href="#icons-subscribe">{{ s.hero_cta | escape }}</a>{% endif %}
-  </header>
+  {%- assign questions = section.blocks | where: "type", "question" -%}
+  {% if s.hero_style == 'question_video' and questions.size > 0 %}
+    <section class="icons-hero" data-icons-hero aria-label="{{ s.hero_topleft | escape }}">
+      <div class="icons-hero__bg"
+        {%- if s.hero_video == blank and s.hero_poster != blank %} style="background-image:url('{{ s.hero_poster | image_url: width: 1600 }}')"{% endif -%}>
+        {% if s.hero_video != blank %}
+          <video class="icons-hero__video" autoplay muted loop playsinline preload="metadata"
+            {% if s.hero_poster != blank %}poster="{{ s.hero_poster | image_url: width: 1600 }}"{% elsif s.hero_video.preview_image %}poster="{{ s.hero_video.preview_image | image_url: width: 1600 }}"{% endif %}>
+            {% for source in s.hero_video.sources %}
+              {% if source.format == 'mp4' or source.format == 'webm' %}<source src="{{ source.url }}" type="video/{{ source.format }}">{% endif %}
+            {% endfor %}
+          </video>
+        {% endif %}
+      </div>
+      <div class="icons-hero__scrim"></div>
+      <div class="icons-hero__stage">
+        <div class="icons-hero__top">
+          <span class="icons-hero__kicker">{{ s.hero_topleft | escape }}</span>
+          <span class="icons-hero__kicker">{{ s.hero_topright | escape }}</span>
+        </div>
+        <div class="icons-hero__center">
+          <h1 class="icons-hero__q" data-hero-q aria-live="polite">{{ questions[0].settings.text | escape }}</h1>
+        </div>
+        <div class="icons-hero__bottom">
+          {% if s.hero_cta != blank %}<a class="icons-hero__cta" href="#icons-subscribe">{{ s.hero_cta | escape }}</a>{% endif %}
+          <div class="icons-hero__dots" data-hero-dots aria-hidden="true"></div>
+          {% if s.hero_scarcity != blank %}<span class="icons-hero__scarcity">{{ s.hero_scarcity | escape }}</span>{% endif %}
+        </div>
+      </div>
+      <script type="application/json" data-hero-questions>[{% for b in questions %}{{ b.settings.text | json }}{% unless forloop.last %},{% endunless %}{% endfor %}]</script>
+    </section>
+  {% else %}
+    <header class="icons-lp__hero">
+      {% if s.hero_kicker != blank %}<p class="icons-lp__kicker">{{ s.hero_kicker | escape }}</p>{% endif %}
+      {% if s.hero_heading != blank %}<h1 class="icons-lp__headline">{{ s.hero_heading | escape }}</h1>{% endif %}
+      {% if s.hero_subline != blank %}<p class="icons-lp__subline">{{ s.hero_subline | escape }}</p>{% endif %}
+      {% if s.hero_scarcity != blank %}<p class="icons-lp__scarcity">{{ s.hero_scarcity | escape }}</p>{% endif %}
+      {% if s.hero_cta != blank %}<a class="icons-lp__cta" href="#icons-subscribe">{{ s.hero_cta | escape }}</a>{% endif %}
+    </header>
+  {% endif %}
 
   {%- assign looks = section.blocks | where: "type", "look" -%}
   {% if looks.size > 0 %}
@@ -247,6 +280,62 @@
   }
   .icons-lp__status[data-state="error"] { color: #E4B4B0; }
   .icons-lp__status[data-state="success"] { color: var(--lp-fg); }
+
+  .icons-hero {
+    position: relative; height: 100vh; min-height: 640px; overflow: hidden;
+    background: var(--lp-bg);
+    color: #F4F1EB;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+  .icons-hero__bg { position:absolute; inset:-8%; z-index:0; background-size:cover; background-position:60% 24%; }
+  .icons-hero__video {
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    filter: blur(24px) brightness(0.46) saturate(0.92);
+    transform: scale(1.08);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .icons-hero__video { animation: icons-hero-drift 34s ease-in-out infinite alternate; }
+  }
+  @keyframes icons-hero-drift { from{transform:scale(1.08)} to{transform:scale(1.16) translate3d(-1.5%,-1%,0)} }
+  .icons-hero__scrim {
+    position:absolute; inset:0; z-index:1;
+    background:
+      linear-gradient(90deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0.5) 40%, rgba(10,10,10,0.1) 70%, rgba(10,10,10,0.3) 100%),
+      linear-gradient(180deg, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0) 24%, rgba(10,10,10,0) 58%, rgba(10,10,10,0.92) 100%);
+  }
+  .icons-hero__stage {
+    position:relative; z-index:2; height:100%;
+    display:grid; grid-template-rows:auto 1fr auto;
+    padding-inline: clamp(1.5rem, 5vw, 4.5rem);
+  }
+  .icons-hero__top { display:flex; justify-content:space-between; align-items:center; padding-top:1.5rem; }
+  .icons-hero__kicker { text-transform:uppercase; letter-spacing:0.34em; font-size:0.66rem; color:rgba(244,241,235,0.6); }
+  .icons-hero__center { display:flex; align-items:center; }
+  .icons-hero__q {
+    width:min(15ch, 66vw);
+    font-family:"Bodoni Moda", Georgia, serif; font-weight:700;
+    font-size: clamp(2.5rem, 6vw, 5.4rem);
+    line-height:1.05; letter-spacing:-0.01em; text-align:left; text-wrap:balance;
+    color:#F4F1EB; margin:0;
+    text-shadow: 0 2px 34px rgba(0,0,0,0.5);
+  }
+  .icons-hero__q .w { display:inline-block; overflow:hidden; vertical-align:top; padding:0.06em 0; }
+  .icons-hero__q .i { display:inline-block; will-change:transform, filter, opacity; }
+  .icons-hero__bottom { display:flex; align-items:center; gap:1.75rem; padding-bottom:clamp(2rem,5vh,3.4rem); flex-wrap:wrap; }
+  .icons-hero__cta {
+    display:inline-block; text-decoration:none; text-transform:uppercase;
+    letter-spacing:0.28em; font-size:0.66rem; color:var(--lp-bg); background:#F4F1EB; padding:0.95rem 2.4rem;
+  }
+  @media (prefers-reduced-motion: no-preference) { .icons-hero__cta { transition: opacity .25s ease; } }
+  .icons-hero__cta:hover { opacity:0.85; }
+  .icons-hero__dots { display:flex; gap:0.5rem; }
+  .icons-hero__dot { width:6px; height:6px; border-radius:50%; background:rgba(244,241,235,0.26); border:0; padding:0; cursor:pointer; transition:.4s; }
+  .icons-hero__dot[aria-current="true"] { background:#F4F1EB; transform:scale(1.15); }
+  .icons-hero__scarcity { text-transform:uppercase; letter-spacing:0.24em; font-size:0.62rem; color:rgba(244,241,235,0.6); margin-left:auto; }
+  @media (max-width: 700px) {
+    .icons-hero__q { width:min(12ch, 90vw); }
+    .icons-hero__scarcity { display:none; }
+  }
 {% endstylesheet %}
 
 {% javascript %}
@@ -340,6 +429,16 @@
     { "type": "header", "content": "Klaviyo" },
     { "type": "text", "id": "klaviyo_public_key", "label": "Klaviyo public API key (company id)", "info": "Public/site key only — never a private key." },
     { "type": "text", "id": "klaviyo_list_id", "label": "Klaviyo list ID (ICONS – Launch Notify)" },
+    { "type": "header", "content": "Hero style" },
+    { "type": "select", "id": "hero_style", "label": "Hero style", "default": "question_video",
+      "options": [
+        { "value": "question_video", "label": "Question video" },
+        { "value": "type_only", "label": "Type only" }
+      ] },
+    { "type": "video", "id": "hero_video", "label": "Hero video", "info": "Blurred, looping backdrop for the Question video hero." },
+    { "type": "image_picker", "id": "hero_poster", "label": "Hero poster / fallback", "info": "Shown before the video loads and where video isn't set." },
+    { "type": "text", "id": "hero_topleft", "label": "Top-left label", "default": "ICONS" },
+    { "type": "text", "id": "hero_topright", "label": "Top-right label", "default": "A New Collection" },
     { "type": "header", "content": "Hero" },
     { "type": "text", "id": "hero_kicker", "label": "Kicker", "default": "A New Collection" },
     { "type": "text", "id": "hero_heading", "label": "Headline", "default": "You already know these faces." },
@@ -363,6 +462,13 @@
       "settings": [
         { "type": "text", "id": "image", "label": "Asset filename", "info": "e.g. icons-look-01.webp (uploaded to theme assets)" },
         { "type": "text", "id": "alt", "label": "Alt text", "default": "ARTTITUDE ICONS look" }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Question", "info": "A reflective question. No names, no prices." }
       ]
     }
   ],
