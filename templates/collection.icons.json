@@ -4,9 +4,32 @@
       "type": "icons-lookbook",
       "settings": {
         "klaviyo_public_key": "Uu4Kt7",
-        "klaviyo_list_id": "VTivuP"
+        "klaviyo_list_id": "VTivuP",
+        "hero_style": "question_video"
       },
       "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": { "text": "Are you creating your patterns, or trapped inside them?" }
+        },
+        "q2": {
+          "type": "question",
+          "settings": { "text": "Are you being seen, or just consumed?" }
+        },
+        "q3": {
+          "type": "question",
+          "settings": { "text": "Are you building an identity, or just repeating an image?" }
+        },
+        "q4": {
+          "type": "question",
+          "settings": { "text": "If your mask fell off, would you recognize yourself?" }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "text": "Why are you still loyal to a version of yourself you've outgrown?"
+          }
+        },
         "look_01": { "type": "look", "settings": { "image": "icons-look-01.webp" } },
         "look_02": { "type": "look", "settings": { "image": "icons-look-02.webp" } },
         "look_03": { "type": "look", "settings": { "image": "icons-look-03.webp" } },
@@ -33,6 +56,11 @@
         "look_24": { "type": "look", "settings": { "image": "icons-look-24.webp" } }
       },
       "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
         "look_01",
         "look_02",
         "look_03",
