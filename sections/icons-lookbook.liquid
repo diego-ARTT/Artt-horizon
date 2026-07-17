@@ -23,7 +23,8 @@
           <span class="icons-hero__kicker">{{ s.hero_topright | escape }}</span>
         </div>
         <div class="icons-hero__center">
-          <h1 class="icons-hero__q" data-hero-q aria-live="polite">{{ questions[0].settings.text | escape }}</h1>
+          <h1 class="icons-hero__q" data-hero-q>{{ questions[0].settings.text | escape }}</h1>
+          <p class="icons-lp__visually-hidden" data-hero-live aria-live="polite"></p>
         </div>
         <div class="icons-hero__bottom">
           {% if s.hero_cta != blank %}<a class="icons-hero__cta" href="#icons-subscribe">{{ s.hero_cta | escape }}</a>{% endif %}
@@ -283,7 +284,7 @@
   .icons-lp__status[data-state="success"] { color: var(--lp-fg); }
 
   .icons-hero {
-    position: relative; height: 100vh; min-height: 640px; overflow: hidden;
+    position: relative; height: 100vh; height: 100dvh; min-height: 640px; overflow: hidden;
     background: var(--lp-bg);
     color: #F4F1EB;
     font-family: "Helvetica Neue", Arial, sans-serif;
@@ -432,6 +433,7 @@
     var qEl = root.querySelector('[data-hero-q]');
     var dotsEl = root.querySelector('[data-hero-dots]');
     var dataEl = root.querySelector('[data-hero-questions]');
+    var liveEl = root.querySelector('[data-hero-live]');
     if (!qEl || !dataEl) return;
 
     var QUESTIONS;
@@ -451,7 +453,7 @@
       b.type = 'button';
       b.setAttribute('aria-label', 'Question ' + (i + 1));
       if (i === 0) b.setAttribute('aria-current', 'true');
-      b.addEventListener('click', function () { go(i); });
+      b.addEventListener('click', function () { if (liveEl) { liveEl.textContent = QUESTIONS[i]; } go(i); });
       dotsEl.appendChild(b); dots.push(b);
     });
     function setDots(n) { dots.forEach(function (d, i) { if (i === n) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); }); }
@@ -495,9 +497,14 @@
       if (reduce || started) return; started = true;
       // qEl already shows QUESTIONS[0] server-side; wrap it for animation parity
       enter(QUESTIONS[0]);
-      timer = setInterval(next, 4600);
-      root.addEventListener('pointerenter', function () { clearInterval(timer); });
-      root.addEventListener('pointerleave', function () { clearInterval(timer); timer = setInterval(next, 4600); });
+      function pause() { clearInterval(timer); }
+      function resume() { clearInterval(timer); timer = setInterval(next, 4600); }
+      resume();
+      // pause the auto-rotation on hover AND on keyboard focus (WCAG 2.2.2)
+      root.addEventListener('pointerenter', pause);
+      root.addEventListener('pointerleave', resume);
+      root.addEventListener('focusin', pause);
+      root.addEventListener('focusout', resume);
     }
 
     // lazy-init when in view; GSAP may still be loading (deferred) — poll briefly
