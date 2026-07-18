@@ -350,7 +350,7 @@ export class ProductCard extends ProductCardLink {
    * Hide the variant images that are not for the selected variant.
    */
   #updateVariantImages() {
-    const { slideshow } = this.refs;
+    const slideshow = this.#slideshow;
     if (!this.variantPicker?.selectedOption) {
       return;
     }
@@ -399,11 +399,26 @@ export class ProductCard extends ProductCardLink {
   };
 
   /**
+   * The slideshow ref, but only once it has upgraded to the `slideshow-component`
+   * custom element. The component is lazy-loaded via a viewport IntersectionObserver
+   * (see `snippets/scripts.liquid`), so pointer and variant handlers can run while the
+   * `<slideshow-component>` element is present in the DOM but has not yet registered
+   * its API. Calling `.next()` / `.previous()` / `.select()` in that window throws
+   * "is not a function". Gate on the upgraded API rather than mere existence; the
+   * deferred import upgrades the element moments later, restoring the interaction.
+   * @returns {import('slideshow').Slideshow | null}
+   */
+  get #slideshow() {
+    const { slideshow } = this.refs;
+    return typeof slideshow?.next === 'function' ? slideshow : null;
+  }
+
+  /**
    * Previews a variant.
    * @param {string} id - The id of the variant to preview.
    */
   previewVariant(id) {
-    const { slideshow } = this.refs;
+    const slideshow = this.#slideshow;
 
     if (!slideshow) return;
 
@@ -418,7 +433,7 @@ export class ProductCard extends ProductCardLink {
   previewImage(event) {
     if (event.pointerType !== 'mouse') return;
 
-    const { slideshow } = this.refs;
+    const slideshow = this.#slideshow;
 
     if (!slideshow) return;
 
@@ -439,7 +454,7 @@ export class ProductCard extends ProductCardLink {
   resetImage(event) {
     if (event.pointerType !== 'mouse') return;
 
-    const { slideshow } = this.refs;
+    const slideshow = this.#slideshow;
 
     if (!this.variantPicker) {
       if (!slideshow) return;
@@ -453,7 +468,7 @@ export class ProductCard extends ProductCardLink {
    * Resets the image to the variant image.
    */
   #resetVariant = () => {
-    const { slideshow } = this.refs;
+    const slideshow = this.#slideshow;
 
     if (!slideshow) return;
 
