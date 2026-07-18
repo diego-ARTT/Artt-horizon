@@ -14,6 +14,12 @@ The `icons-lookbook` section is mounted on the **collection** template
 2. **Confirm the Klaviyo keys.** The template ships with public key `Uu4Kt7`
    and list `VTivuP` (ICONS – Launch Notify). No action unless these change.
 
+2a. **Set the hero video.** In the theme editor, open the ICONS Lookbook section →
+**Hero style: Question video** (default) → **Hero video**: select the uploaded
+`Icon_Collection_Web_Home` file (Shopify provides the web sources + poster). Optionally set a
+**Hero poster / fallback** image. To use the plain type hero instead, switch **Hero style** to
+**Type only**. The five reflective questions are pre-seeded and editable as **Question** blocks.
+
 3. **Header treatment.** In the theme editor, view the collection with the ICONS
    template and enable Horizon's **transparent / dark header** so the near-black
    hero has no light-on-dark seam. If it doesn't cooperate on a collection
