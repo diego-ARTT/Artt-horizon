@@ -195,6 +195,20 @@ const updateButton = (product) => {
 };
 ```
 
+**Guard optional rendered blocks before calling component methods:**
+
+```javascript
+// Product templates can omit optional blocks such as variant pickers.
+// Check both the current DOM and replacement markup before delegating.
+const updateOptionalPicker = (container, source) => {
+  const picker = container.querySelector('variant-picker');
+  const sourcePicker = source.querySelector('variant-picker');
+  if (!picker || !sourcePicker) return;
+
+  picker.updateVariantPicker(source);
+};
+```
+
 ## Simplification Patterns
 
 **Ternary operators for simple conditions:**
@@ -768,6 +782,37 @@ class DataLoader extends Component {
       this.refs.errorMessage.textContent = message;
       this.refs.errorMessage.hidden = false;
     }
+  }
+}
+```
+
+**Clear async gates on success and failure:**
+
+When user actions are gated behind async DOM refreshes, emit and handle a failure signal for non-abort failures. Do not leave forms or buttons permanently queued behind a success-only event, and keep any hidden submitted values aligned with the user's selected value before flushing queued actions.
+
+```javascript
+class VariantConsumer extends Component {
+  #changeInProgress = false;
+  #pendingVariantId;
+  #queuedSubmissions = [];
+
+  handleVariantSelected(event) {
+    this.#changeInProgress = true;
+    this.#pendingVariantId = event.detail.resource.variantId;
+  }
+
+  handleVariantUpdate(event) {
+    this.refs.variantId.value = event.detail.resource.id;
+    this.#changeInProgress = false;
+    this.#pendingVariantId = undefined;
+    this.#flushQueuedSubmissions();
+  }
+
+  handleVariantUpdateFailure() {
+    this.refs.variantId.value = this.#pendingVariantId ?? '';
+    this.#changeInProgress = false;
+    this.#pendingVariantId = undefined;
+    this.#flushQueuedSubmissions();
   }
 }
 ```

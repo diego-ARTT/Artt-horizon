@@ -1,5 +1,5 @@
 import { Component } from '@theme/component';
-import { VariantSelectedEvent, VariantUpdateEvent } from '@theme/events';
+import { VariantSelectedEvent, VariantUpdateEvent, VariantUpdateFailureEvent } from '@theme/events';
 import { morph, MORPH_OPTIONS } from '@theme/morph';
 import { yieldToMainThread, getViewParameterValue, ResizeNotifier } from '@theme/utilities';
 
@@ -69,9 +69,13 @@ export default class VariantPicker extends Component {
     if (!selectedOption) return;
 
     this.updateSelectedOption(event.target);
+    const variantId = selectedOption.dataset.variantId || null;
+
     this.dispatchEvent(
       new VariantSelectedEvent({
         id: selectedOption.dataset.optionValueId ?? '',
+        variantId: variantId ?? '',
+        productId: this.dataset.productId ?? '',
       })
     );
 
@@ -96,8 +100,6 @@ export default class VariantPicker extends Component {
     this.fetchUpdatedSection(this.buildRequestUrl(selectedOption), morphElementSelector);
 
     const url = new URL(window.location.href);
-
-    const variantId = selectedOption.dataset.variantId || null;
 
     if (isOnProductPage) {
       if (variantId) {
@@ -322,52 +324,75 @@ export default class VariantPicker extends Component {
    * @param {string} requestUrl - The request URL.
    * @param {string} [morphElementSelector] - The selector of the element to be morphed. By default, only the variant picker is morphed.
    */
-  fetchUpdatedSection(requestUrl, morphElementSelector) {
+  async fetchUpdatedSection(requestUrl, morphElementSelector) {
     // We use this to abort the previous fetch request if it's still pending.
     this.#abortController?.abort();
     this.#abortController = new AbortController();
 
-    fetch(requestUrl, { signal: this.#abortController.signal })
-      .then(response => response.text())
-      .then(responseText => {
-        this.#pendingRequestUrl = undefined;
-        const html = new DOMParser().parseFromString(responseText, 'text/html');
-        // Defer is only useful for the initial rendering of the page. Remove it here.
-        html.querySelector('overflow-list[defer]')?.removeAttribute('defer');
+    try {
+      const response = await fetch(requestUrl, { signal: this.#abortController.signal });
+      if (!response.ok) throw new Error(`Failed to fetch variant section: ${response.status}`);
 
-        const textContent = html.querySelector(
-          `variant-picker script[type="application/json"]`
-        )?.textContent;
-        if (!textContent) return;
+      const responseText = await response.text();
+      this.#pendingRequestUrl = undefined;
+      const html = new DOMParser().parseFromString(responseText, 'text/html');
+      // Defer is only useful for the initial rendering of the page. Remove it here.
+      html.querySelector('overflow-list[defer]')?.removeAttribute('defer');
 
-        let newProduct;
+      const textContent = html.querySelector(
+        `variant-picker script[type="application/json"]`
+      )?.textContent;
+      if (!textContent) {
+        this.#dispatchVariantUpdateFailure();
+        return;
+      }
 
-        if (morphElementSelector === 'main') {
-          this.updateMain(html);
-        } else if (morphElementSelector) {
-          this.updateElement(html, morphElementSelector);
-        } else {
-          newProduct = this.updateVariantPicker(html);
+      let newProduct;
+
+      if (morphElementSelector === 'main') {
+        this.updateMain(html);
+      } else if (morphElementSelector) {
+        this.updateElement(html, morphElementSelector);
+      } else {
+        newProduct = this.updateVariantPicker(html);
+      }
+
+      // Dispatch for all paths so product-form-component can reset #variantChangeInProgress
+      if (this.selectedOptionId) {
+        this.dispatchEvent(
+          new VariantUpdateEvent(JSON.parse(textContent), this.selectedOptionId, {
+            html,
+            productId: this.dataset.productId ?? '',
+            newProduct,
+          })
+        );
+      }
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        console.warn('Fetch aborted by user');
+        return;
+      }
+
+      console.error(error);
+      this.#dispatchVariantUpdateFailure();
+    }
+  }
+
+  #dispatchVariantUpdateFailure() {
+    if (!this.selectedOptionId) return;
+
+    this.dispatchEvent(
+      new VariantUpdateFailureEvent(
+        {
+          id: this.selectedOptionId,
+          variantId: this.selectedVariantId ?? '',
+        },
+        this.selectedOptionId,
+        {
+          productId: this.dataset.productId ?? '',
         }
-
-        // Dispatch for all paths so product-form-component can reset #variantChangeInProgress
-        if (this.selectedOptionId) {
-          this.dispatchEvent(
-            new VariantUpdateEvent(JSON.parse(textContent), this.selectedOptionId, {
-              html,
-              productId: this.dataset.productId ?? '',
-              newProduct,
-            })
-          );
-        }
-      })
-      .catch(error => {
-        if (error.name === 'AbortError') {
-          console.warn('Fetch aborted by user');
-        } else {
-          console.error(error);
-        }
-      });
+      )
+    );
   }
 
   /**
@@ -492,6 +517,14 @@ export default class VariantPicker extends Component {
     }
 
     return optionValueId;
+  }
+
+  /**
+   * Gets the selected variant ID.
+   * @returns {string | undefined} The selected variant ID.
+   */
+  get selectedVariantId() {
+    return this.selectedOption?.dataset.variantId;
   }
 
   /**

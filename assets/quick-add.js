@@ -90,10 +90,22 @@ export class QuickAddComponent extends Component {
   #updateVariantPicker(newHtml) {
     const modalContent = document.getElementById('quick-add-modal-content');
     if (!modalContent) return;
-    const variantPicker = /** @type {VariantPicker} */ (
-      modalContent.querySelector('variant-picker')
-    );
+
+    const variantPicker = modalContent.querySelector('variant-picker');
+    if (!(variantPicker instanceof VariantPicker)) return;
+    if (!newHtml.querySelector('variant-picker')) return;
+
     variantPicker.updateVariantPicker(newHtml);
+  }
+
+  /**
+   * Loads behavior required by product markup that can be injected into the quick-add modal.
+   * @param {Element} productGrid - The product grid element
+   */
+  async #loadProductGridComponents(productGrid) {
+    if (productGrid.querySelector('media-gallery') && !customElements.get('media-gallery')) {
+      await import('@theme/media-gallery');
+    }
   }
 
   /**
@@ -220,6 +232,8 @@ export class QuickAddComponent extends Component {
     const modalContent = document.getElementById('quick-add-modal-content');
 
     if (!productGrid || !modalContent) return;
+
+    await this.#loadProductGridComponents(productGrid);
 
     if (isMobileBreakpoint()) {
       const productDetails = productGrid.querySelector('.product-details');
