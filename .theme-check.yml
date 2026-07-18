@@ -10,9 +10,19 @@ JSONMissingBlock:
     - templates/index.json
     - templates/product.json
     - templates/page.wholesale.json
+    - templates/page.judgeme_reviews.json
 
 # Ignore translation key error - key exists but theme check may be caching
 TranslationKeyExists:
   enabled: true
   ignore:
     - sections/header-marquee.liquid
+
+# Avada SEO app injects into content_for_header by design. These files are
+# auto-synced from the live theme (not authored here) and work in production;
+# the store owner can't meaningfully change vendor app output.
+ContentForHeaderModification:
+  enabled: true
+  ignore:
+    - snippets/avada-seo-other.liquid
+    - templates/search.avada-seo.liquid

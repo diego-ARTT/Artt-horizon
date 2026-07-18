@@ -105,10 +105,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "text_pKXg8w",
-            "text_y88DqX"
-          ]
+          "block_order": ["text_pKXg8w", "text_y88DqX"]
         },
         "group_n9JCfz": {
           "type": "group",
@@ -166,15 +163,10 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "button_QFiR43"
-          ]
+          "block_order": ["button_QFiR43"]
         }
       },
-      "block_order": [
-        "group_7RWxJ6",
-        "group_n9JCfz"
-      ],
+      "block_order": ["group_7RWxJ6", "group_n9JCfz"],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "video",
@@ -304,10 +296,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "product_list_text_gPBAJD",
-            "product_list_button_EYmGCt"
-          ]
+          "block_order": ["product_list_text_gPBAJD", "product_list_button_EYmGCt"]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -392,16 +381,10 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "product_card_gallery_ey8mzd",
-            "product_title_JNDbtY",
-            "price_XjW4Ff"
-          ]
+          "block_order": ["product_card_gallery_ey8mzd", "product_title_JNDbtY", "price_XjW4Ff"]
         }
       },
-      "block_order": [
-        "button_LVmccw"
-      ],
+      "block_order": ["button_LVmccw"],
       "name": "Seven deadly",
       "settings": {
         "collection": "seven-deadly-sins",
@@ -454,10 +437,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "spacer_EC7kf6",
-        "button_Up8tJC"
-      ],
+      "block_order": ["spacer_EC7kf6", "button_Up8tJC"],
       "name": "Memento hero",
       "settings": {
         "media_type_1": "image",
@@ -601,10 +581,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "text_GeJP3y",
-            "text_ewAewV"
-          ]
+          "block_order": ["text_GeJP3y", "text_ewAewV"]
         },
         "button_jAcaGi": {
           "type": "button",
@@ -621,11 +598,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "spacer_jy9Rr8",
-        "group_Lyk3mc",
-        "button_jAcaGi"
-      ],
+      "block_order": ["spacer_jy9Rr8", "group_Lyk3mc", "button_jAcaGi"],
       "disabled": true,
       "name": "7DS hero",
       "settings": {
@@ -756,10 +729,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "product_list_text_YFtzcL",
-            "product_list_button_MWeP9V"
-          ]
+          "block_order": ["product_list_text_YFtzcL", "product_list_button_MWeP9V"]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -844,16 +814,10 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "product_card_gallery_677WP3",
-            "product_title_YXxMTj",
-            "price_JQzVV4"
-          ]
+          "block_order": ["product_card_gallery_677WP3", "product_title_YXxMTj", "price_JQzVV4"]
         }
       },
-      "block_order": [
-        "button_nJaQcT"
-      ],
+      "block_order": ["button_nJaQcT"],
       "name": "t:names.featured_collection",
       "settings": {
         "collection": "all-garments",
@@ -935,9 +899,7 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "button_F3ABRG"
-          ]
+          "block_order": ["button_F3ABRG"]
         },
         "group_FxfC6Q": {
           "type": "group",
@@ -996,15 +958,10 @@
               "blocks": {}
             }
           },
-          "block_order": [
-            "button_p9R9jM"
-          ]
+          "block_order": ["button_p9R9jM"]
         }
       },
-      "block_order": [
-        "group_rYwxMy",
-        "group_FxfC6Q"
-      ],
+      "block_order": ["group_rYwxMy", "group_FxfC6Q"],
       "name": "t:names.custom_section",
       "settings": {
         "content_direction": "row",
@@ -1065,9 +1022,7 @@
           }
         }
       },
-      "block_order": [
-        "moast_carousel_HTa9Xh"
-      ],
+      "block_order": ["moast_carousel_HTa9Xh"],
       "name": "Moast carousel",
       "settings": {
         "content_direction": "column",
@@ -1132,9 +1087,7 @@
           }
         }
       },
-      "block_order": [
-        "judge_me_reviews_testimonials_carousel_F8K8Ft"
-      ],
+      "block_order": ["judge_me_reviews_testimonials_carousel_F8K8Ft"],
       "name": "Testimonial",
       "settings": {
         "content_direction": "column",
