@@ -1,0 +1,359 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<div class="icons-lp" data-icons-lp>
+  <header class="icons-lp__hero">
+    {% if s.hero_kicker != blank %}<p class="icons-lp__kicker">{{ s.hero_kicker | escape }}</p>{% endif %}
+    {% if s.hero_heading != blank %}<h1 class="icons-lp__headline">{{ s.hero_heading | escape }}</h1>{% endif %}
+    {% if s.hero_subline != blank %}<p class="icons-lp__subline">{{ s.hero_subline | escape }}</p>{% endif %}
+    {% if s.hero_scarcity != blank %}<p class="icons-lp__scarcity">{{ s.hero_scarcity | escape }}</p>{% endif %}
+    {% if s.hero_cta != blank %}<a class="icons-lp__cta" href="#icons-subscribe">{{ s.hero_cta | escape }}</a>{% endif %}
+  </header>
+
+  {%- assign looks = section.blocks | where: "type", "look" -%}
+  {% if looks.size > 0 %}
+    <section class="icons-lp__grid" aria-label="ICONS lookbook">
+      {% for block in looks %}
+        {% if block.settings.image != blank %}
+          <figure class="icons-lp__look" {{ block.shopify_attributes }}>
+            <img
+              src="{{ block.settings.image | asset_url }}"
+              alt="{{ block.settings.alt | default: 'ARTTITUDE ICONS look' | escape }}"
+              width="1530"
+              height="2048"
+              loading="lazy"
+              decoding="async">
+          </figure>
+        {% endif %}
+      {% endfor %}
+    </section>
+  {% endif %}
+  <section class="icons-lp__subscribe" id="icons-subscribe">
+    {% if s.subscribe_kicker != blank %}<p class="icons-lp__kicker">{{ s.subscribe_kicker | escape }}</p>{% endif %}
+    {% if s.subscribe_line != blank %}<p class="icons-lp__sub-line">{{ s.subscribe_line | escape }}</p>{% endif %}
+    <form
+      class="icons-lp__form"
+      data-icons-subscribe
+      data-klaviyo-company="{{ s.klaviyo_public_key | escape }}"
+      data-klaviyo-list="{{ s.klaviyo_list_id | escape }}"
+      data-msg-invalid="{{ s.msg_invalid | escape }}"
+      data-msg-loading="{{ s.msg_loading | escape }}"
+      data-msg-success="{{ s.msg_success | escape }}"
+      data-msg-error="{{ s.msg_error | escape }}"
+      novalidate>
+      <label class="icons-lp__visually-hidden" for="icons-email">{{ s.subscribe_placeholder | escape }}</label>
+      <input
+        id="icons-email"
+        class="icons-lp__input"
+        type="email"
+        name="email"
+        autocomplete="email"
+        autocapitalize="off"
+        placeholder="{{ s.subscribe_placeholder | escape }}"
+        required>
+      <input
+        class="icons-lp__visually-hidden"
+        type="text"
+        name="company_website"
+        tabindex="-1"
+        autocomplete="off"
+        aria-hidden="true">
+      <button class="icons-lp__submit" type="submit">{{ s.subscribe_button | escape }}</button>
+      <p class="icons-lp__status" data-status role="status" aria-live="polite"></p>
+    </form>
+  </section>
+</div>
+
+{% stylesheet %}
+  .icons-lp {
+    --lp-bg: #0A0A0A;
+    --lp-ink: #111111;
+    --lp-fg: #E4E1DA;
+    --lp-muted: #9A948B;
+    --lp-hairline: rgba(228, 225, 218, 0.14);
+    background: var(--lp-bg);
+    color: var(--lp-fg);
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .icons-lp * { box-sizing: border-box; }
+
+  .icons-lp__kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 0.7rem;
+    color: var(--lp-muted);
+    margin: 0;
+  }
+
+  .icons-lp__hero {
+    min-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.5rem;
+    padding: 6rem clamp(1.25rem, 6vw, 4rem);
+  }
+  .icons-lp__headline {
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    line-height: 0.95;
+    font-weight: 600;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    max-width: 14ch;
+    margin: 0;
+  }
+  .icons-lp__subline {
+    color: var(--lp-fg);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    margin: 0;
+    opacity: 0.85;
+  }
+  .icons-lp__scarcity {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    color: var(--lp-muted);
+    margin: 0.5rem 0 0;
+  }
+  .icons-lp__cta {
+    margin-top: 1.5rem;
+    display: inline-block;
+    background: var(--lp-fg);
+    color: var(--lp-bg);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    padding: 1rem 2.25rem;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .icons-lp__cta { transition: opacity 0.25s ease; }
+  }
+  .icons-lp__cta:hover { opacity: 0.82; }
+
+  html:has(.icons-lp) { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html:has(.icons-lp) { scroll-behavior: auto; }
+  }
+
+  .icons-lp__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    width: 100%;
+  }
+  @media screen and (min-width: 750px) {
+    .icons-lp__grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media screen and (min-width: 1200px) {
+    .icons-lp__grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  .icons-lp__look {
+    margin: 0;
+    overflow: hidden;
+    background: var(--lp-ink);
+    aspect-ratio: 3 / 4;
+  }
+  .icons-lp__look img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .icons-lp__look img { transition: transform 0.6s ease; }
+    .icons-lp__look:hover img { transform: scale(1.03); }
+  }
+
+  .icons-lp__visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0);
+    white-space: nowrap; border: 0;
+  }
+  .icons-lp__subscribe {
+    text-align: center;
+    padding: clamp(4rem, 12vw, 9rem) clamp(1.25rem, 6vw, 4rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid var(--lp-hairline);
+  }
+  .icons-lp__sub-line {
+    max-width: 40ch;
+    color: var(--lp-fg);
+    opacity: 0.85;
+    margin: 0 0 1rem;
+  }
+  .icons-lp__form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 30rem;
+  }
+  .icons-lp__input {
+    flex: 1 1 16rem;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--lp-hairline);
+    color: var(--lp-fg);
+    font-size: 1rem;
+    padding: 0.85rem 0.25rem;
+  }
+  .icons-lp__input::placeholder { color: var(--lp-muted); }
+  .icons-lp__input:focus-visible {
+    outline: none;
+    border-bottom-color: var(--lp-fg);
+  }
+  .icons-lp__submit {
+    flex: 0 0 auto;
+    background: var(--lp-fg);
+    color: var(--lp-bg);
+    border: 0;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    padding: 0.95rem 2rem;
+  }
+  .icons-lp__submit[disabled] { opacity: 0.6; cursor: default; }
+  .icons-lp__status {
+    flex-basis: 100%;
+    min-height: 1.2em;
+    margin: 0.5rem 0 0;
+    font-size: 0.8rem;
+    color: var(--lp-muted);
+  }
+  .icons-lp__status[data-state="error"] { color: #E4B4B0; }
+  .icons-lp__status[data-state="success"] { color: var(--lp-fg); }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    var forms = document.querySelectorAll('[data-icons-subscribe]');
+    forms.forEach(function (form) {
+      if (form.dataset.bound === 'true') return;
+      form.dataset.bound = 'true';
+
+      var input = form.querySelector('input[type="email"]');
+      var honey = form.querySelector('input[name="company_website"]');
+      var button = form.querySelector('button[type="submit"]');
+      var status = form.querySelector('[data-status]');
+      var company = form.dataset.klaviyoCompany;
+      var listId = form.dataset.klaviyoList;
+
+      function setStatus(msg, state) {
+        if (!status) return;
+        status.textContent = msg || '';
+        status.dataset.state = state || '';
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (honey && honey.value) return;
+
+        var email = (input.value || '').trim();
+        var valid = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+        if (!valid) { setStatus(form.dataset.msgInvalid, 'error'); input.focus(); return; }
+        if (!company || !listId) { setStatus(form.dataset.msgError, 'error'); return; }
+
+        button.disabled = true;
+        setStatus(form.dataset.msgLoading, 'loading');
+
+        fetch('https://a.klaviyo.com/client/subscriptions?company_id=' + encodeURIComponent(company), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/vnd.api+json',
+            'revision': '2026-04-15'
+          },
+          body: JSON.stringify({
+            data: {
+              type: 'subscription',
+              attributes: {
+                custom_source: 'ICONS Landing Page',
+                profile: {
+                  data: {
+                    type: 'profile',
+                    attributes: {
+                      email: email,
+                      subscriptions: { email: { marketing: { consent: 'SUBSCRIBED' } } }
+                    }
+                  }
+                }
+              },
+              relationships: { list: { data: { type: 'list', id: listId } } }
+            }
+          })
+        }).then(function (res) {
+          if (res.status === 202 || res.ok) {
+            form.reset();
+            setStatus(form.dataset.msgSuccess, 'success');
+            button.textContent = form.dataset.msgSuccess;
+          } else {
+            button.disabled = false;
+            setStatus(form.dataset.msgError, 'error');
+          }
+        }).catch(function () {
+          button.disabled = false;
+          setStatus(form.dataset.msgError, 'error');
+        });
+      });
+    });
+
+    var ctas = document.querySelectorAll('.icons-lp__cta[href="#icons-subscribe"]');
+    ctas.forEach(function (cta) {
+      cta.addEventListener('click', function () {
+        var el = document.getElementById('icons-email');
+        if (el) { setTimeout(function () { el.focus({ preventScroll: true }); }, 500); }
+      });
+    });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "ICONS Lookbook",
+  "tag": "section",
+  "class": "icons-lp-section",
+  "settings": [
+    { "type": "header", "content": "Klaviyo" },
+    { "type": "text", "id": "klaviyo_public_key", "label": "Klaviyo public API key (company id)", "info": "Public/site key only — never a private key." },
+    { "type": "text", "id": "klaviyo_list_id", "label": "Klaviyo list ID (ICONS – Launch Notify)" },
+    { "type": "header", "content": "Hero" },
+    { "type": "text", "id": "hero_kicker", "label": "Kicker", "default": "A New Collection" },
+    { "type": "text", "id": "hero_heading", "label": "Headline", "default": "You already know these faces." },
+    { "type": "text", "id": "hero_subline", "label": "Subline", "default": "You just can't place them all yet." },
+    { "type": "text", "id": "hero_scarcity", "label": "Scarcity line", "default": "Twelve icons · Five hundred of each · Then never again" },
+    { "type": "text", "id": "hero_cta", "label": "CTA label", "default": "Get Notified" },
+    { "type": "header", "content": "Subscribe" },
+    { "type": "text", "id": "subscribe_kicker", "label": "Kicker", "default": "Be First" },
+    { "type": "text", "id": "subscribe_line", "label": "Supporting line", "default": "The drop is limited to five hundred of each. Subscribers hear first." },
+    { "type": "text", "id": "subscribe_placeholder", "label": "Input placeholder", "default": "Email address" },
+    { "type": "text", "id": "subscribe_button", "label": "Button label", "default": "Notify Me" },
+    { "type": "text", "id": "msg_success", "label": "Success message", "default": "You're on the list." },
+    { "type": "text", "id": "msg_invalid", "label": "Invalid-email message", "default": "Enter a valid email address." },
+    { "type": "text", "id": "msg_error", "label": "Error message", "default": "Something went wrong. Please try again." },
+    { "type": "text", "id": "msg_loading", "label": "Submitting message", "default": "Adding…" }
+  ],
+  "blocks": [
+    {
+      "type": "look",
+      "name": "Look",
+      "settings": [
+        { "type": "text", "id": "image", "label": "Asset filename", "info": "e.g. icons-look-01.webp (uploaded to theme assets)" },
+        { "type": "text", "id": "alt", "label": "Alt text", "default": "ARTTITUDE ICONS look" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "ICONS Lookbook", "blocks": [] }
+  ]
+}
+{% endschema %}
