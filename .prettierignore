@@ -5,3 +5,6 @@ package-lock.json
 .shopify/
 # Liquid files have complex syntax - use Theme Check instead
 *.liquid
+# Agent tooling artifacts — not theme source, don't gate CI on their formatting
+.impeccable/
+.superpowers/
