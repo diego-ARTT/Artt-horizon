@@ -44,10 +44,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "heading",
-        "page-content"
-      ],
+      "block_order": ["heading", "page-content"],
       "disabled": true,
       "settings": {
         "content_direction": "column",
@@ -87,9 +84,7 @@
           "blocks": {}
         }
       },
-      "block_order": [
-        "text_N8akfr"
-      ],
+      "block_order": ["text_N8akfr"],
       "name": "t:names.rich_text_section",
       "settings": {
         "content_direction": "column",
@@ -133,9 +128,7 @@
           }
         }
       },
-      "block_order": [
-        "judge_me_reviews_all_reviews_page_XDEFQn"
-      ],
+      "block_order": ["judge_me_reviews_all_reviews_page_XDEFQn"],
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -165,9 +158,5 @@
       }
     }
   },
-  "order": [
-    "main",
-    "section_BPQJpW",
-    "17815311153f865383"
-  ]
+  "order": ["main", "section_BPQJpW", "17815311153f865383"]
 }
