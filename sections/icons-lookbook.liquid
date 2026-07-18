@@ -2,13 +2,48 @@
   assign s = section.settings
 -%}
 <div class="icons-lp" data-icons-lp>
-  <header class="icons-lp__hero">
-    {% if s.hero_kicker != blank %}<p class="icons-lp__kicker">{{ s.hero_kicker | escape }}</p>{% endif %}
-    {% if s.hero_heading != blank %}<h1 class="icons-lp__headline">{{ s.hero_heading | escape }}</h1>{% endif %}
-    {% if s.hero_subline != blank %}<p class="icons-lp__subline">{{ s.hero_subline | escape }}</p>{% endif %}
-    {% if s.hero_scarcity != blank %}<p class="icons-lp__scarcity">{{ s.hero_scarcity | escape }}</p>{% endif %}
-    {% if s.hero_cta != blank %}<a class="icons-lp__cta" href="#icons-subscribe">{{ s.hero_cta | escape }}</a>{% endif %}
-  </header>
+  {%- assign questions = section.blocks | where: "type", "question" -%}
+  {% if s.hero_style == 'question_video' and questions.size > 0 %}
+    <section class="icons-hero" data-icons-hero aria-label="{{ s.hero_topleft | escape }}">
+      <div class="icons-hero__bg"
+        {%- if s.hero_video == blank and s.hero_poster != blank %} style="background-image:url('{{ s.hero_poster | image_url: width: 1600 }}')"{% endif -%}>
+        {% if s.hero_video != blank %}
+          <video class="icons-hero__video" autoplay muted loop playsinline preload="metadata"
+            {% if s.hero_poster != blank %}poster="{{ s.hero_poster | image_url: width: 1600 }}"{% elsif s.hero_video.preview_image %}poster="{{ s.hero_video.preview_image | image_url: width: 1600 }}"{% endif %}>
+            {% for source in s.hero_video.sources %}
+              {% if source.format == 'mp4' or source.format == 'webm' %}<source src="{{ source.url }}" type="video/{{ source.format }}">{% endif %}
+            {% endfor %}
+          </video>
+        {% endif %}
+      </div>
+      <div class="icons-hero__scrim"></div>
+      <div class="icons-hero__stage">
+        <div class="icons-hero__top">
+          <span class="icons-hero__kicker">{{ s.hero_topleft | escape }}</span>
+          <span class="icons-hero__kicker">{{ s.hero_topright | escape }}</span>
+        </div>
+        <div class="icons-hero__center">
+          <h1 class="icons-hero__q" data-hero-q>{{ questions[0].settings.text | escape }}</h1>
+          <p class="icons-lp__visually-hidden" data-hero-live aria-live="polite"></p>
+        </div>
+        <div class="icons-hero__bottom">
+          {% if s.hero_cta != blank %}<a class="icons-hero__cta" href="#icons-subscribe">{{ s.hero_cta | escape }}</a>{% endif %}
+          <div class="icons-hero__dots" data-hero-dots aria-hidden="true"></div>
+          {% if s.hero_scarcity != blank %}<span class="icons-hero__scarcity">{{ s.hero_scarcity | escape }}</span>{% endif %}
+        </div>
+      </div>
+      <script type="application/json" data-hero-questions>[{% for b in questions %}{{ b.settings.text | json }}{% unless forloop.last %},{% endunless %}{% endfor %}]</script>
+      <script src="{{ 'gsap.min.js' | asset_url }}" defer></script>
+    </section>
+  {% else %}
+    <header class="icons-lp__hero">
+      {% if s.hero_kicker != blank %}<p class="icons-lp__kicker">{{ s.hero_kicker | escape }}</p>{% endif %}
+      {% if s.hero_heading != blank %}<h1 class="icons-lp__headline">{{ s.hero_heading | escape }}</h1>{% endif %}
+      {% if s.hero_subline != blank %}<p class="icons-lp__subline">{{ s.hero_subline | escape }}</p>{% endif %}
+      {% if s.hero_scarcity != blank %}<p class="icons-lp__scarcity">{{ s.hero_scarcity | escape }}</p>{% endif %}
+      {% if s.hero_cta != blank %}<a class="icons-lp__cta" href="#icons-subscribe">{{ s.hero_cta | escape }}</a>{% endif %}
+    </header>
+  {% endif %}
 
   {%- assign looks = section.blocks | where: "type", "look" -%}
   {% if looks.size > 0 %}
@@ -65,6 +100,20 @@
 </div>
 
 {% stylesheet %}
+  @font-face {
+    font-family: "Bodoni Moda";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("bodoni-moda-latin-600-normal.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Bodoni Moda";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("bodoni-moda-latin-700-normal.woff2") format("woff2");
+  }
   .icons-lp {
     --lp-bg: #0A0A0A;
     --lp-ink: #111111;
@@ -233,6 +282,66 @@
   }
   .icons-lp__status[data-state="error"] { color: #E4B4B0; }
   .icons-lp__status[data-state="success"] { color: var(--lp-fg); }
+
+  .icons-hero {
+    position: relative; height: 100vh; height: 100dvh; min-height: 640px; overflow: hidden;
+    background: var(--lp-bg);
+    color: #F4F1EB;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+  .icons-hero__bg { position:absolute; inset:-8%; z-index:0; background-size:cover; background-position:60% 24%; }
+  .icons-hero__video {
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    filter: blur(24px) brightness(0.46) saturate(0.92);
+    transform: scale(1.08);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .icons-hero__video { animation: icons-hero-drift 34s ease-in-out infinite alternate; }
+  }
+  @keyframes icons-hero-drift { from{transform:scale(1.08)} to{transform:scale(1.16) translate3d(-1.5%,-1%,0)} }
+  .icons-hero__scrim {
+    position:absolute; inset:0; z-index:1;
+    background:
+      linear-gradient(90deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0.5) 40%, rgba(10,10,10,0.1) 70%, rgba(10,10,10,0.3) 100%),
+      linear-gradient(180deg, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0) 24%, rgba(10,10,10,0) 58%, rgba(10,10,10,0.92) 100%);
+  }
+  .icons-hero__stage {
+    position:relative; z-index:2; height:100%;
+    display:grid; grid-template-rows:auto 1fr auto;
+    padding-inline: clamp(1.5rem, 5vw, 4.5rem);
+  }
+  .icons-hero__top { display:flex; justify-content:space-between; align-items:center; padding-top:1.5rem; }
+  .icons-hero__kicker { text-transform:uppercase; letter-spacing:0.34em; font-size:0.66rem; color:rgba(244,241,235,0.6); }
+  .icons-hero__center { display:flex; align-items:center; }
+  .icons-hero__q {
+    width:min(15ch, 66vw);
+    font-family:"Bodoni Moda", Georgia, serif; font-weight:700;
+    font-size: clamp(2.5rem, 6vw, 5.4rem);
+    line-height:1.05; letter-spacing:-0.01em; text-align:left; text-wrap:balance;
+    color:#F4F1EB; margin:0;
+    text-shadow: 0 2px 34px rgba(0,0,0,0.5);
+  }
+  .icons-hero__q .w { display:inline-block; overflow:hidden; vertical-align:top; padding:0.06em 0; }
+  .icons-hero__q .i { display:inline-block; will-change:transform, filter, opacity; }
+  .icons-hero__bottom { display:flex; align-items:center; gap:1.75rem; padding-bottom:clamp(2rem,5vh,3.4rem); flex-wrap:wrap; }
+  .icons-hero__cta {
+    display:inline-block; text-decoration:none; text-transform:uppercase;
+    letter-spacing:0.28em; font-size:0.66rem; color:var(--lp-bg); background:#F4F1EB; padding:0.95rem 2.4rem;
+  }
+  @media (prefers-reduced-motion: no-preference) { .icons-hero__cta { transition: opacity .25s ease; } }
+  .icons-hero__cta:hover { opacity:0.85; }
+  .icons-hero__dots { display:flex; gap:0.5rem; }
+  .icons-hero__dot { width:6px; height:6px; border-radius:50%; background:rgba(244,241,235,0.26); border:0; padding:0; cursor:pointer; transition:.4s; }
+  .icons-hero__dot[aria-current="true"] { background:#F4F1EB; transform:scale(1.15); }
+  .icons-hero__scarcity { text-transform:uppercase; letter-spacing:0.24em; font-size:0.62rem; color:rgba(244,241,235,0.6); margin-left:auto; }
+  @media (max-width: 700px) {
+    .icons-hero__q { width:min(12ch, 90vw); }
+    .icons-hero__scarcity { display:none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .icons-hero__q .w { overflow: visible; }
+    .icons-hero__q .i { filter: none !important; transform: none !important; }
+  }
 {% endstylesheet %}
 
 {% javascript %}
@@ -315,6 +424,104 @@
       });
     });
   })();
+
+  (function () {
+    var root = document.querySelector('[data-icons-hero]');
+    if (!root || root.dataset.heroBound === 'true') return;
+    root.dataset.heroBound = 'true';
+
+    var qEl = root.querySelector('[data-hero-q]');
+    var dotsEl = root.querySelector('[data-hero-dots]');
+    var dataEl = root.querySelector('[data-hero-questions]');
+    var liveEl = root.querySelector('[data-hero-live]');
+    if (!qEl || !dataEl) return;
+
+    var QUESTIONS;
+    try { QUESTIONS = JSON.parse(dataEl.textContent) || []; } catch (e) { QUESTIONS = []; }
+    if (QUESTIONS.length === 0) { QUESTIONS = [qEl.textContent]; }
+
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var idx = 0, busy = false, timer = null, started = false;
+
+    // dots (buttons, keyboard-operable). The container is aria-hidden while empty
+    // (no-JS); now that it holds focusable buttons, expose it to assistive tech.
+    dotsEl.removeAttribute('aria-hidden');
+    var dots = [];
+    QUESTIONS.forEach(function (_, i) {
+      var b = document.createElement('button');
+      b.className = 'icons-hero__dot';
+      b.type = 'button';
+      b.setAttribute('aria-label', 'Question ' + (i + 1));
+      if (i === 0) b.setAttribute('aria-current', 'true');
+      b.addEventListener('click', function () { if (liveEl) { liveEl.textContent = QUESTIONS[i]; } go(i); });
+      dotsEl.appendChild(b); dots.push(b);
+    });
+    function setDots(n) { dots.forEach(function (d, i) { if (i === n) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); }); }
+
+    function build(text) {
+      qEl.innerHTML = '';
+      var words = text.split(' ');
+      words.forEach(function (word, i) {
+        var w = document.createElement('span'); w.className = 'w';
+        var inner = document.createElement('span'); inner.className = 'i';
+        inner.textContent = word;
+        w.appendChild(inner); qEl.appendChild(w);
+        // inter-word space as a text node OUTSIDE the overflow:hidden .w, so it
+        // renders and offers a wrap opportunity (a trailing space inside .w is clipped)
+        if (i < words.length - 1) { qEl.appendChild(document.createTextNode(' ')); }
+      });
+      return qEl.querySelectorAll('.i');
+    }
+
+    function enter(text) {
+      var inners = build(text);
+      if (reduce || !window.gsap) { qEl.style.opacity = 0; requestAnimationFrame(function () { qEl.style.transition = 'opacity .4s ease'; qEl.style.opacity = 1; }); return; }
+      window.gsap.set(inners, { yPercent: 118, opacity: 0, filter: 'blur(7px)' });
+      window.gsap.to(inners, { yPercent: 0, opacity: 1, filter: 'blur(0px)', duration: 0.95, ease: 'expo.out', stagger: 0.055 });
+    }
+
+    function go(n) {
+      if (busy || n === idx) return; busy = true;
+      if (reduce || !window.gsap) {
+        qEl.style.transition = 'opacity .3s ease'; qEl.style.opacity = 0;
+        setTimeout(function () { idx = n; setDots(n); enter(QUESTIONS[n]); busy = false; }, 300);
+        return;
+      }
+      var inners = qEl.querySelectorAll('.i');
+      window.gsap.to(inners, { yPercent: -72, opacity: 0, filter: 'blur(7px)', duration: 0.44, ease: 'power2.in', stagger: 0.022,
+        onComplete: function () { idx = n; setDots(n); enter(QUESTIONS[n]); busy = false; } });
+    }
+    function next() { go((idx + 1) % QUESTIONS.length); }
+
+    function startAuto() {
+      if (reduce || started) return; started = true;
+      // qEl already shows QUESTIONS[0] server-side; wrap it for animation parity
+      enter(QUESTIONS[0]);
+      function pause() { clearInterval(timer); }
+      function resume() { clearInterval(timer); timer = setInterval(next, 4600); }
+      resume();
+      // pause the auto-rotation on hover AND on keyboard focus (WCAG 2.2.2)
+      root.addEventListener('pointerenter', pause);
+      root.addEventListener('pointerleave', resume);
+      root.addEventListener('focusin', pause);
+      root.addEventListener('focusout', resume);
+    }
+
+    // lazy-init when in view; GSAP may still be loading (deferred) — poll briefly
+    function boot() {
+      var tries = 0;
+      (function waitGsap() {
+        if (window.gsap || reduce || tries > 40) { startAuto(); return; }
+        tries++; setTimeout(waitGsap, 50);
+      })();
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { if (e.isIntersecting) { io.disconnect(); boot(); } });
+      }, { rootMargin: '0px' });
+      io.observe(root);
+    } else { boot(); }
+  })();
 {% endjavascript %}
 
 {% schema %}
@@ -326,6 +533,16 @@
     { "type": "header", "content": "Klaviyo" },
     { "type": "text", "id": "klaviyo_public_key", "label": "Klaviyo public API key (company id)", "info": "Public/site key only — never a private key." },
     { "type": "text", "id": "klaviyo_list_id", "label": "Klaviyo list ID (ICONS – Launch Notify)" },
+    { "type": "header", "content": "Hero style" },
+    { "type": "select", "id": "hero_style", "label": "Hero style", "default": "question_video",
+      "options": [
+        { "value": "question_video", "label": "Question video" },
+        { "value": "type_only", "label": "Type only" }
+      ] },
+    { "type": "video", "id": "hero_video", "label": "Hero video", "info": "Blurred, looping backdrop for the Question video hero." },
+    { "type": "image_picker", "id": "hero_poster", "label": "Hero poster / fallback", "info": "Shown before the video loads and where video isn't set." },
+    { "type": "text", "id": "hero_topleft", "label": "Top-left label", "default": "ICONS" },
+    { "type": "text", "id": "hero_topright", "label": "Top-right label", "default": "A New Collection" },
     { "type": "header", "content": "Hero" },
     { "type": "text", "id": "hero_kicker", "label": "Kicker", "default": "A New Collection" },
     { "type": "text", "id": "hero_heading", "label": "Headline", "default": "You already know these faces." },
@@ -349,6 +566,13 @@
       "settings": [
         { "type": "text", "id": "image", "label": "Asset filename", "info": "e.g. icons-look-01.webp (uploaded to theme assets)" },
         { "type": "text", "id": "alt", "label": "Alt text", "default": "ARTTITUDE ICONS look" }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Question", "info": "A reflective question. No names, no prices." }
       ]
     }
   ],

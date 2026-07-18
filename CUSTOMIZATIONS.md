@@ -430,15 +430,17 @@ When deploying theme updates to production:
 - **Testing Status:** Needs comprehensive testing
 - **Usage:** Can be added to any template via theme editor
 
-### ICONS Pre-Launch Collection Tease (2026-07-14, updated 2026-07-15)
+### ICONS Pre-Launch Collection Tease (2026-07-14, updated 2026-07-16)
 
-- **Added:** `sections/icons-lookbook.liquid` — ICONS teaser section (type-only hero, full-bleed lookbook grid, Klaviyo client-side subscribe form). Scoped under `.icons-lp`; zero web fonts. Renders **inside the store's normal header + footer** — the section no longer ships its own utility bar or footer; those were dropped so the section mounts cleanly in theme chrome.
-- **Added:** `templates/collection.icons.json` — collection template that mounts the tease section on the ICONS collection ahead of launch (assign via Admin → Collections → theme template).
+- **Added:** `sections/icons-lookbook.liquid` — ICONS teaser section (full-bleed lookbook grid, Klaviyo client-side subscribe form). Scoped under `.icons-lp`. Renders **inside the store's normal header + footer** — the section no longer ships its own utility bar or footer; those were dropped so the section mounts cleanly in theme chrome. The section now has a `hero_style` toggle: a GSAP kinetic **Question video** hero (default) that plays a Shopify-native `video` setting behind a blurred/scrim backdrop with word-split reveal animation on the seeded reflective questions, alongside the original **Type only** hero. Added a `question` block type (single `text` setting) for the reflective questions.
+- **Added:** `assets/gsap.min.js` — self-hosted GSAP 3.13.0, loaded only on this template, used for the kinetic question reveal in the Question video hero.
+- **Added:** `assets/bodoni-moda-latin-{600,700}-normal.woff2` — self-hosted web font for the hero questions (font-display swap), used only in the Question video hero.
+- **Added:** `templates/collection.icons.json` — collection template that mounts the tease section on the ICONS collection ahead of launch (assign via Admin → Collections → theme template). Defaults `hero_style` to `question_video` and seeds 5 `question` blocks (`q1`…`q5`, the reflective questions) ahead of the 24 `look` blocks.
 - **Removed:** `templates/page.icons.json` — retired; the tease now lives on the collection template instead of a standalone page.
 - **Unchanged:** `assets/icons-look-01.webp` … `assets/icons-look-24.webp` — lookbook imagery (neutral filenames; mystery-preserving), 24 files.
 - **Reason:** Pre-launch "notify me" tease for the ICONS collection; on-site companion to the Klaviyo teaser email series. Moving to a collection template lets the same URL flip from tease to live product grid on launch day by reassigning the template.
 - **Merge strategy:** Additive — no core files modified. Safe across upstream syncs.
-- **Config:** Set `klaviyo_public_key` + `klaviyo_list_id` (list `ICONS – Launch Notify`) in the section settings.
+- **Config:** Set `klaviyo_public_key` + `klaviyo_list_id` (list `ICONS – Launch Notify`) in the section settings. Set `hero_style` (`question_video` default / `type_only`) and the `hero_video` file in the theme editor.
 - **Deployment runbook:** See [`docs/ICONS_LANDING_INSTALL.md`](./docs/ICONS_LANDING_INSTALL.md) for the full merchant/Klaviyo cutover steps.
 
 ---
