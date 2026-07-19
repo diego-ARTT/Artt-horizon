@@ -8,3 +8,10 @@ package-lock.json
 # Agent tooling artifacts — not theme source, don't gate CI on their formatting
 .impeccable/
 .superpowers/
+# Vendored skill files installed by `npx impeccable install`. Reformatting them
+# is churn the next install undoes, so keep them out of the gate.
+.claude/skills/
+.cursor/skills/
+.cursor/hooks.json
+.github/skills/
+.github/hooks/
