@@ -440,11 +440,20 @@
       });
     });
 
-    var ctas = document.querySelectorAll('.icons-lp__cta[href="#icons-subscribe"]');
+    // Any anchor pointing at the subscribe section moves focus into that
+    // section's email field once the scroll settles. Bind by href rather than
+    // by a hero-specific class: the type-only hero uses .icons-lp__cta, and
+    // binding a single class silently no-ops on the other hero style.
+    var ctas = document.querySelectorAll('a[href="#icons-subscribe"]');
     ctas.forEach(function (cta) {
       cta.addEventListener('click', function () {
-        var el = document.getElementById('icons-email');
-        if (el) { setTimeout(function () { el.focus({ preventScroll: true }); }, 500); }
+        var target = document.getElementById('icons-subscribe');
+        var el = target && target.querySelector('input[type="email"]');
+        if (el) {
+          setTimeout(function () {
+            el.focus({ preventScroll: true });
+          }, 500);
+        }
       });
     });
   })();
