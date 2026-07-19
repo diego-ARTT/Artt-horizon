@@ -164,9 +164,9 @@
         "disabled": false,
         "settings": {
           "widget_position": "LEFT_BOTTOM",
-          "side_margin": -4,
-          "bottom_margin": -12,
-          "mobile_side_margin": -4,
+          "side_margin": 36,
+          "bottom_margin": 36,
+          "mobile_side_margin": 16,
           "mobile_bottom_margin": 72
         }
       },
