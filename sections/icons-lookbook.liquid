@@ -66,36 +66,11 @@
   <section class="icons-lp__subscribe" id="icons-subscribe">
     {% if s.subscribe_kicker != blank %}<p class="icons-lp__kicker">{{ s.subscribe_kicker | escape }}</p>{% endif %}
     {% if s.subscribe_line != blank %}<p class="icons-lp__sub-line">{{ s.subscribe_line | escape }}</p>{% endif %}
-    <form
-      class="icons-lp__form"
-      data-icons-subscribe
-      data-klaviyo-company="{{ s.klaviyo_public_key | escape }}"
-      data-klaviyo-list="{{ s.klaviyo_list_id | escape }}"
-      data-msg-invalid="{{ s.msg_invalid | escape }}"
-      data-msg-loading="{{ s.msg_loading | escape }}"
-      data-msg-success="{{ s.msg_success | escape }}"
-      data-msg-error="{{ s.msg_error | escape }}"
-      novalidate>
-      <label class="icons-lp__visually-hidden" for="icons-email">{{ s.subscribe_placeholder | escape }}</label>
-      <input
-        id="icons-email"
-        class="icons-lp__input"
-        type="email"
-        name="email"
-        autocomplete="email"
-        autocapitalize="off"
-        placeholder="{{ s.subscribe_placeholder | escape }}"
-        required>
-      <input
-        class="icons-lp__visually-hidden"
-        type="text"
-        name="company_website"
-        tabindex="-1"
-        autocomplete="off"
-        aria-hidden="true">
-      <button class="icons-lp__submit" type="submit">{{ s.subscribe_button | escape }}</button>
-      <p class="icons-lp__status" data-status role="status" aria-live="polite"></p>
-    </form>
+    {% render 'icons-subscribe-form',
+      s: s,
+      id_suffix: 'footer',
+      variant: 'stacked',
+      button_label: s.subscribe_button %}
   </section>
 </div>
 
@@ -246,6 +221,9 @@
     gap: 0.75rem;
     width: 100%;
     max-width: 30rem;
+  }
+  .icons-lp__form--stacked {
+    justify-content: center;
   }
   .icons-lp__input {
     flex: 1 1 16rem;
