@@ -25,6 +25,7 @@ export default [
     ignores: [
       'node_modules/',
       '*.min.js',
+      '**/*.min.js',
       'assets/popover-polyfill.js',
       'assets/qr-code-generator.js',
     ],

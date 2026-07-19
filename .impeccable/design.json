@@ -1,0 +1,489 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-03T00:00:00Z",
+  "title": "Design System: Arttitude (ARTT)",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "primary",
+        "displayName": "Ink",
+        "canonical": "oklch(0% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(24% 0 0)",
+          "oklch(34% 0 0)",
+          "oklch(44% 0 0)",
+          "oklch(56% 0 0)",
+          "oklch(68% 0 0)",
+          "oklch(82% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "ink-muted": {
+        "role": "primary",
+        "displayName": "Ink Muted",
+        "canonical": "oklch(0% 0 0 / 0.81)",
+        "tonalRamp": [
+          "oklch(0% 0 0 / 1)",
+          "oklch(0% 0 0 / 0.9)",
+          "oklch(0% 0 0 / 0.81)",
+          "oklch(0% 0 0 / 0.7)",
+          "oklch(0% 0 0 / 0.55)",
+          "oklch(0% 0 0 / 0.4)",
+          "oklch(0% 0 0 / 0.25)",
+          "oklch(0% 0 0 / 0.1)"
+        ]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Canvas",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "oklch(94% 0 0)",
+          "oklch(96% 0 0)",
+          "oklch(97.5% 0 0)",
+          "oklch(98.5% 0 0)",
+          "oklch(99% 0 0)",
+          "oklch(99.5% 0 0)",
+          "oklch(99.8% 0 0)",
+          "oklch(100% 0 0)"
+        ]
+      },
+      "canvas-haze": {
+        "role": "neutral",
+        "displayName": "Canvas Haze",
+        "canonical": "oklch(96.7% 0 0)",
+        "tonalRamp": [
+          "oklch(78% 0 0)",
+          "oklch(84% 0 0)",
+          "oklch(90% 0 0)",
+          "oklch(93% 0 0)",
+          "oklch(95% 0 0)",
+          "oklch(96.7% 0 0)",
+          "oklch(98% 0 0)",
+          "oklch(99% 0 0)"
+        ]
+      },
+      "canvas-sage": {
+        "role": "neutral",
+        "displayName": "Canvas Sage",
+        "canonical": "oklch(95% 0.012 130)",
+        "tonalRamp": [
+          "oklch(45% 0.018 130)",
+          "oklch(58% 0.02 130)",
+          "oklch(72% 0.018 130)",
+          "oklch(82% 0.016 130)",
+          "oklch(89% 0.014 130)",
+          "oklch(95% 0.012 130)",
+          "oklch(97.5% 0.008 130)",
+          "oklch(99% 0.004 130)"
+        ]
+      },
+      "canvas-ice": {
+        "role": "neutral",
+        "displayName": "Canvas Ice",
+        "canonical": "oklch(94% 0.025 240)",
+        "tonalRamp": [
+          "oklch(36% 0.06 240)",
+          "oklch(50% 0.07 240)",
+          "oklch(66% 0.06 240)",
+          "oklch(78% 0.045 240)",
+          "oklch(87% 0.035 240)",
+          "oklch(94% 0.025 240)",
+          "oklch(97% 0.015 240)",
+          "oklch(99% 0.006 240)"
+        ]
+      },
+      "canvas-graphite": {
+        "role": "neutral",
+        "displayName": "Canvas Graphite",
+        "canonical": "oklch(34% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(22% 0 0)",
+          "oklch(28% 0 0)",
+          "oklch(34% 0 0)",
+          "oklch(45% 0 0)",
+          "oklch(58% 0 0)",
+          "oklch(74% 0 0)",
+          "oklch(90% 0 0)"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(0% 0 0 / 0.06)",
+        "tonalRamp": [
+          "oklch(0% 0 0 / 0.4)",
+          "oklch(0% 0 0 / 0.25)",
+          "oklch(0% 0 0 / 0.15)",
+          "oklch(0% 0 0 / 0.1)",
+          "oklch(0% 0 0 / 0.06)",
+          "oklch(0% 0 0 / 0.04)",
+          "oklch(0% 0 0 / 0.02)",
+          "oklch(0% 0 0 / 0.01)"
+        ]
+      },
+      "hairline-mid": {
+        "role": "neutral",
+        "displayName": "Hairline Mid",
+        "canonical": "oklch(0% 0 0 / 0.81)",
+        "tonalRamp": [
+          "oklch(0% 0 0 / 1)",
+          "oklch(0% 0 0 / 0.9)",
+          "oklch(0% 0 0 / 0.81)",
+          "oklch(0% 0 0 / 0.65)",
+          "oklch(0% 0 0 / 0.5)",
+          "oklch(0% 0 0 / 0.35)",
+          "oklch(0% 0 0 / 0.2)",
+          "oklch(0% 0 0 / 0.08)"
+        ]
+      },
+      "accent-cobalt": {
+        "role": "secondary",
+        "displayName": "Cobalt",
+        "canonical": "oklch(31% 0.18 268)",
+        "tonalRamp": [
+          "oklch(18% 0.1 268)",
+          "oklch(24% 0.14 268)",
+          "oklch(31% 0.18 268)",
+          "oklch(42% 0.2 268)",
+          "oklch(56% 0.19 268)",
+          "oklch(72% 0.13 268)",
+          "oklch(86% 0.07 268)",
+          "oklch(95% 0.025 268)"
+        ]
+      },
+      "state-instock": {
+        "role": "tertiary",
+        "displayName": "In Stock",
+        "canonical": "oklch(79% 0.21 143)",
+        "tonalRamp": [
+          "oklch(30% 0.14 143)",
+          "oklch(45% 0.18 143)",
+          "oklch(60% 0.22 143)",
+          "oklch(72% 0.22 143)",
+          "oklch(79% 0.21 143)",
+          "oklch(87% 0.16 143)",
+          "oklch(94% 0.08 143)",
+          "oklch(98% 0.03 143)"
+        ]
+      },
+      "state-lowstock": {
+        "role": "tertiary",
+        "displayName": "Low Stock",
+        "canonical": "oklch(72% 0.16 55)",
+        "tonalRamp": [
+          "oklch(30% 0.1 55)",
+          "oklch(45% 0.14 55)",
+          "oklch(58% 0.16 55)",
+          "oklch(65% 0.17 55)",
+          "oklch(72% 0.16 55)",
+          "oklch(83% 0.12 55)",
+          "oklch(91% 0.07 55)",
+          "oklch(97% 0.025 55)"
+        ]
+      },
+      "state-outofstock": {
+        "role": "tertiary",
+        "displayName": "Out Of Stock",
+        "canonical": "oklch(82% 0 0)",
+        "tonalRamp": [
+          "oklch(35% 0 0)",
+          "oklch(48% 0 0)",
+          "oklch(60% 0 0)",
+          "oklch(72% 0 0)",
+          "oklch(82% 0 0)",
+          "oklch(90% 0 0)",
+          "oklch(95% 0 0)",
+          "oklch(99% 0 0)"
+        ]
+      },
+      "state-error": {
+        "role": "tertiary",
+        "displayName": "Error",
+        "canonical": "oklch(34% 0.18 27)",
+        "tonalRamp": [
+          "oklch(22% 0.12 27)",
+          "oklch(28% 0.16 27)",
+          "oklch(34% 0.18 27)",
+          "oklch(46% 0.21 27)",
+          "oklch(60% 0.21 27)",
+          "oklch(75% 0.15 27)",
+          "oklch(88% 0.08 27)",
+          "oklch(96% 0.03 27)"
+        ]
+      },
+      "state-success": {
+        "role": "tertiary",
+        "displayName": "Success",
+        "canonical": "oklch(40% 0.14 143)",
+        "tonalRamp": [
+          "oklch(25% 0.09 143)",
+          "oklch(32% 0.12 143)",
+          "oklch(40% 0.14 143)",
+          "oklch(52% 0.17 143)",
+          "oklch(65% 0.2 143)",
+          "oklch(78% 0.16 143)",
+          "oklch(90% 0.09 143)",
+          "oklch(97% 0.03 143)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headlines and drop reveal titles. Single largest type on a page. DM Sans 900, line-height 1.0, no positive letter-spacing."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section openers (h2). Collection titles, About chapter heads."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Product titles on PDP, subsection heads (h3)."
+      },
+      "subtitle": {
+        "displayName": "Subtitle",
+        "purpose": "Card titles, quote attributions (h4)."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Paragraph copy in Space Mono at 14px / 1.6. Holds the contrast with DM Sans 900. Do not push to 16px."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Section labels, nav, deliberately-placed eyebrow tags (h5). DM Sans 500."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "Captions, run sizes, edition numbers, artist credits, drop numbers (h6). Space Mono, tracked, 12px. Mono carries metadata."
+      }
+    },
+    "shadows": [
+      {
+        "name": "button-tactile",
+        "value": "0 2px 3px rgb(0 0 0 / 0.2)",
+        "purpose": "Subtle tactile depth on primary buttons. The only sanctioned shadow on a UI element at rest."
+      },
+      {
+        "name": "drawer-float",
+        "value": "0 0 40px rgb(0 0 0 / 0.25)",
+        "purpose": "Soft drop-shadow under open cart and menu drawers. Stateful, applied only when the drawer is open."
+      },
+      {
+        "name": "drawer-backdrop-blur",
+        "value": "backdrop-filter: blur(8px); background: rgb(0 0 0 / 0.15)",
+        "purpose": "Custom ARTT extension. Blurred backdrop behind open drawers; settings-controlled 0-20px. The intentional break from flat-by-doctrine."
+      }
+    ],
+    "motion": [
+      {
+        "name": "speed-fast",
+        "value": "0.0625s",
+        "purpose": "Micro-feedback: button text color shift on hover."
+      },
+      {
+        "name": "speed-default",
+        "value": "0.125s",
+        "purpose": "Default state transition (button background, link color, focus ring)."
+      },
+      {
+        "name": "speed-slow",
+        "value": "0.2s",
+        "purpose": "Drawer open/close, larger state changes."
+      },
+      {
+        "name": "ease-out-cubic",
+        "value": "cubic-bezier(0.33, 1, 0.68, 1)",
+        "purpose": "Standard ease-out for state changes."
+      },
+      {
+        "name": "ease-out-quad",
+        "value": "cubic-bezier(0.32, 0.72, 0, 1)",
+        "purpose": "Surface transitions; slightly more decisive landing than ease-out-cubic."
+      },
+      {
+        "name": "ease-drawer",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Drawer slide-in / slide-out easing."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px",
+        "purpose": "Tablet portrait threshold (40em-ish). Section heights shift from rem to svh."
+      },
+      {
+        "name": "md",
+        "value": "750px",
+        "purpose": "Native Horizon mobile/desktop break. Badges grow padding; checkboxes shrink to 16px."
+      },
+      {
+        "name": "lg",
+        "value": "960px",
+        "purpose": "Desktop full layout (60em). Section heights grow again."
+      },
+      {
+        "name": "xl",
+        "value": "1200px",
+        "purpose": "Wide desktop. iOS-zoom mobile rule disengages above this."
+      },
+      {
+        "name": "page-narrow",
+        "value": "90rem",
+        "purpose": "System page-width cap. The composed-column posture of the storefront."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Solid black CTA. Used for Add to cart, Checkout, primary drop actions. Tactile shadow for press feedback.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">Add to cart</button>",
+      "css": ".ds-btn-primary { display: inline-grid; align-content: center; font-family: 'Space Mono', ui-monospace, monospace; font-size: 0.875rem; line-height: 1.6; font-weight: 400; color: #ffffff; background-color: #000000; border: none; border-radius: 14px; padding: 16px 24px; cursor: pointer; box-shadow: 0 2px 3px rgb(0 0 0 / 0.2); transition: background-color 0.125s ease-in-out, color 0.0625s ease-in-out, box-shadow 0.125s ease-in-out; } .ds-btn-primary:hover { background-color: #333333; } .ds-btn-primary:focus-visible { outline: 0.09375rem solid #000000; outline-offset: 0.2em; } .ds-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Outlined alternative. View collection, Read more, supporting CTAs.",
+      "html": "<button class=\"ds-btn-secondary\" type=\"button\">View collection</button>",
+      "css": ".ds-btn-secondary { display: inline-grid; align-content: center; font-family: 'Space Mono', ui-monospace, monospace; font-size: 0.875rem; line-height: 1.6; font-weight: 400; color: #000000; background-color: transparent; border: none; border-radius: 12px; padding: 16px 24px; cursor: pointer; box-shadow: inset 0 0 0 1px #000000; transition: background-color 0.125s ease-in-out, color 0.0625s ease-in-out, box-shadow 0.125s ease-in-out; } .ds-btn-secondary:hover { background-color: #fafafa; color: #333333; box-shadow: inset 0 0 0 1px #333333; } .ds-btn-secondary:focus-visible { outline: 0.09375rem solid #000000; outline-offset: 0.2em; }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Standard text input. Cart note, search, account fields.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Enter your email\" />",
+      "css": ".ds-input { font-family: 'Space Mono', ui-monospace, monospace; font-size: 1rem; line-height: 1.6; color: #000000; background-color: rgb(255 255 255 / 0.78); border: none; border-radius: 4px; padding: 0.8rem 0.8rem; box-shadow: 0 0 0 1px #000000; transition: box-shadow 0.125s ease-in-out; width: 100%; max-width: 320px; } .ds-input::placeholder { color: rgb(0 0 0 / 0.55); } .ds-input:focus { outline: none; box-shadow: 0 0 0 1.5px #000000; } .ds-input:disabled { background-color: rgb(0 0 0 / 0.1); color: rgb(0 0 0 / 0.5); cursor: not-allowed; }"
+    },
+    {
+      "name": "Product Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Default product tile. Flat at rest. Image leads; mono metadata follows.",
+      "html": "<article class=\"ds-product-card\"><div class=\"ds-product-card__media\" aria-hidden=\"true\"></div><div class=\"ds-product-card__body\"><h3 class=\"ds-product-card__title\">Living Canvas Tee</h3><p class=\"ds-product-card__meta\">Edition 18 / 80 · Artist: A. Castet</p><p class=\"ds-product-card__price\">$128</p></div></article>",
+      "css": ".ds-product-card { display: flex; flex-direction: column; gap: 1rem; background-color: transparent; border-radius: 0; padding: 0; } .ds-product-card__media { aspect-ratio: 3 / 4; background: repeating-linear-gradient(45deg, #f5f5f5 0 8px, #eef1ea 8px 16px); border-radius: 0; } .ds-product-card__body { display: flex; flex-direction: column; gap: 0.3rem; } .ds-product-card__title { font-family: 'DM Sans', sans-serif; font-weight: 900; font-size: 1.5rem; line-height: 1; letter-spacing: 0; color: #000000; margin: 0; } .ds-product-card__meta { font-family: 'Space Mono', ui-monospace, monospace; font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.13em; color: rgb(0 0 0 / 0.81); margin: 0; } .ds-product-card__price { font-family: 'Space Mono', ui-monospace, monospace; font-size: 0.875rem; line-height: 1.6; color: #000000; margin: 0; }"
+    },
+    {
+      "name": "Variant Swatch",
+      "kind": "chip",
+      "refersTo": "chip-swatch",
+      "description": "Color/material swatch on PDP. 34px circle; selected state uses ink-mid border.",
+      "html": "<div class=\"ds-swatch-row\" role=\"radiogroup\" aria-label=\"Color\"><button class=\"ds-swatch\" role=\"radio\" aria-checked=\"true\" aria-label=\"Black\" style=\"--swatch: #000000\"></button><button class=\"ds-swatch\" role=\"radio\" aria-checked=\"false\" aria-label=\"Sage\" style=\"--swatch: #eef1ea\"></button><button class=\"ds-swatch\" role=\"radio\" aria-checked=\"false\" aria-label=\"Ice\" style=\"--swatch: #e1edf5\"></button></div>",
+      "css": ".ds-swatch-row { display: flex; gap: 0.7rem; } .ds-swatch { width: 34px; height: 34px; border-radius: 32px; background-color: var(--swatch); border: none; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.15); cursor: pointer; padding: 0; transition: box-shadow 0.125s ease-in-out; } .ds-swatch:hover { box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.4); } .ds-swatch[aria-checked=\"true\"] { box-shadow: inset 0 0 0 1px #000000cf, 0 0 0 2px #ffffff, 0 0 0 3px #000000; } .ds-swatch:focus-visible { outline: 0.09375rem solid #000000; outline-offset: 0.2em; }"
+    },
+    {
+      "name": "Drop Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Pill badge for drop status, edition counts, sold-out marker. Mono meta type.",
+      "html": "<span class=\"ds-badge\">Edition 18 / 80</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; font-family: 'Space Mono', ui-monospace, monospace; font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.13em; color: #ffffff; background-color: #000000; border-radius: 100px; padding: 4px 16px; }"
+    },
+    {
+      "name": "Display Heading",
+      "kind": "custom",
+      "refersTo": "display",
+      "description": "The signature ARTT headline. DM Sans 900, fluid 56px max, line-height 1.0, no letter-spacing.",
+      "html": "<h1 class=\"ds-display\">Living Canvas — Drop 04</h1>",
+      "css": ".ds-display { font-family: 'DM Sans', sans-serif; font-weight: 900; font-size: clamp(2.5rem, 5.6vw, 3.5rem); line-height: 1; letter-spacing: 0; color: #000000; margin: 0; text-wrap: balance; }"
+    },
+    {
+      "name": "Meta Caption",
+      "kind": "custom",
+      "refersTo": "meta",
+      "description": "Mono caption for run sizes, artist credits, prices, drop dates. The metadata voice of the system.",
+      "html": "<p class=\"ds-meta\">Drop 04 · Edition 18 of 80 · Artist: A. Castet · San Francisco</p>",
+      "css": ".ds-meta { font-family: 'Space Mono', ui-monospace, monospace; font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.13em; color: rgb(0 0 0 / 0.81); margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Wearable Gallery",
+    "overview": "Arttitude is a fashion house that turns fine art into wearable streetwear in limited drops. The site exists to let the work breathe: garments and the artwork they carry are the visual subject, and every other layer of the page (chrome, navigation, type, color) steps back to make space for them. The result reads less like a Shopify store and more like a gallery you can buy from: white walls, captioned objects, narrow aisles of negative space. The system is monochrome by doctrine. Five color schemes ship with the theme; all five are near-black on near-white (or its inverse). Color in the saturated sense does not come from UI; it comes from product photography, the artwork printed on the garment, and editorial imagery. Typography is a deliberate two-family pairing: DM Sans 900 (Black) as display, Space Mono 400 as body. The contrast is the voice of the system.",
+    "keyCharacteristics": [
+      "Monochrome UI; the artwork and garment supply all the color",
+      "DM Sans 900 + Space Mono — deliberate pairing, kept across the system",
+      "Flat by doctrine; no decorative shadows, no card lift at rest",
+      "Narrow page width (90rem max) — composed columns over wide grids",
+      "Generous heading scale (clamp to 56px) against tight 14px mono body",
+      "Mono carries metadata; sans carries headings; both stay in their lane"
+    ],
+    "rules": [
+      {
+        "name": "The Art Carries the Color Rule",
+        "body": "Saturated chromatic color belongs to product photography, artwork prints, and editorial imagery. It does not belong to buttons, headings, dividers, illustrations, or backgrounds. If a UI element needs to 'feel branded,' reach for typographic weight, scale, or negative space — not color.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tinted Canvas Rule",
+        "body": "Canvas Haze, Canvas Sage, Canvas Ice, and Canvas Graphite are alternate paper stocks, not accents. A whole section sits on them; UI elements within do not. Never use a tinted canvas as a card background or button fill against a different page background.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Saturated Color Rule",
+        "body": "Cobalt (#1d3686) is the only saturated UI color in the system, and it only appears on Canvas Ice. If a new section needs a new color, the answer is a new artwork or a new image, not a new hex.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mono Carries the Metadata Rule",
+        "body": "Space Mono is for everything that labels the work: drop names, edition numbers, run sizes, artist credits, prices, dates, breadcrumbs. DM Sans is for everything that names the work: headings, hero text, drop titles. Never swap the assignment.",
+        "section": "typography"
+      },
+      {
+        "name": "The Heavy Headlines Rule",
+        "body": "Display and headline always run at weight 900 with line-height 1.0 and no positive letter-spacing. Lighter weights, looser leading, or tracked headings break the gallery-wall posture.",
+        "section": "typography"
+      },
+      {
+        "name": "The 14px Body Rule",
+        "body": "Body copy stays at 14px / 1.6 across the storefront. Pushing body to 16px to 'feel more readable' breaks the contrast that makes the DM Sans 900 / Space Mono pairing work.",
+        "section": "typography"
+      },
+      {
+        "name": "The No Eyebrow Reflex Rule",
+        "body": "Repeated tiny tracked uppercase labels above every section heading (the 2023-era kicker) are forbidden. A single named brand eyebrow used on one or two specific sections per page is fine; eyebrow-on-every-section is AI grammar.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat At Rest Rule",
+        "body": "Cards, sections, headers, and panels are flat at rest. Shadows, lift, and scale appear only as a response to state (drawer open, hover where deliberate, focus). A card with a default box-shadow is forbidden.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Tonal Hierarchy Rule",
+        "body": "When depth is needed between sections, switch the canvas (Canvas, Canvas Haze, Canvas Sage, Canvas Graphite), not the elevation. The five color schemes are the system's depth model.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep UI monochrome. Saturated color comes from product photography and artwork, never from UI fills, buttons, dividers, or illustrations.",
+      "Do pair DM Sans 900 with Space Mono 400 across the storefront. Display and headlines in DM Sans; metadata (run sizes, drop names, artist credits, captions, prices) in Space Mono.",
+      "Do use DM Sans 900 at line-height 1.0 with 0 letter-spacing on display and headline. Heavy, tight, and immediate is the posture.",
+      "Do keep body copy at 14px / 1.6 (Space Mono). Trust the contrast against the heavy display.",
+      "Do keep surfaces flat at rest. Switch the canvas (Canvas Haze, Canvas Sage, Canvas Ice, Canvas Graphite) when sections need tonal differentiation; do not reach for shadows.",
+      "Do cap page width at 90rem (--narrow-page-width). The theme is set to narrow and that is the composed-column posture of the system.",
+      "Do name the artist, the collab, the city, the run size in copy. Surface scarcity through structure (edition numbers, sequence, sold-out treatment), not through urgency language.",
+      "Do ship real imagery — product photography, artwork, editorial — on every page that implies it. A solid-color block where a photograph belongs is worse than a representative stock photo."
+    ],
+    "donts": [
+      "Don't introduce decorative shadows or box-shadow on cards at rest. The system is flat by doctrine. The drawer's backdrop blur is the only sanctioned exception, and it's stateful.",
+      "Don't use Space Mono in headlines or DM Sans in metadata. The role assignment is the voice of the pairing; swapping it reads as costume.",
+      "Don't introduce a new accent color. Cobalt (#1d3686) is the only saturated UI color in the system, and it only appears on Canvas Ice. New emphasis comes from artwork, not from new hex.",
+      "Don't push body copy to 16px to 'feel more readable.' The 14px Space Mono body is a system-level decision that holds the contrast with DM Sans 900.",
+      "Don't add a tracked uppercase eyebrow above every section heading (the 2023-era kicker). One named brand eyebrow on one or two specific sections per page is fine; eyebrow-on-every-section is AI grammar and is not the ARTT system.",
+      "Don't add 01 / 02 / 03 numbered section markers as default scaffolding. Numbers earn their place only when the section is a sequence (drop order, edition number, ordered process).",
+      "Don't use gradient text (background-clip: text + gradient). Forbidden in the system.",
+      "Don't use side-stripe borders (border-left > 1px as a colored accent) on cards, callouts, or list items. Forbidden.",
+      "Don't introduce countdown timers, percent-off ribbons, urgency banners, or fast-fashion sale language. Scarcity is structural (limited runs, edition numbers, sold-out states), not promotional.",
+      "Don't reach for corporate-luxury cues (serif crests, gold flourishes, marble textures) or SaaS grammar (soft gradients, AI-pastel canvases, rounded-everything illustration). Both are explicit anti-references from PRODUCT.md.",
+      "Don't introduce a third type family. DM Sans + Space Mono is the system; adding a 'supporting serif' or 'display script' breaks the gallery voice.",
+      "Don't rely on color alone for state. Pair availability ('Sold out', 'Low stock', 'In stock') with text or an icon, not just the state dot. Color blindness coverage is part of the AA floor."
+    ]
+  }
+}

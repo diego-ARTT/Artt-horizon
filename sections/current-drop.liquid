@@ -1,0 +1,482 @@
+{%- liquid
+  assign status = section.settings.drop_status | default: 'live'
+
+  case status
+    when 'live'
+      assign meta_suffix = section.settings.meta_suffix_live | default: 'LIVE'
+      assign cta_label = section.settings.cta_label_live | default: 'See the drop'
+      assign release_prefix = section.settings.release_label_live | default: 'Released'
+    when 'presale'
+      assign meta_suffix = section.settings.meta_suffix_presale | default: 'PRESALE'
+      assign cta_label = section.settings.cta_label_presale | default: 'Get drop access'
+      assign release_prefix = section.settings.release_label_presale | default: 'Releases'
+    when 'sold_out'
+      assign meta_suffix = section.settings.meta_suffix_sold_out | default: 'SOLD OUT'
+      assign cta_label = section.settings.cta_label_sold_out | default: 'See the archive'
+      assign release_prefix = section.settings.release_label_live | default: 'Released'
+  endcase
+
+  if status == 'sold_out'
+    assign edition_label = 'Sold out'
+  elsif section.settings.edition_current and section.settings.edition_current > 0
+    assign edition_label = section.settings.edition_current | append: ' of ' | append: section.settings.edition_total
+  else
+    assign edition_label = section.settings.edition_total | append: ' total'
+  endif
+
+  if section.settings.cta_url_override != blank
+    assign cta_url = section.settings.cta_url_override
+  elsif section.settings.drop_collection != blank
+    assign cta_url = section.settings.drop_collection.url
+  else
+    assign cta_url = '#'
+  endif
+
+  assign heading_id = 'CurrentDropHeading-' | append: section.id
+
+  assign artwork_alt = section.settings.artwork_alt
+  if artwork_alt == blank
+    if section.settings.drop_artwork.alt != blank
+      assign artwork_alt = section.settings.drop_artwork.alt
+    else
+      assign artwork_alt = section.settings.drop_name | append: ' drop hero artwork'
+    endif
+  endif
+
+  assign has_picker_artwork = false
+  if section.settings.drop_artwork != blank
+    assign has_picker_artwork = true
+  endif
+  assign has_url_artwork = false
+  if section.settings.drop_artwork_url != blank
+    assign has_url_artwork = true
+  endif
+-%}
+
+{%- if status != 'hidden' -%}
+  <div
+    class="current-drop current-drop--media-{{ section.settings.media_position }} color-{{ section.settings.color_scheme }} section section--full-width"
+    data-drop-status="{{ status }}"
+    style="--current-drop-padding-block-start: {{ section.settings.padding-block-start }}px; --current-drop-padding-block-end: {{ section.settings.padding-block-end }}px;"
+  >
+    <div class="current-drop__media" aria-hidden="false">
+      {%- if has_picker_artwork -%}
+        {{
+          section.settings.drop_artwork
+          | image_url: width: 2400
+          | image_tag:
+            class: 'current-drop__image',
+            sizes: '(min-width: 750px) 58vw, 100vw',
+            widths: '600,900,1200,1600,2000,2400,3000',
+            loading: 'eager',
+            fetchpriority: 'high',
+            alt: artwork_alt
+        }}
+      {%- elsif has_url_artwork -%}
+        {%- # theme-check-disable RemoteAsset -%}
+        <img
+          class="current-drop__image"
+          src="{{ section.settings.drop_artwork_url }}"
+          alt="{{ artwork_alt | escape }}"
+          loading="eager"
+          fetchpriority="high"
+          width="2400"
+          height="1500"
+        >
+        {%- # theme-check-enable RemoteAsset -%}
+      {%- else -%}
+        {{
+          'lifestyle-1'
+          | placeholder_svg_tag: 'current-drop__image current-drop__image--placeholder'
+        }}
+      {%- endif -%}
+    </div>
+
+    <div class="current-drop__content">
+      <p class="current-drop__meta">
+        DROP {{ section.settings.drop_number | escape }} · {{ meta_suffix | escape }}
+      </p>
+
+      <h2 id="{{ heading_id }}" class="current-drop__name">
+        {{ section.settings.drop_name | escape }}
+      </h2>
+
+      <hr class="current-drop__rule" aria-hidden="true">
+
+      <div class="current-drop__captions">
+        <p class="current-drop__caption">
+          <span class="current-drop__caption-label">Artist</span>
+          <span class="current-drop__caption-sep" aria-hidden="true">·</span>
+          <span>{{ section.settings.artist_name | escape }}</span>
+        </p>
+        <p class="current-drop__caption">
+          <span class="current-drop__caption-label">Edition</span>
+          <span class="current-drop__caption-sep" aria-hidden="true">·</span>
+          <span>{{ edition_label }}</span>
+        </p>
+        <p class="current-drop__caption">
+          <span class="current-drop__caption-label">{{ release_prefix | escape }}</span>
+          <span class="current-drop__caption-sep" aria-hidden="true">·</span>
+          <span>{{ section.settings.release_date | escape }}</span>
+        </p>
+      </div>
+
+      <a class="current-drop__cta button" href="{{ cta_url }}">
+        {{ cta_label | escape }}
+      </a>
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .current-drop {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    background-color: var(--color-background);
+    padding-block-start: var(--current-drop-padding-block-start, 0);
+    padding-block-end: var(--current-drop-padding-block-end, 0);
+  }
+
+  .current-drop__media {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background-color: color-mix(in srgb, var(--color-foreground, currentColor) 6%, transparent);
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .current-drop__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .current-drop__image--placeholder {
+    fill: color-mix(in srgb, var(--color-foreground, currentColor) 20%, transparent);
+  }
+
+  .current-drop__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--padding-4xl) var(--padding-2xl);
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  @media screen and (min-width: 40em) {
+    .current-drop__media {
+      aspect-ratio: 16 / 10;
+    }
+
+    .current-drop__content {
+      padding: var(--padding-5xl) var(--padding-4xl);
+    }
+  }
+
+  @media screen and (min-width: 60em) {
+    .current-drop {
+      grid-template-columns: 58fr 42fr;
+      min-height: var(--section-height-large, 80svh);
+    }
+
+    .current-drop__media {
+      aspect-ratio: auto;
+      height: 100%;
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .current-drop__content {
+      grid-column: 2;
+      grid-row: 1;
+      justify-content: center;
+      padding: var(--padding-6xl);
+    }
+
+    .current-drop--media-right {
+      grid-template-columns: 42fr 58fr;
+    }
+
+    .current-drop--media-right .current-drop__media {
+      grid-column: 2;
+    }
+
+    .current-drop--media-right .current-drop__content {
+      grid-column: 1;
+    }
+  }
+
+  .current-drop__meta {
+    font-family: var(--font-body--family);
+    font-style: var(--font-body--style);
+    font-weight: 400;
+    font-size: var(--font-size--2xs, 0.75rem);
+    line-height: 1.4;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--color-foreground, currentColor);
+    margin: 0;
+  }
+
+  .current-drop__name {
+    font-family: var(--font-heading--family);
+    font-style: var(--font-heading--style);
+    font-weight: var(--font-heading--weight, 900);
+    font-size: var(--font-h2--size, clamp(2.5rem, 4.8vw, 3rem));
+    line-height: var(--font-h2--line-height, 1);
+    letter-spacing: var(--font-h2--letter-spacing, 0);
+    color: var(--color-foreground-heading, currentColor);
+    margin: var(--gap-md, 0.9rem) 0 0 0;
+    max-width: var(--max-width--display-normal, 13em);
+    text-wrap: balance;
+  }
+
+  .current-drop__rule {
+    width: 4rem;
+    height: 1px;
+    background-color: var(--color-foreground, currentColor);
+    border: 0;
+    margin: var(--gap-2xl, 2rem) 0 0 0;
+    opacity: 1;
+  }
+
+  .current-drop__captions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs, 0.5rem);
+    margin: var(--gap-2xl, 2rem) 0 0 0;
+  }
+
+  .current-drop__caption {
+    font-family: var(--font-body--family);
+    font-style: var(--font-body--style);
+    font-weight: 400;
+    font-size: var(--font-size--sm, 0.875rem);
+    line-height: 1.6;
+    color: var(--color-foreground, currentColor);
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4em;
+    align-items: baseline;
+  }
+
+  .current-drop__caption-label {
+    color: var(--color-foreground-heading, currentColor);
+  }
+
+  .current-drop__caption-sep {
+    opacity: 0.7;
+  }
+
+  .current-drop__cta {
+    margin-block-start: var(--gap-2xl, 2rem);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Current drop",
+  "tag": "section",
+  "class": "current-drop-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Drop content"
+    },
+    {
+      "type": "text",
+      "id": "drop_number",
+      "label": "Drop number",
+      "info": "Short string, e.g. 01 or 04. Used in the meta line above the drop name.",
+      "default": "01"
+    },
+    {
+      "type": "text",
+      "id": "drop_name",
+      "label": "Drop name",
+      "default": "Seven Deadly Sins"
+    },
+    {
+      "type": "text",
+      "id": "artist_name",
+      "label": "Artist",
+      "info": "If the drop is house-made, use Arttitude Studio.",
+      "default": "Sylvain Castet"
+    },
+    {
+      "type": "number",
+      "id": "edition_current",
+      "label": "Editions released so far (optional)",
+      "info": "Leave blank to show only the edition total."
+    },
+    {
+      "type": "number",
+      "id": "edition_total",
+      "label": "Edition total",
+      "default": 80
+    },
+    {
+      "type": "text",
+      "id": "release_date",
+      "label": "Release date",
+      "info": "Free-form text, e.g. March 14, 2026.",
+      "default": "March 14, 2026"
+    },
+    {
+      "type": "header",
+      "content": "Artwork"
+    },
+    {
+      "type": "image_picker",
+      "id": "drop_artwork",
+      "label": "Drop hero artwork",
+      "info": "16:10 or wider, at least 2400px on the long edge. The original artwork, an editorial portrait wearing one piece, or a tight runway still. Not a product photograph; that goes in the carousel below."
+    },
+    {
+      "type": "text",
+      "id": "drop_artwork_url",
+      "label": "Artwork URL fallback (advanced)",
+      "info": "Used when no image is picked above. For initial setup before an asset is in the Files library."
+    },
+    {
+      "type": "text",
+      "id": "artwork_alt",
+      "label": "Artwork alt text",
+      "info": "Describe the work specifically. Defaults to the drop name."
+    },
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "Artwork position (desktop)",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Drop status"
+    },
+    {
+      "type": "select",
+      "id": "drop_status",
+      "label": "Status",
+      "info": "Set to Hidden between drops; the section will not render.",
+      "options": [
+        { "value": "live", "label": "Live" },
+        { "value": "presale", "label": "Presale" },
+        { "value": "sold_out", "label": "Sold out" },
+        { "value": "hidden", "label": "Hidden" }
+      ],
+      "default": "live"
+    },
+    {
+      "type": "header",
+      "content": "Action"
+    },
+    {
+      "type": "collection",
+      "id": "drop_collection",
+      "label": "Drop collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_url_override",
+      "label": "CTA URL override (optional)",
+      "info": "Use to point at a presale landing page or external link. Leave blank to use the drop collection above."
+    },
+    {
+      "type": "header",
+      "content": "Labels"
+    },
+    {
+      "type": "text",
+      "id": "meta_suffix_live",
+      "label": "Status suffix (Live)",
+      "default": "LIVE"
+    },
+    {
+      "type": "text",
+      "id": "meta_suffix_presale",
+      "label": "Status suffix (Presale)",
+      "default": "PRESALE"
+    },
+    {
+      "type": "text",
+      "id": "meta_suffix_sold_out",
+      "label": "Status suffix (Sold out)",
+      "default": "SOLD OUT"
+    },
+    {
+      "type": "text",
+      "id": "cta_label_live",
+      "label": "CTA label (Live)",
+      "default": "See the drop"
+    },
+    {
+      "type": "text",
+      "id": "cta_label_presale",
+      "label": "CTA label (Presale)",
+      "default": "Get drop access"
+    },
+    {
+      "type": "text",
+      "id": "cta_label_sold_out",
+      "label": "CTA label (Sold out)",
+      "default": "See the archive"
+    },
+    {
+      "type": "text",
+      "id": "release_label_live",
+      "label": "Release prefix (Live / Sold out)",
+      "default": "Released"
+    },
+    {
+      "type": "text",
+      "id": "release_label_presale",
+      "label": "Release prefix (Presale)",
+      "default": "Releases"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Current drop"
+    }
+  ]
+}
+{% endschema %}

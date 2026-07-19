@@ -1,0 +1,271 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "icons": {
+      "type": "icons-lookbook",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "text": "Are you creating your patterns, or trapped inside them?"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "text": "Are you being seen, or just consumed?"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "text": "Are you building an identity, or just repeating an image?"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "text": "If your mask fell off, would you recognize yourself?"
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "text": "Why are you still loyal to a version of yourself you've outgrown?"
+          }
+        },
+        "look_01": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-01.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_02": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-02.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_03": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-03.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_04": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-04.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_05": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-05.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_06": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-06.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_07": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-07.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_08": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-08.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_09": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-09.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_10": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-10.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_11": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-11.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_12": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-12.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_13": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-13.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_14": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-14.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_15": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-15.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_16": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-16.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_17": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-17.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_18": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-18.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_19": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-19.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_20": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-20.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_21": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-21.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_22": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-22.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_23": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-23.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        },
+        "look_24": {
+          "type": "look",
+          "settings": {
+            "image": "icons-look-24.webp",
+            "alt": "ARTTITUDE ICONS look"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "look_01",
+        "look_02",
+        "look_03",
+        "look_04",
+        "look_05",
+        "look_06",
+        "look_07",
+        "look_08",
+        "look_09",
+        "look_10",
+        "look_11",
+        "look_12",
+        "look_13",
+        "look_14",
+        "look_15",
+        "look_16",
+        "look_17",
+        "look_18",
+        "look_19",
+        "look_20",
+        "look_21",
+        "look_22",
+        "look_23",
+        "look_24"
+      ],
+      "settings": {
+        "klaviyo_public_key": "Uu4Kt7",
+        "klaviyo_list_id": "VTivuP",
+        "hero_style": "question_video",
+        "hero_video": "shopify://files/videos/Icon_Collection_Web_Home.mp4",
+        "hero_topleft": "ICONS",
+        "hero_topright": "A New Collection",
+        "hero_kicker": "A New Collection",
+        "hero_heading": "You already know these faces.",
+        "hero_subline": "You just can't place them all yet.",
+        "hero_scarcity": "Twelve icons · Five hundred of each · Then never again",
+        "hero_cta": "Get Notified",
+        "subscribe_kicker": "Be First",
+        "subscribe_line": "The drop is limited to five hundred of each. Subscribers hear first.",
+        "subscribe_placeholder": "Email address",
+        "subscribe_button": "Notify Me",
+        "msg_success": "You're on the list.",
+        "msg_invalid": "Enter a valid email address.",
+        "msg_error": "Something went wrong. Please try again.",
+        "msg_loading": "Adding…"
+      }
+    }
+  },
+  "order": [
+    "icons"
+  ]
+}
