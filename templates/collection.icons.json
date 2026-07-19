@@ -266,7 +266,5 @@
       }
     }
   },
-  "order": [
-    "icons"
-  ]
+  "order": ["icons"]
 }
