@@ -304,7 +304,9 @@
   .icons-hero {
     position: relative;
     height: 100vh;
-    min-height: 32rem;
+    /* Cap the fallback floor to the viewport too, so short/landscape
+       screens without dvh support can't be forced to overflow. */
+    min-height: min(32rem, 100vh);
     overflow: hidden;
     background: var(--lp-bg);
     color: #F4F1EB;
