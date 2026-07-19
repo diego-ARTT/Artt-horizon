@@ -247,6 +247,7 @@
         "klaviyo_list_id": "VTivuP",
         "hero_style": "question_video",
         "hero_video": "shopify://files/videos/Icon_Collection_Web_Home.mp4",
+        "hero_overlay_opacity": 80,
         "hero_topleft": "ICONS",
         "hero_topright": "A New Collection",
         "hero_kicker": "A New Collection",
@@ -265,5 +266,7 @@
       }
     }
   },
-  "order": ["icons"]
+  "order": [
+    "icons"
+  ]
 }
