@@ -13,8 +13,15 @@
           <video class="icons-hero__video" data-hero-video autoplay muted loop playsinline preload="none"
             {% if s.hero_poster != blank %}poster="{{ s.hero_poster | image_url: width: 1600 }}"{% elsif s.hero_video.preview_image %}poster="{{ s.hero_video.preview_image | image_url: width: 1600 }}"{% endif %}>
           </video>
+          {%- comment -%}
+            Filter with `where` before looping so `forloop.last` refers to the last
+            *emitted* item, not the last item in the unfiltered source list — otherwise
+            a trailing comma can be emitted, producing invalid JSON. Only `mp4` is kept:
+            `mov` isn't reliably web-playable and `m3u8` (HLS) has no native support in
+            most non-Safari browsers, so neither belongs in a plain <video> source list.
+          {%- endcomment -%}
           <script type="application/json" data-hero-video-sources>
-            [{% for source in s.hero_video.sources %}{% if source.format == 'mp4' or source.format == 'webm' %}{"src": {{ source.url | json }}, "type": "video/{{ source.format }}"}{% unless forloop.last %},{% endunless %}{% endif %}{% endfor %}]
+            [{% assign playable_sources = s.hero_video.sources | where: 'format', 'mp4' %}{% for source in playable_sources %}{"src": {{ source.url | json }}, "type": "video/{{ source.format }}"}{% unless forloop.last %},{% endunless %}{% endfor %}]
           </script>
         {% endif %}
       </div>
