@@ -1016,6 +1016,17 @@
         "padding-block-end": 0
       }
     },
+    "custom_liquid_dbVdgq": {
+      "type": "custom-liquid",
+      "name": "t:names.custom_liquid",
+      "settings": {
+        "custom_liquid": "<!-- BEGIN MerchantWidget Code -->\n\n<script id='merchantWidgetScript'\n\n        src=\"https://www.gstatic.com/shopping/merchant/merchantwidget.js\"\n\n        defer>\n\n</script>\n\n<script type=\"text/javascript\">\n\n  merchantWidgetScript.addEventListener('load', function () {\n\n    merchantwidget.start({\n\n     position: 'LEFT_BOTTOM',\n     \n     sideMargin: 32,\n\n      bottomMargin: 56,\n\n      mobileSideMargin: 24,\n\n      mobileBottomMargin: 80\n   });\n\n  });\n\n</script>\n\n<!-- END MerchantWidget Code -->",
+        "color_scheme": "",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
     "1772002519af98a91f": {
       "type": "_blocks",
       "blocks": {
@@ -1339,6 +1350,7 @@
   "order": [
     "main",
     "17708710206a711dd8",
+    "custom_liquid_dbVdgq",
     "1772002519af98a91f",
     "product_recommendations_qggXJq",
     "featured_blog_posts_gPQ8KX"
