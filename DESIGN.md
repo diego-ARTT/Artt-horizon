@@ -17,6 +17,12 @@ colors:
   state-outofstock: '#c8c8c8'
   state-error: '#8b0000'
   state-success: '#006400'
+  icons-void: '#0a0a0a'
+  icons-void-lifted: '#111111'
+  icons-bone: '#e4e1da'
+  icons-bone-bright: '#f4f1eb'
+  icons-bone-muted: '#9a948b'
+  icons-hairline: '#e4e1da24'
 typography:
   display:
     fontFamily: 'DM Sans, sans-serif'
@@ -60,6 +66,18 @@ typography:
     fontWeight: 400
     lineHeight: 1.4
     letterSpacing: '0.13em'
+  icons-display:
+    fontFamily: 'Bodoni Moda, Georgia, serif'
+    fontSize: 'clamp(2.5rem, 6vw, 5.4rem)'
+    fontWeight: 700
+    lineHeight: 1.05
+    letterSpacing: '-0.01em'
+  icons-label:
+    fontFamily: 'Helvetica Neue, Arial, sans-serif'
+    fontSize: '0.66rem'
+    fontWeight: 400
+    lineHeight: 1.2
+    letterSpacing: '0.34em'
 rounded:
   xs: '0.2rem'
   sm: '4px'
@@ -122,6 +140,17 @@ components:
     typography: '{typography.body}'
     rounded: '{rounded.lg}'
     padding: '0.7rem 1rem'
+  icons-submit:
+    backgroundColor: '{colors.icons-bone-bright}'
+    textColor: '{colors.icons-void}'
+    typography: '{typography.icons-label}'
+    rounded: '{rounded.xs}'
+    padding: '0.95rem 2.4rem'
+  icons-input:
+    backgroundColor: 'transparent'
+    textColor: '{colors.icons-bone-bright}'
+    rounded: '{rounded.xs}'
+    padding: '0.85rem 0.25rem'
 ---
 
 # Design System: Arttitude (ARTT)
@@ -178,7 +207,20 @@ A two-tone system (ink + canvas) with four alternate canvases for sectional rhyt
 - **State / Error** (`#8b0000`): Form errors, validation failures.
 - **State / Success** (`#006400`): Add-to-cart confirmations, form success states.
 
+### Collection Worlds
+
+A drop may run its own palette when the collection's narrative demands it. Today exactly one does: **ICONS** (`sections/icons-lookbook.liquid`, mounted on `templates/collection.icons.json`). It inverts the storefront — near-black surface, bone type — because the campaign is a darkened room with lit portraits in it. These values are scoped under `.icons-lp` and must not leak into the storefront's default schemes.
+
+- **ICONS / Void** (`#0a0a0a`): The collection's surface. Replaces `Canvas` for the whole section, never elsewhere.
+- **ICONS / Void Lifted** (`#111111`): A single step up from Void, for panels that need separation without a border.
+- **ICONS / Bone** (`#e4e1da`): Body and UI foreground on Void. The collection's answer to `Ink`.
+- **ICONS / Bone Bright** (`#f4f1eb`): Reserved for type sitting on the hero video, where the backdrop is brighter and less predictable than flat Void.
+- **ICONS / Bone Muted** (`#9a948b`): Secondary metadata on Void — the equivalent of `Ink Muted`, not a disabled state.
+- **ICONS / Hairline** (`#e4e1da24`): Dividers and input underlines on Void. The inverse of `Hairline`.
+
 ### Named Rules
+
+**The Collection World Rule.** A collection may own a palette, a display face, and a layout logic — a complete visual world — when the drop's story requires it. The permission is bounded three ways: the world is scoped to that collection's section and template, it never redefines a storefront token, and it must be documented here before it ships. An undocumented local palette is drift, not art direction. ICONS is the reference implementation.
 
 **The Art Carries the Color Rule.** Saturated chromatic color belongs to product photography, artwork prints, and editorial imagery. It does not belong to buttons, headings, dividers, illustrations, or backgrounds. If a UI element needs to "feel branded," reach for typographic weight, scale, or negative space — not color.
 
@@ -205,6 +247,13 @@ Both families are on Brand 2026's reflex-reject list for new projects. Here they
 - **Label** (DM Sans 500, 0.875rem / 14px, letter-spacing 0.06em): `<h5>`. Section labels, nav links, eyebrow tags when one is deliberately placed.
 - **Meta** (Space Mono 400, 0.75rem / 12px, letter-spacing 0.13em): `<h6>`. Captions, run-size notation, artist credits, drop numbers, edition counts.
 
+### Collection Worlds
+
+**ICONS** runs its own type, and this is deliberate — not drift to be corrected back to DM Sans + Space Mono.
+
+- **ICONS / Display** (Bodoni Moda 700, `clamp(2.5rem, 6vw, 5.4rem)` / 86px max, line-height 1.05, letter-spacing −0.01em): The rotating question in the hero. Self-hosted woff2 at weights 600 and 700; loaded only on this template. A high-contrast didone against the storefront's geometric sans — the contrast is the point, and it reads as a gallery caption rather than a product page.
+- **ICONS / Label** (Helvetica Neue / Arial, 0.66rem / 10.5px, uppercase, letter-spacing 0.34em): The hero's corner labels and the scarcity line. Tracked far wider than the storefront's `Meta` (0.13em) because at this size, on video, tracking is what makes the line legible as a label rather than a word.
+
 ### Named Rules
 
 **The Mono Carries the Metadata Rule.** Space Mono is for everything that _labels_ the work: drop names, edition numbers, run sizes, artist credits, prices, dates, breadcrumbs. DM Sans is for everything that _names_ the work: headings, hero text, drop titles. Never swap the assignment. Mono in a headline reads as costume; DM Sans 900 in a caption reads as a typo.
@@ -214,6 +263,10 @@ Both families are on Brand 2026's reflex-reject list for new projects. Here they
 **The 14px Body Rule.** Body copy stays at 14px / 1.6 across the storefront. This is a deliberately small, dense body size that pairs with the heavy display; pushing body to 16px to "feel more readable" breaks the contrast that makes the pairing work. If a block needs more emphasis, use the Subtitle role, not a larger body size.
 
 **The No Eyebrow Reflex Rule.** Repeated tiny tracked uppercase labels above every section heading (the 2023-era kicker) are forbidden. A single named brand eyebrow used on one or two specific sections per page is fine; the eyebrow-on-every-section grammar is AI scaffolding and is not the ARTT system.
+
+**The Borrowed Face Rule.** A collection world may bring its own display face, and when it does, that face carries the collection's headline type — not the storefront's. It does not follow that the world may bring a second _body_ face: ICONS' labels run in a system sans because they are chrome, not copy, and there is no ICONS body role at all. If a collection world ever needs running prose, it uses Space Mono. Two display faces is art direction; two body faces is a broken system.
+
+**The Bounded Tracking Exception.** ICONS' corner labels (0.34em) and scarcity line (0.24em) are tracked far beyond the storefront's `Meta` (0.13em). This is licensed for that surface only, and it does not reopen the eyebrow reflex above: ICONS uses two labels total, both structural to the hero's frame, neither sitting above a heading as a kicker. Wide tracking as a section-opening grammar remains forbidden everywhere.
 
 ## 4. Elevation
 
@@ -282,6 +335,16 @@ Shadows exist in the system in exactly three places: a small button shadow for t
 
 The cart and menu drawer is the most ARTT-specific component in the system. Right-anchored panel, max width 500px / 95vw, 100dvh height. Open animation: 200ms `cubic-bezier(0.4, 0, 0.2, 1)`. Backdrop is the custom **blur backdrop** (`backdrop-filter: blur(8px)` over 15% black overlay) — a deliberate ARTT extension on top of stock Horizon. The backdrop is the part of the system that breaks the flat-by-doctrine rule, intentionally: an open drawer makes the page beneath feel like glass behind it.
 
+### ICONS Collection Tease (signature component)
+
+The pre-launch tease for a drop: a full-bleed dark surface that behaves like a darkened gallery room. Three parts, all scoped under `.icons-lp`.
+
+- **Question hero:** viewport-height stage (`100dvh` minus the header's real footprint, inside `@supports (height: 100dvh)`, with a `100vh` fallback), sized so its bottom row always clears the fold. A blurred looping video sits under a two-layer scrim whose floors are tuned so bone type clears WCAG AA on any frame. A three-row grid — corner labels, the rotating question in ICONS / Display, then the conversion row. Motion is a GSAP word-by-word mask reveal; under `prefers-reduced-motion` GSAP is never fetched and an opacity fade carries it instead.
+- **Inline capture:** the conversion row holds the email field and submit inline, so signing up costs no scroll. Field is a bone underline on transparent (never a filled box); submit is bone-bright on void. The same form renders again after the grid as a second chance — one snippet, two instances, distinct ids.
+- **Lookbook grid:** full-bleed, 2 columns on mobile and 3 from 750px, `2px` gutters. The gutter is the only separation; no cards, no radii, no captions. The photographs do the work.
+
+**The Darkened Room Rule.** The tease inverts the storefront on purpose: where the gallery is white walls, the tease is the room with the lights down and the work lit. Anything that reintroduces storefront chrome — a card, a rounded container, a tinted canvas, a drop shadow — breaks the room. If an element needs definition here, it gets a hairline or nothing.
+
 ## 6. Do's and Don'ts
 
 ### Do:
@@ -307,5 +370,7 @@ The cart and menu drawer is the most ARTT-specific component in the system. Righ
 - **Don't** use side-stripe borders (`border-left` > 1px as a colored accent) on cards, callouts, or list items. Forbidden.
 - **Don't** introduce countdown timers, percent-off ribbons, urgency banners, or fast-fashion sale language. Scarcity is structural (limited runs, edition numbers, sold-out states), not promotional.
 - **Don't** reach for corporate-luxury cues (serif crests, gold flourishes, marble textures) or SaaS grammar (soft gradients, AI-pastel canvases, rounded-everything illustration). Both are explicit anti-references from PRODUCT.md.
-- **Don't** introduce a third type family. DM Sans + Space Mono is the system; adding a "supporting serif" or "display script" breaks the gallery voice.
+- **Don't** introduce a third type family into the storefront. DM Sans + Space Mono is the system; adding a "supporting serif" or "display script" breaks the gallery voice. A documented collection world (ICONS / Bodoni Moda) is the sole exception, and it is scoped to that collection's template.
+- **Don't** let a collection world leak. ICONS' void-and-bone palette, Bodoni display, and wide tracking are scoped under `.icons-lp`. They never redefine a storefront token, and they never appear on a default template.
+- **Don't** ship a local palette or face without documenting it here first. An undocumented set of `--lp-*`-style tokens in a section file is drift, and drift is how a system stops being one.
 - **Don't** rely on color alone for state. Pair availability ("Sold out", "Low stock", "In stock") with text or an icon, not just the state dot. Color blindness coverage is part of the AA floor.

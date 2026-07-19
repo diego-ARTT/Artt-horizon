@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-06-03T00:00:00Z",
+  "generatedAt": "2026-07-19T00:00:00Z",
   "title": "Design System: Arttitude (ARTT)",
   "extensions": {
     "colorMeta": {
@@ -228,6 +228,96 @@
           "oklch(90% 0.09 143)",
           "oklch(97% 0.03 143)"
         ]
+      },
+      "icons-void": {
+        "role": "neutral",
+        "displayName": "ICONS / Void",
+        "canonical": "#0a0a0a",
+        "tonalRamp": [
+          "#000000",
+          "#0a0a0a",
+          "#111111",
+          "#1c1c1a",
+          "#3a3833",
+          "#6b665d",
+          "#9a948b",
+          "#e4e1da"
+        ]
+      },
+      "icons-void-lifted": {
+        "role": "neutral",
+        "displayName": "ICONS / Void Lifted",
+        "canonical": "#111111",
+        "tonalRamp": [
+          "#000000",
+          "#0a0a0a",
+          "#111111",
+          "#1c1c1a",
+          "#3a3833",
+          "#6b665d",
+          "#9a948b",
+          "#e4e1da"
+        ]
+      },
+      "icons-bone": {
+        "role": "neutral",
+        "displayName": "ICONS / Bone",
+        "canonical": "#e4e1da",
+        "tonalRamp": [
+          "#1c1c1a",
+          "#3a3833",
+          "#6b665d",
+          "#9a948b",
+          "#c4bfb5",
+          "#e4e1da",
+          "#f4f1eb",
+          "#fbfaf7"
+        ]
+      },
+      "icons-bone-bright": {
+        "role": "neutral",
+        "displayName": "ICONS / Bone Bright",
+        "canonical": "#f4f1eb",
+        "tonalRamp": [
+          "#1c1c1a",
+          "#3a3833",
+          "#6b665d",
+          "#9a948b",
+          "#c4bfb5",
+          "#e4e1da",
+          "#f4f1eb",
+          "#fbfaf7"
+        ]
+      },
+      "icons-bone-muted": {
+        "role": "neutral",
+        "displayName": "ICONS / Bone Muted",
+        "canonical": "#9a948b",
+        "tonalRamp": [
+          "#1c1c1a",
+          "#3a3833",
+          "#6b665d",
+          "#9a948b",
+          "#c4bfb5",
+          "#e4e1da",
+          "#f4f1eb",
+          "#fbfaf7"
+        ]
+      },
+      "icons-hairline": {
+        "role": "neutral",
+        "displayName": "ICONS / Hairline",
+        "canonical": "#e4e1da24",
+        "tonalRamp": [
+          "#e4e1da0a",
+          "#e4e1da14",
+          "#e4e1da24",
+          "#e4e1da3d",
+          "#e4e1da5c",
+          "#e4e1da8a",
+          "#e4e1dac2",
+          "#e4e1da"
+        ]
       }
     },
     "typographyMeta": {
@@ -258,6 +348,14 @@
       "meta": {
         "displayName": "Meta",
         "purpose": "Captions, run sizes, edition numbers, artist credits, drop numbers (h6). Space Mono, tracked, 12px. Mono carries metadata."
+      },
+      "icons-display": {
+        "displayName": "ICONS / Display",
+        "purpose": "The rotating question in the ICONS hero. Self-hosted Bodoni Moda; this template only."
+      },
+      "icons-label": {
+        "displayName": "ICONS / Label",
+        "purpose": "ICONS hero corner labels and scarcity line. Tracked wide to read as a label on video."
       }
     },
     "shadows": [
@@ -401,6 +499,30 @@
       "description": "Mono caption for run sizes, artist credits, prices, drop dates. The metadata voice of the system.",
       "html": "<p class=\"ds-meta\">Drop 04 · Edition 18 of 80 · Artist: A. Castet · San Francisco</p>",
       "css": ".ds-meta { font-family: 'Space Mono', ui-monospace, monospace; font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.13em; color: rgb(0 0 0 / 0.81); margin: 0; }"
+    },
+    {
+      "name": "ICONS Submit",
+      "kind": "button",
+      "refersTo": "icons-submit",
+      "description": "Inline submit in the ICONS hero conversion row. Bone-bright on void.",
+      "html": "<button class=\"ds-icons-submit\">GET NOTIFIED</button>",
+      "css": ".ds-icons-submit{background:#f4f1eb;color:#0a0a0a;border:0;cursor:pointer;text-transform:uppercase;letter-spacing:.28em;font-size:.66rem;font-family:'Helvetica Neue',Arial,sans-serif;padding:.95rem 2.4rem}.ds-icons-submit:hover{opacity:.85}.ds-icons-submit:focus-visible{outline:2px solid #f4f1eb;outline-offset:3px}"
+    },
+    {
+      "name": "ICONS Input",
+      "kind": "input",
+      "refersTo": "icons-input",
+      "description": "Email field on the ICONS hero. A bone underline on transparent — never a filled box.",
+      "html": "<input class=\"ds-icons-input\" type=\"email\" placeholder=\"Email address\">",
+      "css": ".ds-icons-input{flex:1 1 16rem;background:transparent;border:0;border-bottom:1px solid rgba(244,241,235,.75);color:#f4f1eb;font-size:1rem;padding:.85rem .25rem}.ds-icons-input::placeholder{color:rgba(244,241,235,.82)}.ds-icons-input:hover{background:transparent}.ds-icons-input:focus-visible{outline:none;border-bottom-color:#f4f1eb}"
+    },
+    {
+      "name": "ICONS Question",
+      "kind": "custom",
+      "refersTo": "icons-display",
+      "description": "The rotating hero question, set in Bodoni Moda on the darkened video stage.",
+      "html": "<h1 class=\"ds-icons-q\">If your mask fell off, would you recognize yourself?</h1>",
+      "css": ".ds-icons-q{width:min(15ch,66vw);font-family:'Bodoni Moda',Georgia,serif;font-weight:700;font-size:clamp(2.5rem,6vw,5.4rem);line-height:1.05;letter-spacing:-.01em;color:#f4f1eb;margin:0;text-wrap:balance}"
     }
   ],
   "narrative": {
@@ -459,6 +581,26 @@
         "name": "The Tonal Hierarchy Rule",
         "body": "When depth is needed between sections, switch the canvas (Canvas, Canvas Haze, Canvas Sage, Canvas Graphite), not the elevation. The five color schemes are the system's depth model.",
         "section": "elevation"
+      },
+      {
+        "name": "The Collection World Rule",
+        "section": "colors",
+        "body": "A collection may own a palette, a display face, and a layout logic when the drop's story requires it. Bounded three ways: scoped to that collection's section and template, never redefines a storefront token, and documented before it ships. An undocumented local palette is drift, not art direction."
+      },
+      {
+        "name": "The Borrowed Face Rule",
+        "section": "typography",
+        "body": "A collection world may bring its own display face, which carries that collection's headline type. It may not bring a second body face. Two display faces is art direction; two body faces is a broken system."
+      },
+      {
+        "name": "The Bounded Tracking Exception",
+        "section": "typography",
+        "body": "ICONS' corner labels (0.34em) and scarcity line (0.24em) are licensed for that surface only. Wide tracking as a section-opening grammar remains forbidden everywhere."
+      },
+      {
+        "name": "The Darkened Room Rule",
+        "section": "components",
+        "body": "The ICONS tease inverts the storefront on purpose: the gallery is white walls, the tease is the room with the lights down and the work lit. Anything reintroducing storefront chrome breaks the room."
       }
     ],
     "dos": [
@@ -483,7 +625,9 @@
       "Don't introduce countdown timers, percent-off ribbons, urgency banners, or fast-fashion sale language. Scarcity is structural (limited runs, edition numbers, sold-out states), not promotional.",
       "Don't reach for corporate-luxury cues (serif crests, gold flourishes, marble textures) or SaaS grammar (soft gradients, AI-pastel canvases, rounded-everything illustration). Both are explicit anti-references from PRODUCT.md.",
       "Don't introduce a third type family. DM Sans + Space Mono is the system; adding a 'supporting serif' or 'display script' breaks the gallery voice.",
-      "Don't rely on color alone for state. Pair availability ('Sold out', 'Low stock', 'In stock') with text or an icon, not just the state dot. Color blindness coverage is part of the AA floor."
+      "Don't rely on color alone for state. Pair availability ('Sold out', 'Low stock', 'In stock') with text or an icon, not just the state dot. Color blindness coverage is part of the AA floor.",
+      "Don't let a collection world leak. ICONS' void-and-bone palette, Bodoni display, and wide tracking are scoped under .icons-lp.",
+      "Don't ship a local palette or face without documenting it in DESIGN.md first."
     ]
   }
 }
