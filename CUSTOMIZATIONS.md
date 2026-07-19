@@ -442,6 +442,12 @@ When deploying theme updates to production:
 - **Merge strategy:** Additive — no core files modified. Safe across upstream syncs.
 - **Config:** Set `klaviyo_public_key` + `klaviyo_list_id` (list `ICONS – Launch Notify`) in the section settings. Set `hero_style` (`question_video` default / `type_only`) and the `hero_video` file in the theme editor.
 - **Deployment runbook:** See [`docs/ICONS_LANDING_INSTALL.md`](./docs/ICONS_LANDING_INSTALL.md) for the full merchant/Klaviyo cutover steps.
+- **Added:** `snippets/icons-subscribe-form.liquid` — the Klaviyo subscribe form, rendered twice (inline in the hero, and after the lookbook grid). `id_suffix` keeps each instance's input id unique so `<label for>` stays correct.
+- **Changed (2026-07-18):** where `dvh` is supported, the hero is sized to `100dvh` minus the header's real footprint (`--header-group-height`, skipped when the header is transparent), with a `100vh`-based fallback otherwise; both paths cap `min-height` to the viewport, so the CTA clears the fold on laptops and landscape phones.
+- **Changed (2026-07-18):** email capture is inline in the hero — no scroll needed. The form after the grid remains as a second chance.
+- **Changed (2026-07-18):** GSAP and the hero video load only where usable (motion allowed, ≥750px, not Save-Data); phones and reduced-motion users get the poster.
+- **Changed (2026-07-18):** lookbook assets re-encoded to 1000×1339 in place; `<img>` intrinsic dimensions updated to match.
+- **Known limitation:** `srcset` is not possible for the lookbook — the block stores a theme-asset _filename_ and Shopify's CDN transforms only apply to uploaded images.
 
 ---
 

@@ -4,16 +4,25 @@
 <div class="icons-lp" data-icons-lp>
   {%- assign questions = section.blocks | where: "type", "question" -%}
   {% if s.hero_style == 'question_video' and questions.size > 0 %}
-    <section class="icons-hero" data-icons-hero aria-label="{{ s.hero_topleft | escape }}">
+    <section class="icons-hero" data-icons-hero
+      data-gsap-src="{{ 'gsap.min.js' | asset_url }}"
+      aria-label="{{ s.hero_topleft | escape }}">
       <div class="icons-hero__bg"
         {%- if s.hero_video == blank and s.hero_poster != blank %} style="background-image:url('{{ s.hero_poster | image_url: width: 1600 }}')"{% endif -%}>
         {% if s.hero_video != blank %}
-          <video class="icons-hero__video" autoplay muted loop playsinline preload="metadata"
+          <video class="icons-hero__video" data-hero-video autoplay muted loop playsinline preload="none"
             {% if s.hero_poster != blank %}poster="{{ s.hero_poster | image_url: width: 1600 }}"{% elsif s.hero_video.preview_image %}poster="{{ s.hero_video.preview_image | image_url: width: 1600 }}"{% endif %}>
-            {% for source in s.hero_video.sources %}
-              {% if source.format == 'mp4' or source.format == 'webm' %}<source src="{{ source.url }}" type="video/{{ source.format }}">{% endif %}
-            {% endfor %}
           </video>
+          {%- comment -%}
+            Filter with `where` before looping so `forloop.last` refers to the last
+            *emitted* item, not the last item in the unfiltered source list — otherwise
+            a trailing comma can be emitted, producing invalid JSON. Only `mp4` is kept:
+            `mov` isn't reliably web-playable and `m3u8` (HLS) has no native support in
+            most non-Safari browsers, so neither belongs in a plain <video> source list.
+          {%- endcomment -%}
+          <script type="application/json" data-hero-video-sources>
+            [{% assign playable_sources = s.hero_video.sources | where: 'format', 'mp4' %}{% for source in playable_sources %}{"src": {{ source.url | json }}, "type": "video/{{ source.format }}"}{% unless forloop.last %},{% endunless %}{% endfor %}]
+          </script>
         {% endif %}
       </div>
       <div class="icons-hero__scrim"></div>
@@ -27,13 +36,17 @@
           <p class="icons-lp__visually-hidden" data-hero-live aria-live="polite"></p>
         </div>
         <div class="icons-hero__bottom">
-          {% if s.hero_cta != blank %}<a class="icons-hero__cta" href="#icons-subscribe">{{ s.hero_cta | escape }}</a>{% endif %}
+          {%- assign hero_button_label = s.hero_cta | default: s.subscribe_button -%}
+          {% render 'icons-subscribe-form',
+            s: s,
+            id_suffix: 'hero',
+            variant: 'inline',
+            button_label: hero_button_label %}
           <div class="icons-hero__dots" data-hero-dots aria-hidden="true"></div>
           {% if s.hero_scarcity != blank %}<span class="icons-hero__scarcity">{{ s.hero_scarcity | escape }}</span>{% endif %}
         </div>
       </div>
       <script type="application/json" data-hero-questions>[{% for b in questions %}{{ b.settings.text | json }}{% unless forloop.last %},{% endunless %}{% endfor %}]</script>
-      <script src="{{ 'gsap.min.js' | asset_url }}" defer></script>
     </section>
   {% else %}
     <header class="icons-lp__hero">
@@ -54,8 +67,8 @@
             <img
               src="{{ block.settings.image | asset_url }}"
               alt="{{ block.settings.alt | default: 'ARTTITUDE ICONS look' | escape }}"
-              width="1530"
-              height="2048"
+              width="1000"
+              height="1339"
               loading="lazy"
               decoding="async">
           </figure>
@@ -66,36 +79,11 @@
   <section class="icons-lp__subscribe" id="icons-subscribe">
     {% if s.subscribe_kicker != blank %}<p class="icons-lp__kicker">{{ s.subscribe_kicker | escape }}</p>{% endif %}
     {% if s.subscribe_line != blank %}<p class="icons-lp__sub-line">{{ s.subscribe_line | escape }}</p>{% endif %}
-    <form
-      class="icons-lp__form"
-      data-icons-subscribe
-      data-klaviyo-company="{{ s.klaviyo_public_key | escape }}"
-      data-klaviyo-list="{{ s.klaviyo_list_id | escape }}"
-      data-msg-invalid="{{ s.msg_invalid | escape }}"
-      data-msg-loading="{{ s.msg_loading | escape }}"
-      data-msg-success="{{ s.msg_success | escape }}"
-      data-msg-error="{{ s.msg_error | escape }}"
-      novalidate>
-      <label class="icons-lp__visually-hidden" for="icons-email">{{ s.subscribe_placeholder | escape }}</label>
-      <input
-        id="icons-email"
-        class="icons-lp__input"
-        type="email"
-        name="email"
-        autocomplete="email"
-        autocapitalize="off"
-        placeholder="{{ s.subscribe_placeholder | escape }}"
-        required>
-      <input
-        class="icons-lp__visually-hidden"
-        type="text"
-        name="company_website"
-        tabindex="-1"
-        autocomplete="off"
-        aria-hidden="true">
-      <button class="icons-lp__submit" type="submit">{{ s.subscribe_button | escape }}</button>
-      <p class="icons-lp__status" data-status role="status" aria-live="polite"></p>
-    </form>
+    {% render 'icons-subscribe-form',
+      s: s,
+      id_suffix: 'footer',
+      variant: 'stacked',
+      button_label: s.subscribe_button %}
   </section>
 </div>
 
@@ -247,6 +235,36 @@
     width: 100%;
     max-width: 30rem;
   }
+  .icons-lp__form--stacked {
+    justify-content: center;
+  }
+  .icons-lp__form--inline {
+    justify-content: flex-start;
+    max-width: 34rem;
+    flex: 1 1 22rem;
+  }
+
+  /* The hero sits on dark video, so the fields need light-on-dark treatment. */
+  .icons-hero .icons-lp__input {
+    color: #f4f1eb;
+    border-bottom-color: rgba(244, 241, 235, 0.4);
+  }
+  .icons-hero .icons-lp__input::placeholder {
+    color: rgba(244, 241, 235, 0.6);
+  }
+  .icons-hero .icons-lp__input:focus-visible {
+    border-bottom-color: #f4f1eb;
+  }
+  .icons-hero .icons-lp__submit {
+    background: #f4f1eb;
+    color: var(--lp-bg);
+    letter-spacing: 0.28em;
+    font-size: 0.66rem;
+    padding: 0.95rem 2.4rem;
+  }
+  .icons-hero .icons-lp__status {
+    color: rgba(244, 241, 235, 0.75);
+  }
   .icons-lp__input {
     flex: 1 1 16rem;
     background: transparent;
@@ -284,10 +302,32 @@
   .icons-lp__status[data-state="success"] { color: var(--lp-fg); }
 
   .icons-hero {
-    position: relative; height: 100vh; height: 100dvh; min-height: 640px; overflow: hidden;
+    position: relative;
+    height: 100vh;
+    /* Cap the fallback floor to the viewport too, so short/landscape
+       screens without dvh support can't be forced to overflow. */
+    min-height: min(32rem, 100vh);
+    overflow: hidden;
     background: var(--lp-bg);
     color: #F4F1EB;
     font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* Where dvh is supported, size to the viewport space the sticky header
+     actually leaves. --header-group-height and --transparent-header-offset-boolean
+     are defined on `body` in sections/header.liquid; the boolean is 1 when the
+     header is transparent (overlays content), so nothing is subtracted then. */
+  @supports (height: 100dvh) {
+    .icons-hero {
+      --icons-hero-avail: calc(
+        100dvh - var(--header-group-height, 0px) * (1 - var(--transparent-header-offset-boolean, 0))
+      );
+
+      height: var(--icons-hero-avail);
+      /* Self-limiting floor: never taller than the space available, which a
+         fixed min-height could exceed on short/landscape viewports. */
+      min-height: min(32rem, var(--icons-hero-avail));
+    }
   }
   .icons-hero__bg { position:absolute; inset:-8%; z-index:0; background-size:cover; background-position:60% 24%; }
   .icons-hero__video {
@@ -324,12 +364,6 @@
   .icons-hero__q .w { display:inline-block; overflow:hidden; vertical-align:top; padding:0.06em 0; }
   .icons-hero__q .i { display:inline-block; will-change:transform, filter, opacity; }
   .icons-hero__bottom { display:flex; align-items:center; gap:1.75rem; padding-bottom:clamp(2rem,5vh,3.4rem); flex-wrap:wrap; }
-  .icons-hero__cta {
-    display:inline-block; text-decoration:none; text-transform:uppercase;
-    letter-spacing:0.28em; font-size:0.66rem; color:var(--lp-bg); background:#F4F1EB; padding:0.95rem 2.4rem;
-  }
-  @media (prefers-reduced-motion: no-preference) { .icons-hero__cta { transition: opacity .25s ease; } }
-  .icons-hero__cta:hover { opacity:0.85; }
   .icons-hero__dots { display:flex; gap:0.5rem; }
   .icons-hero__dot { width:6px; height:6px; border-radius:50%; background:rgba(244,241,235,0.26); border:0; padding:0; cursor:pointer; transition:.4s; }
   .icons-hero__dot[aria-current="true"] { background:#F4F1EB; transform:scale(1.15); }
@@ -416,11 +450,20 @@
       });
     });
 
-    var ctas = document.querySelectorAll('.icons-lp__cta[href="#icons-subscribe"]');
+    // Any anchor pointing at the subscribe section moves focus into that
+    // section's email field once the scroll settles. Bind by href rather than
+    // by a hero-specific class: the type-only hero uses .icons-lp__cta, and
+    // binding a single class silently no-ops on the other hero style.
+    var ctas = document.querySelectorAll('a[href="#icons-subscribe"]');
     ctas.forEach(function (cta) {
       cta.addEventListener('click', function () {
-        var el = document.getElementById('icons-email');
-        if (el) { setTimeout(function () { el.focus({ preventScroll: true }); }, 500); }
+        var target = document.getElementById('icons-subscribe');
+        var el = target && target.querySelector('input[type="email"]');
+        if (el) {
+          setTimeout(function () {
+            el.focus({ preventScroll: true });
+          }, 500);
+        }
       });
     });
   })();
@@ -442,6 +485,44 @@
 
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var idx = 0, busy = false, timer = null, started = false;
+
+    var saveData = !!(navigator.connection && navigator.connection.saveData);
+
+    // GSAP drives the kinetic reveal only when motion is allowed. Under
+    // reduced-motion the hero already falls back to an opacity fade, so
+    // fetching 71KB would be pure waste.
+    if (!reduce && !window.gsap && root.dataset.gsapSrc) {
+      var gs = document.createElement('script');
+      gs.src = root.dataset.gsapSrc;
+      gs.defer = true;
+      document.head.appendChild(gs);
+    }
+
+    // The backdrop video is decorative. Phones, reduced-motion users, and
+    // Save-Data users keep the poster image instead of pulling an MP4.
+    (function () {
+      var video = root.querySelector('[data-hero-video]');
+      var payload = root.querySelector('[data-hero-video-sources]');
+      if (!video || !payload) return;
+      var wideEnough = matchMedia('(min-width: 750px)').matches;
+      if (reduce || saveData || !wideEnough) return;
+
+      var sources;
+      try {
+        sources = JSON.parse(payload.textContent);
+      } catch (e) {
+        return;
+      }
+      if (!sources || !sources.length) return;
+
+      sources.forEach(function (s) {
+        var el = document.createElement('source');
+        el.src = s.src;
+        el.type = s.type;
+        video.appendChild(el);
+      });
+      video.load();
+    })();
 
     // dots (buttons, keyboard-operable). The container is aria-hidden while empty
     // (no-JS); now that it holds focusable buttons, expose it to assistive tech.
