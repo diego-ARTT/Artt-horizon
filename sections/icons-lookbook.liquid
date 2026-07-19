@@ -262,24 +262,30 @@
   .icons-lp__status[data-state="success"] { color: var(--lp-fg); }
 
   .icons-hero {
-    /* Viewport space actually left over once the sticky header is accounted for.
-       --header-group-height and --transparent-header-offset-boolean are defined
-       on `body` in sections/header.liquid. When the header is transparent the
-       boolean is 1 and it overlays content, so nothing is subtracted. */
-    --icons-hero-avail: calc(
-      100dvh - var(--header-group-height, 0px) * (1 - var(--transparent-header-offset-boolean, 0))
-    );
-
     position: relative;
-    height: 100vh; /* fallback for browsers without dvh */
-    height: var(--icons-hero-avail);
-    /* Self-limiting floor: a sensible minimum on normal screens that can never
-       exceed the space available (a fixed floor overflowed landscape phones). */
-    min-height: min(32rem, var(--icons-hero-avail));
+    height: 100vh;
+    min-height: 32rem;
     overflow: hidden;
     background: var(--lp-bg);
     color: #F4F1EB;
     font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* Where dvh is supported, size to the viewport space the sticky header
+     actually leaves. --header-group-height and --transparent-header-offset-boolean
+     are defined on `body` in sections/header.liquid; the boolean is 1 when the
+     header is transparent (overlays content), so nothing is subtracted then. */
+  @supports (height: 100dvh) {
+    .icons-hero {
+      --icons-hero-avail: calc(
+        100dvh - var(--header-group-height, 0px) * (1 - var(--transparent-header-offset-boolean, 0))
+      );
+
+      height: var(--icons-hero-avail);
+      /* Self-limiting floor: never taller than the space available, which a
+         fixed min-height could exceed on short/landscape viewports. */
+      min-height: min(32rem, var(--icons-hero-avail));
+    }
   }
   .icons-hero__bg { position:absolute; inset:-8%; z-index:0; background-size:cover; background-position:60% 24%; }
   .icons-hero__video {
