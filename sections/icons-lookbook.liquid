@@ -262,7 +262,21 @@
   .icons-lp__status[data-state="success"] { color: var(--lp-fg); }
 
   .icons-hero {
-    position: relative; height: 100vh; height: 100dvh; min-height: 640px; overflow: hidden;
+    /* Viewport space actually left over once the sticky header is accounted for.
+       --header-group-height and --transparent-header-offset-boolean are defined
+       on `body` in sections/header.liquid. When the header is transparent the
+       boolean is 1 and it overlays content, so nothing is subtracted. */
+    --icons-hero-avail: calc(
+      100dvh - var(--header-group-height, 0px) * (1 - var(--transparent-header-offset-boolean, 0))
+    );
+
+    position: relative;
+    height: 100vh; /* fallback for browsers without dvh */
+    height: var(--icons-hero-avail);
+    /* Self-limiting floor: a sensible minimum on normal screens that can never
+       exceed the space available (a fixed floor overflowed landscape phones). */
+    min-height: min(32rem, var(--icons-hero-avail));
+    overflow: hidden;
     background: var(--lp-bg);
     color: #F4F1EB;
     font-family: "Helvetica Neue", Arial, sans-serif;
