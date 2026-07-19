@@ -25,7 +25,8 @@
           </script>
         {% endif %}
       </div>
-      <div class="icons-hero__scrim"></div>
+      {%- assign scrim_opacity = s.hero_overlay_opacity | default: 100 | divided_by: 100.0 -%}
+      <div class="icons-hero__scrim" style="--icons-scrim-opacity: {{ scrim_opacity }}"></div>
       <div class="icons-hero__stage">
         <div class="icons-hero__top">
           <span class="icons-hero__kicker">{{ s.hero_topleft | escape }}</span>
@@ -245,12 +246,18 @@
   }
 
   /* The hero sits on dark video, so the fields need light-on-dark treatment. */
-  .icons-hero .icons-lp__input {
+  /* Light-on-dark treatment for the field sitting on the video. The explicit
+     transparent background (and the :hover twin) is what keeps the theme's
+     `input:hover` background from rendering cream text on a light box. */
+  .icons-hero .icons-lp__input,
+  .icons-hero .icons-lp__input:hover,
+  .icons-hero .icons-lp__input:focus {
+    background: transparent;
     color: #f4f1eb;
-    border-bottom-color: rgba(244, 241, 235, 0.4);
+    border-bottom-color: rgba(244, 241, 235, 0.75);
   }
   .icons-hero .icons-lp__input::placeholder {
-    color: rgba(244, 241, 235, 0.6);
+    color: rgba(244, 241, 235, 0.82);
   }
   .icons-hero .icons-lp__input:focus-visible {
     border-bottom-color: #f4f1eb;
@@ -265,7 +272,12 @@
   .icons-hero .icons-lp__status {
     color: rgba(244, 241, 235, 0.75);
   }
-  .icons-lp__input {
+  /* :hover is repeated in the selector deliberately. The theme sets
+     `input:hover { background-color: var(--color-input-hover-background) }` in
+     base.css, and that (0-1-1) outranks a bare `.icons-lp__input` (0-1-0) for
+     background-color — so without this the field grows a light box on hover. */
+  .icons-lp__input,
+  .icons-lp__input:hover {
     flex: 1 1 16rem;
     background: transparent;
     border: 0;
@@ -341,6 +353,10 @@
   @keyframes icons-hero-drift { from{transform:scale(1.08)} to{transform:scale(1.16) translate3d(-1.5%,-1%,0)} }
   .icons-hero__scrim {
     position:absolute; inset:0; z-index:1;
+    /* Merchant-adjustable via the "Video overlay opacity" setting, which sets
+       --icons-scrim-opacity inline. Defaults to 1 = the tuned gradient at full
+       strength, so an unset value looks exactly as before. */
+    opacity: var(--icons-scrim-opacity, 1);
     background:
       linear-gradient(90deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0.5) 40%, rgba(10,10,10,0.1) 70%, rgba(10,10,10,0.3) 100%),
       linear-gradient(180deg, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0) 24%, rgba(10,10,10,0) 58%, rgba(10,10,10,0.92) 100%);
@@ -622,6 +638,8 @@
       ] },
     { "type": "video", "id": "hero_video", "label": "Hero video", "info": "Blurred, looping backdrop for the Question video hero." },
     { "type": "image_picker", "id": "hero_poster", "label": "Hero poster / fallback", "info": "Shown before the video loads and where video isn't set." },
+    { "type": "range", "id": "hero_overlay_opacity", "label": "Video overlay opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 100,
+      "info": "Darkens the video behind the question and the signup field. Lower it to show more of the video; keep it high if the type or the email field is hard to read." },
     { "type": "text", "id": "hero_topleft", "label": "Top-left label", "default": "ICONS" },
     { "type": "text", "id": "hero_topright", "label": "Top-right label", "default": "A New Collection" },
     { "type": "header", "content": "Hero" },

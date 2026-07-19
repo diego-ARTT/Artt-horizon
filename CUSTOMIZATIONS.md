@@ -447,6 +447,8 @@ When deploying theme updates to production:
 - **Changed (2026-07-18):** email capture is inline in the hero — no scroll needed. The form after the grid remains as a second chance.
 - **Changed (2026-07-18):** GSAP and the hero video load only where usable (motion allowed, ≥750px, not Save-Data); phones and reduced-motion users get the poster.
 - **Changed (2026-07-18):** lookbook assets re-encoded to 1000×1339 in place; `<img>` intrinsic dimensions updated to match.
+- **Fixed (2026-07-19):** the hero email field grew a light box on hover — the theme's `input:hover` background (0-1-1) outranked `.icons-lp__input` (0-1-0), rendering cream text on a light background. Both form instances now pin `background: transparent` on hover/focus.
+- **Added (2026-07-19):** `hero_overlay_opacity` (range 0-100%, default 100) drives `--icons-scrim-opacity` on `.icons-hero__scrim`, so the video overlay is merchant-adjustable. Default 100 reproduces the previous appearance exactly.
 - **Known limitation:** `srcset` is not possible for the lookbook — the block stores a theme-asset _filename_ and Shopify's CDN transforms only apply to uploaded images.
 
 ---
