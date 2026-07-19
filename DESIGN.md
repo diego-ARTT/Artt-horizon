@@ -211,12 +211,12 @@ A two-tone system (ink + canvas) with four alternate canvases for sectional rhyt
 
 A drop may run its own palette when the collection's narrative demands it. Today exactly one does: **ICONS** (`sections/icons-lookbook.liquid`, mounted on `templates/collection.icons.json`). It inverts the storefront — near-black surface, bone type — because the campaign is a darkened room with lit portraits in it. These values are scoped under `.icons-lp` and must not leak into the storefront's default schemes.
 
-- **ICONS / Void** (`#0a0a0a`): The collection's surface. Replaces `Canvas` for the whole section, never elsewhere.
-- **ICONS / Void Lifted** (`#111111`): A single step up from Void, for panels that need separation without a border.
-- **ICONS / Bone** (`#e4e1da`): Body and UI foreground on Void. The collection's answer to `Ink`.
-- **ICONS / Bone Bright** (`#f4f1eb`): Reserved for type sitting on the hero video, where the backdrop is brighter and less predictable than flat Void.
-- **ICONS / Bone Muted** (`#9a948b`): Secondary metadata on Void — the equivalent of `Ink Muted`, not a disabled state.
-- **ICONS / Hairline** (`#e4e1da24`): Dividers and input underlines on Void. The inverse of `Hairline`.
+- **ICONS / Void** (`#0a0a0a`, `--lp-bg`): The collection's surface. Replaces `Canvas` for the whole section, never elsewhere.
+- **ICONS / Void Lifted** (`#111111`, `--lp-ink`): A single step up from Void, for panels that need separation without a border.
+- **ICONS / Bone** (`#e4e1da`, `--lp-fg`): Body and UI foreground on Void. The collection's answer to `Ink`.
+- **ICONS / Bone Bright** (`#f4f1eb`, `--lp-fg-bright`): Reserved for type sitting on the hero video, where the backdrop is brighter and less predictable than flat Void.
+- **ICONS / Bone Muted** (`#9a948b`, `--lp-muted`): Secondary metadata on Void — the equivalent of `Ink Muted`, not a disabled state.
+- **ICONS / Hairline** (`#e4e1da24`, `--lp-hairline`): Dividers and input underlines on Void. The inverse of `Hairline`.
 
 ### Named Rules
 

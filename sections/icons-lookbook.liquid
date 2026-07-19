@@ -78,7 +78,7 @@
     </section>
   {% endif %}
   <section class="icons-lp__subscribe" id="icons-subscribe">
-    {% if s.subscribe_kicker != blank %}<p class="icons-lp__kicker">{{ s.subscribe_kicker | escape }}</p>{% endif %}
+    {% if s.subscribe_kicker != blank %}<h2 class="icons-lp__kicker">{{ s.subscribe_kicker | escape }}</h2>{% endif %}
     {% if s.subscribe_line != blank %}<p class="icons-lp__sub-line">{{ s.subscribe_line | escape }}</p>{% endif %}
     {% render 'icons-subscribe-form',
       s: s,
@@ -107,6 +107,9 @@
     --lp-bg: #0A0A0A;
     --lp-ink: #111111;
     --lp-fg: #E4E1DA;
+    /* Brighter than --lp-fg, for type sitting on the hero video where the
+       backdrop is less predictable than flat --lp-bg. DESIGN.md: icons-bone-bright. */
+    --lp-fg-bright: #F4F1EB;
     --lp-muted: #9A948B;
     --lp-hairline: rgba(228, 225, 218, 0.14);
     background: var(--lp-bg);
@@ -116,10 +119,14 @@
   }
   .icons-lp * { box-sizing: border-box; }
 
+  /* Rendered as <h2> in the subscribe section and <p> in the type-only hero
+     (where it precedes the h1 and must not outrank it). font-weight is pinned
+     so the two render identically despite the differing element defaults. */
   .icons-lp__kicker {
     text-transform: uppercase;
     letter-spacing: 0.22em;
     font-size: 0.7rem;
+    font-weight: 400;
     color: var(--lp-muted);
     margin: 0;
   }
@@ -253,17 +260,17 @@
   .icons-hero .icons-lp__input:hover,
   .icons-hero .icons-lp__input:focus {
     background: transparent;
-    color: #f4f1eb;
+    color: var(--lp-fg-bright);
     border-bottom-color: rgba(244, 241, 235, 0.75);
   }
   .icons-hero .icons-lp__input::placeholder {
     color: rgba(244, 241, 235, 0.82);
   }
   .icons-hero .icons-lp__input:focus-visible {
-    border-bottom-color: #f4f1eb;
+    border-bottom-color: var(--lp-fg-bright);
   }
   .icons-hero .icons-lp__submit {
-    background: #f4f1eb;
+    background: var(--lp-fg-bright);
     color: var(--lp-bg);
     letter-spacing: 0.28em;
     font-size: 0.66rem;
@@ -277,7 +284,7 @@
     outline-offset: 3px;
   }
   .icons-hero .icons-lp__submit:focus-visible {
-    outline-color: #f4f1eb;
+    outline-color: var(--lp-fg-bright);
   }
   .icons-hero .icons-lp__status {
     color: rgba(244, 241, 235, 0.75);
@@ -303,6 +310,12 @@
   }
   .icons-lp__submit {
     flex: 0 0 auto;
+    /* min-height rather than more padding: the padding sets the optical rhythm,
+       and both submit variants land a shade under 44px on their own. */
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: var(--lp-fg);
     color: var(--lp-bg);
     border: 0;
@@ -331,7 +344,7 @@
     min-height: min(32rem, 100vh);
     overflow: hidden;
     background: var(--lp-bg);
-    color: #F4F1EB;
+    color: var(--lp-fg-bright);
     font-family: "Helvetica Neue", Arial, sans-serif;
   }
 
@@ -390,7 +403,7 @@
     font-family:"Bodoni Moda", Georgia, serif; font-weight:700;
     font-size: clamp(2.5rem, 6vw, 5.4rem);
     line-height:1.05; letter-spacing:-0.01em; text-align:left; text-wrap:balance;
-    color:#F4F1EB; margin:0;
+    color:var(--lp-fg-bright); margin:0;
     text-shadow: 0 2px 34px rgba(0,0,0,0.5);
   }
   .icons-hero__q .w { display:inline-block; overflow:hidden; vertical-align:top; padding:0.06em 0; }
@@ -414,8 +427,8 @@
   @media (prefers-reduced-motion: no-preference) {
     .icons-hero__dot::before { transition:background .4s ease, transform .4s ease; }
   }
-  .icons-hero__dot[aria-current="true"]::before { background:#F4F1EB; transform:scale(1.15); }
-  .icons-hero__dot:focus-visible { outline:2px solid #F4F1EB; outline-offset:-2px; border-radius:50%; }
+  .icons-hero__dot[aria-current="true"]::before { background:var(--lp-fg-bright); transform:scale(1.15); }
+  .icons-hero__dot:focus-visible { outline:2px solid var(--lp-fg-bright); outline-offset:-2px; border-radius:50%; }
   .icons-hero__scarcity { text-transform:uppercase; letter-spacing:0.24em; font-size:0.62rem; color:rgba(244,241,235,0.6); margin-left:auto; }
   @media (max-width: 700px) {
     .icons-hero__q { width:min(12ch, 90vw); }
