@@ -283,7 +283,45 @@ Replace with:
 
 The label is resolved with `assign` first rather than piping a filter inside the `render` arguments, which is the portable form.
 
-The `.icons-hero__cta` anchor is intentionally gone — signup now happens in place, with no scroll. Keep the `.icons-hero__cta` CSS rules (lines 327-332); they still serve the type-only fallback hero via `.icons-lp__cta`, and removing them is out of scope.
+The `.icons-hero__cta` anchor is intentionally gone — signup now happens in place, with no scroll.
+
+- [ ] **Step 1b: Delete the now-orphaned CTA rules**
+
+`.icons-hero__cta` was used _only_ by the anchor removed in Step 1. The type-only
+fallback hero uses a different class (`.icons-lp__cta`) with its own rules, so
+these three are now dead code. Delete all of them from the `{% stylesheet %}`
+block (currently lines 327, 331, 332):
+
+```css
+.icons-hero__cta {
+  display: inline-block;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.66rem;
+  color: var(--lp-bg);
+  background: #f4f1eb;
+  padding: 0.95rem 2.4rem;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .icons-hero__cta {
+    transition: opacity 0.25s ease;
+  }
+}
+.icons-hero__cta:hover {
+  opacity: 0.85;
+}
+```
+
+Do **not** touch any `.icons-lp__cta` rule — the type-only hero still needs it.
+
+Verify nothing references the class afterwards:
+
+```bash
+grep -n "icons-hero__cta" sections/icons-lookbook.liquid || echo "NO-REFERENCES-OK"
+```
+
+Expected: `NO-REFERENCES-OK`.
 
 - [ ] **Step 2: Add inline-variant and hero-scoped field styles**
 
