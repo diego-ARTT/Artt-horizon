@@ -27,7 +27,12 @@
           <p class="icons-lp__visually-hidden" data-hero-live aria-live="polite"></p>
         </div>
         <div class="icons-hero__bottom">
-          {% if s.hero_cta != blank %}<a class="icons-hero__cta" href="#icons-subscribe">{{ s.hero_cta | escape }}</a>{% endif %}
+          {%- assign hero_button_label = s.hero_cta | default: s.subscribe_button -%}
+          {% render 'icons-subscribe-form',
+            s: s,
+            id_suffix: 'hero',
+            variant: 'inline',
+            button_label: hero_button_label %}
           <div class="icons-hero__dots" data-hero-dots aria-hidden="true"></div>
           {% if s.hero_scarcity != blank %}<span class="icons-hero__scarcity">{{ s.hero_scarcity | escape }}</span>{% endif %}
         </div>
@@ -225,6 +230,33 @@
   .icons-lp__form--stacked {
     justify-content: center;
   }
+  .icons-lp__form--inline {
+    justify-content: flex-start;
+    max-width: 34rem;
+    flex: 1 1 22rem;
+  }
+
+  /* The hero sits on dark video, so the fields need light-on-dark treatment. */
+  .icons-hero .icons-lp__input {
+    color: #f4f1eb;
+    border-bottom-color: rgba(244, 241, 235, 0.4);
+  }
+  .icons-hero .icons-lp__input::placeholder {
+    color: rgba(244, 241, 235, 0.6);
+  }
+  .icons-hero .icons-lp__input:focus-visible {
+    border-bottom-color: #f4f1eb;
+  }
+  .icons-hero .icons-lp__submit {
+    background: #f4f1eb;
+    color: var(--lp-bg);
+    letter-spacing: 0.28em;
+    font-size: 0.66rem;
+    padding: 0.95rem 2.4rem;
+  }
+  .icons-hero .icons-lp__status {
+    color: rgba(244, 241, 235, 0.75);
+  }
   .icons-lp__input {
     flex: 1 1 16rem;
     background: transparent;
@@ -322,12 +354,6 @@
   .icons-hero__q .w { display:inline-block; overflow:hidden; vertical-align:top; padding:0.06em 0; }
   .icons-hero__q .i { display:inline-block; will-change:transform, filter, opacity; }
   .icons-hero__bottom { display:flex; align-items:center; gap:1.75rem; padding-bottom:clamp(2rem,5vh,3.4rem); flex-wrap:wrap; }
-  .icons-hero__cta {
-    display:inline-block; text-decoration:none; text-transform:uppercase;
-    letter-spacing:0.28em; font-size:0.66rem; color:var(--lp-bg); background:#F4F1EB; padding:0.95rem 2.4rem;
-  }
-  @media (prefers-reduced-motion: no-preference) { .icons-hero__cta { transition: opacity .25s ease; } }
-  .icons-hero__cta:hover { opacity:0.85; }
   .icons-hero__dots { display:flex; gap:0.5rem; }
   .icons-hero__dot { width:6px; height:6px; border-radius:50%; background:rgba(244,241,235,0.26); border:0; padding:0; cursor:pointer; transition:.4s; }
   .icons-hero__dot[aria-current="true"] { background:#F4F1EB; transform:scale(1.15); }
