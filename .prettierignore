@@ -5,6 +5,22 @@ package-lock.json
 .shopify/
 # Liquid files have complex syntax - use Theme Check instead
 *.liquid
+
+# Shopify-generated theme JSON. The admin theme editor and the GitHub sync
+# rewrite these with their own formatting, bypassing the pre-commit hook — it
+# broke CI five times in one day. They are machine-generated, so gating on
+# their whitespace has no value. Deliberately NOT a blanket *.json ignore:
+# config/settings_schema.json and locales/*.json are hand-edited and stay checked.
+templates/*.json
+config/settings_data.json
+sections/*-group.json
 # Agent tooling artifacts — not theme source, don't gate CI on their formatting
 .impeccable/
 .superpowers/
+# Vendored skill files installed by `npx impeccable install`. Reformatting them
+# is churn the next install undoes, so keep them out of the gate.
+.claude/skills/
+.cursor/skills/
+.cursor/hooks.json
+.github/skills/
+.github/hooks/

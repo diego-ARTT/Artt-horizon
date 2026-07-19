@@ -26,6 +26,10 @@ build/
 # Production asset build outputs (run `npm run build` before deploying)
 assets/**/*.min.js
 assets/**/*.min.css
+# ...but GSAP is a vendored dependency the ICONS hero needs at runtime, not a
+# build output. It is tracked, and without this exception a remove-and-re-add
+# would silently drop it and break the hero reveal.
+!assets/gsap.min.js
 
 # Logs
 logs/
@@ -42,3 +46,16 @@ yarn-error.log*
 
 # Config files (if they contain sensitive data)
 config.yml
+
+# Vendored AI-tooling skill files, installed per-machine with
+# `npx impeccable install`. Regenerable, ~105 files, and every tool update
+# would land as a large diff. Run the installer once on a fresh clone to get
+# /impeccable back.
+#
+# NOTE: .impeccable/ is deliberately NOT ignored — design.json and the briefs
+# are this project's captured design context, not vendored tooling.
+.claude/skills/
+.cursor/skills/
+.cursor/hooks.json
+.github/skills/
+.github/hooks/

@@ -151,8 +151,8 @@
               "type": "button",
               "name": "t:names.button",
               "settings": {
-                "label": "Shop Sale",
-                "link": "shopify://collections/seven-deadly-sins",
+                "label": "Discover ICONS",
+                "link": "shopify://collections/icon-coilection",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",
                 "width": "fit-content",

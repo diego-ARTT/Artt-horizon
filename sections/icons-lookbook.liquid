@@ -4,19 +4,29 @@
 <div class="icons-lp" data-icons-lp>
   {%- assign questions = section.blocks | where: "type", "question" -%}
   {% if s.hero_style == 'question_video' and questions.size > 0 %}
-    <section class="icons-hero" data-icons-hero aria-label="{{ s.hero_topleft | escape }}">
+    <section class="icons-hero" data-icons-hero
+      data-gsap-src="{{ 'gsap.min.js' | asset_url }}"
+      aria-label="{{ s.hero_topleft | escape }}">
       <div class="icons-hero__bg"
         {%- if s.hero_video == blank and s.hero_poster != blank %} style="background-image:url('{{ s.hero_poster | image_url: width: 1600 }}')"{% endif -%}>
         {% if s.hero_video != blank %}
-          <video class="icons-hero__video" autoplay muted loop playsinline preload="metadata"
+          <video class="icons-hero__video" data-hero-video autoplay muted loop playsinline preload="none"
             {% if s.hero_poster != blank %}poster="{{ s.hero_poster | image_url: width: 1600 }}"{% elsif s.hero_video.preview_image %}poster="{{ s.hero_video.preview_image | image_url: width: 1600 }}"{% endif %}>
-            {% for source in s.hero_video.sources %}
-              {% if source.format == 'mp4' or source.format == 'webm' %}<source src="{{ source.url }}" type="video/{{ source.format }}">{% endif %}
-            {% endfor %}
           </video>
+          {%- comment -%}
+            Filter with `where` before looping so `forloop.last` refers to the last
+            *emitted* item, not the last item in the unfiltered source list — otherwise
+            a trailing comma can be emitted, producing invalid JSON. Only `mp4` is kept:
+            `mov` isn't reliably web-playable and `m3u8` (HLS) has no native support in
+            most non-Safari browsers, so neither belongs in a plain <video> source list.
+          {%- endcomment -%}
+          <script type="application/json" data-hero-video-sources>
+            [{% assign playable_sources = s.hero_video.sources | where: 'format', 'mp4' %}{% for source in playable_sources %}{"src": {{ source.url | json }}, "type": "video/{{ source.format }}"}{% unless forloop.last %},{% endunless %}{% endfor %}]
+          </script>
         {% endif %}
       </div>
-      <div class="icons-hero__scrim"></div>
+      {%- assign scrim_opacity = s.hero_overlay_opacity | default: 100 | divided_by: 100.0 -%}
+      <div class="icons-hero__scrim" style="--icons-scrim-opacity: {{ scrim_opacity }}"></div>
       <div class="icons-hero__stage">
         <div class="icons-hero__top">
           <span class="icons-hero__kicker">{{ s.hero_topleft | escape }}</span>
@@ -27,13 +37,17 @@
           <p class="icons-lp__visually-hidden" data-hero-live aria-live="polite"></p>
         </div>
         <div class="icons-hero__bottom">
-          {% if s.hero_cta != blank %}<a class="icons-hero__cta" href="#icons-subscribe">{{ s.hero_cta | escape }}</a>{% endif %}
+          {%- assign hero_button_label = s.hero_cta | default: s.subscribe_button -%}
+          {% render 'icons-subscribe-form',
+            s: s,
+            id_suffix: 'hero',
+            variant: 'inline',
+            button_label: hero_button_label %}
           <div class="icons-hero__dots" data-hero-dots aria-hidden="true"></div>
           {% if s.hero_scarcity != blank %}<span class="icons-hero__scarcity">{{ s.hero_scarcity | escape }}</span>{% endif %}
         </div>
       </div>
       <script type="application/json" data-hero-questions>[{% for b in questions %}{{ b.settings.text | json }}{% unless forloop.last %},{% endunless %}{% endfor %}]</script>
-      <script src="{{ 'gsap.min.js' | asset_url }}" defer></script>
     </section>
   {% else %}
     <header class="icons-lp__hero">
@@ -54,8 +68,8 @@
             <img
               src="{{ block.settings.image | asset_url }}"
               alt="{{ block.settings.alt | default: 'ARTTITUDE ICONS look' | escape }}"
-              width="1530"
-              height="2048"
+              width="1000"
+              height="1339"
               loading="lazy"
               decoding="async">
           </figure>
@@ -64,38 +78,13 @@
     </section>
   {% endif %}
   <section class="icons-lp__subscribe" id="icons-subscribe">
-    {% if s.subscribe_kicker != blank %}<p class="icons-lp__kicker">{{ s.subscribe_kicker | escape }}</p>{% endif %}
+    {% if s.subscribe_kicker != blank %}<h2 class="icons-lp__kicker">{{ s.subscribe_kicker | escape }}</h2>{% endif %}
     {% if s.subscribe_line != blank %}<p class="icons-lp__sub-line">{{ s.subscribe_line | escape }}</p>{% endif %}
-    <form
-      class="icons-lp__form"
-      data-icons-subscribe
-      data-klaviyo-company="{{ s.klaviyo_public_key | escape }}"
-      data-klaviyo-list="{{ s.klaviyo_list_id | escape }}"
-      data-msg-invalid="{{ s.msg_invalid | escape }}"
-      data-msg-loading="{{ s.msg_loading | escape }}"
-      data-msg-success="{{ s.msg_success | escape }}"
-      data-msg-error="{{ s.msg_error | escape }}"
-      novalidate>
-      <label class="icons-lp__visually-hidden" for="icons-email">{{ s.subscribe_placeholder | escape }}</label>
-      <input
-        id="icons-email"
-        class="icons-lp__input"
-        type="email"
-        name="email"
-        autocomplete="email"
-        autocapitalize="off"
-        placeholder="{{ s.subscribe_placeholder | escape }}"
-        required>
-      <input
-        class="icons-lp__visually-hidden"
-        type="text"
-        name="company_website"
-        tabindex="-1"
-        autocomplete="off"
-        aria-hidden="true">
-      <button class="icons-lp__submit" type="submit">{{ s.subscribe_button | escape }}</button>
-      <p class="icons-lp__status" data-status role="status" aria-live="polite"></p>
-    </form>
+    {% render 'icons-subscribe-form',
+      s: s,
+      id_suffix: 'footer',
+      variant: 'stacked',
+      button_label: s.subscribe_button %}
   </section>
 </div>
 
@@ -118,6 +107,9 @@
     --lp-bg: #0A0A0A;
     --lp-ink: #111111;
     --lp-fg: #E4E1DA;
+    /* Brighter than --lp-fg, for type sitting on the hero video where the
+       backdrop is less predictable than flat --lp-bg. DESIGN.md: icons-bone-bright. */
+    --lp-fg-bright: #F4F1EB;
     --lp-muted: #9A948B;
     --lp-hairline: rgba(228, 225, 218, 0.14);
     background: var(--lp-bg);
@@ -127,10 +119,14 @@
   }
   .icons-lp * { box-sizing: border-box; }
 
+  /* Rendered as <h2> in the subscribe section and <p> in the type-only hero
+     (where it precedes the h1 and must not outrank it). font-weight is pinned
+     so the two render identically despite the differing element defaults. */
   .icons-lp__kicker {
     text-transform: uppercase;
     letter-spacing: 0.22em;
     font-size: 0.7rem;
+    font-weight: 400;
     color: var(--lp-muted);
     margin: 0;
   }
@@ -247,7 +243,58 @@
     width: 100%;
     max-width: 30rem;
   }
-  .icons-lp__input {
+  .icons-lp__form--stacked {
+    justify-content: center;
+  }
+  .icons-lp__form--inline {
+    justify-content: flex-start;
+    max-width: 34rem;
+    flex: 1 1 22rem;
+  }
+
+  /* The hero sits on dark video, so the fields need light-on-dark treatment. */
+  /* Light-on-dark treatment for the field sitting on the video. The explicit
+     transparent background (and the :hover twin) is what keeps the theme's
+     `input:hover` background from rendering cream text on a light box. */
+  .icons-hero .icons-lp__input,
+  .icons-hero .icons-lp__input:hover,
+  .icons-hero .icons-lp__input:focus {
+    background: transparent;
+    color: var(--lp-fg-bright);
+    border-bottom-color: rgba(244, 241, 235, 0.75);
+  }
+  .icons-hero .icons-lp__input::placeholder {
+    color: rgba(244, 241, 235, 0.82);
+  }
+  .icons-hero .icons-lp__input:focus-visible {
+    border-bottom-color: var(--lp-fg-bright);
+  }
+  .icons-hero .icons-lp__submit {
+    background: var(--lp-fg-bright);
+    color: var(--lp-bg);
+    letter-spacing: 0.28em;
+    font-size: 0.66rem;
+    padding: 0.95rem 2.4rem;
+  }
+  /* Both submit buttons relied on the UA default focus ring. On the cream hero
+     button the ring is offset outward so it lands on the dark scrim rather than
+     disappearing into the button. */
+  .icons-lp__submit:focus-visible {
+    outline: 2px solid var(--lp-fg);
+    outline-offset: 3px;
+  }
+  .icons-hero .icons-lp__submit:focus-visible {
+    outline-color: var(--lp-fg-bright);
+  }
+  .icons-hero .icons-lp__status {
+    color: rgba(244, 241, 235, 0.75);
+  }
+  /* :hover is repeated in the selector deliberately. The theme sets
+     `input:hover { background-color: var(--color-input-hover-background) }` in
+     base.css, and that (0-1-1) outranks a bare `.icons-lp__input` (0-1-0) for
+     background-color — so without this the field grows a light box on hover. */
+  .icons-lp__input,
+  .icons-lp__input:hover {
     flex: 1 1 16rem;
     background: transparent;
     border: 0;
@@ -263,6 +310,12 @@
   }
   .icons-lp__submit {
     flex: 0 0 auto;
+    /* min-height rather than more padding: the padding sets the optical rhythm,
+       and both submit variants land a shade under 44px on their own. */
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: var(--lp-fg);
     color: var(--lp-bg);
     border: 0;
@@ -284,15 +337,37 @@
   .icons-lp__status[data-state="success"] { color: var(--lp-fg); }
 
   .icons-hero {
-    position: relative; height: 100vh; height: 100dvh; min-height: 640px; overflow: hidden;
+    position: relative;
+    height: 100vh;
+    /* Cap the fallback floor to the viewport too, so short/landscape
+       screens without dvh support can't be forced to overflow. */
+    min-height: min(32rem, 100vh);
+    overflow: hidden;
     background: var(--lp-bg);
-    color: #F4F1EB;
+    color: var(--lp-fg-bright);
     font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+
+  /* Where dvh is supported, size to the viewport space the sticky header
+     actually leaves. --header-group-height and --transparent-header-offset-boolean
+     are defined on `body` in sections/header.liquid; the boolean is 1 when the
+     header is transparent (overlays content), so nothing is subtracted then. */
+  @supports (height: 100dvh) {
+    .icons-hero {
+      --icons-hero-avail: calc(
+        100dvh - var(--header-group-height, 0px) * (1 - var(--transparent-header-offset-boolean, 0))
+      );
+
+      height: var(--icons-hero-avail);
+      /* Self-limiting floor: never taller than the space available, which a
+         fixed min-height could exceed on short/landscape viewports. */
+      min-height: min(32rem, var(--icons-hero-avail));
+    }
   }
   .icons-hero__bg { position:absolute; inset:-8%; z-index:0; background-size:cover; background-position:60% 24%; }
   .icons-hero__video {
     position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-    filter: blur(24px) brightness(0.46) saturate(0.92);
+    filter: blur(8px) brightness(0.46) saturate(0.92);
     transform: scale(1.08);
   }
   @media (prefers-reduced-motion: no-preference) {
@@ -301,9 +376,19 @@
   @keyframes icons-hero-drift { from{transform:scale(1.08)} to{transform:scale(1.16) translate3d(-1.5%,-1%,0)} }
   .icons-hero__scrim {
     position:absolute; inset:0; z-index:1;
+    /* Merchant-adjustable via the "Video overlay opacity" setting, which sets
+       --icons-scrim-opacity inline. Defaults to 1 = the tuned gradient at full
+       strength, so an unset value looks exactly as before. */
+    opacity: var(--icons-scrim-opacity, 1);
+    /* Floors raised so cream type clears WCAG 2.2 AA against a worst-case
+       (near-white) video frame. Measured at 100%, pure-white backdrop:
+       kickers 15.9:1 / 9.6:1, h1 7.7:1 (4.7:1 at its widest wrap, needs 3:1),
+       form row and scarcity 16.8:1. The gradient's shape — dark at the left
+       and bottom where the type lives, lighter through the middle-right where
+       the footage breathes — is unchanged; only the thin zones came up. */
     background:
-      linear-gradient(90deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0.5) 40%, rgba(10,10,10,0.1) 70%, rgba(10,10,10,0.3) 100%),
-      linear-gradient(180deg, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0) 24%, rgba(10,10,10,0) 58%, rgba(10,10,10,0.92) 100%);
+      linear-gradient(90deg, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.66) 40%, rgba(10,10,10,0.46) 70%, rgba(10,10,10,0.54) 100%),
+      linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.22) 24%, rgba(10,10,10,0.26) 58%, rgba(10,10,10,0.95) 100%);
   }
   .icons-hero__stage {
     position:relative; z-index:2; height:100%;
@@ -318,21 +403,32 @@
     font-family:"Bodoni Moda", Georgia, serif; font-weight:700;
     font-size: clamp(2.5rem, 6vw, 5.4rem);
     line-height:1.05; letter-spacing:-0.01em; text-align:left; text-wrap:balance;
-    color:#F4F1EB; margin:0;
+    color:var(--lp-fg-bright); margin:0;
     text-shadow: 0 2px 34px rgba(0,0,0,0.5);
   }
   .icons-hero__q .w { display:inline-block; overflow:hidden; vertical-align:top; padding:0.06em 0; }
   .icons-hero__q .i { display:inline-block; will-change:transform, filter, opacity; }
   .icons-hero__bottom { display:flex; align-items:center; gap:1.75rem; padding-bottom:clamp(2rem,5vh,3.4rem); flex-wrap:wrap; }
-  .icons-hero__cta {
-    display:inline-block; text-decoration:none; text-transform:uppercase;
-    letter-spacing:0.28em; font-size:0.66rem; color:var(--lp-bg); background:#F4F1EB; padding:0.95rem 2.4rem;
+  .icons-hero__dots { display:flex; gap:0.25rem; margin-inline:-0.5rem; }
+  /* The button is a 24x24 target (WCAG 2.2 AA 2.5.8); the visible mark is the
+     6px ::before. Sizing the button itself to 6px is what fails the criterion,
+     and overlapping hit areas would fail its spacing exception too, so the
+     targets are spaced rather than overlapped. */
+  .icons-hero__dot {
+    width:24px; height:24px;
+    display:grid; place-items:center;
+    background:transparent; border:0; padding:0; cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
   }
-  @media (prefers-reduced-motion: no-preference) { .icons-hero__cta { transition: opacity .25s ease; } }
-  .icons-hero__cta:hover { opacity:0.85; }
-  .icons-hero__dots { display:flex; gap:0.5rem; }
-  .icons-hero__dot { width:6px; height:6px; border-radius:50%; background:rgba(244,241,235,0.26); border:0; padding:0; cursor:pointer; transition:.4s; }
-  .icons-hero__dot[aria-current="true"] { background:#F4F1EB; transform:scale(1.15); }
+  .icons-hero__dot::before {
+    content:""; width:6px; height:6px; border-radius:50%;
+    background:rgba(244,241,235,0.26);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .icons-hero__dot::before { transition:background .4s ease, transform .4s ease; }
+  }
+  .icons-hero__dot[aria-current="true"]::before { background:var(--lp-fg-bright); transform:scale(1.15); }
+  .icons-hero__dot:focus-visible { outline:2px solid var(--lp-fg-bright); outline-offset:-2px; border-radius:50%; }
   .icons-hero__scarcity { text-transform:uppercase; letter-spacing:0.24em; font-size:0.62rem; color:rgba(244,241,235,0.6); margin-left:auto; }
   @media (max-width: 700px) {
     .icons-hero__q { width:min(12ch, 90vw); }
@@ -416,11 +512,20 @@
       });
     });
 
-    var ctas = document.querySelectorAll('.icons-lp__cta[href="#icons-subscribe"]');
+    // Any anchor pointing at the subscribe section moves focus into that
+    // section's email field once the scroll settles. Bind by href rather than
+    // by a hero-specific class: the type-only hero uses .icons-lp__cta, and
+    // binding a single class silently no-ops on the other hero style.
+    var ctas = document.querySelectorAll('a[href="#icons-subscribe"]');
     ctas.forEach(function (cta) {
       cta.addEventListener('click', function () {
-        var el = document.getElementById('icons-email');
-        if (el) { setTimeout(function () { el.focus({ preventScroll: true }); }, 500); }
+        var target = document.getElementById('icons-subscribe');
+        var el = target && target.querySelector('input[type="email"]');
+        if (el) {
+          setTimeout(function () {
+            el.focus({ preventScroll: true });
+          }, 500);
+        }
       });
     });
   })();
@@ -442,6 +547,44 @@
 
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var idx = 0, busy = false, timer = null, started = false;
+
+    var saveData = !!(navigator.connection && navigator.connection.saveData);
+
+    // GSAP drives the kinetic reveal only when motion is allowed. Under
+    // reduced-motion the hero already falls back to an opacity fade, so
+    // fetching 71KB would be pure waste.
+    if (!reduce && !window.gsap && root.dataset.gsapSrc) {
+      var gs = document.createElement('script');
+      gs.src = root.dataset.gsapSrc;
+      gs.defer = true;
+      document.head.appendChild(gs);
+    }
+
+    // The backdrop video is decorative. Phones, reduced-motion users, and
+    // Save-Data users keep the poster image instead of pulling an MP4.
+    (function () {
+      var video = root.querySelector('[data-hero-video]');
+      var payload = root.querySelector('[data-hero-video-sources]');
+      if (!video || !payload) return;
+      var wideEnough = matchMedia('(min-width: 750px)').matches;
+      if (reduce || saveData || !wideEnough) return;
+
+      var sources;
+      try {
+        sources = JSON.parse(payload.textContent);
+      } catch (e) {
+        return;
+      }
+      if (!sources || !sources.length) return;
+
+      sources.forEach(function (s) {
+        var el = document.createElement('source');
+        el.src = s.src;
+        el.type = s.type;
+        video.appendChild(el);
+      });
+      video.load();
+    })();
 
     // dots (buttons, keyboard-operable). The container is aria-hidden while empty
     // (no-JS); now that it holds focusable buttons, expose it to assistive tech.
@@ -541,6 +684,8 @@
       ] },
     { "type": "video", "id": "hero_video", "label": "Hero video", "info": "Blurred, looping backdrop for the Question video hero." },
     { "type": "image_picker", "id": "hero_poster", "label": "Hero poster / fallback", "info": "Shown before the video loads and where video isn't set." },
+    { "type": "range", "id": "hero_overlay_opacity", "label": "Video overlay opacity", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100,
+      "info": "How strongly the video is darkened behind the question and the signup field. 100% is tuned to keep the type readable on any footage. Lowering it shows more of the video — below 80% the type can fail contrast on bright footage, so check it against your video." },
     { "type": "text", "id": "hero_topleft", "label": "Top-left label", "default": "ICONS" },
     { "type": "text", "id": "hero_topright", "label": "Top-right label", "default": "A New Collection" },
     { "type": "header", "content": "Hero" },

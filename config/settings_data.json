@@ -132,11 +132,6 @@
         "disabled": false,
         "settings": {}
       },
-      "15710897563947040993": {
-        "type": "shopify://apps/avada-boost-sales-trust-badge/blocks/app-embed/45454b7f-f6a7-4852-b770-8e0c3992a226",
-        "disabled": false,
-        "settings": {}
-      },
       "17676059084223943535": {
         "type": "shopify://apps/triplewhale/blocks/triple_pixel_snippet/483d496b-3f1a-4609-aea7-8eee3b6b7a2a",
         "disabled": false,
@@ -167,7 +162,7 @@
           "side_margin": 36,
           "bottom_margin": 36,
           "mobile_side_margin": 16,
-          "mobile_bottom_margin": 46
+          "mobile_bottom_margin": 108
         }
       },
       "9108694385781200119": {
@@ -200,6 +195,11 @@
           "agent_font": "system_ui_n4",
           "agent_border_radius": 16
         }
+      },
+      "15710897563947040993": {
+        "type": "shopify://apps/avada-boost-sales-trust-badge/blocks/app-embed/45454b7f-f6a7-4852-b770-8e0c3992a226",
+        "disabled": true,
+        "settings": {}
       }
     },
     "color_schemes": {
