@@ -76,6 +76,22 @@
       </ul>
     </section>
   {% endif %}
+  {% if s.boilerplate != blank %}
+    <section class="press-kit__group press-kit__boilerplate" aria-labelledby="press-kit-boilerplate-{{ section.id }}">
+      <h2 class="press-kit__heading" id="press-kit-boilerplate-{{ section.id }}">{{ s.boilerplate_heading | escape }}</h2>
+      <div class="press-kit__quote" data-press-quote>{{ s.boilerplate }}</div>
+      <button
+        class="press-kit__copy"
+        type="button"
+        data-press-copy
+        data-copied-label="{{ s.copied_label | escape }}"
+        hidden
+      >
+        {{ s.copy_label | escape }}
+      </button>
+      <p class="press-kit__copied" data-press-copied role="status" aria-live="polite"></p>
+    </section>
+  {% endif %}
 </div>
 
 {% stylesheet %}
@@ -173,7 +189,71 @@
       gap: 0.25rem;
     }
   }
+  .press-kit__quote {
+    max-width: 60ch;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    padding-inline-start: 1.25rem;
+    border-inline-start: 1px solid var(--color-border);
+  }
+  .press-kit__quote p {
+    margin: 0 0 1em;
+  }
+  .press-kit__quote p:last-child {
+    margin-block-end: 0;
+  }
+  .press-kit__copy {
+    margin-block-start: 1.25rem;
+    min-height: 44px;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    color: inherit;
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+    font-size: 0.75rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+  .press-kit__copy:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 3px;
+  }
+  .press-kit__copied {
+    margin: 0.5rem 0 0;
+    min-height: 1.2em;
+    font-size: 0.75rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
 {% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    document.querySelectorAll('[data-press-copy]').forEach(function (button) {
+      var group = button.closest('.press-kit__boilerplate');
+      if (!group) return;
+      var quote = group.querySelector('[data-press-quote]');
+      var status = group.querySelector('[data-press-copied]');
+      if (!quote || !navigator.clipboard || !navigator.clipboard.writeText) return;
+
+      // Only reveal the button once we know the API exists — a copy button
+      // that silently does nothing is worse than no button.
+      button.hidden = false;
+
+      button.addEventListener('click', function () {
+        navigator.clipboard.writeText(quote.innerText.trim()).then(
+          function () {
+            if (status) status.textContent = button.dataset.copiedLabel || 'Copied';
+          },
+          function () {
+            if (status) status.textContent = 'Press Ctrl+C to copy';
+          }
+        );
+      });
+    });
+  })();
+{% endjavascript %}
 
 {% schema %}
 {
@@ -183,6 +263,10 @@
     { "type": "text", "id": "downloads_heading", "label": "Downloads heading", "default": "Press kit" },
     { "type": "text", "id": "facts_heading", "label": "Facts heading", "default": "Fast facts" },
     { "type": "text", "id": "coverage_heading", "label": "Coverage heading", "default": "Previously covered" },
+    { "type": "text", "id": "boilerplate_heading", "label": "Boilerplate heading", "default": "Boilerplate" },
+    { "type": "richtext", "id": "boilerplate", "label": "Boilerplate", "info": "The paragraph a journalist may quote verbatim." },
+    { "type": "text", "id": "copy_label", "label": "Copy button label", "default": "Copy boilerplate" },
+    { "type": "text", "id": "copied_label", "label": "Copied confirmation", "default": "Copied" },
     {
       "type": "select",
       "id": "section_width",
