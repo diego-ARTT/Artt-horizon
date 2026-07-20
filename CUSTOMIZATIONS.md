@@ -430,6 +430,25 @@ When deploying theme updates to production:
 - **Testing Status:** Needs comprehensive testing
 - **Usage:** Can be added to any template via theme editor
 
+#### `sections/press-kit.liquid`
+
+- **Purpose:** The press kit content model for the media page — the things a
+  journalist takes away.
+- **Blocks:** `download` (label, description, file URL, hand-typed format/size),
+  `fact` (term/value, rendered as a `<dl>`), `coverage` (outlet, date, link).
+- **Settings:** a heading per group, plus a `richtext` boilerplate with a
+  copy-to-clipboard button.
+- **Template:** `templates/page.press.json`, which composes the orientation and
+  `mailto:` contact from Horizon's generic `section`, and founder bios from
+  `media-with-content`. Purely additive — no core theme file modified.
+- **Known limitation:** the `download` attribute does not fire for
+  `cdn.shopify.com` URLs (cross-origin), so multi-file assets must be zipped.
+- **Deliberately not a "collection world":** uses the storefront type and
+  colour system, no new fonts or tokens. See DESIGN.md's Collection World Rule.
+- **Setup:** [`docs/PRESS_PAGE_SETUP.md`](./docs/PRESS_PAGE_SETUP.md)
+- **Created:** 2026-07-19
+- **Spec:** `docs/superpowers/specs/2026-07-19-press-page-design.md`
+
 ### ICONS Pre-Launch Collection Tease (2026-07-14, updated 2026-07-16)
 
 - **Added:** `sections/icons-lookbook.liquid` — ICONS teaser section (full-bleed lookbook grid, Klaviyo client-side subscribe form). Scoped under `.icons-lp`. Renders **inside the store's normal header + footer** — the section no longer ships its own utility bar or footer; those were dropped so the section mounts cleanly in theme chrome. The section now has a `hero_style` toggle: a GSAP kinetic **Question video** hero (default) that plays a Shopify-native `video` setting behind a blurred/scrim backdrop with word-split reveal animation on the seeded reflective questions, alongside the original **Type only** hero. Added a `question` block type (single `text` setting) for the reflective questions.
