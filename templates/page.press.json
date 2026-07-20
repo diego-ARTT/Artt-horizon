@@ -1,0 +1,84 @@
+{
+  "sections": {
+    "orientation": {
+      "type": "section",
+      "blocks": {
+        "intro": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Press and media resources for ARTTITUDE. For anything not here, get in touch.</p>",
+            "max_width": "narrow",
+            "alignment": "left"
+          }
+        },
+        "contact": {
+          "type": "button",
+          "settings": {
+            "label": "Email press",
+            "link": "mailto:press@arttitude.us",
+            "style_class": "button-secondary"
+          }
+        }
+      },
+      "block_order": ["intro", "contact"],
+      "settings": {
+        "section_width": "page-width",
+        "padding-block-start": 48,
+        "padding-block-end": 24
+      }
+    },
+    "press_kit": {
+      "type": "press-kit",
+      "blocks": {
+        "download_logos": {
+          "type": "download",
+          "settings": {
+            "label": "Logo pack",
+            "description": "Wordmark in black and white, SVG and PNG",
+            "file_url": "",
+            "meta": "ZIP"
+          }
+        },
+        "fact_founded": { "type": "fact", "settings": { "term": "Founded", "value": "" } },
+        "fact_founders": {
+          "type": "fact",
+          "settings": { "term": "Founders", "value": "Sylvain and Amrita Castet" }
+        },
+        "fact_based": { "type": "fact", "settings": { "term": "Based", "value": "California" } },
+        "coverage_1": { "type": "coverage", "settings": { "outlet": "", "date": "", "url": "" } }
+      },
+      "block_order": [
+        "download_logos",
+        "fact_founded",
+        "fact_founders",
+        "fact_based",
+        "coverage_1"
+      ],
+      "settings": {
+        "downloads_heading": "Press kit",
+        "facts_heading": "Fast facts",
+        "coverage_heading": "Previously covered",
+        "boilerplate_heading": "Boilerplate",
+        "boilerplate": "<p>ARTTITUDE is a California fashion house that turns fine art into wearable streetwear in limited drops.</p>",
+        "copy_label": "Copy boilerplate",
+        "copied_label": "Copied",
+        "section_width": "page-width",
+        "padding-block-start": 24,
+        "padding-block-end": 48
+      }
+    },
+    "founders": {
+      "type": "media-with-content",
+      "settings": {
+        "media_position": "left",
+        "section_width": "page-width",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "main": {
+      "type": "main-page"
+    }
+  },
+  "order": ["orientation", "press_kit", "founders", "main"]
+}
