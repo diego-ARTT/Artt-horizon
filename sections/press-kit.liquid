@@ -1,6 +1,7 @@
 {%- liquid
   assign s = section.settings
   assign downloads = section.blocks | where: 'type', 'download'
+  assign facts = section.blocks | where: 'type', 'fact'
 -%}
 <div class="section-background color-{{ s.color_scheme }}"></div>
 <div
@@ -33,6 +34,21 @@
           {% endif %}
         {% endfor %}
       </ul>
+    </section>
+  {% endif %}
+  {% if facts.size > 0 %}
+    <section class="press-kit__group" aria-labelledby="press-kit-facts-{{ section.id }}">
+      <h2 class="press-kit__heading" id="press-kit-facts-{{ section.id }}">{{ s.facts_heading | escape }}</h2>
+      <dl class="press-kit__facts">
+        {% for block in facts %}
+          {% if block.settings.term != blank and block.settings.value != blank %}
+            <div class="press-kit__fact" {{ block.shopify_attributes }}>
+              <dt class="press-kit__term">{{ block.settings.term | escape }}</dt>
+              <dd class="press-kit__value">{{ block.settings.value | escape }}</dd>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </dl>
     </section>
   {% endif %}
 </div>
@@ -104,6 +120,34 @@
       grid-row: auto;
     }
   }
+  .press-kit__facts {
+    margin: 0;
+    border-block-start: 1px solid var(--color-border);
+  }
+  .press-kit__fact {
+    display: grid;
+    grid-template-columns: minmax(8rem, 16rem) 1fr;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-block-end: 1px solid var(--color-border);
+  }
+  .press-kit__term {
+    font-size: 0.75rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .press-kit__value {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  @media screen and (max-width: 749px) {
+    .press-kit__fact {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -112,6 +156,7 @@
   "tag": "section",
   "settings": [
     { "type": "text", "id": "downloads_heading", "label": "Downloads heading", "default": "Press kit" },
+    { "type": "text", "id": "facts_heading", "label": "Facts heading", "default": "Fast facts" },
     {
       "type": "select",
       "id": "section_width",
@@ -135,6 +180,24 @@
         { "type": "text", "id": "description", "label": "Description", "info": "One line. What the file contains." },
         { "type": "url", "id": "file_url", "label": "File URL", "info": "Upload under Content > Files, then paste the URL. Zip anything with more than one file — a .zip downloads reliably, a loose SVG or JPG opens in the browser instead." },
         { "type": "text", "id": "meta", "label": "Format and size", "info": "Typed by hand, e.g. \"SVG, PNG · 2 MB\". Update it if you swap the file." }
+      ]
+    },
+    {
+      "type": "fact",
+      "name": "Fact",
+      "settings": [
+        {
+          "type": "text",
+          "id": "term",
+          "label": "Term",
+          "info": "e.g. Founded, Founders, Based, Run size"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "info": "e.g. 2021 — or Sylvain and Amrita Castet"
+        }
       ]
     }
   ],
