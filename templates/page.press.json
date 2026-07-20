@@ -69,6 +69,50 @@
     },
     "founders": {
       "type": "media-with-content",
+      "blocks": {
+        "media": {
+          "type": "_media-without-appearance",
+          "static": true,
+          "settings": {
+            "media_type": "image",
+            "image": "",
+            "image_position": "cover"
+          },
+          "blocks": {}
+        },
+        "content": {
+          "type": "_content-without-appearance",
+          "static": true,
+          "settings": {
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 24
+          },
+          "blocks": {
+            "founders_heading": {
+              "type": "text",
+              "settings": {
+                "text": "<h2>Founders</h2>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h3"
+              }
+            },
+            "founders_bio": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Sylvain and Amrita Castet founded ARTTITUDE in California.</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte"
+              }
+            }
+          },
+          "block_order": ["founders_heading", "founders_bio"]
+        }
+      },
       "settings": {
         "media_position": "left",
         "section_width": "page-width",
@@ -77,7 +121,25 @@
       }
     },
     "main": {
-      "type": "main-page"
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2"
+          }
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {}
+        }
+      },
+      "block_order": ["heading", "page-content"]
     }
   },
   "order": ["orientation", "press_kit", "founders", "main"]
