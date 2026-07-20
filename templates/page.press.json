@@ -142,5 +142,5 @@
       "block_order": ["heading", "page-content"]
     }
   },
-  "order": ["orientation", "press_kit", "founders", "main"]
+  "order": ["main", "orientation", "press_kit", "founders"]
 }

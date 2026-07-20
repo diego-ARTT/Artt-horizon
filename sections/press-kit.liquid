@@ -3,13 +3,34 @@
   assign downloads = section.blocks | where: 'type', 'download'
   assign facts = section.blocks | where: 'type', 'fact'
   assign coverage = section.blocks | where: 'type', 'coverage'
+
+  assign download_count = 0
+  for block in downloads
+    if block.settings.label != blank and block.settings.file_url != blank
+      assign download_count = download_count | plus: 1
+    endif
+  endfor
+
+  assign fact_count = 0
+  for block in facts
+    if block.settings.term != blank and block.settings.value != blank
+      assign fact_count = fact_count | plus: 1
+    endif
+  endfor
+
+  assign coverage_count = 0
+  for block in coverage
+    if block.settings.outlet != blank and block.settings.url != blank
+      assign coverage_count = coverage_count | plus: 1
+    endif
+  endfor
 -%}
 <div class="section-background color-{{ s.color_scheme }}"></div>
 <div
   class="section section--{{ s.section_width }} color-{{ s.color_scheme }} spacing-style press-kit"
   style="{% render 'spacing-style', settings: section.settings %}"
 >
-  {% if downloads.size > 0 %}
+  {% if download_count > 0 %}
     <section class="press-kit__group" aria-labelledby="press-kit-downloads-{{ section.id }}">
       <h2 class="press-kit__heading" id="press-kit-downloads-{{ section.id }}">{{ s.downloads_heading | escape }}</h2>
       <ul class="press-kit__list" role="list">
@@ -37,7 +58,7 @@
       </ul>
     </section>
   {% endif %}
-  {% if facts.size > 0 %}
+  {% if fact_count > 0 %}
     <section class="press-kit__group" aria-labelledby="press-kit-facts-{{ section.id }}">
       <h2 class="press-kit__heading" id="press-kit-facts-{{ section.id }}">{{ s.facts_heading | escape }}</h2>
       <dl class="press-kit__facts">
@@ -52,7 +73,7 @@
       </dl>
     </section>
   {% endif %}
-  {% if coverage.size > 0 %}
+  {% if coverage_count > 0 %}
     <section class="press-kit__group" aria-labelledby="press-kit-coverage-{{ section.id }}">
       <h2 class="press-kit__heading" id="press-kit-coverage-{{ section.id }}">{{ s.coverage_heading | escape }}</h2>
       <ul class="press-kit__list" role="list">

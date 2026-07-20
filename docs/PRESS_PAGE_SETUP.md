@@ -13,9 +13,13 @@ The press page is built from `sections/press-kit.liquid` on the
    - Paste each file URL into its Download block.
    - Fill the Fast facts values (founding year, and anything else you want
      quotable).
-   - Add a Coverage block per article, with outlet, date and link.
+   - Add a Coverage block per article, with outlet, date and Article URL.
    - Check the boilerplate reads the way you want it quoted.
-4. **Set the press email.** In the orientation section's button block, set the
+4. **Set the founders bio.** Theme editor → the Press page → Founders section:
+   set the founder image, and edit the bio text. The section ships as a
+   single combined bio for both founders — duplicate the section if you want
+   one per founder instead.
+5. **Set the press email.** In the orientation section's button block, set the
    link to `mailto:` your real press address.
 
 ## Zip anything with more than one file
