@@ -1,0 +1,143 @@
+{%- liquid
+  assign s = section.settings
+  assign downloads = section.blocks | where: 'type', 'download'
+-%}
+<div class="section-background color-{{ s.color_scheme }}"></div>
+<div
+  class="section section--{{ s.section_width }} color-{{ s.color_scheme }} spacing-style press-kit"
+  style="{% render 'spacing-style', settings: section.settings %}"
+>
+  {% if downloads.size > 0 %}
+    <section class="press-kit__group" aria-labelledby="press-kit-downloads-{{ section.id }}">
+      <h2 class="press-kit__heading" id="press-kit-downloads-{{ section.id }}">{{ s.downloads_heading | escape }}</h2>
+      <ul class="press-kit__list" role="list">
+        {% for block in downloads %}
+          {% if block.settings.label != blank and block.settings.file_url != blank %}
+            <li class="press-kit__row" {{ block.shopify_attributes }}>
+              <a
+                class="press-kit__link"
+                href="{{ block.settings.file_url | escape }}"
+                download
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="press-kit__label">{{ block.settings.label | escape }}</span>
+                {% if block.settings.description != blank %}
+                  <span class="press-kit__desc">{{ block.settings.description | escape }}</span>
+                {% endif %}
+                {% if block.settings.meta != blank %}
+                  <span class="press-kit__meta">{{ block.settings.meta | escape }}</span>
+                {% endif %}
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+</div>
+
+{% stylesheet %}
+  .press-kit__group + .press-kit__group {
+    margin-block-start: 4rem;
+  }
+  .press-kit__heading {
+    margin: 0 0 1.5rem;
+  }
+  .press-kit__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-block-start: 1px solid var(--color-border);
+  }
+  .press-kit__row {
+    border-block-end: 1px solid var(--color-border);
+  }
+  .press-kit__link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.25rem 1.5rem;
+    align-items: baseline;
+    min-height: 44px;
+    padding: 1.25rem 0;
+    text-decoration: none;
+    color: inherit;
+  }
+  .press-kit__label {
+    grid-column: 1;
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+  .press-kit__desc {
+    grid-column: 1;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    opacity: 0.8;
+  }
+  .press-kit__meta {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 0.75rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0.7;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .press-kit__link {
+      transition: opacity 0.2s ease;
+    }
+  }
+  .press-kit__link:hover {
+    opacity: 0.7;
+  }
+  .press-kit__link:focus-visible {
+    outline: 2px solid currentcolor;
+    outline-offset: 4px;
+  }
+  @media screen and (max-width: 749px) {
+    .press-kit__link {
+      grid-template-columns: 1fr;
+    }
+    .press-kit__meta {
+      grid-column: 1;
+      grid-row: auto;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Press kit",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "downloads_heading", "label": "Downloads heading", "default": "Press kit" },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "options": [
+        { "value": "page-width", "label": "Page" },
+        { "value": "full-width", "label": "Full" }
+      ],
+      "default": "page-width"
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "range", "id": "padding-block-start", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding-block-end", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "download",
+      "name": "Download",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Logo pack" },
+        { "type": "text", "id": "description", "label": "Description", "info": "One line. What the file contains." },
+        { "type": "url", "id": "file_url", "label": "File URL", "info": "Upload under Content > Files, then paste the URL. Zip anything with more than one file — a .zip downloads reliably, a loose SVG or JPG opens in the browser instead." },
+        { "type": "text", "id": "meta", "label": "Format and size", "info": "Typed by hand, e.g. \"SVG, PNG · 2 MB\". Update it if you swap the file." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Press kit" }]
+}
+{% endschema %}
