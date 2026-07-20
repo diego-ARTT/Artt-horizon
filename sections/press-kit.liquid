@@ -2,6 +2,7 @@
   assign s = section.settings
   assign downloads = section.blocks | where: 'type', 'download'
   assign facts = section.blocks | where: 'type', 'fact'
+  assign coverage = section.blocks | where: 'type', 'coverage'
 -%}
 <div class="section-background color-{{ s.color_scheme }}"></div>
 <div
@@ -49,6 +50,30 @@
           {% endif %}
         {% endfor %}
       </dl>
+    </section>
+  {% endif %}
+  {% if coverage.size > 0 %}
+    <section class="press-kit__group" aria-labelledby="press-kit-coverage-{{ section.id }}">
+      <h2 class="press-kit__heading" id="press-kit-coverage-{{ section.id }}">{{ s.coverage_heading | escape }}</h2>
+      <ul class="press-kit__list" role="list">
+        {% for block in coverage %}
+          {% if block.settings.outlet != blank and block.settings.url != blank %}
+            <li class="press-kit__row" {{ block.shopify_attributes }}>
+              <a
+                class="press-kit__link"
+                href="{{ block.settings.url | escape }}"
+                target="_blank"
+                rel="noopener"
+              >
+                <span class="press-kit__label">{{ block.settings.outlet | escape }}</span>
+                {% if block.settings.date != blank %}
+                  <span class="press-kit__meta">{{ block.settings.date | escape }}</span>
+                {% endif %}
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
     </section>
   {% endif %}
 </div>
@@ -157,6 +182,7 @@
   "settings": [
     { "type": "text", "id": "downloads_heading", "label": "Downloads heading", "default": "Press kit" },
     { "type": "text", "id": "facts_heading", "label": "Facts heading", "default": "Fast facts" },
+    { "type": "text", "id": "coverage_heading", "label": "Coverage heading", "default": "Previously covered" },
     {
       "type": "select",
       "id": "section_width",
@@ -198,6 +224,15 @@
           "label": "Value",
           "info": "e.g. 2021 — or Sylvain and Amrita Castet"
         }
+      ]
+    },
+    {
+      "type": "coverage",
+      "name": "Coverage",
+      "settings": [
+        { "type": "text", "id": "outlet", "label": "Outlet", "info": "e.g. GQ" },
+        { "type": "text", "id": "date", "label": "Date", "info": "e.g. March 2026" },
+        { "type": "url", "id": "url", "label": "Article URL" }
       ]
     }
   ],
