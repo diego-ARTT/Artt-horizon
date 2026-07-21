@@ -1,14 +1,125 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
+    "orientation": {
+      "type": "section",
+      "blocks": {
+        "intro": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Press and media resources for ARTTITUDE. For anything not here, get in touch.</p>",
+            "max_width": "narrow",
+            "alignment": "left"
+          }
+        },
+        "contact": {
+          "type": "button",
+          "settings": {
+            "label": "Email press",
+            "link": "mailto:press@arttitude.us",
+            "style_class": "button-secondary"
+          }
+        }
+      },
+      "block_order": ["intro", "contact"],
+      "settings": {
+        "section_width": "page-width",
+        "padding-block-start": 48,
+        "padding-block-end": 24
+      }
+    },
+    "press_kit": {
+      "type": "press-kit",
+      "blocks": {
+        "download_logos": {
+          "type": "download",
+          "settings": {
+            "label": "Logo pack",
+            "description": "Wordmark in black and white, SVG and PNG",
+            "file_url": "",
+            "meta": "ZIP"
+          }
+        },
+        "fact_founded": { "type": "fact", "settings": { "term": "Founded", "value": "" } },
+        "fact_founders": {
+          "type": "fact",
+          "settings": { "term": "Founders", "value": "Sylvain and Amrita Castet" }
+        },
+        "fact_based": { "type": "fact", "settings": { "term": "Based", "value": "California" } },
+        "coverage_1": { "type": "coverage", "settings": { "outlet": "", "date": "", "url": "" } }
+      },
+      "block_order": [
+        "download_logos",
+        "fact_founded",
+        "fact_founders",
+        "fact_based",
+        "coverage_1"
+      ],
+      "settings": {
+        "downloads_heading": "Press kit",
+        "facts_heading": "Fast facts",
+        "coverage_heading": "Previously covered",
+        "boilerplate_heading": "Boilerplate",
+        "boilerplate": "<p>ARTTITUDE is a California fashion house that turns fine art into wearable streetwear in limited drops.</p>",
+        "copy_label": "Copy boilerplate",
+        "copied_label": "Copied",
+        "section_width": "page-width",
+        "padding-block-start": 24,
+        "padding-block-end": 48
+      }
+    },
+    "founders": {
+      "type": "media-with-content",
+      "blocks": {
+        "media": {
+          "type": "_media-without-appearance",
+          "static": true,
+          "settings": {
+            "media_type": "image",
+            "image": "",
+            "image_position": "cover"
+          },
+          "blocks": {}
+        },
+        "content": {
+          "type": "_content-without-appearance",
+          "static": true,
+          "settings": {
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 24
+          },
+          "blocks": {
+            "founders_heading": {
+              "type": "text",
+              "settings": {
+                "text": "<h2>Founders</h2>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h3"
+              }
+            },
+            "founders_bio": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Sylvain and Amrita Castet founded ARTTITUDE in California.</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte"
+              }
+            }
+          },
+          "block_order": ["founders_heading", "founders_bio"]
+        }
+      },
+      "settings": {
+        "media_position": "left",
+        "section_width": "page-width",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
     "main": {
       "type": "main-page",
       "blocks": {
@@ -20,44 +131,16 @@
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-primary--family)",
-            "font_size": "",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "type_preset": "h2"
+          }
         },
         "page-content": {
           "type": "page-content",
-          "settings": {},
-          "blocks": {}
+          "settings": {}
         }
       },
-      "block_order": [
-        "heading",
-        "page-content"
-      ],
-      "settings": {
-        "content_direction": "column",
-        "gap": 32,
-        "color_scheme": "",
-        "padding-block-start": 40,
-        "padding-block-end": 80
-      }
+      "block_order": ["heading", "page-content"]
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main", "orientation", "press_kit", "founders"]
 }
