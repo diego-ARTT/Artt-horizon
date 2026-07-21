@@ -270,8 +270,8 @@
       "settings": {
         "media_position": "left",
         "media_width": "wide",
-        "media_height": "80svh",
-        "section_width": "page-width",
+        "media_height": "100svh",
+        "section_width": "full-width",
         "extend_media": true,
         "color_scheme": "",
         "padding-block-start": 48,
