@@ -30,6 +30,7 @@
       <div class="icons-hero__stage">
         <div class="icons-hero__top">
           <span class="icons-hero__kicker">{{ s.hero_topleft | escape }}</span>
+          {% if s.hero_release != blank %}<span class="icons-hero__release">{{ s.hero_release | escape }}</span>{% endif %}
           <span class="icons-hero__kicker">{{ s.hero_topright | escape }}</span>
         </div>
         <div class="icons-hero__center">
@@ -395,8 +396,29 @@
     display:grid; grid-template-rows:auto 1fr auto;
     padding-inline: clamp(1.5rem, 5vw, 4.5rem);
   }
-  .icons-hero__top { display:flex; justify-content:space-between; align-items:center; padding-top:1.5rem; }
+  .icons-hero__top {
+    display:grid; grid-template-columns:1fr auto 1fr;
+    grid-template-areas:"left date right";
+    align-items:center; column-gap:1rem; padding-top:1.5rem;
+  }
+  .icons-hero__top > .icons-hero__kicker:first-child { grid-area:left; justify-self:start; }
+  .icons-hero__top > .icons-hero__kicker:last-child  { grid-area:right; justify-self:end; }
   .icons-hero__kicker { text-transform:uppercase; letter-spacing:0.34em; font-size:0.66rem; color:rgba(244,241,235,0.6); }
+  /* Release dateline: the single accent on an otherwise monochrome masthead,
+     echoing the email's "· Autumn MMXXVI ·" meta row. */
+  .icons-hero__release {
+    grid-area:date; justify-self:center;
+    text-transform:uppercase; letter-spacing:0.28em; font-size:0.66rem;
+    color:#E4B4B0; white-space:nowrap;
+  }
+  @media (max-width: 700px) {
+    .icons-hero__top {
+      grid-template-columns:1fr 1fr;
+      grid-template-areas:"date date" "left right";
+      row-gap:0.55rem;
+    }
+    .icons-hero__release { white-space:normal; text-align:center; }
+  }
   .icons-hero__center { display:flex; align-items:center; }
   .icons-hero__q {
     width:min(15ch, 66vw);
@@ -688,6 +710,7 @@
       "info": "How strongly the video is darkened behind the question and the signup field. 100% is tuned to keep the type readable on any footage. Lowering it shows more of the video — below 80% the type can fail contrast on bright footage, so check it against your video." },
     { "type": "text", "id": "hero_topleft", "label": "Top-left label", "default": "ICONS" },
     { "type": "text", "id": "hero_topright", "label": "Top-right label", "default": "A New Collection" },
+    { "type": "text", "id": "hero_release", "label": "Release dateline", "info": "Centered dateline in the hero masthead. Leave blank to hide.", "default": "Opens 1 August MMXXVI." },
     { "type": "header", "content": "Hero" },
     { "type": "text", "id": "hero_kicker", "label": "Kicker", "default": "A New Collection" },
     { "type": "text", "id": "hero_heading", "label": "Headline", "default": "You already know these faces." },
