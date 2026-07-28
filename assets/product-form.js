@@ -179,6 +179,17 @@ if (!customElements.get('add-to-cart-component')) {
 }
 
 /**
+ * Queued add-to-cart request captured while a variant section refresh is in flight.
+ * Must preserve FormData extras (`properties`, `selling_plan`) for the later JSON batch flush.
+ * @typedef {{
+ *   variantId: string,
+ *   quantity: number,
+ *   properties?: Record<string, string>,
+ *   sellingPlan?: string
+ * }} QueuedAddToCartItem
+ */
+
+/**
  * A custom element that manages a product form.
  *
  * @typedef {{items: Array<{quantity: number, variant_id: number}>}} Cart
@@ -210,7 +221,7 @@ class ProductFormComponent extends Component {
   /** @type {boolean} */
   #variantChangeInProgress = false;
 
-  /** @type {Array<{variantId: string, quantity: number}>} */
+  /** @type {QueuedAddToCartItem[]} */
   #addToCartQueue = [];
 
   /** @type {string | undefined} */
@@ -317,7 +328,15 @@ class ProductFormComponent extends Component {
       const quantity = this.#getQuantity();
 
       if (intendedVariantId) {
-        this.#addToCartQueue.push({ variantId: intendedVariantId, quantity });
+        // Capture FormData extras now — batch flush only sent id+quantity before,
+        // silently dropping gift-card recipient fields and other line-item properties.
+        const { properties, sellingPlan } = this.#getQueuedLineItemExtras();
+        this.#addToCartQueue.push({
+          variantId: intendedVariantId,
+          quantity,
+          properties,
+          sellingPlan,
+        });
         this.refs.addToCartButtonContainer?.animateAddToCart?.();
       }
 
@@ -345,6 +364,41 @@ class ProductFormComponent extends Component {
     return (
       Number(this.refs.quantitySelector?.getValue?.()) || Number(this.dataset.quantityDefault) || 1
     );
+  }
+
+  /**
+   * Snapshot of form fields that the deferred JSON batch add must preserve.
+   * Mirrors the normal FormData path for `properties[...]` and `selling_plan`.
+   * @returns {{ properties?: Record<string, string>, sellingPlan?: string }}
+   */
+  #getQueuedLineItemExtras() {
+    const form = this.querySelector('form');
+    if (!form) return {};
+
+    const formData = new FormData(form);
+    /** @type {Record<string, string>} */
+    const properties = {};
+    /** @type {string | undefined} */
+    let sellingPlan;
+
+    for (const [key, value] of formData.entries()) {
+      if (typeof value !== 'string') continue;
+
+      const propertyMatch = /^properties\[(.+)\]$/.exec(key);
+      if (propertyMatch) {
+        properties[propertyMatch[1]] = value;
+        continue;
+      }
+
+      if (key === 'selling_plan' && value !== '') {
+        sellingPlan = value;
+      }
+    }
+
+    return {
+      properties: Object.keys(properties).length > 0 ? properties : undefined,
+      sellingPlan,
+    };
   }
 
   /**
@@ -536,7 +590,7 @@ class ProductFormComponent extends Component {
       });
   }
 
-  /** @param {Array<{variantId: string, quantity: number}>} items */
+  /** @param {QueuedAddToCartItem[]} items */
   #processBatchAddToCart(items) {
     if (items.length === 0) return;
 
@@ -553,10 +607,23 @@ class ProductFormComponent extends Component {
     }
 
     const payload = {
-      items: items.map(item => ({
-        id: Number(item.variantId),
-        quantity: item.quantity,
-      })),
+      items: items.map(item => {
+        /** @type {{ id: number, quantity: number, properties?: Record<string, string>, selling_plan?: number }} */
+        const lineItem = {
+          id: Number(item.variantId),
+          quantity: item.quantity,
+        };
+
+        if (item.properties && Object.keys(item.properties).length > 0) {
+          lineItem.properties = item.properties;
+        }
+
+        if (item.sellingPlan) {
+          lineItem.selling_plan = Number(item.sellingPlan);
+        }
+
+        return lineItem;
+      }),
       sections: cartItemComponentsSectionIds.join(','),
     };
 
