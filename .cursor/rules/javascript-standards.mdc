@@ -793,6 +793,11 @@ Queued actions are tied to the selection state that existed when the user acted.
 selection supersedes an in-flight refresh, discard queued actions for the old selection instead of
 flushing stale IDs after the newer refresh completes.
 
+When a queue later flushes via a JSON `/cart/add.js` batch payload, capture the full line-item
+payload the normal FormData path would have sent (`selling_plan`, `properties[...]`, gift-card
+recipient fields, etc.) — not only `{ id, quantity }`. Otherwise an Add click during an in-flight
+variant refresh silently drops line-item properties even when the variant ID is correct.
+
 ```javascript
 class VariantConsumer extends Component {
   #changeInProgress = false;
