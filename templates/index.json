@@ -105,7 +105,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["text_pKXg8w", "text_y88DqX"]
+          "block_order": [
+            "text_pKXg8w",
+            "text_y88DqX"
+          ]
         },
         "group_n9JCfz": {
           "type": "group",
@@ -163,10 +166,15 @@
               "blocks": {}
             }
           },
-          "block_order": ["button_QFiR43"]
+          "block_order": [
+            "button_QFiR43"
+          ]
         }
       },
-      "block_order": ["group_7RWxJ6", "group_n9JCfz"],
+      "block_order": [
+        "group_7RWxJ6",
+        "group_n9JCfz"
+      ],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "video",
@@ -297,7 +305,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_list_text_gPBAJD", "product_list_button_EYmGCt"]
+          "block_order": [
+            "product_list_text_gPBAJD",
+            "product_list_button_EYmGCt"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -382,10 +393,16 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_card_gallery_ey8mzd", "product_title_JNDbtY", "price_XjW4Ff"]
+          "block_order": [
+            "product_card_gallery_ey8mzd",
+            "product_title_JNDbtY",
+            "price_XjW4Ff"
+          ]
         }
       },
-      "block_order": ["button_LVmccw"],
+      "block_order": [
+        "button_LVmccw"
+      ],
       "name": "Seven deadly",
       "settings": {
         "collection": "seven-deadly-sins",
@@ -438,7 +455,10 @@
           "blocks": {}
         }
       },
-      "block_order": ["spacer_EC7kf6", "button_Up8tJC"],
+      "block_order": [
+        "spacer_EC7kf6",
+        "button_Up8tJC"
+      ],
       "name": "Memento hero",
       "settings": {
         "media_type_1": "image",
@@ -582,7 +602,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["text_GeJP3y", "text_ewAewV"]
+          "block_order": [
+            "text_GeJP3y",
+            "text_ewAewV"
+          ]
         },
         "button_jAcaGi": {
           "type": "button",
@@ -599,7 +622,11 @@
           "blocks": {}
         }
       },
-      "block_order": ["spacer_jy9Rr8", "group_Lyk3mc", "button_jAcaGi"],
+      "block_order": [
+        "spacer_jy9Rr8",
+        "group_Lyk3mc",
+        "button_jAcaGi"
+      ],
       "disabled": true,
       "name": "7DS hero",
       "settings": {
@@ -730,7 +757,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_list_text_YFtzcL", "product_list_button_MWeP9V"]
+          "block_order": [
+            "product_list_text_YFtzcL",
+            "product_list_button_MWeP9V"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -815,10 +845,16 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_card_gallery_677WP3", "product_title_YXxMTj", "price_JQzVV4"]
+          "block_order": [
+            "product_card_gallery_677WP3",
+            "product_title_YXxMTj",
+            "price_JQzVV4"
+          ]
         }
       },
-      "block_order": ["button_nJaQcT"],
+      "block_order": [
+        "button_nJaQcT"
+      ],
       "name": "t:names.featured_collection",
       "settings": {
         "collection": "all-garments",
@@ -900,7 +936,9 @@
               "blocks": {}
             }
           },
-          "block_order": ["button_F3ABRG"]
+          "block_order": [
+            "button_F3ABRG"
+          ]
         },
         "group_FxfC6Q": {
           "type": "group",
@@ -959,10 +997,15 @@
               "blocks": {}
             }
           },
-          "block_order": ["button_p9R9jM"]
+          "block_order": [
+            "button_p9R9jM"
+          ]
         }
       },
-      "block_order": ["group_rYwxMy", "group_FxfC6Q"],
+      "block_order": [
+        "group_rYwxMy",
+        "group_FxfC6Q"
+      ],
       "name": "t:names.custom_section",
       "settings": {
         "content_direction": "row",
@@ -1006,7 +1049,10 @@
             "product_cards": "none",
             "autoplay_mode": "sequential",
             "autoscroll_duration": 0,
+            "slide_size_mode": "fixed",
             "slide_size": "250",
+            "slides_in_view_desktop": 4,
+            "slides_in_view_mobile": 2,
             "aspect_ratio": "vertical",
             "border": 0,
             "border_color": "linear-gradient(to right, #833ab4, #fd1d1d, #fcb045)",
@@ -1019,11 +1065,14 @@
             "float_location": "bottom_right",
             "float_size": "medium",
             "show_captions": false,
+            "show_handles": false,
             "custom_css": ""
           }
         }
       },
-      "block_order": ["moast_carousel_HTa9Xh"],
+      "block_order": [
+        "moast_carousel_HTa9Xh"
+      ],
       "name": "Moast carousel",
       "settings": {
         "content_direction": "column",
@@ -1088,7 +1137,9 @@
           }
         }
       },
-      "block_order": ["judge_me_reviews_testimonials_carousel_F8K8Ft"],
+      "block_order": [
+        "judge_me_reviews_testimonials_carousel_F8K8Ft"
+      ],
       "name": "Testimonial",
       "settings": {
         "content_direction": "column",
@@ -1261,6 +1312,90 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "17853153608fc55666": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_b1bb479_Y7BJbj": {
+          "type": "ai_gen_block_b1bb479",
+          "settings": {
+            "video_1": "shopify://files/videos/icon-9-1.webm",
+            "video_2": "shopify://files/videos/icon-9-2.webm",
+            "video_3": "shopify://files/videos/icon-1-1.webm",
+            "video_4": "shopify://files/videos/12_fe943485-7abc-48e4-bdff-c3c68ecb4a23.mp4",
+            "video_5": "shopify://files/videos/1_799d4039-fa14-4f37-9576-ea1b1ca4aeae.mp4",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "aspect_ratio": "9/16",
+            "slides_per_view": 3,
+            "slides_per_view_mobile": 1,
+            "gap": 16,
+            "border_radius": 12,
+            "enable_product_tags": true,
+            "video_1_product_1": "art-angel-2-0-crew-denim-jacket-charc",
+            "video_1_product_2": "",
+            "video_1_product_3": "",
+            "video_2_product_1": "",
+            "video_2_product_2": "",
+            "video_2_product_3": "",
+            "video_3_product_1": "",
+            "video_3_product_2": "",
+            "video_3_product_3": "",
+            "video_4_product_1": "",
+            "video_4_product_2": "",
+            "video_4_product_3": "",
+            "video_5_product_1": "",
+            "video_5_product_2": "",
+            "video_5_product_3": "",
+            "video_6_product_1": "",
+            "video_6_product_2": "",
+            "video_6_product_3": "",
+            "tag_background_color": "#ffffff",
+            "tag_hover_background_color": "#f5f5f5",
+            "tag_text_color": "#000000",
+            "tag_font_size": 12,
+            "tag_border_radius": 20,
+            "button_background_color": "#000000",
+            "button_hover_background_color": "#333333",
+            "button_text_color": "#ffffff",
+            "dot_color": "#000000"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_b1bb479_Y7BJbj"
+      ],
+      "disabled": true,
+      "name": "Shoppable Video Carousel",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
@@ -1272,6 +1407,7 @@
     "section_43NVtR",
     "1763967075d2c6bd68",
     "176470076918a92115",
-    "featured_blog_posts_MDhNY7"
+    "featured_blog_posts_MDhNY7",
+    "17853153608fc55666"
   ]
 }
