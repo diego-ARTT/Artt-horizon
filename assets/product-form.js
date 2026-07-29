@@ -873,8 +873,18 @@ class ProductFormComponent extends Component {
   #onVariantSelected = event => {
     if (event.detail.resource.productId !== this.dataset.productId) return;
 
+    const nextPendingVariantId = event.detail.resource.variantId || undefined;
+
     this.#variantChangeInProgress = true;
-    this.#pendingVariantId = event.detail.resource.variantId || undefined;
+    this.#pendingVariantId = nextPendingVariantId;
+
+    // Keep input[name=id] aligned with the shopper's latest selection while the
+    // section refresh is in flight. Shopify accelerated checkout (Shop Pay /
+    // Buy it now) reads that hidden field and bypasses handleSubmit's queue, so
+    // leaving the previous id would check out the stale variant.
+    if (nextPendingVariantId) {
+      this.refs.variantId.value = nextPendingVariantId;
+    }
   };
 }
 
