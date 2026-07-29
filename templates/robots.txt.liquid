@@ -14,172 +14,97 @@
 #  ┃  Contact: bots@shopify.com                                           ┃
 #  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-User-agent: *
-Disallow: /a/downloads/-/*
-Disallow: /admin
-Disallow: /cart
-Disallow: /orders
-Disallow: /checkouts/
-Disallow: /checkout
-Disallow: /70279135544/checkouts
-Disallow: /70279135544/orders
-Disallow: /carts
-Disallow: /account
-Disallow: /collections/*sort_by*
-Disallow: /*/collections/*sort_by*
-Disallow: /collections/*+*
-Disallow: /collections/*%2B*
-Disallow: /collections/*%2b*
-Disallow: /*/collections/*+*
-Disallow: /*/collections/*%2B*
-Disallow: /*/collections/*%2b*
-Disallow: */collections/*filter*&*filter*
-Disallow: /blogs/*+*
-Disallow: /blogs/*%2B*
-Disallow: /blogs/*%2b*
-Disallow: /*/blogs/*+*
-Disallow: /*/blogs/*%2B*
-Disallow: /*/blogs/*%2b*
-Disallow: /*?*oseid=*
-Disallow: /*preview_theme_id*
-Disallow: /*preview_script_id*
-Disallow: /policies/
-Disallow: /*/policies/
-Disallow: /*/*?*ls=*&ls=*
-Disallow: /*/*?*ls%3D*%3Fls%3D*
-Disallow: /*/*?*ls%3d*%3fls%3d*
-Disallow: /search
-Disallow: /sf_private_access_tokens
-Disallow: /apple-app-site-association
-Disallow: /.well-known/shopify/monorail
-Disallow: /cdn/wpm/*.js
-Disallow: /recommendations/products
-Disallow: /*/recommendations/products
-Disallow: /products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Disallow: /*/products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Disallow: /collections/*/products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Disallow: /*/collections/*/products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Sitemap: https://arttitude.us/sitemap.xml
+#  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+#  ┃  Reading this as an AI assistant or answer engine?                   ┃
+#  ┃  Start here instead of crawling blind:                               ┃
+#  ┃                                                                      ┃
+#  ┃    Agent instructions .... /llms.txt                                 ┃
+#  ┃    UCP merchant profile .. /.well-known/ucp                          ┃
+#  ┃    Full URL inventory .... /sitemap.xml                              ┃
+#  ┃                                                                      ┃
+#  ┃  Product, collection, blog and policy pages are open to every        ┃
+#  ┃  well-behaved crawler. Only checkout, cart, account and faceted      ┃
+#  ┃  duplicate URLs are withheld — they are noise, not secrets.          ┃
+#  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
-# Google adsbot ignores robots.txt unless specifically named!
-User-agent: adsbot-google
-Disallow: /checkouts/
-Disallow: /checkout
-Disallow: /carts
-Disallow: /orders
-Disallow: /70279135544/checkouts
-Disallow: /70279135544/orders
-Disallow: /*?*oseid=*
-Disallow: /*preview_theme_id*
-Disallow: /*preview_script_id*
-Disallow: /cdn/wpm/*.js
-Disallow: /products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Disallow: /*/products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Disallow: /collections/*/products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Disallow: /*/collections/*/products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Disallow: /sf_private_access_tokens
+{%- capture newline %}
+{% endcapture -%}
 
-User-agent: Nutch
-Disallow: /
+{%- comment -%}
+  Shopify's defaults block /policies/, which hides the shipping, refund,
+  privacy and terms pages. Those are exactly the pages an answer engine is
+  asked to summarise ("what's their return window?"), so they are unblocked
+  here. Every other default rule is passed through untouched.
 
-User-agent: AhrefsBot
-Crawl-delay: 10
-Disallow: /a/downloads/-/*
-Disallow: /admin
-Disallow: /cart
-Disallow: /orders
-Disallow: /checkouts/
-Disallow: /checkout
-Disallow: /70279135544/checkouts
-Disallow: /70279135544/orders
-Disallow: /carts
-Disallow: /account
-Disallow: /collections/*sort_by*
-Disallow: /*/collections/*sort_by*
-Disallow: /collections/*+*
-Disallow: /collections/*%2B*
-Disallow: /collections/*%2b*
-Disallow: /*/collections/*+*
-Disallow: /*/collections/*%2B*
-Disallow: /*/collections/*%2b*
-Disallow: */collections/*filter*&*filter*
-Disallow: /blogs/*+*
-Disallow: /blogs/*%2B*
-Disallow: /blogs/*%2b*
-Disallow: /*/blogs/*+*
-Disallow: /*/blogs/*%2B*
-Disallow: /*/blogs/*%2b*
-Disallow: /*?*oseid=*
-Disallow: /*preview_theme_id*
-Disallow: /*preview_script_id*
-Disallow: /policies/
-Disallow: /*/policies/
-Disallow: /*/*?*ls=*&ls=*
-Disallow: /*/*?*ls%3D*%3Fls%3D*
-Disallow: /*/*?*ls%3d*%3fls%3d*
-Disallow: /search
-Disallow: /sf_private_access_tokens
-Disallow: /apple-app-site-association
-Disallow: /.well-known/shopify/monorail
-Disallow: /cdn/wpm/*.js
-Disallow: /recommendations/products
-Disallow: /*/recommendations/products
-Disallow: /products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Disallow: /*/products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Disallow: /collections/*/products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Disallow: /*/collections/*/products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Sitemap: https://arttitude.us/sitemap.xml
+  The `*` ruleset is also captured once and reused verbatim by each named AI
+  group below. Naming a crawler explicitly means it stops reading the `*`
+  group entirely, so without this the named groups would silently lose any
+  protective rule Shopify adds to the defaults in future.
+{%- endcomment -%}
+{%- capture core_rules -%}
+  {%- for group in robots.default_groups -%}
+    {%- if group.user_agent.value == '*' -%}
+      {%- for rule in group.rules -%}
+        {%- unless rule.directive == 'Disallow' and rule.value contains '/policies/' -%}
+          {{- rule }}{{ newline -}}
+        {%- endunless -%}
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
 
-User-agent: AhrefsSiteAudit
-Crawl-delay: 10
-Disallow: /a/downloads/-/*
-Disallow: /admin
-Disallow: /cart
-Disallow: /orders
-Disallow: /checkouts/
-Disallow: /checkout
-Disallow: /70279135544/checkouts
-Disallow: /70279135544/orders
-Disallow: /carts
-Disallow: /account
-Disallow: /collections/*sort_by*
-Disallow: /*/collections/*sort_by*
-Disallow: /collections/*+*
-Disallow: /collections/*%2B*
-Disallow: /collections/*%2b*
-Disallow: /*/collections/*+*
-Disallow: /*/collections/*%2B*
-Disallow: /*/collections/*%2b*
-Disallow: */collections/*filter*&*filter*
-Disallow: /blogs/*+*
-Disallow: /blogs/*%2B*
-Disallow: /blogs/*%2b*
-Disallow: /*/blogs/*+*
-Disallow: /*/blogs/*%2B*
-Disallow: /*/blogs/*%2b*
-Disallow: /*?*oseid=*
-Disallow: /*preview_theme_id*
-Disallow: /*preview_script_id*
-Disallow: /policies/
-Disallow: /*/policies/
-Disallow: /*/*?*ls=*&ls=*
-Disallow: /*/*?*ls%3D*%3Fls%3D*
-Disallow: /*/*?*ls%3d*%3fls%3d*
-Disallow: /search
-Disallow: /sf_private_access_tokens
-Disallow: /apple-app-site-association
-Disallow: /.well-known/shopify/monorail
-Disallow: /cdn/wpm/*.js
-Disallow: /recommendations/products
-Disallow: /*/recommendations/products
-Disallow: /products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Disallow: /*/products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Disallow: /collections/*/products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Disallow: /*/collections/*/products/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9]-remote
-Sitemap: https://arttitude.us/sitemap.xml
+{%- liquid
+  echo newline
+  echo newline
+  for group in robots.default_groups
+    echo group.user_agent
+    echo newline
+    for rule in group.rules
+      unless rule.directive == 'Disallow' and rule.value contains '/policies/'
+        echo rule
+        echo newline
+      endunless
+    endfor
+    if group.sitemap != blank
+      echo group.sitemap
+      echo newline
+    endif
+    echo newline
+  endfor
+-%}
 
-User-agent: MJ12bot
-Crawl-delay: 10
+{%- comment -%}
+  Named AI crawlers, in three families:
+    training     — GPTBot, ClaudeBot, Google-Extended, Applebot-Extended,
+                   meta-externalagent, CCBot, cohere-ai, Bytespider
+    retrieval    — OAI-SearchBot, PerplexityBot, Amazonbot, DuckAssistBot,
+                   YouBot
+    user-fetch   — ChatGPT-User, Claude-User, Perplexity-User,
+                   MistralAI-User, meta-externalfetcher
 
-User-agent: Pinterest
-Crawl-delay: 1
+  All are granted the same access as a search engine. This store already
+  publishes /llms.txt and a UCP profile inviting agent traffic, so blocking
+  the crawlers that feed those same assistants would work against it.
+
+  `Allow: /` is emitted LAST, after the disallows, and that ordering matters.
+  RFC 9309 parsers (Google, Bing) pick the longest match and are unaffected,
+  but plenty of crawlers use first-match-wins parsers — Python's stdlib
+  robotparser among them. Listed first, `Allow: /` would match every path
+  immediately and hand those crawlers /checkout, /cart, /admin and /account.
+{%- endcomment -%}
+{%- assign ai_agents = 'GPTBot,OAI-SearchBot,ChatGPT-User,ClaudeBot,Claude-User,Claude-SearchBot,anthropic-ai,PerplexityBot,Perplexity-User,Google-Extended,Applebot,Applebot-Extended,Amazonbot,meta-externalagent,meta-externalfetcher,DuckAssistBot,CCBot,cohere-ai,cohere-training-data-crawler,MistralAI-User,YouBot,Bytespider' | split: ',' -%}
+{%- liquid
+  for agent in ai_agents
+    echo 'User-agent: '
+    echo agent
+    echo newline
+    echo core_rules
+    echo 'Allow: /'
+    echo newline
+    echo newline
+  endfor
+  echo 'Sitemap: '
+  echo shop.url
+  echo '/sitemap.xml'
+  echo newline
+-%}
