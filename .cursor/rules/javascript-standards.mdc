@@ -793,6 +793,21 @@ Queued actions are tied to the selection state that existed when the user acted.
 selection supersedes an in-flight refresh, discard queued actions for the old selection instead of
 flushing stale IDs after the newer refresh completes.
 
+Prefer live selection state over href/`?variant=` when building fetch URLs for shared UI (e.g. quick-add modal). Product card links are often seeded with `variant.url` from Liquid and only rewrite on `variant:update`, so reading `searchParams.has('variant')` and returning early ignores the swatch the shopper just selected during an in-flight refresh — loading the wrong SKU into the modal.
+
+```javascript
+// Bad: card links always have ?variant= from Liquid; early return is always stale during refresh
+const url = new URL(productCardLink.href);
+if (url.searchParams.has('variant')) return url.toString();
+
+// Good: overwrite with the live checked swatch when present
+const selectedVariantId = productCard?.getSelectedVariantId();
+if (selectedVariantId) url.searchParams.set('variant', selectedVariantId);
+return url.toString();
+```
+
+After morphing shared modal content, if you remorph the variant picker from cache, re-apply the live selection afterward — otherwise the remorph can undo `syncVariantSelection`.
+
 ```javascript
 class VariantConsumer extends Component {
   #changeInProgress = false;
