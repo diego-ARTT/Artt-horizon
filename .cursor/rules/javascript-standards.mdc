@@ -788,7 +788,7 @@ class DataLoader extends Component {
 
 **Clear async gates on success and failure:**
 
-When user actions are gated behind async DOM refreshes, emit and handle a failure signal for non-abort failures. Do not leave forms or buttons permanently queued behind a success-only event, and keep any hidden submitted values aligned with the user's selected value before flushing queued actions.
+When user actions are gated behind async DOM refreshes, emit and handle a failure signal for non-abort failures. Do not leave forms or buttons permanently queued behind a success-only event, and keep any hidden submitted values aligned with the user's selected value as soon as the selection is known (not only when flushing queued actions). Shopify accelerated checkout widgets read `input[name=id]` directly and bypass theme submit handlers, so a delayed sync can check out a stale variant.
 Queued actions are tied to the selection state that existed when the user acted. If a newer
 selection supersedes an in-flight refresh, discard queued actions for the old selection instead of
 flushing stale IDs after the newer refresh completes.
@@ -800,8 +800,18 @@ class VariantConsumer extends Component {
   #queuedSubmissions = [];
 
   handleVariantSelected(event) {
+    const nextPendingVariantId = event.detail.resource.variantId || undefined;
+
     this.#changeInProgress = true;
-    this.#pendingVariantId = event.detail.resource.variantId;
+    this.#pendingVariantId = nextPendingVariantId;
+
+    // Align hidden submitted values immediately. Shopify accelerated checkout
+    // (payment_button / Shop Pay / Buy it now) reads input[name=id] and does
+    // not go through the add-to-cart queue, so delaying this until the section
+    // morph completes can check out the previous variant.
+    if (nextPendingVariantId) {
+      this.refs.variantId.value = nextPendingVariantId;
+    }
   }
 
   handleVariantUpdate(event) {
