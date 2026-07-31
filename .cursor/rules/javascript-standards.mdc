@@ -793,6 +793,39 @@ Queued actions are tied to the selection state that existed when the user acted.
 selection supersedes an in-flight refresh, discard queued actions for the old selection instead of
 flushing stale IDs after the newer refresh completes.
 
+When a queue later flushes via a JSON `/cart/add.js` batch payload, capture the full line-item
+payload the normal FormData path would have sent (`selling_plan`, `properties[...]`, gift-card
+recipient fields, etc.) — not only `{ id, quantity }`. Otherwise an Add click during an in-flight
+variant refresh silently drops line-item properties even when the variant ID is correct.
+
+**Concrete trigger (gift cards):** enable "Send to recipient", fill email/message, change denomination
+variant, then click Add before the section refresh completes. Without capturing `properties[...]` at
+queue time, `/cart/add.js` receives bare `{ id, quantity }` and the recipient never gets the gift.
+
+```javascript
+// When queueing during an in-flight variant refresh:
+const formData = new FormData(form);
+const properties = {};
+for (const [key, value] of formData.entries()) {
+  const match = /^properties\[(.+)\]$/.exec(key);
+  if (match && typeof value === 'string') properties[match[1]] = value;
+}
+queue.push({
+  variantId,
+  quantity,
+  properties: Object.keys(properties).length ? properties : undefined,
+  sellingPlan: formData.get('selling_plan') || undefined,
+});
+
+// When flushing the JSON batch:
+items: queue.map(item => ({
+  id: Number(item.variantId),
+  quantity: item.quantity,
+  ...(item.properties && { properties: item.properties }),
+  ...(item.sellingPlan && { selling_plan: Number(item.sellingPlan) }),
+}))
+```
+
 ```javascript
 class VariantConsumer extends Component {
   #changeInProgress = false;
