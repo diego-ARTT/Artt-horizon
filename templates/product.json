@@ -245,6 +245,13 @@
               },
               "block_order": []
             },
+            "dealeasy_gift_with_product_mc7Ybm": {
+              "type": "shopify://apps/dealeasy/blocks/gift-with-product/e47a8634-0496-480d-9e46-6f7fafd34b30",
+              "settings": {
+                "lb-product-handle": "",
+                "lb-product-id": ""
+              }
+            },
             "group_rbcfpm": {
               "type": "group",
               "name": "t:names.group",
@@ -996,6 +1003,7 @@
             "size_guide_Pge3P4",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
+            "dealeasy_gift_with_product_mc7Ybm",
             "group_rbcfpm",
             "accordion_AEyiU9",
             "group_DXq84K"
