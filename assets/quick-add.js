@@ -12,6 +12,8 @@ export class QuickAddComponent extends Component {
   #cachedContent = new Map();
   /** @type {AbortController} */
   #cartUpdateAbortController = new AbortController();
+  /** @type {number} */
+  #modalRequestId = 0;
 
   get productPageUrl() {
     const productCard = /** @type {import('./product-card').ProductCard | null} */ (
@@ -115,6 +117,7 @@ export class QuickAddComponent extends Component {
   handleClick = async event => {
     event.preventDefault();
 
+    const requestId = ++this.#modalRequestId;
     const currentUrl = this.productPageUrl;
 
     // Check if we have cached content for this URL
@@ -123,6 +126,7 @@ export class QuickAddComponent extends Component {
     if (!productGrid) {
       // Fetch and cache the content
       const html = await this.fetchProductPage(currentUrl);
+      if (requestId !== this.#modalRequestId) return;
       if (html) {
         const gridElement = html.querySelector('[data-product-grid-content]');
         if (gridElement) {
@@ -133,13 +137,17 @@ export class QuickAddComponent extends Component {
       }
     }
 
-    if (productGrid) {
-      // Use a fresh clone from the cache
-      const freshContent = /** @type {Element} */ (productGrid.cloneNode(true));
-      await this.updateQuickAddModal(freshContent);
-      this.#updateVariantPicker(productGrid);
-    }
+    // Never open the shared modal without fresh content for this click.
+    // An aborted/failed fetch used to fall through and show the previous product.
+    if (!productGrid) return;
+    if (requestId !== this.#modalRequestId) return;
 
+    // Use a fresh clone from the cache
+    const freshContent = /** @type {Element} */ (productGrid.cloneNode(true));
+    await this.updateQuickAddModal(freshContent);
+    if (requestId !== this.#modalRequestId) return;
+
+    this.#updateVariantPicker(productGrid);
     this.#openQuickAddModal();
   };
 
@@ -191,18 +199,28 @@ export class QuickAddComponent extends Component {
   /**
    * Fetches the product page content
    * @param {string} productPageUrl - The URL of the product page to fetch
+   * @param {object} [options]
+   * @param {boolean} [options.cancelPrevious=true] - When false, do not abort an in-flight
+   *   user-initiated fetch (used by hover/variant-update HTTP cache warmups).
    * @returns {Promise<Document | null>}
    */
-  async fetchProductPage(productPageUrl) {
+  async fetchProductPage(productPageUrl, { cancelPrevious = true } = {}) {
     if (!productPageUrl) return null;
 
-    // We use this to abort the previous fetch request if it's still pending.
-    this.#abortController?.abort();
-    this.#abortController = new AbortController();
+    /** @type {AbortController | undefined} */
+    let controller;
+
+    if (cancelPrevious) {
+      // Abort only the previous cancellable fetch. Keep a local reference so `finally`
+      // does not null a newer request's controller after this one was superseded.
+      this.#abortController?.abort();
+      controller = new AbortController();
+      this.#abortController = controller;
+    }
 
     try {
       const response = await fetch(productPageUrl, {
-        signal: this.#abortController.signal,
+        signal: controller?.signal,
       });
 
       if (!response.ok) {
@@ -220,7 +238,9 @@ export class QuickAddComponent extends Component {
         throw error;
       }
     } finally {
-      this.#abortController = null;
+      if (controller && this.#abortController === controller) {
+        this.#abortController = null;
+      }
     }
   }
 
