@@ -28,10 +28,10 @@ export class QuickAddComponent extends Component {
 
     const url = new URL(productLink.href);
 
-    if (url.searchParams.has('variant')) {
-      return url.toString();
-    }
-
+    // Prefer the live swatch selection over the card link's ?variant=.
+    // Product card links always include a variant from Liquid (`variant.url`) and are only
+    // updated on variant:update — so during an in-flight swatch change the href is stale.
+    // Returning that href here loaded the prior SKU into the shared quick-add modal.
     const selectedVariantId = this.#getSelectedVariantId();
     if (selectedVariantId) {
       url.searchParams.set('variant', selectedVariantId);
@@ -137,7 +137,11 @@ export class QuickAddComponent extends Component {
       // Use a fresh clone from the cache
       const freshContent = /** @type {Element} */ (productGrid.cloneNode(true));
       await this.updateQuickAddModal(freshContent);
+      // Remorph picker from the same fetch, then re-apply the card's live selection.
+      // Calling updateVariantPicker after sync previously undid syncVariantSelection.
       this.#updateVariantPicker(productGrid);
+      const modalContent = document.getElementById('quick-add-modal-content');
+      if (modalContent) this.#syncVariantSelection(modalContent);
     }
 
     this.#openQuickAddModal();
