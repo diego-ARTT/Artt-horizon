@@ -142,7 +142,8 @@ export class ProductCard extends ProductCardLink {
   }
 
   #fetchProductPageHandler = () => {
-    this.refs.quickAdd?.fetchProductPage(this.productPageUrl);
+    // Warm the HTTP cache only — do not abort a user-initiated Choose/Quick add fetch.
+    this.refs.quickAdd?.fetchProductPage(this.productPageUrl, { cancelPrevious: false });
   };
 
   /**
@@ -235,7 +236,8 @@ export class ProductCard extends ProductCardLink {
     this.updatePrice(event);
     this.#isUnavailableVariantSelected(event);
     this.#updateProductUrl(event);
-    this.refs.quickAdd?.fetchProductPage(this.productPageUrl);
+    // Warm the HTTP cache only — do not abort a user-initiated Choose/Quick add fetch.
+    this.refs.quickAdd?.fetchProductPage(this.productPageUrl, { cancelPrevious: false });
 
     if (event.target !== this.variantPicker) {
       this.variantPicker?.updateVariantPicker(event.detail.data.html);

@@ -724,16 +724,17 @@ class DataLoader extends Component {
   #abortController = null;
 
   async loadData(url) {
-    // Cancel previous request
+    // Cancel previous request; keep a local ref so `finally` does not clear a newer controller
     this.#abortController?.abort();
-    this.#abortController = new AbortController();
+    const controller = new AbortController();
+    this.#abortController = controller;
 
     // Show loading state
     this.#setLoadingState(true);
 
     try {
       const response = await fetch(url, {
-        signal: this.#abortController.signal
+        signal: controller.signal
       });
 
       if (!response.ok) {
@@ -753,6 +754,9 @@ class DataLoader extends Component {
       throw error;
     } finally {
       this.#setLoadingState(false);
+      if (this.#abortController === controller) {
+        this.#abortController = null;
+      }
     }
   }
 
@@ -785,6 +789,15 @@ class DataLoader extends Component {
   }
 }
 ```
+
+**Shared UI + AbortController (quick-add modal pattern):**
+
+When multiple fetches can write a shared surface (e.g. `#quick-add-modal-content`):
+- Do not open/update that surface after an aborted or empty fetch — leftover DOM may be a previous product.
+- Guard `finally` so `this.#abortController = null` only runs when the field still points at **this** call's controller; otherwise a superseded request clears the newer in-flight controller and later aborts become no-ops.
+- Background warmups (hover / `variant:update` prefetch) must not abort user-initiated fetches — pass `{ cancelPrevious: false }` (or use a separate controller).
+- Use a monotonic request id so an older `handleClick` that resumes after `await` cannot overwrite a newer click's modal content.
+- Note: per-instance AbortControllers still cannot serialize **cross-card** writes to a shared modal (watched separately).
 
 **Clear async gates on success and failure:**
 
