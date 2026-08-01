@@ -332,7 +332,7 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
-                "image_ratio": "adapt",
+                "image_ratio": "portrait",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
@@ -403,7 +403,7 @@
       "block_order": [
         "button_LVmccw"
       ],
-      "name": "Seven deadly",
+      "name": "Icon",
       "settings": {
         "collection": "icons-portrait-driven-collection",
         "layout_type": "grid",
