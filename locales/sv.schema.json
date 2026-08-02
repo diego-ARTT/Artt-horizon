@@ -590,7 +590,13 @@
     "y_position": "Vertikal position",
     "enable_sticky_add_to_cart": "Fast fält för ”Lägg till i varukorgen”",
     "sticky_add_to_cart": "Fast ”Lägg till i varukorgen”",
-    "actions_display_style": "Menystil"
+    "actions_display_style": "Menystil",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Slide border weight",
+    "subheading": "Subheading"
   },
   "options": {
     "apple": "Apple",
@@ -981,13 +987,15 @@
     "popover_position": "Popover-position",
     "resource_reference_product_sku": "Visar lagerhållningsenhet från överordnad produkt",
     "content_layout": "Innehållslayout",
+    "media_outlet": "Outlet",
     "mobile_media_1": "Mobilmedia 1",
     "utilities": "Verktyg",
     "share_information_about_your": "Share information about your brand with your customers",
     "media_quote_carousel": "Media Quote Carousel",
     "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
     "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
-    "media_quote_logo_alt": "Media outlet logo"
+    "media_quote_logo_alt": "Media outlet logo",
+    "quote": "Quote"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Dela information om ditt varumärke med dina kunder. Beskriv en produkt, gör tillkännagivanden eller välkomna kunder till din butik.</p>",
@@ -1081,6 +1089,12 @@
     "shop_the_look": "Shoppa stilen",
     "bestsellers": "Bästsäljare",
     "featured_collection": "Utvald produktserie",
+    "media_outlet": "The Ritz Herald",
+    "media_outlet_secondary": "Vrai Magazine",
+    "media_outlet_tertiary": "Beauty News NYC",
+    "media_quote_excerpt": "The first of its kind — a bridge between street culture and the art world.",
+    "media_quote_excerpt_secondary": "A powerful statement at the intersection of fashion and art.",
+    "media_quote_excerpt_tertiary": "Vivid and powerful — a gorgeous representation of art on clothing.",
     "new_arrivals": "Nyheter"
   },
   "info": {

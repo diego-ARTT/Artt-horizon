@@ -590,7 +590,13 @@
     "y_position": "Position verticale",
     "enable_sticky_add_to_cart": "Barre d’ajout au panier flottante",
     "sticky_add_to_cart": "Ajout au panier flottant",
-    "actions_display_style": "Style de menu"
+    "actions_display_style": "Style de menu",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Slide border weight",
+    "subheading": "Subheading"
   },
   "options": {
     "apple": "Pomme",
@@ -981,13 +987,15 @@
     "popover_position": "Position de la fenêtre contextuelle",
     "resource_reference_product_sku": "Affiche le SKU du produit parent",
     "content_layout": "Mise en page du contenu",
+    "media_outlet": "Outlet",
     "mobile_media_1": "Média mobile 1",
     "utilities": "Utilitaires",
     "share_information_about_your": "Share information about your brand with your customers",
     "media_quote_carousel": "Media Quote Carousel",
     "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
     "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
-    "media_quote_logo_alt": "Media outlet logo"
+    "media_quote_logo_alt": "Media outlet logo",
+    "quote": "Quote"
   },
   "html_defaults": {
     "share_information_about_your": "<p>Partagez des informations sur votre marque avec vos clients. Décrivez un produit, faites des annonces ou accueillez les clients dans votre boutique.</p>",
@@ -1081,6 +1089,12 @@
     "shop_the_look": "Acheter le style complet",
     "bestsellers": "Meilleures ventes",
     "featured_collection": "Collection en vedette",
+    "media_outlet": "The Ritz Herald",
+    "media_outlet_secondary": "Vrai Magazine",
+    "media_outlet_tertiary": "Beauty News NYC",
+    "media_quote_excerpt": "The first of its kind — a bridge between street culture and the art world.",
+    "media_quote_excerpt_secondary": "A powerful statement at the intersection of fashion and art.",
+    "media_quote_excerpt_tertiary": "Vivid and powerful — a gorgeous representation of art on clothing.",
     "new_arrivals": "Nouveautés"
   },
   "info": {

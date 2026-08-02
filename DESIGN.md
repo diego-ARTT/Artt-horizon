@@ -242,10 +242,12 @@ Both families are on Brand 2026's reflex-reject list for new projects. Here they
 - **Display** (DM Sans 900, `clamp(2.5rem, 5.6vw, 3.5rem)` / 56px max, line-height 1.0, letter-spacing 0): `<h1>` on hero sections, drop reveal headlines, campaign titles. The single largest type on a page.
 - **Headline** (DM Sans 900, `clamp(2rem, 4.8vw, 3rem)` / 48px max, line-height 1.0): `<h2>`. Section openers, collection titles, About-page chapter heads.
 - **Title** (DM Sans 900, 2rem / 32px, line-height 1.1): `<h3>`. Product titles on PDP, subsection heads.
-- **Subtitle** (DM Sans 900, 1.5rem / 24px, line-height 1.0): `<h4>`. Card titles, quote attributions.
+- **Subtitle** (DM Sans 900, 1.5rem / 24px, line-height 1.0): `<h4>`. Card titles, quote attributions **(person)**.
 - **Body** (Space Mono 400, 0.875rem / 14px, line-height 1.6): Paragraph copy, descriptions, long-form prose. Cap line length at 65–75ch on About/Journal long-form.
 - **Label** (DM Sans 500, 0.875rem / 14px, letter-spacing 0.06em): `<h5>`. Section labels, nav links, eyebrow tags when one is deliberately placed.
-- **Meta** (Space Mono 400, 0.75rem / 12px, letter-spacing 0.13em): `<h6>`. Captions, run-size notation, artist credits, drop numbers, edition counts.
+- **Meta** (Space Mono 400, 0.75rem / 12px, letter-spacing 0.13em): `<h6>`. Captions, run-size notation, artist credits, **press outlet credits**, drop numbers, edition counts.
+
+> **Implementation warning — do not bind Meta to `--font-h6--*`.** The role above is the design intent, but the theme is not configured to deliver it: `config/settings_data.json` sets `type_font_h6 = subheading` and `type_subheading_font = dm_sans_n5`, so the `<h6>` preset actually renders **DM Sans 500**, not Space Mono. Any component that reaches for `var(--font-h6--family)` to get "the mono caption" silently gets DM Sans and breaks The Mono Carries the Metadata Rule. Until the h6 mapping is fixed globally, bind mono metadata to `var(--font-body--family)` (`type_body_font = space_mono_n4`) and set the 0.75rem / 0.13em spec explicitly. `sections/media-quote-carousel.liquid` does this and carries a comment saying why. Fixing the global mapping is a separate change with storefront-wide blast radius.
 
 ### Collection Worlds
 
