@@ -820,6 +820,34 @@ class VariantConsumer extends Component {
 }
 ```
 
+**Serialize cart/update writes — do not abort them for newer user input:**
+
+`AbortController` only cancels the browser's interest in the response. Shopify may still apply an
+aborted `/cart/update.js` body. Components that build the next payload from pre-morph DOM (discount
+pills, cart note text) must not fire overlapping cart writes, or last-writer-wins reordering can
+drop stacked discount codes or revert a newer cart note.
+
+```javascript
+// ❌ Bad: abort + rebuild discount list from DOM before the prior morph
+#activeFetch?.abort();
+const existing = [...document.querySelectorAll('.cart-discount__pill')].map(/* ... */);
+fetch('/cart/update.js', { body: JSON.stringify({ discount: [...existing, next].join(',') }) });
+
+// ✅ Good: serialize writes so each request sees the prior result
+#writeChain = Promise.resolve();
+#enqueueWrite(operation) {
+  const run = this.#writeChain.then(operation, operation);
+  this.#writeChain = run.then(() => {}, () => {});
+  return run;
+}
+```
+
+Concrete triggers fixed in theme code:
+- Cart discount: apply code A, immediately apply code B before A's morph — B's payload omits A; or
+  A's server write lands after B and wipes B.
+- Cart note: type "Hello", then "Hello world" while the first update is in flight — an older aborted
+  request can still commit and overwrite the newer note.
+
 ### 5. **Strengthen Web Components Pattern**
 
 Your current web components section is good but could benefit from the new guidance on refs and type safety:
