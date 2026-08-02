@@ -53,6 +53,20 @@
   {%- endfor -%}
 {%- endcapture -%}
 
+{%- comment -%}
+  Reuse the sitemap Shopify already emits for the `*` group. It is a fully
+  qualified URL, which the Sitemap directive requires — reconstructing it by
+  hand is what broke it the first time: `shop.url` resolves to empty string
+  in the robots.txt.liquid context, yielding a relative `Sitemap: /sitemap.xml`.
+{%- endcomment -%}
+{%- capture default_sitemap -%}
+  {%- for group in robots.default_groups -%}
+    {%- if group.user_agent.value == '*' and group.sitemap != blank -%}
+      {{- group.sitemap -}}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
 {%- liquid
   echo newline
   echo newline
@@ -103,8 +117,8 @@
     echo newline
     echo newline
   endfor
-  echo 'Sitemap: '
-  echo shop.url
-  echo '/sitemap.xml'
-  echo newline
+  if default_sitemap != blank
+    echo default_sitemap
+    echo newline
+  endif
 -%}
