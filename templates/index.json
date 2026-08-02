@@ -1315,11 +1315,66 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "as_featured_on": {
+      "type": "media-quote-carousel",
+      "blocks": {
+        "quote_ritz_herald": {
+          "type": "quote",
+          "settings": {
+            "quote_text": "The first of its kind — a bridge between street culture and the art world.",
+            "media_name": "The Ritz Herald",
+            "cta_label": "",
+            "cta_url": ""
+          }
+        },
+        "quote_vrai_magazine": {
+          "type": "quote",
+          "settings": {
+            "quote_text": "A powerful statement at the intersection of fashion and art.",
+            "media_name": "Vrai Magazine",
+            "cta_label": "",
+            "cta_url": ""
+          }
+        },
+        "quote_beauty_news_nyc": {
+          "type": "quote",
+          "settings": {
+            "quote_text": "Vivid and powerful — a gorgeous representation of art on clothing.",
+            "media_name": "Beauty News NYC",
+            "cta_label": "",
+            "cta_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "quote_ritz_herald",
+        "quote_vrai_magazine",
+        "quote_beauty_news_nyc"
+      ],
+      "settings": {
+        "heading": "AS FEATURED ON",
+        "subheading": "",
+        "enable_autoplay": false,
+        "autoplay_interval": 6,
+        "controls_style": "dots",
+        "show_navigation_arrows": true,
+        "quote_font_size": "default",
+        "quote_alignment": "left",
+        "slide_border_weight": 0,
+        "slide_background_style": "none",
+        "logo_max_height": 40,
+        "color_scheme": "scheme-1",
+        "section_width": "page-width",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
     }
   },
   "order": [
     "hero_jVaWmY",
     "product_list_CYHNbA",
+    "as_featured_on",
     "hero_ti6TLC",
     "hero_nfEJfW",
     "product_list_fa6P9H",

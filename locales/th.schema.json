@@ -590,7 +590,13 @@
     "y_position": "ตำแหน่งแนวตั้ง",
     "enable_sticky_add_to_cart": "แถบเพิ่มลงในตะกร้าสินค้าแบบตรึง",
     "sticky_add_to_cart": "เพิ่มลงในตะกร้าสินค้าแบบตรึง",
-    "actions_display_style": "รูปแบบเมนู"
+    "actions_display_style": "รูปแบบเมนู",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Slide border weight",
+    "subheading": "Subheading"
   },
   "options": {
     "apple": "Apple",
@@ -981,13 +987,15 @@
     "popover_position": "ตำแหน่งป็อปโอเวอร์",
     "resource_reference_product_sku": "แสดง SKU จากสินค้าหลัก",
     "content_layout": "เลย์เอาต์เนื้อหา",
+    "media_outlet": "Outlet",
     "mobile_media_1": "สื่อสำหรับมือถือ 1",
     "utilities": "ยูทิลิตี",
     "share_information_about_your": "Share information about your brand with your customers",
     "media_quote_carousel": "Media Quote Carousel",
     "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
     "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
-    "media_quote_logo_alt": "Media outlet logo"
+    "media_quote_logo_alt": "Media outlet logo",
+    "quote": "Quote"
   },
   "html_defaults": {
     "share_information_about_your": "<p>แชร์ข้อมูลเกี่ยวกับแบรนด์ของคุณกับลูกค้า อธิบายสินค้า ประกาศข่าวสาร หรือต้อนรับลูกค้าสู่ร้านค้าของคุณ</p>",
@@ -1081,6 +1089,12 @@
     "shop_the_look": "Shop the Look",
     "bestsellers": "สินค้าขายดี",
     "featured_collection": "คอลเลกชันเด่น",
+    "media_outlet": "The Ritz Herald",
+    "media_outlet_secondary": "Vrai Magazine",
+    "media_outlet_tertiary": "Beauty News NYC",
+    "media_quote_excerpt": "The first of its kind — a bridge between street culture and the art world.",
+    "media_quote_excerpt_secondary": "A powerful statement at the intersection of fashion and art.",
+    "media_quote_excerpt_tertiary": "Vivid and powerful — a gorgeous representation of art on clothing.",
     "new_arrivals": "สินค้ามาใหม่"
   },
   "info": {

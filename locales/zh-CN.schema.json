@@ -590,7 +590,13 @@
     "y_position": "垂直位置",
     "enable_sticky_add_to_cart": "悬浮“添加到购物车”栏",
     "sticky_add_to_cart": "悬浮“添加到购物车”",
-    "actions_display_style": "菜单样式"
+    "actions_display_style": "菜单样式",
+    "logo_max_height": "Logo max height",
+    "quote_alignment": "Quote alignment",
+    "quote_font_size": "Quote size",
+    "slide_background_style": "Slide background",
+    "slide_border_weight": "Slide border weight",
+    "subheading": "Subheading"
   },
   "options": {
     "apple": "Apple",
@@ -981,13 +987,15 @@
     "popover_position": "弹出框位置",
     "resource_reference_product_sku": "显示主产品的 SKU",
     "content_layout": "内容布局",
+    "media_outlet": "Outlet",
     "mobile_media_1": "移动版媒体文件 1",
     "utilities": "实用工具",
     "share_information_about_your": "Share information about your brand with your customers",
     "media_quote_carousel": "Media Quote Carousel",
     "media_quote_slide_label": "Slide {{ index }} of {{ total }}: {{ outlet }}",
     "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
-    "media_quote_logo_alt": "Media outlet logo"
+    "media_quote_logo_alt": "Media outlet logo",
+    "quote": "Quote"
   },
   "html_defaults": {
     "share_information_about_your": "<p>与您的客户分享有关您品牌的信息。描述产品、发布公告或欢迎客户光临您的商店。</p>",
@@ -1081,6 +1089,12 @@
     "shop_the_look": "整套产品",
     "bestsellers": "畅销商品",
     "featured_collection": "特色产品系列",
+    "media_outlet": "The Ritz Herald",
+    "media_outlet_secondary": "Vrai Magazine",
+    "media_outlet_tertiary": "Beauty News NYC",
+    "media_quote_excerpt": "The first of its kind — a bridge between street culture and the art world.",
+    "media_quote_excerpt_secondary": "A powerful statement at the intersection of fashion and art.",
+    "media_quote_excerpt_tertiary": "Vivid and powerful — a gorgeous representation of art on clothing.",
     "new_arrivals": "新品上架"
   },
   "info": {
