@@ -66,12 +66,15 @@
     when 'center'
       assign quote_text_align_value = 'center'
       assign quote_footer_justify_value = 'center'
+      assign quote_block_margin_value = 'auto'
     when 'right'
       assign quote_text_align_value = 'right'
       assign quote_footer_justify_value = 'flex-end'
+      assign quote_block_margin_value = 'auto 0'
     else
       assign quote_text_align_value = 'left'
       assign quote_footer_justify_value = 'flex-start'
+      assign quote_block_margin_value = '0 auto'
   endcase
 
   capture section_custom_properties
@@ -81,6 +84,7 @@
     echo '--slide-border-color: ' | append: slide_border_color_value | append: ';'
     echo '--quote-text-align: ' | append: quote_text_align_value | append: ';'
     echo '--quote-footer-justify: ' | append: quote_footer_justify_value | append: ';'
+    echo '--quote-block-margin: ' | append: quote_block_margin_value | append: ';'
     echo '--logo-max-height: ' | append: logo_max_height_value | append: ';'
   endcapture
 
@@ -242,7 +246,7 @@ role="region" aria-roledescription="carousel" aria-live="{% if autoplay_enabled 
 
   .media-quote-carousel__slide {
     padding: clamp(1.5rem, 5vw, 3rem);
-    border-radius: var(--radius-lg, 1.5rem);
+    border-radius: 0;
     background: var(--slide-background, color-mix(in srgb, var(--color-foreground, currentColor) 8%, transparent));
     border-width: var(--slide-border-width, 1px);
     border-style: solid;
@@ -260,10 +264,16 @@ role="region" aria-roledescription="carousel" aria-live="{% if autoplay_enabled 
 
   .media-quote-carousel__quote-text {
     margin: 0;
+    font-family: var(--font-heading--family);
     font-size: var(--quote-font-size, clamp(1.25rem, 1.2rem + 1vw, 2rem));
-    line-height: 1.4;
-    font-weight: 600;
+    line-height: 1.15;
+    font-weight: 900;
+    letter-spacing: 0;
     color: var(--color-foreground, currentColor);
+    /* At page-width (90rem) an uncapped quote runs well past a readable
+       measure. Cap it and let the alignment setting place the block. */
+    max-width: 56ch;
+    margin-inline: var(--quote-block-margin, 0 auto);
   }
 
   .media-quote-carousel__quote-footer {
@@ -272,7 +282,7 @@ role="region" aria-roledescription="carousel" aria-live="{% if autoplay_enabled 
     gap: var(--gap-sm, 0.75rem);
     align-items: center;
     color: color-mix(in srgb, var(--color-foreground, currentColor) 80%, transparent);
-    font-weight: 500;
+    font-weight: 400;
     justify-content: var(--quote-footer-justify, flex-start);
   }
 
@@ -282,10 +292,17 @@ role="region" aria-roledescription="carousel" aria-live="{% if autoplay_enabled 
     filter:invert(100%);
   }
 
+  /* Space Mono at the Meta spec from DESIGN.md (0.75rem / 0.13em). Bound to the
+     body family, not --font-h6--*: the theme maps h6 to `subheading`, which is
+     configured to dm_sans_n5, so the h6 preset would render DM Sans here and
+     break The Mono Carries the Metadata Rule. */
   .media-quote-carousel__outlet {
+    font-family: var(--font-body--family);
     font-style: normal;
+    font-weight: 400;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.13em;
   }
 
   .media-quote-carousel__cta {
@@ -488,7 +505,7 @@ role="region" aria-roledescription="carousel" aria-live="{% if autoplay_enabled 
       "min": 0,
       "max": 6,
       "step": 1,
-      "default": 1,
+      "default": 0,
       "unit": "px"
     },
     {
@@ -509,7 +526,7 @@ role="region" aria-roledescription="carousel" aria-live="{% if autoplay_enabled 
           "label": "t:options.none"
         }
       ],
-      "default": "light"
+      "default": "none"
     },
     {
       "type": "range",

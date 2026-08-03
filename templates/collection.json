@@ -65,7 +65,10 @@
           "blocks": {}
         }
       },
-      "block_order": ["text_tqQTNE", "text_twGGkJ"],
+      "block_order": [
+        "text_tqQTNE",
+        "text_twGGkJ"
+      ],
       "name": "Collection heading",
       "settings": {
         "content_direction": "row",
@@ -142,7 +145,7 @@
             "card-gallery": {
               "type": "_product-card-gallery",
               "settings": {
-                "image_ratio": "adapt",
+                "image_ratio": "portrait",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
@@ -216,7 +219,12 @@
               "blocks": {}
             }
           },
-          "block_order": ["card-gallery", "product_title_4nY4eT", "price_EzJzMm", "swatches"]
+          "block_order": [
+            "card-gallery",
+            "product_title_4nY4eT",
+            "price_EzJzMm",
+            "swatches"
+          ]
         }
       },
       "settings": {
@@ -237,5 +245,8 @@
       }
     }
   },
-  "order": ["section", "main"]
+  "order": [
+    "section",
+    "main"
+  ]
 }
