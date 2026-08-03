@@ -1,5 +1,6 @@
 import { Component } from '@theme/component';
 import { ThemeEvents } from '@theme/events';
+import { StandardEvents } from '@shopify/events';
 
 /**
  * Displays dynamic per-item pricing based on quantity and volume pricing tiers.
@@ -67,7 +68,7 @@ class PricePerItemComponent extends Component {
     document.addEventListener(ThemeEvents.quantitySelectorUpdate, this.#handleQuantityUpdate, {
       signal,
     });
-    document.addEventListener(ThemeEvents.cartUpdate, this.#handleCartUpdate, { signal });
+    document.addEventListener(StandardEvents.cartLinesUpdate, this.#handleCartUpdate, { signal });
   }
 
   /**
@@ -83,10 +84,17 @@ class PricePerItemComponent extends Component {
   };
 
   /**
-   * Handles cart updates by refreshing display
+   * Handles cart updates by refreshing display after the cart response resolves,
+   * so data-cart-quantity is up-to-date when we recalculateo.
+   * @param {import('@shopify/events').CartLinesUpdateEvent} event
    */
-  #handleCartUpdate = () => {
-    this.#updatePriceDisplay();
+  #handleCartUpdate = event => {
+    event.promise
+      ?.then(() => this.#updatePriceDisplay())
+      .catch(error => {
+        if (error?.name !== 'AbortError')
+          console.warn('[price-per-item] Cart update promise rejected:', error);
+      });
   };
 
   /**
