@@ -1040,10 +1040,19 @@
                   "settings": {
                     "widget": "c5c07928-a118-4eac-aae1-682f9fc47df6"
                   }
+                },
+                "custom_liquid_twKQ86": {
+                  "type": "custom-liquid",
+                  "name": "t:names.custom_liquid",
+                  "settings": {
+                    "custom_liquid": "<script src=\"/apps/moast/embed/carousel.js\" async type=\"module\"></script>\n{%- assign moast_widget = product.metafields['app--108560121857']['c5c07928-a118-4eac-aae1-682f9fc47df6'].value -%}\n{%- unless moast_widget -%}\n  {%- assign moast_widget = metaobjects['app--108560121857--moast_widget']['c5c07928-a118-4eac-aae1-682f9fc47df6'].content.value -%}\n{%- endunless -%}\n{{- moast_widget -}}"
+                  },
+                  "blocks": {}
                 }
               },
               "block_order": [
-                "moast_widget_yzdJhg"
+                "moast_widget_yzdJhg",
+                "custom_liquid_twKQ86"
               ]
             }
           },
