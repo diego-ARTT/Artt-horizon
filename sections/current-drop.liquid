@@ -1,3 +1,8 @@
+{% render 'contrast-override',
+  background_color: section.settings.background_color,
+  section_id: section.id
+%}
+
 {%- liquid
   assign status = section.settings.drop_status | default: 'live'
 
@@ -55,7 +60,7 @@
 
 {%- if status != 'hidden' -%}
   <div
-    class="current-drop current-drop--media-{{ section.settings.media_position }} color-{{ section.settings.color_scheme }} section section--full-width"
+    class="current-drop current-drop--media-{{ section.settings.media_position }} color-custom-{{ section.id }} section section--full-width"
     data-drop-status="{{ status }}"
     style="--current-drop-padding-block-start: {{ section.settings.padding-block-start }}px; --current-drop-padding-block-end: {{ section.settings.padding-block-end }}px;"
   >
@@ -447,10 +452,10 @@
       "content": "Layout"
     },
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
     },
     {
       "type": "range",
