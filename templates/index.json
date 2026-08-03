@@ -65,14 +65,14 @@
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
-                "color": "var(--color-foreground-heading)",
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "text_color": "#f2f2f2"
               },
               "blocks": {}
             },
@@ -91,14 +91,14 @@
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
-                "color": "var(--color-foreground)",
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
                 "padding-inline-start": 0,
-                "padding-inline-end": 0
+                "padding-inline-end": 0,
+                "text_color": "#f2f2f2"
               },
               "blocks": {}
             }
@@ -153,11 +153,14 @@
                 "label": "Discover ICONS",
                 "link": "shopify://collections/icon-coilection",
                 "open_in_new_tab": false,
-                "style_class": "button-secondary",
+                "style_class": "button-custom",
                 "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "custom",
-                "custom_width_mobile": 100
+                "custom_width_mobile": 100,
+                "custom_button_background": "rgba(0,0,0,0)",
+                "custom_button_text": "#ffffff",
+                "custom_button_border": "#ffffff"
               },
               "blocks": {}
             }
@@ -289,7 +292,7 @@
               "settings": {
                 "label": "View all",
                 "open_in_new_tab": false,
-                "style_class": "link",
+                "style_class": "button-unstyled",
                 "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fit-content",
@@ -464,11 +467,12 @@
                 "label": "Men's Tees",
                 "link": "shopify://collections/man",
                 "open_in_new_tab": false,
-                "style_class": "link",
+                "style_class": "button-unstyled",
                 "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fit-content",
-                "custom_width_mobile": 100
+                "custom_width_mobile": 100,
+                "link_text_color": "#f2f2f2"
               },
               "blocks": {}
             }
@@ -523,11 +527,12 @@
                 "label": "Women's Tees",
                 "link": "shopify://collections/woman",
                 "open_in_new_tab": false,
-                "style_class": "link",
+                "style_class": "button-unstyled",
                 "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fit-content",
-                "custom_width_mobile": 100
+                "custom_width_mobile": 100,
+                "link_text_color": "#f2f2f2"
               },
               "blocks": {}
             }
@@ -645,7 +650,7 @@
             "label": "Memento Mori Collection",
             "link": "shopify://collections/memento-mori",
             "open_in_new_tab": false,
-            "style_class": "link",
+            "style_class": "button-unstyled",
             "width": "fit-content",
             "custom_width": 100,
             "width_mobile": "fit-content",
@@ -810,7 +815,7 @@
             "label": "Seven deadly sins collection",
             "link": "shopify://collections/seven-deadly-sins",
             "open_in_new_tab": false,
-            "style_class": "link",
+            "style_class": "button-unstyled",
             "width": "fit-content",
             "custom_width": 100,
             "width_mobile": "fit-content",
@@ -1115,11 +1120,12 @@
                 "label": "Menswear",
                 "link": "shopify://collections/man",
                 "open_in_new_tab": false,
-                "style_class": "link",
+                "style_class": "button-unstyled",
                 "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fit-content",
-                "custom_width_mobile": 100
+                "custom_width_mobile": 100,
+                "link_text_color": "#f2f2f2"
               },
               "blocks": {}
             }
@@ -1174,11 +1180,12 @@
                 "label": "Womenswear",
                 "link": "shopify://collections/woman",
                 "open_in_new_tab": false,
-                "style_class": "link",
+                "style_class": "button-unstyled",
                 "width": "fit-content",
                 "custom_width": 100,
                 "width_mobile": "fit-content",
-                "custom_width_mobile": 100
+                "custom_width_mobile": 100,
+                "link_text_color": "#f2f2f2"
               },
               "blocks": {}
             }

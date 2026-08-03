@@ -89,9 +89,9 @@
         "enable_transparent_header_collection": false,
         "background_color_top": "#ffffff",
         "text_color_top": "#000000",
-        "text_color_transparent_home": "#ffffff",
-        "text_color_transparent_product": "#ffffff",
-        "text_color_transparent_collection": "#ffffff"
+        "text_color_transparent_home": "#f2f2f2",
+        "text_color_transparent_product": "#f2f2f2",
+        "text_color_transparent_collection": "#f2f2f2"
       }
     }
   },
