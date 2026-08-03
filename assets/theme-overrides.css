@@ -1,0 +1,57 @@
+/*
+ * Theme overrides
+ * ---------------
+ * Rules that intentionally diverge from upstream Horizon. Kept in a file we own
+ * so upstream merges never conflict here — do not move these into base.css.
+ */
+
+/*
+ * Drawers overlay the page instead of squeezing it.
+ *
+ * Horizon 4.x animates `margin-right` on `.page-wrapper` when a drawer opens.
+ * At >=990px that element is also the scroll container (`height:100dvh;
+ * overflow-y:auto`), so the squeeze did three things at once, over
+ * `--animation-speed` (125ms):
+ *   - narrowed the page from 1440px to 960px (-33%)
+ *   - reflowed every section (grids recolumn, media resizes)
+ *   - changed scrollHeight by ~672px, shifting scroll position
+ * Measured on the homepage at 1440x900.
+ *
+ * The drawer is fixed-position, so it still slides in over the page. Only the
+ * page's own resize is suppressed.
+ */
+@media (width >= 990px) {
+  .page-wrapper {
+    /* No margin to animate; also stops the transition firing on close. */
+    transition: none;
+  }
+
+  .page-wrapper--drawer-open {
+    margin-right: 0;
+  }
+
+  /* Upstream shifts the account dialog to stay clear of the squeezed page.
+     With no squeeze there is nothing to clear. */
+  .page-wrapper--drawer-open shopify-account::part(dialog) {
+    translate: none;
+  }
+
+  /*
+   * Stack drawers above the header.
+   *
+   * Upstream gives the drawer `--layer-sticky` (8) and the header a higher
+   * layer (18). That is fine when the page is squeezed, because the header
+   * moves left with it and never overlaps the drawer. Now that the page stays
+   * put, the header would paint over the drawer — covering its close button.
+   * Scoped to the same breakpoint as the override above so mobile, where the
+   * squeeze never applied, keeps upstream's stacking untouched.
+   *
+   * Selector is deliberately `theme-drawer .theme-drawer__dialog` rather than
+   * the bare class: upstream's rule lives in a {% stylesheet %} block, which
+   * Shopify aggregates into a stylesheet that loads after this file, so an
+   * equal-specificity rule would lose on source order.
+   */
+  theme-drawer .theme-drawer__dialog {
+    z-index: calc(var(--layer-menu-drawer) + 1 + var(--drawer-stack-order, 0));
+  }
+}
