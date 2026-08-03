@@ -820,6 +820,36 @@ class VariantConsumer extends Component {
 }
 ```
 
+**Prefer stable cart line-item keys over line indexes for `/cart/change.js`:**
+
+Shopify renumbers `line` after an earlier item is removed. `pointer-events: none` does not block
+keyboard focus, so a shopper can change another row's quantity while a remove is in flight and the
+second request's stale `line` can update the wrong item. Prefer the line item `key` as `id` in the
+change payload, and serialize cart/change writes so overlapping mutations cannot reorder.
+
+```javascript
+// ❌ Bad: concurrent cart/change by line index after an earlier remove
+fetch('/cart/change.js', {
+  body: JSON.stringify({ line: 2, quantity: 5 }),
+});
+
+// ✅ Good: stable key + serialized write chain
+#writeChain = Promise.resolve();
+
+updateQuantity({ key, quantity }) {
+  const run = this.#writeChain.then(() =>
+    fetch('/cart/change.js', {
+      body: JSON.stringify({ id: key, quantity }),
+    })
+  );
+  this.#writeChain = run.then(
+    () => {},
+    () => {}
+  );
+  return run;
+}
+```
+
 ### 5. **Strengthen Web Components Pattern**
 
 Your current web components section is good but could benefit from the new guidance on refs and type safety:
