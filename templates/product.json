@@ -995,11 +995,58 @@
                 "group_G6gf8g"
               ]
             },
-            "moast_widget_hm9jFU": {
-              "type": "shopify://apps/moast/blocks/widget/1ac7547b-5443-446c-868c-7fab4566ee16",
+            "group_7hFcFK": {
+              "type": "group",
+              "name": "t:names.group",
               "settings": {
-                "widget": "c5c07928-a118-4eac-aae1-682f9fc47df6"
-              }
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "custom_liquid_YzMzVB": {
+                  "type": "custom-liquid",
+                  "name": "t:names.custom_liquid",
+                  "settings": {
+                    "custom_liquid": "<script src=\"/apps/moast/embed/carousel.js\" async type=\"module\"></script>\n{%- assign moast_widget = product.metafields['app--108560121857']['c5c07928-a118-4eac-aae1-682f9fc47df6'].value -%}\n{%- unless moast_widget -%}\n  {%- assign moast_widget = metaobjects['app--108560121857--moast_widget']['c5c07928-a118-4eac-aae1-682f9fc47df6'].content.value -%}\n{%- endunless -%}\n{{- moast_widget -}}"
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "custom_liquid_YzMzVB"
+              ]
             }
           },
           "block_order": [
@@ -1013,7 +1060,7 @@
             "group_rbcfpm",
             "accordion_AEyiU9",
             "group_DXq84K",
-            "moast_widget_hm9jFU"
+            "group_7hFcFK"
           ]
         }
       },
