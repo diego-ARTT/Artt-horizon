@@ -629,7 +629,7 @@
             },
             "group_DXq84K": {
               "type": "group",
-              "name": "t:names.group",
+              "name": "icon grid",
               "settings": {
                 "content_direction": "row",
                 "vertical_on_mobile": false,
@@ -994,6 +994,12 @@
                 "group_i4fDHa",
                 "group_G6gf8g"
               ]
+            },
+            "moast_widget_hm9jFU": {
+              "type": "shopify://apps/moast/blocks/widget/1ac7547b-5443-446c-868c-7fab4566ee16",
+              "settings": {
+                "widget": "c5c07928-a118-4eac-aae1-682f9fc47df6"
+              }
             }
           },
           "block_order": [
@@ -1006,7 +1012,8 @@
             "dealeasy_gift_with_product_mc7Ybm",
             "group_rbcfpm",
             "accordion_AEyiU9",
-            "group_DXq84K"
+            "group_DXq84K",
+            "moast_widget_hm9jFU"
           ]
         }
       },
