@@ -225,7 +225,7 @@
     },
     "badge_sold_out_background_color": "{{ settings.color_palette.color2 }}",
     "palette_input_border": "{{ settings.color_palette.color3 }}",
-    "palette_variant_border": "{{ settings.color_palette.color3 }}",
+    "palette_variant_border": "#00000021",
     "badge_sale_background_color": "{{ settings.color_palette.color4 }}",
     "page_text_color": "#000000cf"
   },
