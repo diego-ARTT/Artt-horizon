@@ -22,7 +22,7 @@
         "link": "shopify://collections/seven-deadly-sins",
         "speed": 72,
         "direction": "normal",
-        "color_scheme": "scheme-2"
+        "background_color": "#f5f5f5"
       }
     },
     "header_section": {
@@ -43,7 +43,6 @@
           "static": true,
           "settings": {
             "menu": "main-menu",
-            "color_scheme": "",
             "type_font_primary_size": "0.875rem",
             "menu_font_style": "inverse",
             "type_font_primary_link": "body",
@@ -53,7 +52,6 @@
             "featured_collections_aspect_ratio": "16 / 9",
             "image_border_radius": 0,
             "navigation_bar": false,
-            "color_scheme_navigation_bar": "",
             "drawer_accordion": true,
             "drawer_accordion_expand_first": true,
             "drawer_dividers": true
@@ -86,17 +84,19 @@
         "actions_font_size": "0.875rem",
         "actions_font": "body",
         "actions_text_case": "none",
-        "color_scheme_top": "scheme-1",
-        "color_scheme_bottom": "",
-        "color_scheme_transparent": "scheme-6",
         "enable_transparent_header_home": true,
-        "home_color_scheme": "inverse",
         "enable_transparent_header_product": false,
-        "product_color_scheme": "default",
         "enable_transparent_header_collection": false,
-        "collection_color_scheme": "default"
+        "background_color_top": "#ffffff",
+        "text_color_top": "#000000",
+        "text_color_transparent_home": "#f2f2f2",
+        "text_color_transparent_product": "#f2f2f2",
+        "text_color_transparent_collection": "#f2f2f2"
       }
     }
   },
-  "order": ["header_marquee_98qecc", "header_section"]
+  "order": [
+    "header_marquee_98qecc",
+    "header_section"
+  ]
 }

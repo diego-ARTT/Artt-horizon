@@ -11,10 +11,14 @@
   {
     "imports": {
       "@theme/overflow-list": "{{ 'overflow-list' | append: _js_ext | asset_url }}",
-      "@theme/product-title": "{{ 'product-title-truncation' | append: _js_ext | asset_url }}",
       "@theme/component": "{{ 'component' | append: _js_ext | asset_url }}",
       "@theme/dialog": "{{ 'dialog' | append: _js_ext | asset_url }}",
       "@theme/events": "{{ 'events' | append: _js_ext | asset_url }}",
+      "@shopify/events": "https://cdn.shopify.com/storefront/standard-events.js",
+      "@theme/view-event-elements": "{{ 'view-event-elements' | append: _js_ext | asset_url }}",
+      "@theme/variant-resolution": "{{ 'variant-resolution' | append: _js_ext | asset_url }}",
+      "@theme/scroll-container": "{{ 'scroll-container' | append: _js_ext | asset_url }}",
+      "@theme/theme-drawer": "{{ 'theme-drawer' | append: _js_ext | asset_url }}",
       "@theme/focus": "{{ 'focus' | append: _js_ext | asset_url }}",
       "@theme/morph": "{{ 'morph' | append: _js_ext | asset_url }}",
       "@theme/paginated-list": "{{ 'paginated-list' | append: _js_ext | asset_url }}",
@@ -82,12 +86,6 @@
   <link
     rel="modulepreload"
     href="{{ 'paginated-list' | append: _js_ext | asset_url }}"
-    fetchpriority="low"
-  >
-
-  <link
-    rel="modulepreload"
-    href="{{ 'product-title-truncation' | append: _js_ext | asset_url }}"
     fetchpriority="low"
   >
 {% endif %}
@@ -182,11 +180,6 @@
 ></script>
 <script
   src="{{ 'product-sku' | append: _js_ext | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-<script
-  src="{{ 'product-title-truncation' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
 ></script>

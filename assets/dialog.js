@@ -1,29 +1,12 @@
 import { Component } from '@theme/component';
-import { debounce, isClickedOutside, onAnimationEnd } from '@theme/utilities';
-
-// Reference-counted scroll lock so multiple dialogs don't clobber each other's body state.
-let _scrollLockCount = 0;
-let _savedScrollY = 0;
-
-function acquireScrollLock() {
-  if (_scrollLockCount === 0) {
-    _savedScrollY = window.scrollY;
-    document.body.style.width = '100%';
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${_savedScrollY}px`;
-  }
-  _scrollLockCount++;
-}
-
-function releaseScrollLock() {
-  _scrollLockCount = Math.max(0, _scrollLockCount - 1);
-  if (_scrollLockCount === 0) {
-    document.body.style.width = '';
-    document.body.style.position = '';
-    document.body.style.top = '';
-    window.scrollTo({ top: _savedScrollY, behavior: 'instant' });
-  }
-}
+import {
+  debounce,
+  isClickedOutside,
+  lockScroll,
+  onAnimationEnd,
+  unlockScroll,
+} from '@theme/utilities';
+import { getScrollTop, scrollTo } from '@theme/scroll-container';
 
 /**
  * A custom element that manages a dialog.
@@ -49,6 +32,7 @@ export class DialogComponent extends Component {
     if (this.minWidth || this.maxWidth) {
       window.removeEventListener('resize', this.#handleResize);
     }
+    unlockScroll(this.refs.dialog);
   }
 
   #handleResize = debounce(() => {
@@ -62,6 +46,8 @@ export class DialogComponent extends Component {
     }
   }, 50);
 
+  #previousScrollY = 0;
+
   /**
    * Shows the dialog.
    */
@@ -70,19 +56,13 @@ export class DialogComponent extends Component {
 
     if (dialog.open) return;
 
+    this.#previousScrollY = getScrollTop();
+
     // Prevent layout thrashing by separating DOM reads from DOM writes
     requestAnimationFrame(() => {
-      // acquireScrollLock must run inside the RAF so window.scrollY is read after any
-      // preceding closeDialog() microtask has already restored the scroll position.
-      acquireScrollLock();
+      lockScroll(dialog);
 
-      try {
-        dialog.showModal();
-      } catch {
-        releaseScrollLock();
-        return;
-      }
-
+      dialog.showModal();
       this.dispatchEvent(new DialogOpenEvent());
 
       this.addEventListener('click', this.#handleClick);
@@ -116,7 +96,8 @@ export class DialogComponent extends Component {
       subtree: false,
     });
 
-    releaseScrollLock();
+    unlockScroll(dialog);
+    scrollTo({ top: this.#previousScrollY, behavior: 'instant' });
 
     dialog.close();
     dialog.classList.remove('dialog-closing');
@@ -205,9 +186,9 @@ document.addEventListener(
       if (event.target.hasAttribute('scroll-lock')) {
         const { open } = event.target;
         if (open) {
-          document.documentElement.setAttribute('scroll-lock', '');
+          lockScroll(event.target);
         } else {
-          document.documentElement.removeAttribute('scroll-lock');
+          unlockScroll(event.target);
         }
       }
     }
