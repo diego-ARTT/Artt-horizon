@@ -1035,17 +1035,15 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "custom_liquid_YzMzVB": {
-                  "type": "custom-liquid",
-                  "name": "t:names.custom_liquid",
+                "moast_widget_yzdJhg": {
+                  "type": "shopify://apps/moast/blocks/widget/1ac7547b-5443-446c-868c-7fab4566ee16",
                   "settings": {
-                    "custom_liquid": "<script src=\"/apps/moast/embed/carousel.js\" async type=\"module\"></script>\n{%- assign moast_widget = product.metafields['app--108560121857']['c5c07928-a118-4eac-aae1-682f9fc47df6'].value -%}\n{%- unless moast_widget -%}\n  {%- assign moast_widget = metaobjects['app--108560121857--moast_widget']['c5c07928-a118-4eac-aae1-682f9fc47df6'].content.value -%}\n{%- endunless -%}\n{{- moast_widget -}}"
-                  },
-                  "blocks": {}
+                    "widget": "c5c07928-a118-4eac-aae1-682f9fc47df6"
+                  }
                 }
               },
               "block_order": [
-                "custom_liquid_YzMzVB"
+                "moast_widget_yzdJhg"
               ]
             }
           },
