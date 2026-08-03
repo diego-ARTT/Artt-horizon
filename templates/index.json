@@ -105,7 +105,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["text_pKXg8w", "text_y88DqX"]
+          "block_order": [
+            "text_pKXg8w",
+            "text_y88DqX"
+          ]
         },
         "group_n9JCfz": {
           "type": "group",
@@ -163,10 +166,15 @@
               "blocks": {}
             }
           },
-          "block_order": ["button_QFiR43"]
+          "block_order": [
+            "button_QFiR43"
+          ]
         }
       },
-      "block_order": ["group_7RWxJ6", "group_n9JCfz"],
+      "block_order": [
+        "group_7RWxJ6",
+        "group_n9JCfz"
+      ],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "video",
@@ -297,7 +305,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_list_text_gPBAJD", "product_list_button_EYmGCt"]
+          "block_order": [
+            "product_list_text_gPBAJD",
+            "product_list_button_EYmGCt"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -321,7 +332,7 @@
               "type": "_product-card-gallery",
               "name": "t:names.product_card_media",
               "settings": {
-                "image_ratio": "adapt",
+                "image_ratio": "portrait",
                 "border": "none",
                 "border_width": 1,
                 "border_opacity": 100,
@@ -382,14 +393,20 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_card_gallery_ey8mzd", "product_title_JNDbtY", "price_XjW4Ff"]
+          "block_order": [
+            "product_card_gallery_ey8mzd",
+            "product_title_JNDbtY",
+            "price_XjW4Ff"
+          ]
         }
       },
-      "block_order": ["button_LVmccw"],
-      "name": "Seven deadly",
+      "block_order": [
+        "button_LVmccw"
+      ],
+      "name": "Icon",
       "settings": {
-        "collection": "seven-deadly-sins",
-        "layout_type": "carousel",
+        "collection": "icons-portrait-driven-collection",
+        "layout_type": "grid",
         "carousel_on_mobile": false,
         "max_products": 12,
         "columns": 4,
@@ -403,6 +420,219 @@
         "horizontal_alignment": "center",
         "gap": 28,
         "color_scheme": "scheme-1",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    },
+    "section_9AfEAC": {
+      "type": "section",
+      "blocks": {
+        "group_YAEcce": {
+          "type": "group",
+          "name": "t:names.group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "flex-end",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fill",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "image",
+            "video_position": "cover",
+            "background_image": "shopify://shop_images/icon-man-editorial.webp",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "shopify://collections/man-clothing-t-shirts",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 40,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "button_m3ypPc": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Men's Tees",
+                "link": "shopify://collections/man",
+                "open_in_new_tab": false,
+                "style_class": "link",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "button_m3ypPc"
+          ]
+        },
+        "group_AD9nBL": {
+          "type": "group",
+          "name": "t:names.group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "flex-end",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fill",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "image",
+            "video_position": "cover",
+            "background_image": "shopify://shop_images/icon-woman-editorial-2.webp",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "shopify://collections/woman-clothing-t-shirts",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 40,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "button_dTb8rF": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Women's Tees",
+                "link": "shopify://collections/woman",
+                "open_in_new_tab": false,
+                "style_class": "link",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "button_dTb8rF"
+          ]
+        }
+      },
+      "block_order": [
+        "group_YAEcce",
+        "group_AD9nBL"
+      ],
+      "name": "Icon Sub-Collection",
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "flex-end",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 2,
+        "section_width": "full-width",
+        "section_height": "full-screen",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-6",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "as_featured_on": {
+      "type": "media-quote-carousel",
+      "blocks": {
+        "quote_ritz_herald": {
+          "type": "quote",
+          "settings": {
+            "quote_text": "The first of its kind — a bridge between street culture and the art world.",
+            "media_name": "The Ritz Herald",
+            "cta_label": "",
+            "cta_url": ""
+          }
+        },
+        "quote_vrai_magazine": {
+          "type": "quote",
+          "settings": {
+            "quote_text": "A powerful statement at the intersection of fashion and art.",
+            "media_name": "Vrai Magazine",
+            "cta_label": "",
+            "cta_url": ""
+          }
+        },
+        "quote_beauty_news_nyc": {
+          "type": "quote",
+          "settings": {
+            "quote_text": "Vivid and powerful — a gorgeous representation of art on clothing.",
+            "media_name": "Beauty News NYC",
+            "cta_label": "",
+            "cta_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "quote_ritz_herald",
+        "quote_vrai_magazine",
+        "quote_beauty_news_nyc"
+      ],
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "enable_autoplay": true,
+        "autoplay_interval": 6,
+        "controls_style": "dots",
+        "show_navigation_arrows": true,
+        "quote_font_size": "default",
+        "quote_alignment": "center",
+        "slide_border_weight": 0,
+        "slide_background_style": "none",
+        "logo_max_height": 40,
+        "color_scheme": "scheme-1",
+        "section_width": "page-width",
         "padding-block-start": 48,
         "padding-block-end": 48
       }
@@ -438,8 +668,11 @@
           "blocks": {}
         }
       },
-      "block_order": ["spacer_EC7kf6", "button_Up8tJC"],
-      "name": "Memento hero",
+      "block_order": [
+        "spacer_EC7kf6",
+        "button_Up8tJC"
+      ],
+      "name": "Memento section",
       "settings": {
         "media_type_1": "image",
         "image_1": "shopify://shop_images/memento-mori-hoodie-editorial-hero.webp",
@@ -582,7 +815,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["text_GeJP3y", "text_ewAewV"]
+          "block_order": [
+            "text_GeJP3y",
+            "text_ewAewV"
+          ]
         },
         "button_jAcaGi": {
           "type": "button",
@@ -599,7 +835,11 @@
           "blocks": {}
         }
       },
-      "block_order": ["spacer_jy9Rr8", "group_Lyk3mc", "button_jAcaGi"],
+      "block_order": [
+        "spacer_jy9Rr8",
+        "group_Lyk3mc",
+        "button_jAcaGi"
+      ],
       "disabled": true,
       "name": "7DS hero",
       "settings": {
@@ -730,7 +970,10 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_list_text_YFtzcL", "product_list_button_MWeP9V"]
+          "block_order": [
+            "product_list_text_YFtzcL",
+            "product_list_button_MWeP9V"
+          ]
         },
         "static-product-card": {
           "type": "_product-card",
@@ -773,7 +1016,7 @@
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
-                "type_preset": "rte",
+                "type_preset": "paragraph",
                 "font": "var(--font-body--family)",
                 "font_size": "1rem",
                 "line_height": "normal",
@@ -815,10 +1058,16 @@
               "blocks": {}
             }
           },
-          "block_order": ["product_card_gallery_677WP3", "product_title_YXxMTj", "price_JQzVV4"]
+          "block_order": [
+            "product_card_gallery_677WP3",
+            "product_title_YXxMTj",
+            "price_JQzVV4"
+          ]
         }
       },
-      "block_order": ["button_nJaQcT"],
+      "block_order": [
+        "button_nJaQcT"
+      ],
       "name": "t:names.featured_collection",
       "settings": {
         "collection": "all-garments",
@@ -900,7 +1149,9 @@
               "blocks": {}
             }
           },
-          "block_order": ["button_F3ABRG"]
+          "block_order": [
+            "button_F3ABRG"
+          ]
         },
         "group_FxfC6Q": {
           "type": "group",
@@ -959,10 +1210,15 @@
               "blocks": {}
             }
           },
-          "block_order": ["button_p9R9jM"]
+          "block_order": [
+            "button_p9R9jM"
+          ]
         }
       },
-      "block_order": ["group_rYwxMy", "group_FxfC6Q"],
+      "block_order": [
+        "group_rYwxMy",
+        "group_FxfC6Q"
+      ],
       "name": "t:names.custom_section",
       "settings": {
         "content_direction": "row",
@@ -1006,7 +1262,10 @@
             "product_cards": "none",
             "autoplay_mode": "sequential",
             "autoscroll_duration": 0,
+            "slide_size_mode": "fixed",
             "slide_size": "250",
+            "slides_in_view_desktop": 4,
+            "slides_in_view_mobile": 2,
             "aspect_ratio": "vertical",
             "border": 0,
             "border_color": "linear-gradient(to right, #833ab4, #fd1d1d, #fcb045)",
@@ -1019,11 +1278,14 @@
             "float_location": "bottom_right",
             "float_size": "medium",
             "show_captions": false,
+            "show_handles": false,
             "custom_css": ""
           }
         }
       },
-      "block_order": ["moast_carousel_HTa9Xh"],
+      "block_order": [
+        "moast_carousel_HTa9Xh"
+      ],
       "name": "Moast carousel",
       "settings": {
         "content_direction": "column",
@@ -1062,6 +1324,9 @@
             "show_sample_reviews": true,
             "reviews_selection": "product_reviews",
             "products": [],
+            "filter_pinned": false,
+            "filter_featured": false,
+            "filter_custom_tags": "",
             "star_rating": "5_star",
             "max_reviews": 10,
             "quote_marks_size": "small",
@@ -1088,7 +1353,9 @@
           }
         }
       },
-      "block_order": ["judge_me_reviews_testimonials_carousel_F8K8Ft"],
+      "block_order": [
+        "judge_me_reviews_testimonials_carousel_F8K8Ft"
+      ],
       "name": "Testimonial",
       "settings": {
         "content_direction": "column",
@@ -1266,6 +1533,8 @@
   "order": [
     "hero_jVaWmY",
     "product_list_CYHNbA",
+    "section_9AfEAC",
+    "as_featured_on",
     "hero_ti6TLC",
     "hero_nfEJfW",
     "product_list_fa6P9H",

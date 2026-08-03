@@ -73,9 +73,16 @@
     "nested_product": "{{ product_title }} för {{ parent_title }}",
     "remove": "Ta bort",
     "view_pricing_info": "Visa prissättningsinformation",
-    "open_hotspot": "Öppna hotspot",
     "slideshow": "Bildspel",
-    "header_navigation_label": "Primär"
+    "header_navigation_label": "Primär",
+    "home_logo_alt": "{{ store_name }} – Startsida",
+    "active_filters": "Aktiva filter:",
+    "product_details": "Produktdetaljer",
+    "show_product_details": "Visa produktdetaljer för {{ product_name }}",
+    "featured_product": "Utvald produkt",
+    "search_suggestions_available": "Sökförslag tillgängliga för \"{{ query }}\"",
+    "price_filter_low": "Lågt pris",
+    "price_filter_high": "Högt pris"
   },
   "actions": {
     "add_to_cart": "Lägg till i varukorgen",
@@ -115,7 +122,9 @@
     "sign_up": "Registrera dig",
     "sort": "Sortera",
     "show_all_options": "Visa alla alternativ",
-    "open": "Öppna"
+    "open": "Öppna",
+    "back_to": "Tillbaka till {{ title }}",
+    "zoom_media": "Zooma media {{ index }}"
   },
   "content": {
     "reviews": "recensioner",
@@ -244,7 +253,7 @@
     "product_custom_property_character_count": "{{ used_chars }}/{{ max_chars }} tecken har använts",
     "terms_and_policies": "Villkor och policyer",
     "pagination": {
-      "nav_label": "Navigering av paginering",
+      "nav_label": "Paginering",
       "previous": "Föregående",
       "next": "Nästa",
       "page": "Sidan {{ page }}"
@@ -278,7 +287,8 @@
     "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
     "media_quote_logo_alt": "Media outlet logo",
     "share_information_about_your": "Share information about your brand with your customers",
-    "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)"
+    "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)",
+    "quick_order_list": "Snabborderlista"
   },
   "gift_cards": {
     "issued": {

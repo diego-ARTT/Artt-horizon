@@ -73,9 +73,16 @@
     "discount_menu": "Mã giảm giá",
     "remove": "Xóa",
     "view_pricing_info": "Xem thông tin về giá",
-    "open_hotspot": "Mở điểm phát sóng",
     "slideshow": "Bản trình chiếu",
-    "header_navigation_label": "Chính"
+    "header_navigation_label": "Chính",
+    "home_logo_alt": "{{ store_name }} – Trang chủ",
+    "active_filters": "Bộ lọc đang hoạt động:",
+    "product_details": "Chi tiết sản phẩm",
+    "show_product_details": "Hiển thị chi tiết sản phẩm {{ product_name }}",
+    "featured_product": "Sản phẩm nổi bật",
+    "search_suggestions_available": "Gợi ý tìm kiếm dành cho \"{{ query }}\"",
+    "price_filter_low": "Giá thấp",
+    "price_filter_high": "Giá cao"
   },
   "actions": {
     "add_to_cart": "Thêm vào giỏ hàng",
@@ -115,7 +122,9 @@
     "open_image_in_full_screen": "Mở hình ảnh ở chế độ toàn màn hình",
     "sort": "Sắp xếp",
     "show_all_options": "Hiển thị tất cả tùy chọn",
-    "open": "Mở"
+    "open": "Mở",
+    "back_to": "Quay lại {{ title }}",
+    "zoom_media": "Thu phóng nội dung {{ index }}"
   },
   "content": {
     "reviews": "đánh giá",
@@ -244,7 +253,7 @@
     "product_custom_property_character_count": "Đã sử dụng {{ used_chars }}/{{ max_chars }} ký tự",
     "terms_and_policies": "Điều khoản và chính sách",
     "pagination": {
-      "nav_label": "Điều hướng phân trang",
+      "nav_label": "Phân trang",
       "previous": "Trước",
       "next": "Tiếp",
       "page": "Trang {{ page }}"
@@ -278,7 +287,8 @@
     "media_quote_carousel_placeholder": "Add quotes from media outlets to showcase your brand",
     "media_quote_logo_alt": "Media outlet logo",
     "share_information_about_your": "Share information about your brand with your customers",
-    "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)"
+    "submissions_are_sent_to_store_email_address": "Submissions are sent to your store's [sender email address](https://admin.shopify.com/settings/notifications)",
+    "quick_order_list": "Danh sách đặt hàng nhanh"
   },
   "gift_cards": {
     "issued": {

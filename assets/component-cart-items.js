@@ -44,6 +44,7 @@ class CartItemsComponent extends Component {
     super.disconnectedCallback();
 
     document.removeEventListener(ThemeEvents.cartUpdate, this.#handleCartUpdate);
+    document.removeEventListener(ThemeEvents.discountUpdate, this.handleDiscountUpdate);
     document.removeEventListener(ThemeEvents.quantitySelectorUpdate, this.#debouncedOnChange);
   }
 
@@ -198,11 +199,9 @@ class CartItemsComponent extends Component {
           })
         );
 
-        morphSection(
-          this.sectionId,
-          parsedResponseText.sections[this.sectionId],
-          this.isDrawer ? 'hydration' : 'full'
-        );
+        morphSection(this.sectionId, parsedResponseText.sections[this.sectionId], {
+          mode: this.isDrawer ? 'hydration' : 'full',
+        });
 
         this.#updateCartQuantitySelectorButtonStates();
       })
