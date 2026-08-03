@@ -32,6 +32,9 @@ import { cartPerformance } from '@theme/performance';
 class CartItemsComponent extends Component {
   #debouncedOnChange = debounce(this.#onQuantityChange, 300).bind(this);
 
+  /** @type {Promise<void>} */
+  #writeChain = Promise.resolve();
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -48,6 +51,25 @@ class CartItemsComponent extends Component {
   }
 
   /**
+   * Resolves the stable Shopify line-item key for a quantity change or row.
+   * Line numbers shift when an earlier row is removed; keys do not.
+   * @param {EventTarget | null} target
+   * @param {number} line
+   * @returns {string | undefined}
+   */
+  #getLineItemKey(target, line) {
+    if (target instanceof Element) {
+      const row = target.closest('tr[data-key]');
+      if (row instanceof HTMLElement && row.dataset.key) {
+        return row.dataset.key;
+      }
+    }
+
+    const rowByLine = this.refs.cartItemRows?.[line - 1];
+    return rowByLine?.dataset?.key;
+  }
+
+  /**
    * Handles QuantitySelectorUpdateEvent change event.
    * @param {QuantitySelectorUpdateEvent} event - The event.
    */
@@ -56,8 +78,11 @@ class CartItemsComponent extends Component {
 
     const { quantity, cartLine: line } = event.detail;
 
-    // Cart items require a line number
+    // Cart items require a line number (used for row lookup / error UI)
     if (!line) return;
+
+    const key = this.#getLineItemKey(event.target, line);
+    if (!key) return;
 
     if (quantity === 0) {
       return this.onLineItemRemove(line);
@@ -65,6 +90,7 @@ class CartItemsComponent extends Component {
 
     this.updateQuantity({
       line,
+      key,
       quantity,
       action: 'change',
     });
@@ -83,15 +109,17 @@ class CartItemsComponent extends Component {
    * @param {number} line - The line item index.
    */
   onLineItemRemove(line) {
+    const cartItemRowToRemove = this.refs.cartItemRows[line - 1];
+    const key = cartItemRowToRemove?.dataset.key;
+
+    if (!cartItemRowToRemove || !key) return;
+
     this.updateQuantity({
       line,
+      key,
       quantity: 0,
       action: 'clear',
     });
-
-    const cartItemRowToRemove = this.refs.cartItemRows[line - 1];
-
-    if (!cartItemRowToRemove) return;
 
     const rowsToRemove = [
       cartItemRowToRemove,
@@ -130,20 +158,40 @@ class CartItemsComponent extends Component {
   }
 
   /**
-   * Updates the quantity.
+   * Enqueues a cart/change write. Overlapping line-number-based changes can hit the
+   * wrong item after an earlier remove renumbers the cart; keys + serialization
+   * keep quantity updates on the intended line item.
    * @param {Object} config - The config.
-   * @param {number} config.line - The line.
+   * @param {number} config.line - The line (for error UI / shimmer).
+   * @param {string} config.key - The stable cart line-item key.
    * @param {number} config.quantity - The quantity.
    * @param {string} config.action - The action.
    */
   updateQuantity(config) {
+    const run = this.#writeChain.then(() => this.#performQuantityUpdate(config));
+    // Keep the chain alive after failures so later updates still run.
+    this.#writeChain = run.then(
+      () => {},
+      () => {}
+    );
+    return run;
+  }
+
+  /**
+   * @param {Object} config
+   * @param {number} config.line
+   * @param {string} config.key
+   * @param {number} config.quantity
+   * @param {string} config.action
+   */
+  async #performQuantityUpdate(config) {
     const cartPerformaceUpdateMarker = cartPerformance.createStartingMarker(
       `${config.action}:user-action`
     );
 
     this.#disableCartItems();
 
-    const { line, quantity } = config;
+    const { line, key, quantity } = config;
     const { cartTotal } = this.refs;
 
     const cartItemsComponents = document.querySelectorAll('cart-items-component');
@@ -154,8 +202,10 @@ class CartItemsComponent extends Component {
       }
     });
 
+    // Prefer stable line-item key (`id`) over `line` index. Concurrent removes
+    // renumber cart lines; keys stay tied to the intended merchandise row.
     const body = JSON.stringify({
-      line: line,
+      id: key,
       quantity: quantity,
       sections: Array.from(sectionsToUpdate).join(','),
       sections_url: window.location.pathname,
@@ -163,56 +213,62 @@ class CartItemsComponent extends Component {
 
     cartTotal?.shimmer();
 
-    fetch(`${Theme.routes.cart_change_url}`, fetchConfig('json', { body }))
-      .then(response => {
-        return response.text();
-      })
-      .then(responseText => {
-        const parsedResponseText = JSON.parse(responseText);
+    try {
+      const response = await fetch(
+        `${Theme.routes.cart_change_url}`,
+        fetchConfig('json', { body })
+      );
+      const responseText = await response.text();
+      const parsedResponseText = JSON.parse(responseText);
 
-        resetShimmer(this);
+      resetShimmer(this);
 
-        if (parsedResponseText.errors) {
-          this.#handleCartError(line, parsedResponseText);
-          return;
-        }
+      if (parsedResponseText.errors) {
+        this.#handleCartError(line, parsedResponseText);
+        return;
+      }
 
-        const newSectionHTML = new DOMParser().parseFromString(
-          parsedResponseText.sections[this.sectionId],
-          'text/html'
-        );
+      const newSectionHTML = new DOMParser().parseFromString(
+        parsedResponseText.sections[this.sectionId],
+        'text/html'
+      );
 
-        // Grab the new cart item count from a hidden element
-        const newCartHiddenItemCount =
-          newSectionHTML.querySelector('[ref="cartItemCount"]')?.textContent;
-        const newCartItemCount = newCartHiddenItemCount ? parseInt(newCartHiddenItemCount, 10) : 0;
+      // Grab the new cart item count from a hidden element
+      const newCartHiddenItemCount =
+        newSectionHTML.querySelector('[ref="cartItemCount"]')?.textContent;
+      const newCartItemCount = newCartHiddenItemCount ? parseInt(newCartHiddenItemCount, 10) : 0;
 
-        // Update data-cart-quantity for all matching variants
-        this.#updateQuantitySelectors(parsedResponseText);
+      // Update data-cart-quantity for all matching variants
+      this.#updateQuantitySelectors(parsedResponseText);
 
-        this.dispatchEvent(
-          new CartUpdateEvent(parsedResponseText, this.sectionId, {
-            itemCount: newCartItemCount,
-            source: 'cart-items-component',
-            sections: parsedResponseText.sections,
-          })
-        );
+      this.dispatchEvent(
+        new CartUpdateEvent(parsedResponseText, this.sectionId, {
+          itemCount: newCartItemCount,
+          source: 'cart-items-component',
+          sections: parsedResponseText.sections,
+        })
+      );
 
-        morphSection(
-          this.sectionId,
-          parsedResponseText.sections[this.sectionId],
-          this.isDrawer ? 'hydration' : 'full'
-        );
+      morphSection(
+        this.sectionId,
+        parsedResponseText.sections[this.sectionId],
+        this.isDrawer ? 'hydration' : 'full'
+      );
 
-        this.#updateCartQuantitySelectorButtonStates();
-      })
-      .catch(error => {
-        console.error(error);
-      })
-      .finally(() => {
-        this.#enableCartItems();
-        cartPerformance.measureFromMarker(cartPerformaceUpdateMarker);
-      });
+      this.#updateCartQuantitySelectorButtonStates();
+    } catch (error) {
+      console.error(error);
+      // Optimistic empty-cart / row removal can leave the DOM out of sync with
+      // the server when the change request fails — restore from section render.
+      try {
+        await sectionRenderer.renderSection(this.sectionId, { cache: false });
+      } catch (renderError) {
+        console.error(renderError);
+      }
+    } finally {
+      this.#enableCartItems();
+      cartPerformance.measureFromMarker(cartPerformaceUpdateMarker);
+    }
   }
 
   /**
@@ -225,15 +281,19 @@ class CartItemsComponent extends Component {
 
   /**
    * Handles the cart error.
-   * @param {number} line - The line.
+   * @param {number} line - The line item index.
    * @param {Object} parsedResponseText - The parsed response text.
    * @param {string} parsedResponseText.errors - The errors.
    */
   #handleCartError = (line, parsedResponseText) => {
-    const quantitySelector = this.refs.quantitySelectors[line - 1];
+    const quantitySelector = this.refs.quantitySelectors?.[line - 1];
     const quantityInput = quantitySelector?.querySelector('input');
 
-    if (!quantityInput) throw new Error('Quantity input not found');
+    // Row may already be gone after optimistic empty-cart / remove animation.
+    if (!quantityInput) {
+      sectionRenderer.renderSection(this.sectionId, { cache: false });
+      return;
+    }
 
     quantityInput.value = quantityInput.defaultValue;
 
