@@ -33,6 +33,7 @@
     "text": "Text"
   },
   "content": {
+    "button": "Button",
     "visible_if_collection_has_more_products": "Visible if collection has more products than shown",
     "advanced": "Advanced",
     "appearance": "Appearance",
@@ -230,6 +231,8 @@
     "work_quickly_to_ship": "<p>We will work quickly to ship your order as soon as possible. Once your order has shipped, you will receive an email with further information. Delivery times vary depending on your location.</p>"
   },
   "info": {
+    "size_guide_button_text": "Text shown on the link that opens the size guide",
+    "size_guide_hide_title": "Hide the popup heading",
     "actions_display_style": "Icons are always used on mobile",
     "applies_on_image_only": "Applies to images only",
     "aspect_ratio_adjusted": "Adjusted in some layouts",
@@ -744,6 +747,10 @@
     "below_media": "Below media"
   },
   "settings": {
+    "button_text": "Button text",
+    "icon_size": "Icon size",
+    "hide_title": "Hide title",
+    "title_size": "Title size",
     "accordion": "Accordion",
     "account": "Account",
     "actions_display_style": "Menu style",

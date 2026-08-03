@@ -174,6 +174,10 @@
     "disclosures": "Toelichtingen"
   },
   "settings": {
+    "button_text": "Button text",
+    "icon_size": "Icon size",
+    "hide_title": "Hide title",
+    "title_size": "Title size",
     "autoplay": "Automatisch afspelen",
     "background": "Achtergrond",
     "border_radius": "Hoekradius",
@@ -871,6 +875,7 @@
     "input_field": "Invoerveld"
   },
   "content": {
+    "button": "Button",
     "background_video": "Achtergrondvideo",
     "describe_the_video_for": "Geef een beschrijving van de video voor klanten die schermlezers gebruiken. [Meer informatie](https://help.shopify.com/manual/online-store/themes/theme-structure/theme-features#video-block)",
     "width_is_automatically_optimized": "Breedte wordt automatisch geoptimaliseerd voor mobiel.",
@@ -1107,6 +1112,8 @@
     "disclosures": "Toelichtingen"
   },
   "info": {
+    "size_guide_button_text": "Text shown on the link that opens the size guide",
+    "size_guide_hide_title": "Hide the popup heading",
     "carousel_layout_on_mobile": "Op mobiel wordt altijd een carrousel gebruikt",
     "video_alt_text": "Beschrijf de video voor gebruikers van ondersteunende technologie",
     "video_autoplay": "Video's worden standaard gedempt",

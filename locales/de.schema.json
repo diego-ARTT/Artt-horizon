@@ -174,6 +174,10 @@
     "disclosures": "Pflichtangaben"
   },
   "settings": {
+    "button_text": "Button text",
+    "icon_size": "Icon size",
+    "hide_title": "Hide title",
+    "title_size": "Title size",
     "autoplay": "Autoplay",
     "background": "Hintergrund",
     "border_radius": "Eckenradius",
@@ -871,6 +875,7 @@
     "input_field": "Eingabefeld"
   },
   "content": {
+    "button": "Button",
     "background_video": "Hintergrundvideo",
     "describe_the_video_for": "Beschreibe das Video für Kunden, die Bildschirmlesegeräte benutzen. [Mehr Informationen](https://help.shopify.com/manual/online-store/themes/theme-structure/theme-features#video-block)",
     "width_is_automatically_optimized": "Die Breite wird für Mobilgeräte automatisch optimiert.",
@@ -1107,6 +1112,8 @@
     "disclosures": "Pflichtangaben"
   },
   "info": {
+    "size_guide_button_text": "Text shown on the link that opens the size guide",
+    "size_guide_hide_title": "Hide the popup heading",
     "video_alt_text": "Beschreibe das Video für Benutzer von Hilfstechnologien",
     "video_autoplay": "Videos werden standardmäßig stummgeschaltet",
     "video_external": "Verwende eine YouTube- oder Vimeo-URL",

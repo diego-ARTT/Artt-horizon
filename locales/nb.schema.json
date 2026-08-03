@@ -174,6 +174,10 @@
     "disclosures": "Opplysninger"
   },
   "settings": {
+    "button_text": "Button text",
+    "icon_size": "Icon size",
+    "hide_title": "Hide title",
+    "title_size": "Title size",
     "alignment": "Justering",
     "autoplay": "Autospill",
     "background": "Bakgrunn",
@@ -871,6 +875,7 @@
     "input_field": "Inndatafelt"
   },
   "content": {
+    "button": "Button",
     "advanced": "Avansert",
     "background_image": "Bakgrunnsbilde",
     "background_video": "Bakgrunnsvideo",
@@ -1107,6 +1112,8 @@
     "disclosures": "Opplysninger"
   },
   "info": {
+    "size_guide_button_text": "Text shown on the link that opens the size guide",
+    "size_guide_hide_title": "Hide the popup heading",
     "carousel_layout_on_mobile": "Karusell brukes alltid på mobil",
     "video_alt_text": "Beskriv videoen for brukere av hjelpeteknologi",
     "video_autoplay": "Videoer dempes som standard",

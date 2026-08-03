@@ -174,6 +174,10 @@
     "disclosures": "Bildirimler"
   },
   "settings": {
+    "button_text": "Button text",
+    "icon_size": "Icon size",
+    "hide_title": "Hide title",
+    "title_size": "Title size",
     "autoplay": "Otomatik oynatma",
     "background": "Arka plan",
     "border_radius": "Köşe yarıçapı",
@@ -871,6 +875,7 @@
     "input_field": "Giriş alanı"
   },
   "content": {
+    "button": "Button",
     "background_video": "Arka plan videosu",
     "describe_the_video_for": "Ekran okuyucu kullanan müşteriler için videoyu açıklayın. [Daha fazla bilgi edinin](https://help.shopify.com/manual/online-store/themes/theme-structure/theme-features#video-block)",
     "width_is_automatically_optimized": "Genişlik, mobil cihazlar için otomatik olarak optimize edilir.",
@@ -1107,6 +1112,8 @@
     "disclosures": "Bildirimler"
   },
   "info": {
+    "size_guide_button_text": "Text shown on the link that opens the size guide",
+    "size_guide_hide_title": "Hide the popup heading",
     "video_alt_text": "Yardımcı teknoloji kullanıcıları için videoyu açıklayın",
     "video_autoplay": "Videolar varsayılan olarak sessize alınır",
     "video_external": "Bir YouTube veya Vimeo URL'si kullanın",

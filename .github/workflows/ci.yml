@@ -17,7 +17,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          # Horizon 4.x needs @shopify/cli 4.x, which requires Node >=22.12.0.
+          # Theme Check runs through that CLI, so Node 20 fails here.
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies

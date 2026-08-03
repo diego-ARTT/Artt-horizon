@@ -14,6 +14,9 @@
     "format:check": "prettier --check \"**/*.{js,css,json,md}\"",
     "prepare": "husky"
   },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/diego-ARTT/Artt-horizon.git"

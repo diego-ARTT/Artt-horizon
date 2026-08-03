@@ -408,8 +408,9 @@ class HeaderMenu extends Component {
     const isOverlapSituation = this.headerComponent.hasAttribute('data-submenu-overlap-bottom-row');
 
     return isOverlapSituation && this.headerComponent.offsetHeight > 0
-      ? /** @type {HTMLElement | null} */ ((this.headerComponent.querySelector('.header__row--top'))
-          ?.offsetHeight ?? 0)
+      ? /** @type {HTMLElement | null} */ (
+          this.headerComponent.querySelector('.header__row--top')?.offsetHeight ?? 0
+        )
       : this.headerComponent.offsetHeight;
   }
 

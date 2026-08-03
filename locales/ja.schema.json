@@ -174,6 +174,10 @@
     "disclosures": "開示情報"
   },
   "settings": {
+    "button_text": "Button text",
+    "icon_size": "Icon size",
+    "hide_title": "Hide title",
+    "title_size": "Title size",
     "alignment": "配置",
     "autoplay": "自動再生",
     "background": "背景",
@@ -871,6 +875,7 @@
     "input_field": "入力フィールド"
   },
   "content": {
+    "button": "Button",
     "advanced": "高度な設定",
     "background_image": "背景画像",
     "background_video": "背景動画",
@@ -1107,6 +1112,8 @@
     "disclosures": "開示情報"
   },
   "info": {
+    "size_guide_button_text": "Text shown on the link that opens the size guide",
+    "size_guide_hide_title": "Hide the popup heading",
     "video_alt_text": "支援技術のユーザーのために動画の説明を記述します",
     "video_autoplay": "動画はデフォルトでミュートになります",
     "video_external": "YouTubeまたはVimeoのURLを使用します",

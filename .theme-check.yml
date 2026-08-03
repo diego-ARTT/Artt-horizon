@@ -1,28 +1,26 @@
 # Theme Check Configuration
 # https://shopify.dev/docs/themes/tools/theme-check/configuration
+#
+# NOTE: theme-check 4.x (shipped with @shopify/cli 4.x) no longer honours the
+# per-check `ignore:` key that this file previously relied on — only `enabled:`
+# takes effect. Verified by experiment: setting `ignore:` changes nothing, while
+# `enabled: false` does. The two checks below are therefore disabled outright
+# rather than scoped to specific files.
 
-# Ignore missing app blocks - these are third-party apps installed in production
-# but not available in local development environment
+# App blocks (Judge.me, Moast, Selleasy, DealEasy, Shopify Forms) are installed
+# in production but their block files do not exist in the repo, so every
+# template referencing them errors locally. Nothing to fix in this codebase.
 JSONMissingBlock:
-  enabled: true
-  # Ignore app blocks that are only available in production
-  ignore:
-    - templates/index.json
-    - templates/product.json
-    - templates/page.wholesale.json
-    - templates/page.judgeme_reviews.json
+  enabled: false
 
-# Ignore translation key error - key exists but theme check may be caching
+# The Avada SEO app injects into content_for_header by design. These files are
+# auto-synced from the live theme rather than authored here, and the store owner
+# cannot change vendor app output.
+ContentForHeaderModification:
+  enabled: false
+
+# Previously disabled for sections/header-marquee.liquid; the missing key
+# (t:content.share_information_about_your) is now defined in the schema locales,
+# so this check runs normally again.
 TranslationKeyExists:
   enabled: true
-  ignore:
-    - sections/header-marquee.liquid
-
-# Avada SEO app injects into content_for_header by design. These files are
-# auto-synced from the live theme (not authored here) and work in production;
-# the store owner can't meaningfully change vendor app output.
-ContentForHeaderModification:
-  enabled: true
-  ignore:
-    - snippets/avada-seo-other.liquid
-    - templates/search.avada-seo.liquid

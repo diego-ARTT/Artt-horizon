@@ -10,7 +10,7 @@
   assign marquee_speed = section.settings.speed | default: 20
 
   if marquee_text == blank
-    assign marquee_text = 't:content.share_information_about_your' | t | strip_html | strip
+    assign marquee_text = 'content.share_information_about_your' | t | strip_html | strip
   endif
 
   if marquee_enabled == false or marquee_text == blank
