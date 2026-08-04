@@ -1653,6 +1653,20 @@
         "unit": "px",
         "default": 8,
         "info": "t:info.drawer_backdrop_blur"
+      },
+      {
+        "type": "checkbox",
+        "id": "drawer_drop_shadow",
+        "label": "t:settings.drop_shadow",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "drawer_shadow_color",
+        "label": "t:settings.shadow_color",
+        "default": "{{ settings.color_palette.foreground }}",
+        "alpha": true,
+        "visible_if": "{{ settings.drawer_drop_shadow == true }}"
       }
     ]
   },

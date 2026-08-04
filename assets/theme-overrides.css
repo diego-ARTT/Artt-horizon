@@ -141,3 +141,36 @@ theme-drawer .theme-drawer__dialog::backdrop {
   );
   backdrop-filter: blur(var(--drawer-backdrop-blur, 8px));
 }
+
+/*
+ * Soft drop-shadow under open drawers.
+ *
+ * DESIGN.md records this as one of the theme's three sanctioned shadows —
+ * "soft drop-shadow under open cart and menu drawers", stateful, applied only
+ * while open. It has never actually rendered on them: upstream builds
+ * `--shadow-drawer` in snippets/color-palette.liquid but no drawer consumes it,
+ * and the token itself was malformed, resolving to `0px 4px 20px rgb( / 0.15)`
+ * because `settings.drawer_shadow_color` was referenced without ever being
+ * declared in settings_schema.json — an upstream gap, present in
+ * Shopify/horizon main, where the popover pair is declared but the drawer pair
+ * is not. The matching settings are restored alongside this rule, so the token
+ * now resolves and the merchant gets the same on/off + colour control the
+ * popover already had.
+ *
+ * `var(--shadow-drawer)` with no fallback is deliberate: the custom property is
+ * only emitted when "Drop shadow" is on, so switching it off makes this
+ * declaration invalid at computed-value time and the shadow resolves to `none`.
+ * That is what makes the toggle work without a second rule.
+ *
+ * Unscoped by breakpoint, matching the design note. Below 990px the drawer is
+ * full-width, so the shadow is simply not visible rather than wrong.
+ *
+ * Note for whoever reconciles the design system: .impeccable/design.json
+ * records `drawer-float` as `0 0 40px rgb(0 0 0 / 0.25)`, a wider and softer
+ * glow than the `0px 4px 20px … / 0.15` upstream computes. This rule follows
+ * the live token so there is a single control; the recorded value is the one
+ * to revisit if the two should agree.
+ */
+theme-drawer .theme-drawer__dialog {
+  box-shadow: var(--shadow-drawer);
+}
