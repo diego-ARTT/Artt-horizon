@@ -1,3 +1,8 @@
+{% render 'contrast-override',
+  background_color: section.settings.background_color,
+  section_id: section.id
+%}
+
 {% liquid
   assign marquee_enabled = section.settings.enable_marquee
   assign marquee_text = section.settings.message | strip
@@ -5,7 +10,7 @@
   assign marquee_speed = section.settings.speed | default: 20
 
   if marquee_text == blank
-    assign marquee_text = 't:content.share_information_about_your' | t | strip_html | strip
+    assign marquee_text = 'content.share_information_about_your' | t | strip_html | strip
   endif
 
   if marquee_enabled == false or marquee_text == blank
@@ -16,9 +21,9 @@
 %}
 
 {% if marquee_render %}
-  <div class="section-background color-{{ section.settings.color_scheme }}"></div>
+  <div class="section-background color-custom-{{ section.id }}"></div>
   <section
-    class="header-marquee section section--full-width color-{{ section.settings.color_scheme }}"
+    class="header-marquee section section--full-width color-custom-{{ section.id }}"
     style="
       --header-marquee-duration: {{ marquee_speed }}s;
       --header-marquee-direction: {{ section.settings.direction }};
@@ -203,10 +208,10 @@
       "default": "normal"
     },
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:settings.color_scheme",
-      "default": "scheme-1"
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
     }
   ],
   "presets": [

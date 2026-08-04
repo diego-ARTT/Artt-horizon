@@ -41,6 +41,11 @@ yarn-error.log*
 # Shopify CLI
 .shopify/
 
+# Shopify theme-editor scratch. The admin's AI block generator syncs unconfirmed
+# draft blocks into temp/ via the GitHub integration; they're not referenced by
+# any template and shouldn't live in the tracked theme.
+temp/
+
 # Playwright
 .playwright-mcp/
 

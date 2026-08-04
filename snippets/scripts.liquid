@@ -1,3 +1,9 @@
+{% doc %}
+  Renders all global scripts, module preloads, and importmaps for the theme.
+
+  @param {object} [product] - The product object, available on product pages.
+{% enddoc %}
+
 {%- liquid
   assign _js_ext = '.js'
 -%}
@@ -5,10 +11,14 @@
   {
     "imports": {
       "@theme/overflow-list": "{{ 'overflow-list' | append: _js_ext | asset_url }}",
-      "@theme/product-title": "{{ 'product-title-truncation' | append: _js_ext | asset_url }}",
       "@theme/component": "{{ 'component' | append: _js_ext | asset_url }}",
       "@theme/dialog": "{{ 'dialog' | append: _js_ext | asset_url }}",
       "@theme/events": "{{ 'events' | append: _js_ext | asset_url }}",
+      "@shopify/events": "https://cdn.shopify.com/storefront/standard-events.js",
+      "@theme/view-event-elements": "{{ 'view-event-elements' | append: _js_ext | asset_url }}",
+      "@theme/variant-resolution": "{{ 'variant-resolution' | append: _js_ext | asset_url }}",
+      "@theme/scroll-container": "{{ 'scroll-container' | append: _js_ext | asset_url }}",
+      "@theme/theme-drawer": "{{ 'theme-drawer' | append: _js_ext | asset_url }}",
       "@theme/focus": "{{ 'focus' | append: _js_ext | asset_url }}",
       "@theme/morph": "{{ 'morph' | append: _js_ext | asset_url }}",
       "@theme/paginated-list": "{{ 'paginated-list' | append: _js_ext | asset_url }}",
@@ -76,12 +86,6 @@
   <link
     rel="modulepreload"
     href="{{ 'paginated-list' | append: _js_ext | asset_url }}"
-    fetchpriority="low"
-  >
-
-  <link
-    rel="modulepreload"
-    href="{{ 'product-title-truncation' | append: _js_ext | asset_url }}"
     fetchpriority="low"
   >
 {% endif %}
@@ -180,11 +184,6 @@
   fetchpriority="low"
 ></script>
 <script
-  src="{{ 'product-title-truncation' | append: _js_ext | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
-<script
   src="{{ 'product-inventory' | append: _js_ext | asset_url }}"
   type="module"
   fetchpriority="low"
@@ -277,6 +276,7 @@
       recipient_form_error: `{{ 'content.recipient_form_error' | t }}`,
       items_added_to_cart_one: `{{ 'content.items_added_to_cart.one' | t }}`,
       items_added_to_cart_other: `{{ 'content.items_added_to_cart.other' | t }}`,
+      cart_count: `{{ 'accessibility.cart_count' | t }}`,
     },
     routes: {
       cart_add_url: '{{ routes.cart_add_url | append: '.js' }}',
@@ -305,3 +305,13 @@ window.tidioChatApi.on('ready', onTidioChatApiReady);
 document.addEventListener('tidioChat-ready', onTidioChatApiReady);
 }
 </script>
+
+{%- comment -%}
+  Theme-owned behaviour overrides. Loaded eagerly rather than deferred: it
+  registers a delegated listener that must already exist the first time a
+  drawer is open and clicked. Kept last so upstream merges land above it.
+{%- endcomment -%}
+<script
+  src="{{ 'theme-overrides.js' | asset_url }}"
+  defer="defer"
+></script>

@@ -1,3 +1,8 @@
+{% render 'contrast-override',
+  background_color: section.settings.background_color,
+  section_id: section.id
+%}
+
 {%- liquid
   assign s = section.settings
   assign downloads = section.blocks | where: 'type', 'download'
@@ -25,9 +30,9 @@
     endif
   endfor
 -%}
-<div class="section-background color-{{ s.color_scheme }}"></div>
+<div class="section-background color-custom-{{ section.id }}"></div>
 <div
-  class="section section--{{ s.section_width }} color-{{ s.color_scheme }} spacing-style press-kit"
+  class="section section--{{ s.section_width }} color-custom-{{ section.id }} spacing-style press-kit"
   style="{% render 'spacing-style', settings: section.settings %}"
 >
   {% if download_count > 0 %}
@@ -298,7 +303,12 @@
       ],
       "default": "page-width"
     },
-    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "placeholder": "t:settings.default"
+    },
     { "type": "range", "id": "padding-block-start", "label": "Top padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 },
     { "type": "range", "id": "padding-block-end", "label": "Bottom padding", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48 }
   ],

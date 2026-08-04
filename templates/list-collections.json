@@ -16,8 +16,6 @@
           "type": "group",
           "name": "t:names.header",
           "settings": {
-            "link": "",
-            "open_in_new_tab": false,
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
@@ -32,19 +30,19 @@
             "custom_width_mobile": 100,
             "height": "fit",
             "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
             "background_media": "none",
             "video_position": "cover",
             "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
             "toggle_overlay": false,
             "overlay_color": "#00000026",
             "overlay_style": "solid",
             "gradient_direction": "to top",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "link": "",
+            "open_in_new_tab": false,
             "padding-block-start": 0,
             "padding-block-end": 48,
             "padding-inline-start": 0,
@@ -60,13 +58,12 @@
                 "max_width": "normal",
                 "alignment": "left",
                 "type_preset": "h2",
-                "font": "var(--font-primary--family)",
+                "font": "var(--font-body--family)",
                 "font_size": "",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
-                "color": "",
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
@@ -78,7 +75,9 @@
               "blocks": {}
             }
           },
-          "block_order": ["text_fRMQMR"]
+          "block_order": [
+            "text_fRMQMR"
+          ]
         },
         "static-collection-card": {
           "type": "_collection-card",
@@ -89,8 +88,6 @@
             "horizontal_alignment": "flex-start",
             "vertical_alignment": "flex-start",
             "collection_card_gap": 8,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
@@ -111,7 +108,6 @@
                 "letter_spacing": "normal",
                 "case": "none",
                 "wrap": "pretty",
-                "color": "var(--color-foreground)",
                 "background": false,
                 "background_color": "#00000026",
                 "corner_radius": 0,
@@ -140,10 +136,14 @@
               "blocks": {}
             }
           },
-          "block_order": ["collection_title_7YgBPU"]
+          "block_order": [
+            "collection_title_7YgBPU"
+          ]
         }
       },
-      "block_order": ["group_4FtiAg"],
+      "block_order": [
+        "group_4FtiAg"
+      ],
       "name": "t:names.collection_list",
       "settings": {
         "layout_type": "grid",
@@ -158,11 +158,12 @@
         "icons_shape": "none",
         "section_width": "page-width",
         "gap": 12,
-        "color_scheme": "",
         "padding-block-start": 48,
         "padding-block-end": 48
       }
     }
   },
-  "order": ["collection_list_Wfgh3m"]
+  "order": [
+    "collection_list_Wfgh3m"
+  ]
 }
