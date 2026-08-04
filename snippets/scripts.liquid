@@ -305,3 +305,13 @@ window.tidioChatApi.on('ready', onTidioChatApiReady);
 document.addEventListener('tidioChat-ready', onTidioChatApiReady);
 }
 </script>
+
+{%- comment -%}
+  Theme-owned behaviour overrides. Loaded eagerly rather than deferred: it
+  registers a delegated listener that must already exist the first time a
+  drawer is open and clicked. Kept last so upstream merges land above it.
+{%- endcomment -%}
+<script
+  src="{{ 'theme-overrides.js' | asset_url }}"
+  defer="defer"
+></script>

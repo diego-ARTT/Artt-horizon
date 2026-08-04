@@ -74,16 +74,22 @@
    * z-index is comparable with the header's (which is inside `.page-wrapper`)
    * and the drawer's (which is a later sibling of it).
    *
-   * `pointer-events: none` is deliberate: the dialog is non-modal, so upstream
-   * leaves the page interactive while a drawer is open. The scrim is a depth
-   * cue, not a click-blocker — it must not silently swallow clicks.
+   * The scrim is deliberately interactive (`pointer-events` defaults to auto).
+   * Clicking it closes the drawer, which assets/theme-overrides.js implements —
+   * upstream's own backdrop-click handler cannot fire here, because it listens
+   * on the dialog and depends on the click retargeting that only modal mode
+   * does. Blocking clicks to the page is the point: a blurred page you can
+   * still click through is a mixed signal.
+   *
+   * Scrolling is intentionally left working. Modal mode locks the scroll, but
+   * doing that here means hiding the scroll container's scrollbar, which
+   * re-introduces exactly the kind of width shift this file exists to remove.
    */
   .page-wrapper::after {
     content: '';
     position: fixed;
     inset: 0;
     z-index: calc(var(--layer-menu-drawer) + 1);
-    pointer-events: none;
     background-color: rgb(
       var(--backdrop-color-rgb, var(--color-foreground-rgb)) / var(--backdrop-opacity)
     );
