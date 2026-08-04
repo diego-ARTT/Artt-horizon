@@ -46,12 +46,92 @@
    * Scoped to the same breakpoint as the override above so mobile, where the
    * squeeze never applied, keeps upstream's stacking untouched.
    *
+   * The `+ 2` leaves exactly one layer free below the drawer for the scrim
+   * (see below), so the order is always header < scrim < drawer. Drawers set
+   * `--drawer-stack-order` to 1 or more whenever they open, but the `, 0)`
+   * fallback would collide with the scrim, hence the gap rather than `+ 1`.
+   *
    * Selector is deliberately `theme-drawer .theme-drawer__dialog` rather than
    * the bare class: upstream's rule lives in a {% stylesheet %} block, which
    * Shopify aggregates into a stylesheet that loads after this file, so an
    * equal-specificity rule would lose on source order.
    */
   theme-drawer .theme-drawer__dialog {
-    z-index: calc(var(--layer-menu-drawer) + 1 + var(--drawer-stack-order, 0));
+    z-index: calc(var(--layer-menu-drawer) + 2 + var(--drawer-stack-order, 0));
   }
+
+  /*
+   * Blurred scrim behind an open drawer.
+   *
+   * On wide viewports the drawer is a *non-modal* dialog (`show()`), so no
+   * `::backdrop` is rendered — upstream had no need for one, because the
+   * squeeze was itself the "the page moved aside" affordance. Removing the
+   * squeeze removed that cue, so we draw the scrim ourselves.
+   *
+   * `.page-wrapper` is not a stacking context and does not establish a
+   * containing block for fixed positioning, so this pseudo-element is
+   * viewport-relative, is not clipped by its `overflow-y: auto`, and its
+   * z-index is comparable with the header's (which is inside `.page-wrapper`)
+   * and the drawer's (which is a later sibling of it).
+   *
+   * `pointer-events: none` is deliberate: the dialog is non-modal, so upstream
+   * leaves the page interactive while a drawer is open. The scrim is a depth
+   * cue, not a click-blocker — it must not silently swallow clicks.
+   */
+  .page-wrapper::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--layer-menu-drawer) + 1);
+    pointer-events: none;
+    background-color: rgb(
+      var(--backdrop-color-rgb, var(--color-foreground-rgb)) / var(--backdrop-opacity)
+    );
+    backdrop-filter: blur(var(--drawer-backdrop-blur, 8px));
+    opacity: 0;
+    visibility: hidden;
+
+    /* Fade opacity, but flip visibility discretely at the *end* of the fade
+       out, so the blur is never composited while the scrim is invisible. */
+    transition:
+      opacity var(--animation-speed) var(--animation-timing-fade-out),
+      visibility 0s linear var(--animation-speed);
+  }
+
+  .page-wrapper--drawer-open::after {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity var(--animation-speed) var(--animation-timing-fade-in),
+      visibility 0s;
+  }
+}
+
+/*
+ * Restore the theme's blurred drawer backdrop on narrow viewports.
+ *
+ * The blur is a documented ARTT customization (see DESIGN.md) driven by the
+ * "Backdrop blur" theme setting via `--drawer-backdrop-blur`, 8px by default.
+ * Horizon 4.x moved the cart and menu drawers from `.dialog-drawer` to
+ * `<theme-drawer>`, and upstream paints that backdrop as a flat tint with no
+ * blur — so those drawers silently lost the effect in the migration. The
+ * popup-link and size-guide drawers still use `.dialog-drawer` and kept it
+ * (snippets/critical-css.liquid), which is what made the loss easy to miss.
+ *
+ * No breakpoint needed: `::backdrop` only renders for a modal dialog, and the
+ * drawer is only modal below 990px.
+ *
+ * The `background-color` is restated because upstream's tint never renders:
+ * it resolves `--backdrop-color-rgb`, which is defined as `var(--color-shadow-rgb)`,
+ * and nothing in the theme ever defines `--color-shadow-rgb` — so the colour is
+ * invalid at computed-value time and falls back to transparent. Naming it as
+ * the `var()` fallback keeps the intended token in charge if it is ever
+ * defined, while rendering the intended 15% tint today. Needs the descendant
+ * selector to out-specify upstream's rule, which Shopify serves after this file.
+ */
+theme-drawer .theme-drawer__dialog::backdrop {
+  background-color: rgb(
+    var(--backdrop-color-rgb, var(--color-foreground-rgb)) / var(--backdrop-opacity)
+  );
+  backdrop-filter: blur(var(--drawer-backdrop-blur, 8px));
 }
