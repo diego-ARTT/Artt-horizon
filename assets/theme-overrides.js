@@ -23,12 +23,29 @@
    *
    * Below 990px the drawer is modal and the native `::backdrop` handles
    * dismissal, so this listener deliberately does nothing.
+   *
+   * 990 is upstream's `MODAL_BREAKPOINT` in assets/theme-drawer.js, mirrored by
+   * `squeezeQuery` in snippets/theme-drawer.liquid and by the media query in
+   * theme-overrides.css. It is not an ARTT breakpoint token. If upstream ever
+   * moves it, all four copies have to move together — otherwise the scrim and
+   * the native backdrop can both render, or neither can.
    */
   const SQUEEZE_QUERY = window.matchMedia('(min-width: 990px)');
 
   /** @param {Element} drawer */
   const stackOrder = drawer =>
     Number(/** @type {HTMLElement} */ (drawer).style.getPropertyValue('--drawer-stack-order')) || 0;
+
+  /**
+   * Mirrors upstream's own backdrop-click guard: a drawer with an open dialog
+   * inside it should not be dismissed out from under that dialog.
+   *
+   * @param {Element} drawer
+   */
+  const hasOpenNestedDialog = drawer => {
+    const panel = drawer.querySelector('.theme-drawer__dialog');
+    return Boolean(panel?.querySelector('dialog[open]'));
+  };
 
   document.addEventListener('click', event => {
     if (!SQUEEZE_QUERY.matches) return;
@@ -43,6 +60,8 @@
     // drawers. `--drawer-stack-order` is set on the host element every time a
     // drawer opens or is brought to the front, so the highest value is on top.
     const topmost = openDrawers.reduce((a, b) => (stackOrder(b) >= stackOrder(a) ? b : a));
+
+    if (hasOpenNestedDialog(topmost)) return;
 
     // theme-drawer.js is a deferred module, so the element may not have
     // upgraded yet — in which case there is no drawer state to close.
