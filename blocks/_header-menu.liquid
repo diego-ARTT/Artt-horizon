@@ -695,6 +695,27 @@
     }
   }
 
+  /*
+    A submenu whose links are all flat (no grandchildren of their own) never closes its column in
+    mega-menu-list.liquid, so every link stacks into a single .mega-menu__column. Inheriting the
+    parent's tracks via subgrid pins that column to one sixth of the panel (~270px at 1920px), so
+    long titles wrap mid-name while five-sixths of the panel sits empty. Note that lowering
+    --menu-columns-* does not help: those are span counts, not widths.
+
+    Opt only that case out of subgrid so the column sizes to its longest label. minmax(0, ...)
+    keeps the track from ever exceeding the panel, so an unusually long collection name wraps
+    instead of forcing horizontal scroll.
+
+    Guards: :not(:has(ul)) holds out columns with a nested sublist, whose inner column-count
+    multicol needs a known width; :not(:has(.mega-menu__link-image)) holds out a single-link
+    collection-images menu, where a max-content track would size to the image's intrinsic width.
+    Both must sit on the subject -- :has() is invalid inside another :has(), and nesting them in
+    the argument would silently drop this whole rule.
+  */
+  .mega-menu__list:not(:has(ul, .mega-menu__link-image)):has(> .mega-menu__column:only-child) {
+    grid-template-columns: minmax(0, max-content);
+  }
+
   .mega-menu__content {
     grid-column: span var(--menu-content-columns-tablet) / -1;
 
