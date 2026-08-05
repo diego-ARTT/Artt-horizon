@@ -327,7 +327,10 @@ export default class VariantPicker extends Component {
     const { optionValueId = '', variantId, connectedProductUrl = '' } = detail;
     // We use this to abort the previous fetch request if it's still pending.
     this.#abortController?.abort();
-    this.#abortController = new AbortController();
+    // Capture this request's controller. A newer selection replaces `#abortController`, so
+    // post-await checks must use this local reference — not `this.#abortController`.
+    const abortController = new AbortController();
+    this.#abortController = abortController;
 
     const deferredEventPromise = ProductSelectEvent.createPromise();
     const selectedOptions = this.getAllSelectedOptions();
@@ -349,9 +352,17 @@ export default class VariantPicker extends Component {
       })
     );
 
-    fetch(requestUrl, { signal: this.#abortController.signal })
+    fetch(requestUrl, { signal: abortController.signal })
       .then(response => response.text())
       .then(responseText => {
+        // Abort only cancels the network/body read. If a newer selection aborted this
+        // controller after `response.text()` settled, skip morph/resolve so listeners
+        // never apply a superseded variant (wrong SKU in `input[name="id"]`).
+        if (abortController.signal.aborted) {
+          deferredEventPromise.reject(new DOMException('The operation was aborted.', 'AbortError'));
+          return;
+        }
+
         this.#pendingRequestUrl = undefined;
         const html = new DOMParser().parseFromString(responseText, 'text/html');
         // Defer is only useful for the initial rendering of the page. Remove it here.
