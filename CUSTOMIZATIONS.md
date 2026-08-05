@@ -125,6 +125,28 @@
 - **Merge Strategy:** ⚠️ Review carefully - preserve unique ID changes
 - **Notes:** This fix ensures each header menu instance has a unique identifier
 
+#### `blocks/_header-menu.liquid`
+
+- **Status:** ⚠️ Modified
+- **Changes Made:**
+  - **August 2026:** Fixed flat mega-menu submenus wrapping their link titles
+    - Added one rule beside `.mega-menu__list` opting single-column, text-only
+      submenus out of `subgrid` via `grid-template-columns: minmax(0, max-content)`
+    - Scoped with `:not(:has(ul, .mega-menu__link-image)):has(> .mega-menu__column:only-child)`
+      so menus with featured content, nested sublists or collection images are untouched
+- **Reason:** A submenu with no grandchild links stacks every link into one
+  `.mega-menu__column`, which subgrid pins to 1/6 of the panel (~270px at 1920px).
+  Long titles such as "Seven Deadly Sins Collection" wrapped mid-name while most of
+  the panel sat empty.
+- **Last Modified:** August 2026
+- **Merge Strategy:** ⚠️ Review carefully - preserve the custom rule after
+  `.mega-menu__list`. Upstream owns the surrounding mega-menu grid CSS; if Horizon
+  changes `.mega-menu__list` away from `subgrid`, re-test before keeping this.
+- **Notes:** Design spec at
+  `docs/superpowers/specs/2026-08-04-mega-menu-flat-column-wrap-design.md`.
+  The guards must stay on the subject — `:has()` is invalid inside another `:has()`,
+  and folding them into the argument makes browsers drop the entire rule silently.
+
 #### `sections/footer-group.json`
 
 - **Status:** Modified
