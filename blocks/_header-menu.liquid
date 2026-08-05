@@ -114,7 +114,10 @@
             {% endif %}
             ref="menuitem"
           >
-            <span class="menu-list__link-title">{{- link.title -}}</span>
+            <span class="menu-list__link-title" data-title="{{ link.title | escape }}">
+              <span class="menu-list__link-label">{{- link.title -}}</span>
+              <span class="menu-list__link-rule" aria-hidden="true"></span>
+            </span>
           </a>
           {%- if link.links != blank -%}
             <div class="menu-list__submenu{{ background_color_classes }}" ref="submenu[]">
@@ -163,7 +166,11 @@
           aria-expanded="false"
           ref="menuitem"
         >
-          <span class="menu-list__link-title">{{ 'actions.more' | t }}</span>
+          {%- assign more_label = 'actions.more' | t -%}
+          <span class="menu-list__link-title" data-title="{{ more_label | escape }}">
+            <span class="menu-list__link-label">{{ more_label }}</span>
+            <span class="menu-list__link-rule" aria-hidden="true"></span>
+          </span>
         </button>
       </li>
     {% endcapture %}
@@ -330,11 +337,88 @@
     }
   }
 
+  /*
+    Wall-label hover treatment.
+
+    DESIGN.md §Navigation specifies "underline or weight shift; do not introduce a colour
+    change". The label therefore cross-fades between its resting weight and a bold twin
+    while a hairline rule draws in beneath it.
+
+    The `::before` pseudo carries a hidden copy of the title at the hover weight, so the
+    grid cell is always sized to the *widest* state. Without it the row would reflow every
+    time a link went bold and shove its neighbours sideways.
+  */
   .menu-list__link-title {
+    --menu-hover-font-weight: 700;
+
+    position: relative;
+    display: inline-grid;
     padding-inline: calc(var(--gap-xl) / 2);
   }
+
+  .menu-list__link-label,
+  .menu-list__link-title::before,
+  .menu-list__link-title::after {
+    grid-area: 1 / 1;
+    text-align: center;
+    transition: opacity var(--animation-speed-slow) var(--ease-out-cubic);
+  }
+
+  .menu-list__link-title::before,
+  .menu-list__link-title::after {
+    content: attr(data-title);
+    font-weight: var(--menu-hover-font-weight);
+    text-transform: var(--menu-top-level-font-case);
+  }
+
+  /* sizes the cell to the bold state; never painted */
+  .menu-list__link-title::before {
+    visibility: hidden;
+  }
+
+  /* the bold copy that fades in over the resting one */
+  .menu-list__link-title::after {
+    opacity: 0;
+  }
+
+  .menu-list__link-rule {
+    position: absolute;
+    left: calc(var(--gap-xl) / 2);
+    right: calc(var(--gap-xl) / 2);
+    bottom: -0.4em;
+    height: 1px;
+    background: currentcolor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--animation-speed) var(--ease-out-cubic);
+  }
+
+  /* draw in from the left on hover/focus/open, retract to the right on leave */
+  .menu-list__list-item:where(:hover, :focus-within) .menu-list__link-rule,
+  .menu-list__link[aria-expanded='true'] .menu-list__link-rule {
+    transform: scaleX(1);
+    transform-origin: left;
+    transition: transform var(--animation-speed-slow) var(--ease-out-cubic);
+  }
+
+  .menu-list__list-item:where(:hover, :focus-within) .menu-list__link-title::after,
+  .menu-list__link[aria-expanded='true'] .menu-list__link-title::after,
+  .menu-list__link--active .menu-list__link-title::after {
+    opacity: 1;
+  }
+
+  .menu-list__list-item:where(:hover, :focus-within) .menu-list__link-label,
+  .menu-list__link[aria-expanded='true'] .menu-list__link-label,
+  .menu-list__link--active .menu-list__link-label {
+    opacity: 0;
+  }
+
   [slot='overflow'] .menu-list__link-title {
     padding-inline: 0;
+  }
+  [slot='overflow'] .menu-list__link-rule {
+    left: 0;
+    right: 0;
   }
 
   .menu-list__list-item:not([slot='overflow']) {
@@ -352,21 +436,13 @@
   }
 
   /*
-    High specificity selectors to subdue non-hovered links without javascript.
-    If the need for js-generated `hovered` and `focused` classes arises for another reason we can simplify these.
+    Stock Horizon subdued every non-hovered link, so the hovered one read only by
+    contrast against its dimmed siblings. That is a colour change, which DESIGN.md
+    §Navigation rules out ("the system has no nav accent colour"), and it left the
+    hovered link itself with no treatment at all. The weight shift and rule above
+    replace it — every link keeps full ink at all times.
   */
-  .menu-list:where(:has(.menu-list__list-item:hover)),
-  .menu-list:where(:has(.menu-list__list-item:focus-within)),
-  .menu-list:where(:has(.menu-list__list-item:not([aria-hidden='true']) .menu-list__link--active)) {
-    .menu-list__link {
-      color: rgb(var(--menu-top-level-font-color-rgb) / var(--opacity-subdued-text));
-    }
-  }
-
-  /* stylelint-disable-next-line selector-max-specificity */
-  .menu-list:not(:has(.menu-list__list-item:hover)) .menu-list__link--active,
-  .menu-list .menu-list__list-item:where(:hover, :focus-within) .menu-list__link,
-  .menu-list .menu-list__list-item:is([slot='more'], [slot='overflow']) .menu-list__link[aria-expanded='true'] {
+  .menu-list__link {
     color: var(--menu-top-level-font-color);
   }
 
@@ -461,6 +537,59 @@
     --submenu-content-opacity: 1;
 
     visibility: visible;
+  }
+
+  /*
+    Panning submenu.
+
+    Moving between two top-level items used to read as "close one dropdown, open another",
+    because the outgoing submenu was hidden the instant its `aria-expanded` flipped. The
+    header's own height already morphs smoothly between the two (the underlay in
+    header.liquid transitions `height` over --submenu-animation-speed), so the only thing
+    missing was lateral continuity in the contents.
+
+    `header-menu.js` marks the outgoing submenu with `data-menu-leaving` and sets
+    --menu-pan-dir from the DOM order of the two items, so the pair slides the same way the
+    pointer travelled. The transform goes on .mega-menu__grid rather than
+    .menu-list__submenu-inner because that inner element's translateY is load-bearing —
+    it compensates for the header height animation and is not an entrance effect.
+  */
+  @media (prefers-reduced-motion: no-preference) {
+    .menu-list__submenu[data-menu-leaving] {
+      --submenu-content-opacity: 0;
+
+      visibility: visible;
+    }
+
+    .menu-list__submenu[data-menu-leaving] .mega-menu__grid {
+      animation: menu-pan-out var(--submenu-animation-speed) var(--ease-out-cubic) both;
+    }
+
+    .header-menu[data-menu-switching='true']
+      .menu-list__list-item:has(.menu-list__link[aria-expanded='true'])
+      .mega-menu__grid {
+      animation: menu-pan-in var(--submenu-animation-speed) var(--ease-out-cubic) both;
+    }
+
+    @keyframes menu-pan-in {
+      from {
+        transform: translate3d(calc(var(--menu-pan-dir, 1) * 3rem), 0, 0);
+      }
+
+      to {
+        transform: none;
+      }
+    }
+
+    @keyframes menu-pan-out {
+      from {
+        transform: none;
+      }
+
+      to {
+        transform: translate3d(calc(var(--menu-pan-dir, 1) * -2.25rem), 0, 0);
+      }
+    }
   }
 
   .overflow-menu::part(overflow) {

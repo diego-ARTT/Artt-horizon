@@ -6,6 +6,12 @@ import { MegaMenuHoverEvent } from '@theme/events';
 const HOVER_COMMIT_DELAY_MS = 150;
 
 /**
+ * How long the outgoing submenu stays painted while it pans away. Must cover
+ * --submenu-animation-speed (360ms in base.css); the extra margin absorbs a dropped frame.
+ */
+const PAN_OUT_DURATION_MS = 420;
+
+/**
  * A custom element that manages a header menu.
  *
  * @typedef {Object} State
@@ -29,6 +35,15 @@ class HeaderMenu extends Component {
   /** @type {ReturnType<typeof setTimeout> | undefined} */
   #hoverDispatchTimer;
 
+  /** @type {ReturnType<typeof setTimeout> | undefined} */
+  #panCleanupTimer;
+
+  /**
+   * Submenu currently panning out, kept visible until #panCleanupTimer fires.
+   * @type {HTMLElement | null}
+   */
+  #leavingSubmenu = null;
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -48,6 +63,7 @@ class HeaderMenu extends Component {
     this.#cleanupMutationObserver();
     clearTimeout(this.#hoverDispatchTimer);
     this.#hoverDispatchTimer = undefined;
+    this.#clearPan();
   }
 
   /**
@@ -158,6 +174,57 @@ class HeaderMenu extends Component {
   }
 
   /**
+   * Keep the outgoing submenu painted so it can pan away, instead of being hidden the
+   * instant its `aria-expanded` flips to false. Direction follows the DOM order of the two
+   * items, so the panels slide the same way the pointer travelled.
+   *
+   * Only runs when both items own a real mega-menu submenu — the overflow ("More") panel
+   * is a separate surface with its own open/close behaviour and is left alone.
+   *
+   * @param {HTMLElement | null} previousItem
+   * @param {HTMLElement} item
+   */
+  #startPan(previousItem, item) {
+    this.#clearPan();
+
+    if (!previousItem || previousItem === item) {
+      delete this.dataset.menuSwitching;
+      return;
+    }
+
+    const previousSubmenu = findSubmenu(previousItem);
+
+    if (!previousSubmenu || !findSubmenu(item)) {
+      delete this.dataset.menuSwitching;
+      return;
+    }
+
+    const movingForward = Boolean(
+      previousItem.compareDocumentPosition(item) & Node.DOCUMENT_POSITION_FOLLOWING
+    );
+
+    this.style.setProperty('--menu-pan-dir', movingForward ? '1' : '-1');
+    this.dataset.menuSwitching = 'true';
+
+    this.#leavingSubmenu = previousSubmenu;
+    previousSubmenu.dataset.menuLeaving = '';
+    this.#panCleanupTimer = setTimeout(() => this.#clearPan(), PAN_OUT_DURATION_MS);
+  }
+
+  /**
+   * Drop the outgoing submenu back out of view once it has finished panning.
+   */
+  #clearPan = () => {
+    clearTimeout(this.#panCleanupTimer);
+    this.#panCleanupTimer = undefined;
+
+    if (this.#leavingSubmenu) {
+      delete this.#leavingSubmenu.dataset.menuLeaving;
+      this.#leavingSubmenu = null;
+    }
+  };
+
+  /**
    * Get the overflow menu
    */
   get overflowMenu() {
@@ -217,6 +284,8 @@ class HeaderMenu extends Component {
     if (previouslyActiveOverflowItem && previouslyActiveOverflowItem !== previouslyActiveItem) {
       previouslyActiveOverflowItem.ariaExpanded = 'false';
     }
+
+    this.#startPan(previouslyActiveItem, item);
 
     this.#state.activeItem = item;
     this.#state.activeOverflowItem = overflowItem;
@@ -346,6 +415,10 @@ class HeaderMenu extends Component {
 
     clearTimeout(this.#hoverDispatchTimer);
     this.#hoverDispatchTimer = undefined;
+
+    // A full close is not a switch — drop the pan state so the next open gets its own entrance.
+    this.#clearPan();
+    delete this.dataset.menuSwitching;
 
     this.headerComponent?.style.setProperty('--submenu-height', '0px');
     this.#setFullOpenHeaderHeight(0, 0);
