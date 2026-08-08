@@ -31,6 +31,13 @@ export default class PaginatedList extends Component {
   /** @type {((value: void) => void) | null} */
   #resolvePreviousPagePromise = null;
 
+  /**
+   * Bumped on every filter/collection update so in-flight page prefetches
+   * cannot write stale (pre-filter) HTML into `pages` after `pages.clear()`.
+   * @type {number}
+   */
+  #pageCacheGeneration = 0;
+
   /** @type {PaginatedListAspectRatioHelper} */
   #aspectRatioHelper;
 
@@ -154,6 +161,7 @@ export default class PaginatedList extends Component {
    */
   async #fetchSpecificPage(pageNumber, url = undefined) {
     const pageInfo = { page: pageNumber, url };
+    const generation = this.#pageCacheGeneration;
 
     if (!url) {
       const newUrl = new URL(window.location.href);
@@ -164,6 +172,12 @@ export default class PaginatedList extends Component {
 
     if (!this.#shouldUsePage(pageInfo)) return;
     const pageContent = await sectionRenderer.getSectionHTML(this.sectionId, true, pageInfo.url);
+
+    // Filter updates clear `pages` and bump generation. A prefetch started
+    // against the previous URL must not re-seed the cache keyed only by page
+    // number — infinite scroll would then append unfiltered products.
+    if (generation !== this.#pageCacheGeneration) return;
+
     this.pages.set(pageNumber, pageContent);
   }
 
@@ -316,6 +330,10 @@ export default class PaginatedList extends Component {
       '[id^="shopify-section-"]'
     );
     if (eventSection && eventSection.id !== `shopify-section-${this.sectionId}`) return;
+
+    // Invalidate in-flight prefetches before clearing so their completion
+    // handlers cannot rewrite `pages` with pre-filter markup.
+    this.#pageCacheGeneration += 1;
     this.pages.clear();
 
     // Resolve any pending promises to unblock waiting renders
@@ -325,45 +343,30 @@ export default class PaginatedList extends Component {
     this.#resolveNextPagePromise = null;
     this.#resolvePreviousPagePromise = null;
 
-    // Store the current lastPage value to detect when it changes
-    const currentLastPage = this.refs.grid?.dataset.lastPage;
-
-    // We need to wait for the DOM to be updated with the new filtered content
-    // Using mutation observer to detect when the grid actually updates
+    // Wait for the filtered grid morph. Prefer childList (always changes when
+    // results refresh) over lastPage alone — filters that keep the same page
+    // count never flipped data-last-page, so prefetch never restarted.
     const observer = new MutationObserver(() => {
-      // Check if data-last-page changed
-      const newLastPage = this.refs.grid?.dataset.lastPage;
+      observer.disconnect();
 
-      if (newLastPage !== currentLastPage) {
-        observer.disconnect();
-
-        // Check if component is still connected
-        if (!this.isConnected) {
-          return;
-        }
-
-        // Now the DOM has been updated with the new filtered content
-        this.#observeViewMore();
-
-        // Fetch the next page
-        this.#fetchPage('next');
+      if (!this.isConnected) {
+        return;
       }
+
+      this.#observeViewMore();
+      this.#fetchPage('next');
     });
 
-    // Observe the grid for changes
     const { grid } = this.refs;
     if (grid) {
       observer.observe(grid, {
         attributes: true,
         attributeFilter: ['data-last-page'],
-        childList: true, // Also watch for child changes in case the whole grid is replaced
+        childList: true,
       });
 
-      // Set a timeout as a fallback in case the mutation never fires
       setTimeout(() => {
-        if (observer) {
-          observer.disconnect();
-        }
+        observer.disconnect();
       }, 3000);
     }
   };
