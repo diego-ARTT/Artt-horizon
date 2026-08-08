@@ -786,6 +786,14 @@ class DataLoader extends Component {
 }
 ```
 
+**Morph `onAfterUpdate` must receive the live node:**
+
+`walk()` must call `onAfterUpdate(oldNode)`, not `newNode`. Section Rendering / quick-add morph sources are usually `DOMParser` trees that were never upgraded, so `newNode instanceof Component` is false and `updatedCallback` never runs. Components with private UI state (e.g. `gift-card-recipient-form` `#currentMode`) then desync from radio/input DOM that morph reset from server HTML — toggles that early-return on "already current mode" permanently no-op because clicking an already-checked radio does not fire `change`.
+
+**Morph-preserved custom elements must re-sync private state:**
+
+When morph matches by tag and reuses a live custom element, `connectedCallback` does not re-run. Override `updatedCallback` to re-initialize private mode flags from the post-morph DOM (or from a known default), and/or reconcile from DOM before early-returning in toggle handlers.
+
 **Clear async gates on success and failure:**
 
 When user actions are gated behind async DOM refreshes, emit and handle a failure signal for non-abort failures. Do not leave forms or buttons permanently queued behind a success-only event, and keep any hidden submitted values aligned with the user's selected value before flushing queued actions.

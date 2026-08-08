@@ -267,7 +267,10 @@ function walk(newNode, oldNode, options) {
     updateNode(newNode, oldNode, options);
   }
 
-  options.onAfterUpdate?.(newNode);
+  // Notify the *live* node. `newNode` is often a DOMParser tree that was never upgraded,
+  // so `instanceof Component` would fail and `updatedCallback` would never run — leaving
+  // component private state (e.g. gift-card delivery mode) desynced after morph.
+  options.onAfterUpdate?.(oldNode);
 
   return oldNode;
 }

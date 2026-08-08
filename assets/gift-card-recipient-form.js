@@ -78,6 +78,15 @@ class GiftCardRecipientForm extends Component {
     document.addEventListener(StandardEvents.cartLinesUpdate, this.#cartAddEventBound);
   }
 
+  /**
+   * Morph can reuse this element across quick-add opens (same tag, no reconnect).
+   * Re-initialize so `#currentMode` matches the server-rendered radio DOM.
+   */
+  updatedCallback() {
+    super.updatedCallback();
+    this.#initializeForm();
+  }
+
   disconnectedCallback() {
     super.disconnectedCallback();
 
@@ -124,6 +133,14 @@ class GiftCardRecipientForm extends Component {
         ).join(', ')}`
       );
     }
+
+    // Reconcile with DOM first. Morph may reset radio `checked` from server HTML while
+    // preserving this instance, leaving `#currentMode` stale. Clicking the already-checked
+    // "My email" radio does not fire `change`, so a desynced RECIPIENT mode would make
+    // "Send to recipient" permanently no-op.
+    this.#currentMode = this.refs.recipientEmailButton.checked
+      ? GiftCardRecipientForm.DeliveryMode.RECIPIENT
+      : GiftCardRecipientForm.DeliveryMode.SELF;
 
     if (this.#currentMode === mode) return;
     this.#currentMode = mode;
