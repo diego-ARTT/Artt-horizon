@@ -794,6 +794,14 @@ class DataLoader extends Component {
 
 When morph matches by tag and reuses a live custom element, `connectedCallback` does not re-run. Override `updatedCallback` to re-initialize private mode flags from the post-morph DOM (or from a known default), and/or reconcile from DOM before early-returning in toggle handlers.
 
+**Abort in-flight fetches when selection becomes unavailable:**
+
+Listeners that fetch per-variant UI (e.g. local pickup) must abort `#activeFetch` when hiding for an unavailable/missing selection. Otherwise a late response for the previous available variant can un-hide and morph stale content while the UI shows a sold-out SKU. Always sync `dataset.variantId` (via `String(id)`) on both available and unavailable paths so equality checks are not accidental number-vs-string coercions.
+
+**Invalidate page-number caches with a generation counter on filter updates:**
+
+Infinite-scroll helpers that cache section HTML by page number must bump a generation (or otherwise ignore superseded fetches) when filters clear the cache. An in-flight prefetch started against the pre-filter URL can otherwise rewrite `pages[n]` after `clear()` and append unfiltered products. Also restart prefetch after the filtered grid morphs even when `data-last-page` is unchanged.
+
 **Clear async gates on success and failure:**
 
 When user actions are gated behind async DOM refreshes, emit and handle a failure signal for non-abort failures. Do not leave forms or buttons permanently queued behind a success-only event, and keep any hidden submitted values aligned with the user's selected value before flushing queued actions.
