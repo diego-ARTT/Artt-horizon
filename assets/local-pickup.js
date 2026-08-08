@@ -39,16 +39,34 @@ class LocalPickup extends Component {
           if (newProduct) {
             this.dataset.productUrl = newProduct.url;
           }
-          const variantId = resource ? resource.id : null;
-          const variantAvailable = resource ? resource.available : null;
-          if (variantId !== this.dataset.variantId) {
-            if (variantId && variantAvailable) {
-              this.removeAttribute('hidden');
+          const variantId = resource ? String(resource.id) : null;
+          const variantAvailable = Boolean(resource?.available);
+
+          // Always sync dataset.variantId — skipping the unavailable branch left the
+          // previous available id in place, so re-selecting that variant was a no-op
+          // and pickup stayed permanently hidden. Also abort any in-flight fetch so a
+          // late response cannot un-hide pickup for a sold-out selection.
+          if (
+            variantId === this.dataset.variantId &&
+            variantAvailable &&
+            !this.hasAttribute('hidden')
+          ) {
+            return;
+          }
+
+          if (variantId && variantAvailable) {
+            this.removeAttribute('hidden');
+            this.dataset.variantId = variantId;
+            this.#fetchAvailability(variantId);
+          } else {
+            this.#activeFetch?.abort();
+            this.#activeFetch = undefined;
+            if (variantId) {
               this.dataset.variantId = variantId;
-              this.#fetchAvailability(variantId);
             } else {
-              this.setAttribute('hidden', '');
+              delete this.dataset.variantId;
             }
+            this.setAttribute('hidden', '');
           }
         })
         .catch(error => {
