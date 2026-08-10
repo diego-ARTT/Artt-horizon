@@ -813,6 +813,10 @@ class ProductFormComponent extends Component {
 
     try {
       const { detail } = await event.promise;
+      // A superseded selection's promise can still settle after a newer `#onProductSelect`
+      // started (e.g. response body already read before abort). Never write stale variant
+      // data into the form — ATC / sticky ATC / accelerated checkout read this input.
+      if (generation !== this.#variantChangeGeneration) return;
       if (!detail?.html) return;
 
       const { html, newProduct, productId, resource } = detail;
@@ -970,6 +974,11 @@ class ProductFormComponent extends Component {
 
       // Fetch and update cart quantity for the new variant
       this.#refreshCart().then(cart => this.#updateCartQuantity(cart));
+    } catch (error) {
+      // Aborted/superseded variant fetches reject on purpose; ignore those only.
+      if (/** @type {{ name?: string }} */ (error)?.name !== 'AbortError') {
+        console.error(error);
+      }
     } finally {
       // Only clear the flag if no newer variant selection has started
       if (generation === this.#variantChangeGeneration) {

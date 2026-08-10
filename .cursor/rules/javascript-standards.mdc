@@ -706,6 +706,13 @@ const getRequiredElement = (selector) => {
 
 **Handle async operations with proper cleanup:**
 
+`AbortController.abort()` cancels the network/body read only. If `response.text()` /
+`response.json()` already settled, the next `.then` still runs unless you check the
+**request-local** signal (capture the controller in a `const` before replacing
+`this.#abortController`). Peers that already do this: `local-pickup.js`,
+`section-renderer.js`, `predictive-search.js`. Listeners that apply purchase-critical
+state (e.g. `input[name="id"]`) must also ignore superseded generations after `await`.
+
 ```javascript
 import { Component } from '@theme/component';
 
@@ -726,14 +733,16 @@ class DataLoader extends Component {
   async loadData(url) {
     // Cancel previous request
     this.#abortController?.abort();
-    this.#abortController = new AbortController();
+    // Capture locally — a newer call replaces `this.#abortController`.
+    const abortController = new AbortController();
+    this.#abortController = abortController;
 
     // Show loading state
     this.#setLoadingState(true);
 
     try {
       const response = await fetch(url, {
-        signal: this.#abortController.signal
+        signal: abortController.signal
       });
 
       if (!response.ok) {
@@ -741,6 +750,8 @@ class DataLoader extends Component {
       }
 
       const data = await response.json();
+      // Body may have settled before abort; still skip apply for superseded requests.
+      if (abortController.signal.aborted) return null;
       this.#displayData(data);
       return data;
     } catch (error) {
