@@ -322,10 +322,15 @@ export class ProductCard extends ProductCardLink {
    * @param {Document} html - The parsed HTML document with updated variant data.
    */
   updatePrice(html) {
-    const priceContainer = this.querySelectorAll(`product-price [ref='priceContainer']`)[1];
+    // Section-rendering-product-card emits a single <product-price> with no
+    // data-block-id, so match by ref rather than block id. Morph every live
+    // container: Horizon 3.1.0 removed the zoom-out gallery price that used to
+    // occupy index 0, and `[1]` then silently skipped the remaining card price.
     const newPriceElement = html.querySelector(`product-price [ref='priceContainer']`);
+    if (!newPriceElement) return;
 
-    if (newPriceElement && priceContainer) {
+    const priceContainers = this.querySelectorAll(`product-price [ref='priceContainer']`);
+    for (const priceContainer of priceContainers) {
       morph(priceContainer, newPriceElement);
     }
   }

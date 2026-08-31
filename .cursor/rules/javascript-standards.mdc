@@ -685,6 +685,8 @@ const updateFilters = (filters) => {
 
 Your current error handling is basic. Expand it with defensive programming patterns:
 
+**Do not hardcode descendant indexes that depend on optional sibling markup.** `querySelectorAll(...)[1]` in `product-card.updatePrice` assumed a zoom-out gallery `product-price` (index 0) plus the card price (index 1). Horizon 3.1.0 removed the zoom-out price; collection cards then have one `priceContainer`, so `[1]` is `undefined` and swatch-driven price morphs no-op. `product-price.js` also skips events from `product-card`, so this was the only card price path. Morph every matching container (the section-rendering product card emits a single `<product-price>` with no `data-block-id`, so do not match live block ids against that response).
+
 ```javascript
 ## Defensive Programming and Error Handling
 
