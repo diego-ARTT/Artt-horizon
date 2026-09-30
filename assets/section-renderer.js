@@ -62,6 +62,15 @@ class SectionRenderer {
   }
 
   /**
+   * Cancels a pending render for a section so a newer cart mutation can morph without
+   * a stale section response landing afterwards.
+   * @param {string} sectionId - The section ID
+   */
+  abortRender(sectionId) {
+    this.#abortPendingMorph(sectionId);
+  }
+
+  /**
    * Renders a section with an abort controller.
    * @param {string} sectionId - The section ID
    * @param {Object} options - The options
