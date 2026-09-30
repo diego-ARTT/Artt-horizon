@@ -17,6 +17,9 @@ class CartIcon extends Component {
   requiredRefs = ['cartBubble', 'cartBubbleText', 'cartBubbleCount'];
 
   /** @type {number} */
+  #countRefreshGeneration = 0;
+
+  /** @type {number} */
   get currentCartCount() {
     return parseInt(this.refs.cartBubbleCount.textContent ?? '0', 10);
   }
@@ -41,12 +44,54 @@ class CartIcon extends Component {
   }
 
   /**
-   * Handles the page show event when the page is restored from cache.
+   * Handles the page show event when the page is restored from cache or history.
    * @param {PageTransitionEvent} event - The page show event.
    */
   onPageShow = event => {
-    if (event.persisted) {
-      this.ensureCartBubbleIsCorrect();
+    if (!this.#isHistoryRestore(event)) return;
+    this.#refreshCountFromServer();
+  };
+
+  /**
+   * True for a back/forward cache restore and for a history navigation rebuilt from
+   * the HTTP cache. Chrome takes the second path when the page contains the
+   * Sign in with Shop iframe, and `persisted` is false there.
+   * @param {PageTransitionEvent} event
+   * @returns {boolean}
+   */
+  #isHistoryRestore(event) {
+    const navigationEntry = globalThis.performance?.getEntriesByType?.('navigation')[0];
+    const navigationType =
+      navigationEntry?.entryType === 'navigation' ? navigationEntry.type : undefined;
+    return event.persisted || navigationType === 'back_forward';
+  }
+
+  /**
+   * Replaces a frozen bubble with the current server count.
+   * A newer cart update increments the generation so a slow response cannot
+   * paint the pre-navigation count over the update.
+   */
+  #refreshCountFromServer = async () => {
+    const generation = ++this.#countRefreshGeneration;
+
+    try {
+      const response = await fetch(`${Theme.routes.cart_url}.json`, {
+        headers: { Accept: 'application/json' },
+        credentials: 'same-origin',
+      });
+      if (!response.ok || generation !== this.#countRefreshGeneration) return;
+
+      const cart = await response.json();
+      if (generation !== this.#countRefreshGeneration) return;
+
+      const itemCount = Number(cart.item_count);
+      if (Number.isFinite(itemCount) && itemCount >= 0) {
+        this.renderCartBubble(itemCount, false);
+      }
+    } catch (error) {
+      if (error?.name !== 'AbortError') {
+        console.warn('[cart-icon] back/forward count refresh failed:', error);
+      }
     }
   };
 
@@ -55,6 +100,7 @@ class CartIcon extends Component {
    * @param {CartLinesUpdateEvent} event - The cart update event.
    */
   onCartUpdate = event => {
+    this.#countRefreshGeneration++;
     event.promise
       ?.then(({ cart, detail }) => {
         const itemCount = cart?.totalQuantity ?? detail?.itemCount ?? 0;
