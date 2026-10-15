@@ -251,7 +251,11 @@ theme-drawer .theme-drawer__dialog {
 .header-section:has(> #header-component[data-sticky-state='active'])::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: 0 0 auto;
+
+  /* Sized to the header, not the section: on the homepage the transparent
+     header is absolutely positioned, so its section has no height. */
+  block-size: var(--header-height);
   z-index: -1;
   pointer-events: none;
   backdrop-filter: blur(40px) saturate(1.8);
