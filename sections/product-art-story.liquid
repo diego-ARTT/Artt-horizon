@@ -97,7 +97,7 @@
   .art-story__media {
     margin: 0;
     aspect-ratio: 4 / 5;
-    overflow: hidden;
+    overflow: clip;
     background-color: color-mix(in srgb, var(--color-foreground) 6%, transparent);
   }
 
@@ -109,27 +109,6 @@
     object-position: var(--art-story-focus);
     transform-origin: var(--art-story-focus);
     scale: var(--art-story-zoom);
-  }
-
-  /* One authored moment: the crop tightens onto the print as it scrolls in. */
-  @supports (animation-timeline: view()) {
-    @media (prefers-reduced-motion: no-preference) {
-      .art-story__image {
-        animation: art-story-close-in linear both;
-        animation-timeline: view();
-        animation-range: entry 10% cover 55%;
-      }
-    }
-  }
-
-  @keyframes art-story-close-in {
-    from {
-      scale: max(1, calc(var(--art-story-zoom) * 0.8));
-    }
-
-    to {
-      scale: var(--art-story-zoom);
-    }
   }
 
   .art-story__text {

@@ -17,6 +17,16 @@ A collector who arrived from a drop post holds a phone, sees the print, and need
 
 ## Data contract
 
-- `custom.edition_quantity`: free text today; the first bare number in it is the run size. With no number, the placard hides the edition.
-- `custom.artist` (optional, not yet defined): when set, it names the artist on the placard and heads the art story.
+- `custom.edition_quantity`: a list of single-line text (a sentence such as "…limited edition of 500 pieces…"). The first bare number in it is the run size; with no number, the placard hides the edition.
+- `custom.artist` (single-line text; set on some products, e.g. the Caravaggio pieces): when set, it names the artist on the placard and heads the art story.
 - `custom.about_the_art`: drives the art story section; with no value, the section renders nothing.
+
+## Revision 2: the gallery wall (bolder)
+
+References: ALD (desktop three columns; mobile always-pinned buy bar with size selection), Kith (Complete the look). The ALD layout is read through ARTT's own metaphor: the placard sits beside the work and the purchase on the other side.
+
+- Desktop ≥990px: placard | photographs | purchase, with both side columns sticky.
+- Mobile <750px: the bar is pinned from first paint and is the only buy box (size strip, Add to cart, wallet). Order below the gallery: head → purchase extras → body.
+- Square corners on this page only (DESIGN.md, The Square Wall Rule).
+- Complete the look: complementary recommendations from Search & Discovery; hidden until curated.
+- Horizon's scroll-triggered sticky add-to-cart is turned off on this template; the pinned bar replaces it.

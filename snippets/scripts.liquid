@@ -148,6 +148,14 @@
   type="module"
   fetchpriority="low"
 ></script>
+{%- if template.name == 'product' -%}
+  {%- comment -%} ARTT: below-the-fold product imagery settles as it arrives {%- endcomment -%}
+  <script
+    src="{{ 'image-settle' | append: _js_ext | asset_url }}"
+    type="module"
+    fetchpriority="low"
+  ></script>
+{%- endif -%}
 <script
   src="{{ 'product-card' | append: _js_ext | asset_url }}"
   type="module"
