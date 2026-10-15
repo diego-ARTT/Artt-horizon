@@ -148,12 +148,6 @@
   type="module"
   fetchpriority="low"
 ></script>
-{%- comment -%} ARTT: slide the scroll-up header instead of fading it (see theme-overrides.css) {%- endcomment -%}
-<script
-  src="{{ 'header-slide' | append: _js_ext | asset_url }}"
-  type="module"
-  fetchpriority="low"
-></script>
 {%- if template.name == 'product' -%}
   {%- comment -%} ARTT: below-the-fold product imagery settles as it arrives {%- endcomment -%}
   <script
