@@ -79,8 +79,8 @@
     border-radius: 0;
   }
 
-  /* ---------- Mobile: head → purchase → body, buy bar pinned ---------- */
-  @media screen and (max-width: 749px) {
+  /* ---------- Mobile and tablet: head → purchase → body ---------- */
+  @media screen and (max-width: 989px) {
     .pdp-column--placard {
       display: contents;
     }
@@ -97,6 +97,20 @@
       order: 3;
     }
 
+    /*
+     * The Shopify Inbox launcher lands on the purchase controls (the pinned bar
+     * on mobile, Add to cart in the tablet column), so it is hidden while the
+     * chat is closed; blocks/chat-link.liquid opens it from the page.
+     * Once open, the chat panel shows as usual.
+     */
+    body:has(.pdp-column--purchase) shopify-chat:not([open]) {
+      display: none;
+    }
+  }
+
+  /* ---------- Mobile: buy bar pinned ---------- */
+  @media screen and (max-width: 749px) {
+
     /* Set on the root so the document's scroll padding can read it: keyboard
        focus scrolls into view above the bar, not behind it (WCAG 2.4.11). */
     :root:has(.pdp-column--buybar) {
@@ -107,15 +121,6 @@
 
     body:has(.pdp-column--buybar) {
       padding-block-end: var(--pdp-buybar-height);
-    }
-
-    /*
-     * The Shopify Inbox launcher collides with the bar, so it is hidden while
-     * the chat is closed; blocks/chat-link.liquid opens it from the page.
-     * Once open, the chat panel shows as usual.
-     */
-    body:has(.pdp-column--buybar) shopify-chat:not([open]) {
-      display: none;
     }
 
     /* Klaviyo's "10% off" teaser is pinned to bottom: 0 with an inline style,
