@@ -29,7 +29,39 @@ const relocate = () => {
   }
 };
 
+/**
+ * Keeps keyboard focus visible between the sticky header and the pinned bar
+ * (WCAG 2.4.11). The bar's CSS sets scroll-padding, but Chrome ignores it when
+ * scrolling a focused element into view, so the page is nudged here instead.
+ * @param {FocusEvent} event
+ */
+const revealFocus = event => {
+  const bar = document.querySelector(BAR);
+  const target = event.target;
+  if (!pinned.matches || !bar || !(target instanceof Element)) return;
+  if (bar.contains(target) || target.closest('#header-component, dialog, [aria-modal="true"]'))
+    return;
+
+  requestAnimationFrame(() => {
+    const box = (target.matches('input') && target.labels?.[0]) || target;
+    const rect = box.getBoundingClientRect();
+    if (!rect.height) return;
+
+    const margin = 16;
+    const floor = bar.getBoundingClientRect().top - margin;
+    const header = document.querySelector('#header-component');
+    const ceiling = (header ? Math.max(0, header.getBoundingClientRect().bottom) : 0) + margin;
+
+    if (rect.bottom > floor) {
+      window.scrollBy({ top: rect.bottom - floor, behavior: 'instant' });
+    } else if (rect.top < ceiling) {
+      window.scrollBy({ top: rect.top - ceiling, behavior: 'instant' });
+    }
+  });
+};
+
 if (document.querySelector(BAR)) {
+  document.addEventListener('focusin', revealFocus);
   let queued = false;
   const queue = () => {
     if (queued) return;

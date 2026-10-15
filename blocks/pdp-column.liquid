@@ -97,9 +97,15 @@
       order: 3;
     }
 
-    body:has(.pdp-column--buybar) {
+    /* Set on the root so the document's scroll padding can read it: keyboard
+       focus scrolls into view above the bar, not behind it (WCAG 2.4.11). */
+    :root:has(.pdp-column--buybar) {
       --pdp-buybar-height: calc(10rem + env(safe-area-inset-bottom));
 
+      scroll-padding-block-end: var(--pdp-buybar-height);
+    }
+
+    body:has(.pdp-column--buybar) {
       padding-block-end: var(--pdp-buybar-height);
     }
 
