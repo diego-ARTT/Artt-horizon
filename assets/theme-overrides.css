@@ -273,3 +273,12 @@ theme-drawer .theme-drawer__dialog {
     content: none;
   }
 }
+
+/*
+ * Google's store widget floats over the hero copy on the homepage; it sits out
+ * while the hero is on screen (assets/hero-clear.js). Its position is an inline
+ * !important style, so hiding is the only override available.
+ */
+.hero-in-view #google-merchantwidget-iframe-wrapper {
+  display: none !important; /* stylelint-disable-line declaration-no-important */
+}
