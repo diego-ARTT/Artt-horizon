@@ -85,6 +85,7 @@
         "actions_font": "body",
         "actions_text_case": "none",
         "enable_transparent_header_home": true,
+        "home_inverse_logo": true,
         "enable_transparent_header_product": false,
         "enable_transparent_header_collection": false,
         "background_color_top": "#ffffff",
