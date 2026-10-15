@@ -186,3 +186,19 @@ theme-drawer .theme-drawer__dialog {
 .product-details .jdgm-preview-badge .jdgm-star.jdgm-star {
   color: var(--color-foreground);
 }
+
+/*
+ * Variant picker: stop the ghost pill on bystander buttons.
+ *
+ * Upstream animates every button's selection pill. Its wrap-around rules flip
+ * the first button's off-screen pill from +100% to -100% when the last value
+ * is chosen, so on M -> 2XL the pill sweeps across S (measured: 88% of S
+ * covered for ~100ms). Only the button being left and the button being chosen
+ * should animate; every other pill moves without a transition.
+ */
+.variant-option__button-label:not(
+    :has([data-previous-checked='true'], [data-current-checked='true'])
+  )
+  .variant-option__button-label__pill {
+  transition: none;
+}
