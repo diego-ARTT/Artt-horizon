@@ -1,0 +1,156 @@
+{%- comment -%}
+  Product spec list: the garment facts as a typed list, replacing the
+  icon-plus-caption trust row. Mono carries the metadata (DESIGN.md), so the
+  facts read like the spec sheet on a gallery wall rather than a badge strip.
+  Up to four label / value rows; a row with an empty value is skipped.
+{%- endcomment -%}
+
+{%- capture rows -%}
+  {%- for i in (1..4) -%}
+    {%- assign label_key = 'label_' | append: i -%}
+    {%- assign value_key = 'value_' | append: i -%}
+    {%- assign row_label = block.settings[label_key] -%}
+    {%- assign row_value = block.settings[value_key] -%}
+    {%- if row_value != blank -%}
+      <div class="product-spec-list__row">
+        <dt class="product-spec-list__label">{{ row_label | escape }}</dt>
+        <dd class="product-spec-list__value">{{ row_value | escape }}</dd>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if rows != blank -%}
+  <dl
+    class="product-spec-list spacing-style"
+    style="{% render 'spacing-style', settings: block.settings %}"
+    {{ block.shopify_attributes }}
+  >
+    {{ rows }}
+  </dl>
+{%- endif -%}
+
+{% stylesheet %}
+  .product-spec-list {
+    display: grid;
+    grid-template-columns: minmax(6.5rem, max-content) 1fr;
+    margin: 0;
+    width: 100%;
+    font-family: var(--font-body--family);
+    font-style: var(--font-body--style);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--color-foreground);
+  }
+
+  .product-spec-list__row {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+    column-gap: var(--gap-xl, 1.5rem);
+    padding-block: 0.7rem;
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .product-spec-list__row:last-child {
+    border-block-end: 1px solid var(--color-border);
+  }
+
+  .product-spec-list__label {
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .product-spec-list__value {
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product spec list",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "label_1",
+      "label": "Row 1 label",
+      "default": "Shipping"
+    },
+    {
+      "type": "text",
+      "id": "value_1",
+      "label": "Row 1 value",
+      "default": "Free on orders $100+"
+    },
+    {
+      "type": "text",
+      "id": "label_2",
+      "label": "Row 2 label",
+      "default": "Run"
+    },
+    {
+      "type": "text",
+      "id": "value_2",
+      "label": "Row 2 value",
+      "default": "Limited collection"
+    },
+    {
+      "type": "text",
+      "id": "label_3",
+      "label": "Row 3 label",
+      "default": "Cotton"
+    },
+    {
+      "type": "text",
+      "id": "value_3",
+      "label": "Row 3 value",
+      "default": "Organic"
+    },
+    {
+      "type": "text",
+      "id": "label_4",
+      "label": "Row 4 label",
+      "default": "Process"
+    },
+    {
+      "type": "text",
+      "id": "value_4",
+      "label": "Row 4 value",
+      "default": "No harmful chemicals"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product spec list",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}

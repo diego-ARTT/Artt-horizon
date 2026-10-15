@@ -1,0 +1,293 @@
+{%- comment -%}
+  Product art story: the artwork behind the garment, given a wall of its own.
+
+  Replaces the "About The Art" and "Limited Edition" accordion rows. A detail
+  crop of the product's own photography (zoomed into the print) sits beside the
+  custom.about_the_art text, with the edition statement as the placard
+  underneath. The section renders nothing when about_the_art is empty, so
+  products without art copy fall straight through to reviews.
+{%- endcomment -%}
+
+{%- liquid
+  assign product_resource = closest.product | default: product
+  assign about = product_resource.metafields.custom.about_the_art
+  assign artist = product_resource.metafields.custom.artist.value | strip
+
+  assign heading = section.settings.heading
+  if artist != blank
+    assign heading = artist
+  endif
+
+  assign edition_field = product_resource.metafields.custom.edition_quantity
+  if edition_field.type contains 'list.'
+    assign edition_source = edition_field.value | join: ' ' | strip
+  else
+    assign edition_source = edition_field.value | append: '' | strip
+  endif
+  assign edition_number = edition_source | plus: 0
+  assign edition_check = edition_number | append: ''
+  if edition_check == edition_source and edition_number > 0
+    assign edition_text = section.settings.edition_prefix | append: ' ' | append: edition_number
+  else
+    assign edition_text = edition_source
+  endif
+
+  assign images = product_resource.media | where: 'media_type', 'image'
+  assign media_index = section.settings.media_position | minus: 1
+  assign detail = images[media_index] | default: images.first
+
+  assign zoom = section.settings.detail_zoom | divided_by: 100.0
+  assign heading_id = 'ArtStoryHeading-' | append: section.id
+-%}
+
+{%- if about != blank -%}
+  {% render 'contrast-override', background_color: section.settings.background_color, section_id: section.id %}
+
+  <div
+    class="art-story color-custom-{{ section.id }} section section--page-width"
+    style="--art-story-zoom: {{ zoom }}; --art-story-focus: 50% {{ section.settings.focal_y }}%; --art-story-padding-block-start: {{ section.settings.padding-block-start }}px; --art-story-padding-block-end: {{ section.settings.padding-block-end }}px;"
+  >
+    <div class="art-story__inner">
+      {%- if detail != blank -%}
+        <figure class="art-story__media">
+          {{
+            detail
+            | image_url: width: 2000
+            | image_tag:
+              class: 'art-story__image',
+              sizes: '(min-width: 990px) 55vw, 100vw',
+              widths: '600,900,1200,1600,2000',
+              loading: 'lazy',
+              alt: section.settings.detail_alt_prefix | append: ' ' | append: product_resource.title
+          }}
+        </figure>
+      {%- endif -%}
+
+      <div class="art-story__text">
+        <h2 id="{{ heading_id }}" class="art-story__heading">{{ heading | escape }}</h2>
+
+        <div class="art-story__body rte">
+          {{ about | metafield_tag }}
+        </div>
+
+        {%- if edition_text != blank -%}
+          <hr class="art-story__rule" aria-hidden="true">
+          <p class="art-story__edition">{{ edition_text | escape }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  /* Horizon clears `.section` backgrounds inside `.shopify-section`; this out-specifies that rule. */
+  .shopify-section:not(.header-section) .art-story.section {
+    background-color: var(--color-background);
+    padding-block-start: var(--art-story-padding-block-start, 0);
+    padding-block-end: var(--art-story-padding-block-end, 0);
+  }
+
+  .art-story__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--gap-3xl, 2.5rem);
+    align-items: center;
+  }
+
+  .art-story__media {
+    margin: 0;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background-color: color-mix(in srgb, var(--color-foreground) 6%, transparent);
+  }
+
+  .art-story__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--art-story-focus);
+    transform-origin: var(--art-story-focus);
+    scale: var(--art-story-zoom);
+  }
+
+  /* One authored moment: the crop tightens onto the print as it scrolls in. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .art-story__image {
+        animation: art-story-close-in linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 55%;
+      }
+    }
+  }
+
+  @keyframes art-story-close-in {
+    from {
+      scale: max(1, calc(var(--art-story-zoom) * 0.8));
+    }
+
+    to {
+      scale: var(--art-story-zoom);
+    }
+  }
+
+  .art-story__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 34rem;
+  }
+
+  .art-story__heading {
+    font-family: var(--font-heading--family);
+    font-style: var(--font-heading--style);
+    font-weight: var(--font-heading--weight, 900);
+    font-size: var(--font-h2--size, clamp(2rem, 4.8vw, 3rem));
+    line-height: 1;
+    letter-spacing: 0;
+    color: var(--color-foreground-heading, currentColor);
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .art-story__body {
+    margin-block-start: var(--gap-xl, 1.5rem);
+    max-width: 62ch;
+  }
+
+  .art-story__rule {
+    width: 4rem;
+    height: 1px;
+    margin: var(--gap-2xl, 2rem) 0 0;
+    border: 0;
+    background-color: var(--color-foreground);
+    opacity: 1;
+  }
+
+  .art-story__edition {
+    margin: var(--gap-lg, 1rem) 0 0;
+    max-width: 48ch;
+    font-family: var(--font-body--family);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    color: var(--color-foreground);
+  }
+
+  @media screen and (min-width: 990px) {
+    .art-story__inner {
+      grid-template-columns: 7fr 5fr;
+      gap: var(--gap-6xl, 5rem);
+    }
+
+    .art-story__media {
+      aspect-ratio: 1;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product art story",
+  "tag": "section",
+  "class": "product-art-story-section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows the custom.about_the_art metafield beside a detail crop of the product photography. Hidden when the metafield is empty. The heading becomes the custom.artist metafield when one is set."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "About the art"
+    },
+    {
+      "type": "text",
+      "id": "edition_prefix",
+      "label": "Edition label",
+      "info": "Used when custom.edition_quantity holds only a number.",
+      "default": "Edition of"
+    },
+    {
+      "type": "header",
+      "content": "Detail image"
+    },
+    {
+      "type": "range",
+      "id": "media_position",
+      "label": "Product image",
+      "info": "Which product image to crop from. 1 is the first.",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "detail_zoom",
+      "label": "Crop zoom",
+      "min": 100,
+      "max": 250,
+      "step": 5,
+      "unit": "%",
+      "default": 175
+    },
+    {
+      "type": "range",
+      "id": "focal_y",
+      "label": "Crop vertical focus",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 45
+    },
+    {
+      "type": "text",
+      "id": "detail_alt_prefix",
+      "label": "Image alt prefix",
+      "default": "Artwork detail on the"
+    },
+    {
+      "type": "header",
+      "content": "t:content.layout"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color",
+      "alpha": true
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product art story"
+    }
+  ]
+}
+{% endschema %}
