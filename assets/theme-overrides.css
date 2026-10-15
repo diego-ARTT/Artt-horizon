@@ -174,3 +174,15 @@ theme-drawer .theme-drawer__dialog::backdrop {
 theme-drawer .theme-drawer__dialog {
   box-shadow: var(--shadow-drawer);
 }
+
+/*
+ * Judge.me preview-badge stars on the product page.
+ *
+ * The app injects `.jdgm-preview-badge .jdgm-star.jdgm-star { color: #BC8080 }`
+ * from its own admin setting. DESIGN.md keeps UI monochrome (the art carries the
+ * color), so the stars take the foreground ink. Matching the app's selector and
+ * scoping it under product details is enough to win without !important.
+ */
+.product-details .jdgm-preview-badge .jdgm-star.jdgm-star {
+  color: var(--color-foreground);
+}
