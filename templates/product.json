@@ -734,10 +734,18 @@
                     "variant_picker_R3rGDr",
                     "buy_buttons_eYQEYi"
                   ]
+                },
+                "chat_link": {
+                  "type": "chat-link",
+                  "settings": {
+                    "label": "Questions? Chat with us"
+                  },
+                  "blocks": {}
                 }
               },
               "block_order": [
                 "size_guide_Pge3P4",
+                "chat_link",
                 "pdp_buybar",
                 "vton_app_vton_button_Eem7LK",
                 "dealeasy_gift_with_product_mc7Ybm"

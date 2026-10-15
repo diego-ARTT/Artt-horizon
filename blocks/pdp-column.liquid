@@ -103,9 +103,25 @@
       padding-block-end: var(--pdp-buybar-height);
     }
 
-    /* Floating app launchers (Shopify Inbox) ride above the bar, not on it. */
-    body:has(.pdp-column--buybar) shopify-chat {
-      translate: 0 calc(-1 * var(--pdp-buybar-height));
+    /*
+     * The Shopify Inbox launcher collides with the bar, so it is hidden while
+     * the chat is closed; blocks/chat-link.liquid opens it from the page.
+     * Once open, the chat panel shows as usual.
+     */
+    body:has(.pdp-column--buybar) shopify-chat:not([open]) {
+      display: none;
+    }
+
+    /* With the buy bar always in reach, the photographs stack instead of
+       hiding behind a swipe. */
+    .product-information:has(.pdp-column--buybar) media-gallery.media-gallery--grid slideshow-component {
+      display: none;
+    }
+
+    .product-information:has(.pdp-column--buybar) media-gallery.media-gallery--grid .media-gallery__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2px;
     }
 
     .pdp-column--buybar {
@@ -229,7 +245,9 @@
     .pdp-column--purchase {
       grid-row: 1;
       position: sticky;
-      top: calc(var(--sticky-header-offset, 0px) + var(--gap-3xl, 3rem));
+      /* Stick exactly where the column rests; its padding is the breathing room.
+         An extra offset here makes the columns jump down on the first scroll. */
+      top: var(--sticky-header-offset, 0px);
       align-self: start;
       padding-block: var(--gap-3xl, 3rem);
     }
