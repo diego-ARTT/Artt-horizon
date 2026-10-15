@@ -112,6 +112,12 @@
       display: none;
     }
 
+    /* Klaviyo's "10% off" teaser is pinned to bottom: 0 with an inline style,
+       which put it on top of Add to cart. It sits on the bar's top edge instead. */
+    body:has(.pdp-column--buybar) [class*='kl-teaser-'] {
+      bottom: var(--pdp-buybar-height) !important; /* stylelint-disable-line declaration-no-important */
+    }
+
     /* With the buy bar always in reach, the photographs stack instead of
        hiding behind a swipe. */
     .product-information:has(.pdp-column--buybar) media-gallery.media-gallery--grid slideshow-component {
@@ -208,6 +214,14 @@
 
     .pdp-column--buybar more-payment-options-link {
       display: none;
+    }
+
+    /* Horizon's main-form flight overshoots sideways first (x control point -5),
+       which suits a wide in-page button. From the bottom bar it shot off the
+       left edge, so it arcs up and over to the cart instead. */
+    body:has(.pdp-column--buybar) fly-to-cart.fly-to-cart--main {
+      --x-timing: cubic-bezier(0.6, 0, 0.9, 0.6);
+      --y-timing: cubic-bezier(0.2, 0.6, 0.6, 1);
     }
 
     .pdp-column--buybar shopify-accelerated-checkout {
