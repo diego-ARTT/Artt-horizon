@@ -73,7 +73,8 @@
   }
 
   .product-placard__item + .product-placard__item::before {
-    content: '/';
+    /* Empty alt text: the slash is visual punctuation, not something to announce. */
+    content: '/' / '';
     padding-inline: 0.75em;
     opacity: 0.45;
   }
