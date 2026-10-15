@@ -591,7 +591,7 @@
                     "text_MKN6Pg": {
                       "type": "text",
                       "settings": {
-                        "text": "<p>The total amount you pay includes Free express shipping for domestic and international orders.</p><p>All applicable customs duties & taxes included for international orders. We guarantee no additional charges on delivery.</p><p>Please refer to our shipping and returns policy <a href=\"https://arttitude.us/a/faq\" target=\"_blank\" title=\"Shipping and returns\">here</a>.</p>",
+                        "text": "<p>Free express shipping on domestic and international orders of $100 or more.</p><p>All applicable customs duties & taxes included for international orders. We guarantee no additional charges on delivery.</p><p>Please refer to our shipping and returns policy <a href=\"https://arttitude.us/a/faq\" target=\"_blank\" title=\"Shipping and returns\">here</a>.</p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
