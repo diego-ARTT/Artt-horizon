@@ -118,6 +118,13 @@
       bottom: var(--pdp-buybar-height) !important; /* stylelint-disable-line declaration-no-important */
     }
 
+    /* Google's store widget (Google & YouTube app embed) floats bottom-left over
+       the bar's title. Its position is an inline !important style that cannot be
+       moved, and relocating it breaks its panel, so it sits out on mobile PDPs. */
+    body:has(.pdp-column--buybar) #google-merchantwidget-iframe-wrapper {
+      display: none !important; /* stylelint-disable-line declaration-no-important */
+    }
+
     /* With the buy bar always in reach, the photographs stack instead of
        hiding behind a swipe. */
     .product-information:has(.pdp-column--buybar) media-gallery.media-gallery--grid slideshow-component {
