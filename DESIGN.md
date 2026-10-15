@@ -274,7 +274,7 @@ Both families are on Brand 2026's reflex-reject list for new projects. Here they
 
 The system is **flat by doctrine.** Surfaces sit at the same plane at rest. Depth and hierarchy are conveyed by typography scale, white space, hairline rules (`#0000000f`), and the alternate canvas tonal stack — not by shadows. The page reads like a gallery floor: walls are flat; the work is what stands out.
 
-Shadows exist in the system in exactly three places: a small button shadow for tactile press feedback, a soft drop-shadow under open drawers, and a blurred backdrop behind drawers (custom ARTT addition — `--drawer-backdrop-blur`, 8px by default). They are _stateful_, not decorative. No card has a shadow at rest.
+Shadows exist in the system in exactly three places: a small button shadow for tactile press feedback, a soft drop-shadow under open drawers, and a blurred backdrop behind drawers (custom ARTT addition — `--drawer-backdrop-blur`, 8px by default). A fourth stateful blur, the frosted header, applies only while the header is stuck over scrolling content. They are _stateful_, not decorative. No card has a shadow at rest.
 
 ### Shadow Vocabulary
 
@@ -285,6 +285,8 @@ Shadows exist in the system in exactly three places: a small button shadow for t
 ### Named Rules
 
 **The Flat At Rest Rule.** Cards, sections, headers, and panels are flat at rest. Shadows, lift, and scale appear only as a response to state (drawer open, hover where deliberate, focus). A card with a default `box-shadow` is forbidden.
+
+**The Frosted Header Rule.** The header is solid at the top of the page. Once it is stuck over scrolling content (`data-sticky-state='active'`), its underlay turns 60% canvas with `backdrop-filter: blur(40px) saturate(1.8)` and a 6% hairline along the bottom edge, so the photography reads through as colour and shape while the nav stays legible. It is a response to state, like the drawer backdrop, never a resting surface: no other panel, card or bar may borrow it. The mega menu's open underlay stays solid, and `prefers-reduced-transparency: reduce` restores the solid fill. Implemented in `assets/theme-overrides.css`; the blur sits on a `::before` of the sticky `.header-section`, because an active header carries a `view-transition-name` (a backdrop root) and a filter inside it would only see the header itself.
 
 **The Tonal Hierarchy Rule.** When depth is needed between sections, switch the canvas (`Canvas` → `Canvas Haze` → `Canvas Sage` → `Canvas Graphite`), not the elevation. The five color schemes are the system's depth model.
 
@@ -346,6 +348,16 @@ The pre-launch tease for a drop: a full-bleed dark surface that behaves like a d
 - **Lookbook grid:** full-bleed, 2 columns on mobile and 3 from 750px, `2px` gutters. The gutter is the only separation; no cards, no radii, no captions. The photographs do the work.
 
 **The Darkened Room Rule.** The tease inverts the storefront on purpose: where the gallery is white walls, the tease is the room with the lights down and the work lit. Anything that reintroduces storefront chrome — a card, a rounded container, a tinted canvas, a drop shadow — breaks the room. If an element needs definition here, it gets a hairline or nothing.
+
+### Product Page: the Gallery Wall (signature component)
+
+The product page hangs the garment like a work on a wall: the label on one side, the work in the middle, and the purchase on the other. Built from one container block, `blocks/pdp-column.liquid`, in five roles (placard, head, body, purchase, buybar).
+
+- **Desktop (≥990px), three columns:** placard (title, artist / edition placard, price, rating, accordions, spec list, press) on the left; photographs stacked one per row in the center; size, add to cart and app widgets on the right. The two side columns stick while the photographs scroll.
+- **Mobile (<750px), pinned buy bar:** the real variant picker and product form are fixed to the bottom of the screen from first paint. It shows a mono summary line (title, price), a square segmented size strip, then Add to cart beside the wallet button. There is one picker and one form, never a mirrored copy. Single-value options (a tee's one colourway) are hidden in the bar; their legends stay for screen readers. Above the bar the photographs stack one per row (2px gutters) instead of a swipe carousel, so the gallery needs no interaction. The Shopify Inbox launcher is hidden on this page at every width while chat is closed (it landed on the purchase controls at all three sizes), and a "Questions? Chat with us" text link (`blocks/chat-link.liquid`) next to the size guide opens it. Other pages keep the launcher.
+- **Complete the look:** a `product-recommendations` section in `complementary` mode, curated per product in Shopify's Search & Discovery app. With no pairings it renders nothing.
+
+**The Square Wall Rule.** On the product page only, buttons, size chips, inputs and wallet buttons run square (0 radius). The tokens are re-pointed on `.product-information:has(.pdp-column)`, so the storefront's 14px / 12px buttons and pill chips are unchanged everywhere else. Colour swatches stay round, because they are samples of colour, not controls with a shape. This is a scoped exception, like a collection world; it does not license square corners elsewhere.
 
 ## 6. Do's and Don'ts
 

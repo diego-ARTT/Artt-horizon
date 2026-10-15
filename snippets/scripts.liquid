@@ -148,6 +148,28 @@
   type="module"
   fetchpriority="low"
 ></script>
+{%- if template.name == 'index' -%}
+  {%- comment -%} ARTT: floating badges stay off the homepage hero {%- endcomment -%}
+  <script
+    src="{{ 'hero-clear' | append: _js_ext | asset_url }}"
+    type="module"
+    fetchpriority="low"
+  ></script>
+{%- endif -%}
+{%- if template.name == 'product' -%}
+  {%- comment -%} ARTT: below-the-fold product imagery settles as it arrives {%- endcomment -%}
+  <script
+    src="{{ 'image-settle' | append: _js_ext | asset_url }}"
+    type="module"
+    fetchpriority="low"
+  ></script>
+  {%- comment -%} ARTT: gallery-wall helpers (buy bar widgets, focus, sticky columns) {%- endcomment -%}
+  <script
+    src="{{ 'pdp-layout' | append: _js_ext | asset_url }}"
+    type="module"
+    fetchpriority="low"
+  ></script>
+{%- endif -%}
 <script
   src="{{ 'product-card' | append: _js_ext | asset_url }}"
   type="module"

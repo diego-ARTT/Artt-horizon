@@ -1,0 +1,136 @@
+{%- comment -%}
+  Product placard: the museum-label line under a product title.
+
+  Names the artist (custom.artist, when set) and the edition size, pulled from
+  custom.edition_quantity. That metafield is free text on the live store
+  ("Created as a limited edition of 500 pieces…"), so the first bare number in
+  it is taken as the run size. Nothing is invented: with no artist and no
+  number, the block renders nothing.
+{%- endcomment -%}
+
+{%- liquid
+  assign product_resource = closest.product
+  assign artist = product_resource.metafields.custom.artist.value | strip
+
+  assign edition_field = product_resource.metafields.custom.edition_quantity
+  if edition_field.type contains 'list.'
+    assign edition_source = edition_field.value | join: ' '
+  else
+    assign edition_source = edition_field.value | append: ''
+  endif
+  assign edition_words = edition_source | replace: ',', '' | replace: '.', ' ' | split: ' '
+  assign edition_size = 0
+  for word in edition_words
+    assign word_number = word | plus: 0
+    assign word_check = word_number | append: ''
+    if word_number > 1 and word_check == word
+      assign edition_size = word_number
+      break
+    endif
+  endfor
+
+  assign sold_out = false
+  if product_resource.available == false
+    assign sold_out = true
+  endif
+-%}
+
+{%- if artist != blank or edition_size > 0 -%}
+  <p
+    class="product-placard spacing-style"
+    style="{% render 'spacing-style', settings: block.settings %}"
+    {{ block.shopify_attributes }}
+  >
+    {%- if artist != blank -%}
+      <span class="product-placard__item">{{ artist | escape }}</span>
+    {%- endif -%}
+    {%- if edition_size > 0 -%}
+      <span class="product-placard__item">
+        {{- block.settings.edition_prefix | escape }}
+        {{ edition_size -}}
+      </span>
+    {%- endif -%}
+    {%- if sold_out -%}
+      <span class="product-placard__item">{{ block.settings.sold_out_label | escape }}</span>
+    {%- endif -%}
+  </p>
+{%- endif -%}
+
+{% stylesheet %}
+  .product-placard {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    margin: 0;
+    font-family: var(--font-body--family);
+    font-style: var(--font-body--style);
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+  }
+
+  .product-placard__item + .product-placard__item::before {
+    /* Empty alt text: the slash is visual punctuation, not something to announce. */
+    content: '/' / '';
+    padding-inline: 0.75em;
+    opacity: 0.45;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Product placard",
+  "tag": null,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows the artist (custom.artist metafield) and the edition size (first number in custom.edition_quantity). Hidden when neither is set."
+    },
+    {
+      "type": "text",
+      "id": "edition_prefix",
+      "label": "Edition label",
+      "default": "Edition of"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_label",
+      "label": "Sold out label",
+      "default": "Sold out"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product placard",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
