@@ -79,6 +79,17 @@
     border-radius: 0;
   }
 
+  /*
+   * The Shopify Inbox launcher lands on the purchase controls at every width
+   * (the pinned bar on mobile, Add to cart on tablet, the purchase column's
+   * wallet button on desktop), so on this page it is hidden while the chat is
+   * closed and blocks/chat-link.liquid opens it. Once open, the chat panel
+   * shows as usual.
+   */
+  body:has(.pdp-column--purchase) shopify-chat:not([open]) {
+    display: none;
+  }
+
   /* ---------- Mobile and tablet: head → purchase → body ---------- */
   @media screen and (max-width: 989px) {
     .pdp-column--placard {
@@ -97,15 +108,6 @@
       order: 3;
     }
 
-    /*
-     * The Shopify Inbox launcher lands on the purchase controls (the pinned bar
-     * on mobile, Add to cart in the tablet column), so it is hidden while the
-     * chat is closed; blocks/chat-link.liquid opens it from the page.
-     * Once open, the chat panel shows as usual.
-     */
-    body:has(.pdp-column--purchase) shopify-chat:not([open]) {
-      display: none;
-    }
   }
 
   /* ---------- Mobile: buy bar pinned ---------- */

@@ -27,7 +27,7 @@ References: ALD (desktop three columns; mobile always-pinned buy bar with size s
 
 - Desktop ≥990px: placard | photographs | purchase, with both side columns sticky.
 - Mobile <750px: the bar is pinned from first paint and is the only buy box (size strip, Add to cart, wallet). Order below the gallery: head → purchase extras → body.
-- Tablet 750–989px: Horizon's two columns, with the mobile order (head → purchase → body) so Add to cart sits above the fold. The Inbox launcher is hidden there as on mobile, and the chat link takes over.
+- Tablet 750–989px: Horizon's two columns, with the mobile order (head → purchase → body) so Add to cart sits above the fold. The Inbox launcher is hidden on this page at every width and the chat link takes over.
 - Square corners on this page only (DESIGN.md, The Square Wall Rule).
 - Complete the look: complementary recommendations from Search & Discovery; hidden until curated.
 - Horizon's scroll-triggered sticky add-to-cart is turned off on this template; the pinned bar replaces it.
