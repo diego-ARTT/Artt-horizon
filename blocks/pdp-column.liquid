@@ -79,8 +79,19 @@
     border-radius: 0;
   }
 
-  /* ---------- Mobile: head → purchase → body, buy bar pinned ---------- */
-  @media screen and (max-width: 749px) {
+  /*
+   * The Shopify Inbox launcher lands on the purchase controls at every width
+   * (the pinned bar on mobile, Add to cart on tablet, the purchase column's
+   * wallet button on desktop), so on this page it is hidden while the chat is
+   * closed and blocks/chat-link.liquid opens it. Once open, the chat panel
+   * shows as usual.
+   */
+  body:has(.pdp-column--purchase) shopify-chat:not([open]) {
+    display: none;
+  }
+
+  /* ---------- Mobile and tablet: head → purchase → body ---------- */
+  @media screen and (max-width: 989px) {
     .pdp-column--placard {
       display: contents;
     }
@@ -97,25 +108,34 @@
       order: 3;
     }
 
-    body:has(.pdp-column--buybar) {
+  }
+
+  /* ---------- Mobile: buy bar pinned ---------- */
+  @media screen and (max-width: 749px) {
+
+    /* Set on the root so the document's scroll padding can read it: keyboard
+       focus scrolls into view above the bar, not behind it (WCAG 2.4.11). */
+    :root:has(.pdp-column--buybar) {
       --pdp-buybar-height: calc(10rem + env(safe-area-inset-bottom));
 
-      padding-block-end: var(--pdp-buybar-height);
+      scroll-padding-block-end: var(--pdp-buybar-height);
     }
 
-    /*
-     * The Shopify Inbox launcher collides with the bar, so it is hidden while
-     * the chat is closed; blocks/chat-link.liquid opens it from the page.
-     * Once open, the chat panel shows as usual.
-     */
-    body:has(.pdp-column--buybar) shopify-chat:not([open]) {
-      display: none;
+    body:has(.pdp-column--buybar) {
+      padding-block-end: var(--pdp-buybar-height);
     }
 
     /* Klaviyo's "10% off" teaser is pinned to bottom: 0 with an inline style,
        which put it on top of Add to cart. It sits on the bar's top edge instead. */
     body:has(.pdp-column--buybar) [class*='kl-teaser-'] {
       bottom: var(--pdp-buybar-height) !important; /* stylelint-disable-line declaration-no-important */
+    }
+
+    /* Google's store widget (Google & YouTube app embed) floats bottom-left over
+       the bar's title. Its position is an inline !important style that cannot be
+       moved, and relocating it breaks its panel, so it sits out on mobile PDPs. */
+    body:has(.pdp-column--buybar) #google-merchantwidget-iframe-wrapper {
+      display: none !important; /* stylelint-disable-line declaration-no-important */
     }
 
     /* With the buy bar always in reach, the photographs stack instead of
@@ -269,11 +289,17 @@
 
     .pdp-column--placard {
       grid-column: 1;
+      /* A column taller than the window scrolls with the page until its end is
+         in view, then sticks there (height from assets/pdp-layout.js). */
+      top: min(var(--sticky-header-offset, 0px), calc(100dvh - var(--pdp-placard-height, 0px)));
       gap: var(--gap-3xl, 2.5rem);
     }
 
     .pdp-column--purchase {
       grid-column: 3;
+      /* A column taller than the window scrolls with the page until its end is
+         in view, then sticks there (height from assets/pdp-layout.js). */
+      top: min(var(--sticky-header-offset, 0px), calc(100dvh - var(--pdp-purchase-height, 0px)));
     }
   }
 {% endstylesheet %}

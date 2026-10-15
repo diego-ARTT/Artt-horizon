@@ -27,6 +27,17 @@ References: ALD (desktop three columns; mobile always-pinned buy bar with size s
 
 - Desktop ≥990px: placard | photographs | purchase, with both side columns sticky.
 - Mobile <750px: the bar is pinned from first paint and is the only buy box (size strip, Add to cart, wallet). Order below the gallery: head → purchase extras → body.
+- Tablet 750–989px: Horizon's two columns, with the mobile order (head → purchase → body) so Add to cart sits above the fold. The Inbox launcher is hidden on this page at every width and the chat link takes over.
 - Square corners on this page only (DESIGN.md, The Square Wall Rule).
 - Complete the look: complementary recommendations from Search & Discovery; hidden until curated.
 - Horizon's scroll-triggered sticky add-to-cart is turned off on this template; the pinned bar replaces it.
+
+## Live-store check after each deploy
+
+The mobile bar depends on how three apps build their widgets. Each override is commented where it lives, but an app update can rename what it targets without warning. After each merge to main, open a product page on a phone (or at 390px) and check:
+
+- The bar is 160px tall, with Add to cart and Buy with Shop side by side.
+- The Dealeasy gift card shows in the page, not in the bar (`assets/pdp-layout.js`).
+- Klaviyo's "10% off" tab sits on the bar's top edge, not on Add to cart (`[class*='kl-teaser-']`).
+- Google's store widget is absent on the product page (`#google-merchantwidget-iframe-wrapper`).
+- Tabbing through the page never puts focus under the bar or the header. The reCAPTCHA badge's own Privacy/Terms links are the known exception: they live in a pinned iframe.

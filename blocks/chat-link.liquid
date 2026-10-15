@@ -1,7 +1,7 @@
 {%- comment -%}
   Chat link: opens Shopify Inbox from an inline text link instead of the
   floating launcher. Pairs with pdp-column.liquid, which hides the launcher on
-  mobile product pages (it collided with the pinned buy bar).
+  product pages at every width (it landed on the purchase controls).
 
   The link stays hidden until Inbox registers <shopify-chat>, so it never
   renders as a dead control on a store without the app. The click handler is
@@ -72,12 +72,6 @@
     outline-offset: 3px;
   }
 
-  @media screen and (min-width: 750px) {
-    /* Desktop keeps the floating launcher; the link is the mobile route in. */
-    .has-shopify-chat .chat-link {
-      display: none;
-    }
-  }
 {% endstylesheet %}
 
 {% schema %}
