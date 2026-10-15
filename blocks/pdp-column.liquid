@@ -248,6 +248,7 @@
       /* Stick exactly where the column rests; its padding is the breathing room.
          An extra offset here makes the columns jump down on the first scroll. */
       top: var(--sticky-header-offset, 0px);
+      transition: top 360ms cubic-bezier(0.16, 1, 0.3, 1);
       align-self: start;
       padding-block: var(--gap-3xl, 3rem);
     }

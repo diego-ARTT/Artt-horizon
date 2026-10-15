@@ -202,3 +202,67 @@ theme-drawer .theme-drawer__dialog {
   .variant-option__button-label__pill {
   transition: none;
 }
+
+/*
+ * Header slide (sticky: scroll-up).
+ *
+ * Upstream fades a hidden scroll-up header and drops it out of sticky
+ * positioning. Here it slides: in from the top when it is shown, and out to
+ * the top when a visible header is hidden. assets/header-slide.js marks the
+ * second case with [data-header-hiding], because CSS cannot tell it apart from
+ * the header simply scrolling off with the page.
+ */
+.header[sticky='scroll-up'][data-sticky-state='idle'] {
+  opacity: 1;
+}
+
+.header-section:has(> #header-component[sticky='scroll-up'][data-sticky-state='active']) {
+  animation: header-slide-in 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header-section[data-header-hiding]:has(
+    > #header-component[sticky='scroll-up'][data-sticky-state='idle']
+  ) {
+  position: sticky;
+  top: -1px;
+  z-index: var(--layer-menu-drawer);
+  translate: 0 -100%;
+  transition: translate 240ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+@keyframes header-slide-in {
+  from {
+    translate: 0 -100%;
+  }
+
+  to {
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-section:has(> #header-component[sticky='scroll-up']) {
+    animation: none;
+    transition: none;
+  }
+}
+
+/*
+ * Image settle (product pages; assets/image-settle.js).
+ *
+ * Frames found below the fold start enlarged and settle to rest once, as they
+ * enter the viewport. The art-story crop keeps its own zoom and settles onto it.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  [data-settle] :is(.product-media, .art-story__image) {
+    transition: scale 1100ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-settle='out'] .product-media {
+    scale: 1.12;
+  }
+
+  [data-settle='out'] .art-story__image {
+    scale: calc(var(--art-story-zoom, 1) * 1.12);
+  }
+}
