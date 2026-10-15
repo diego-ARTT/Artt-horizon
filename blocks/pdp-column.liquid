@@ -287,11 +287,17 @@
 
     .pdp-column--placard {
       grid-column: 1;
+      /* A column taller than the window scrolls with the page until its end is
+         in view, then sticks there (height from assets/pdp-layout.js). */
+      top: min(var(--sticky-header-offset, 0px), calc(100dvh - var(--pdp-placard-height, 0px)));
       gap: var(--gap-3xl, 2.5rem);
     }
 
     .pdp-column--purchase {
       grid-column: 3;
+      /* A column taller than the window scrolls with the page until its end is
+         in view, then sticks there (height from assets/pdp-layout.js). */
+      top: min(var(--sticky-header-offset, 0px), calc(100dvh - var(--pdp-purchase-height, 0px)));
     }
   }
 {% endstylesheet %}
