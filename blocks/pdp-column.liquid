@@ -1,0 +1,282 @@
+{%- comment -%}
+  PDP column: the structural container behind the product page's gallery-wall
+  layout. One block type, five roles:
+
+  - placard  Left column on desktop (≥990px): the label beside the work.
+             Holds a `head` and a `body`, and sticks while the photographs scroll.
+  - head     Title, edition, price, rating.
+  - body     Accordions, spec list, press.
+  - purchase Right column on desktop: size, add to cart, and app widgets. Sticks.
+  - buybar   Inside `purchase`. On mobile (<750px) it is pinned to the bottom
+             of the screen from first paint and holds the real variant picker
+             and the real product form, so there is one picker and one source
+             of state, not a mirrored copy.
+
+  On mobile `placard` dissolves (display: contents) so the order becomes
+  head → purchase → body; the buybar itself is fixed.
+  Square corners on this page are scoped to these columns (DESIGN.md,
+  "Product page: the gallery wall").
+{%- endcomment -%}
+
+{%- liquid
+  assign role = block.settings.role
+  assign product_resource = closest.product
+-%}
+
+<div
+  class="pdp-column pdp-column--{{ role }}"
+  {% if role == 'buybar' %}
+    role="region" aria-label="{{ block.settings.region_label | escape }}"
+  {% endif %}
+  {{ block.shopify_attributes }}
+>
+  {%- if role == 'buybar' and product_resource != blank -%}
+    <div class="pdp-buybar__summary" aria-hidden="true">
+      <span class="pdp-buybar__title">{{ product_resource.title | escape }}</span>
+      <span class="pdp-buybar__price">
+        {{- product_resource.selected_or_first_available_variant.price | money -}}
+      </span>
+    </div>
+  {%- endif -%}
+
+  {% content_for 'blocks' %}
+</div>
+
+{% stylesheet %}
+  .pdp-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xl, 1.5rem);
+    min-width: 0;
+    width: 100%;
+  }
+
+  .pdp-column--head {
+    gap: var(--gap-md, 0.9rem);
+  }
+
+  .pdp-column--buybar {
+    gap: var(--gap-lg, 1rem);
+  }
+
+  .pdp-buybar__summary {
+    display: none;
+  }
+
+  /*
+   * Square corners, product page only. The shared tokens are re-pointed on the
+   * section so every button, chip, input and wallet button inside follows.
+   */
+  .product-information:has(.pdp-column) {
+    --style-border-radius-buttons-primary: 0;
+    --style-border-radius-buttons-secondary: 0;
+    --style-border-radius-inputs: 0;
+    --variant-picker-button-radius: 0;
+    --button-radius: 0;
+  }
+
+  .product-information:has(.pdp-column) :is(.button, button, .variant-option__button-label, .quantity-selector) {
+    border-radius: 0;
+  }
+
+  /* ---------- Mobile: head → purchase → body, buy bar pinned ---------- */
+  @media screen and (max-width: 749px) {
+    .pdp-column--placard {
+      display: contents;
+    }
+
+    .pdp-column--head {
+      order: 1;
+    }
+
+    .pdp-column--purchase {
+      order: 2;
+    }
+
+    .pdp-column--body {
+      order: 3;
+    }
+
+    body:has(.pdp-column--buybar) {
+      --pdp-buybar-height: calc(10rem + env(safe-area-inset-bottom));
+
+      padding-block-end: var(--pdp-buybar-height);
+    }
+
+    /* Floating app launchers (Shopify Inbox) ride above the bar, not on it. */
+    body:has(.pdp-column--buybar) shopify-chat {
+      translate: 0 calc(-1 * var(--pdp-buybar-height));
+    }
+
+    .pdp-column--buybar {
+      position: fixed;
+      inset-inline: 0;
+      inset-block-end: 0;
+      z-index: var(--layer-sticky, 20);
+      gap: 0.6rem;
+      padding: 0.75rem var(--page-margin, 1rem) calc(0.75rem + env(safe-area-inset-bottom));
+      background-color: var(--color-background);
+      border-block-start: 1px solid var(--color-foreground);
+    }
+
+    .pdp-buybar__summary {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--gap-lg, 1rem);
+      font-family: var(--font-body--family);
+      font-size: 0.75rem;
+      line-height: 1.4;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-foreground);
+    }
+
+    .pdp-buybar__title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pdp-buybar__price {
+      flex-shrink: 0;
+    }
+
+    /* One-value options (a tee's single colourway) carry no decision here. */
+    .pdp-column--buybar
+      .variant-option:not(:has(.variant-option__button-label ~ .variant-option__button-label)) {
+      display: none;
+    }
+
+    /* The legend stays for screen readers; the chips name themselves. */
+    .pdp-column--buybar .variant-option legend {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .pdp-column--buybar .variant-option--buttons {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 0;
+    }
+
+    .pdp-column--buybar .variant-option--buttons .variant-option__button-label {
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: 2.75rem;
+      margin: 0;
+    }
+
+    .pdp-column--buybar .variant-option--buttons .variant-option__button-label + .variant-option__button-label {
+      margin-inline-start: -1px;
+    }
+
+    .pdp-column--buybar .quantity-selector-wrapper,
+    .pdp-column--buybar .quantity-selector {
+      display: none;
+    }
+
+    .pdp-column--buybar .product-form-buttons {
+      flex-wrap: nowrap;
+      gap: 0.5rem;
+    }
+
+    .pdp-column--buybar .product-form-buttons > * {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .pdp-column--buybar more-payment-options-link {
+      display: none;
+    }
+
+    .pdp-column--buybar shopify-accelerated-checkout {
+      --shopify-accelerated-checkout-button-block-size: var(--height-buy-buttons);
+    }
+  }
+
+  /* ---------- Desktop: the gallery wall ---------- */
+  @media screen and (min-width: 990px) {
+    .product-information.section .product-information__grid.product-information__grid:has(.pdp-column--placard) {
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(16rem, 1fr) minmax(0, 2.1fr) minmax(17rem, 1fr);
+      column-gap: clamp(2rem, 3.5vw, 4.5rem);
+      align-items: start;
+      padding-inline: var(--page-margin, 2.5rem);
+    }
+
+    .product-information__grid:has(.pdp-column--placard) :is(
+        .product-details,
+        .product-details > .group-block,
+        .product-details > .group-block > .group-block-content
+      ) {
+      display: contents;
+    }
+
+    .product-information__grid:has(.pdp-column--placard) > .product-information__media {
+      grid-column: 2;
+      grid-row: 1;
+      width: auto;
+      min-width: 0;
+      padding: 0;
+    }
+
+    .pdp-column--placard,
+    .pdp-column--purchase {
+      grid-row: 1;
+      position: sticky;
+      top: calc(var(--sticky-header-offset, 0px) + var(--gap-3xl, 3rem));
+      align-self: start;
+      padding-block: var(--gap-3xl, 3rem);
+    }
+
+    .pdp-column--placard {
+      grid-column: 1;
+      gap: var(--gap-3xl, 2.5rem);
+    }
+
+    .pdp-column--purchase {
+      grid-column: 3;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "PDP column",
+  "tag": null,
+  "blocks": [{ "type": "@theme" }, { "type": "@app" }],
+  "settings": [
+    {
+      "type": "select",
+      "id": "role",
+      "label": "Role",
+      "options": [
+        { "value": "placard", "label": "Placard (left column)" },
+        { "value": "head", "label": "Placard head" },
+        { "value": "body", "label": "Placard body" },
+        { "value": "purchase", "label": "Purchase (right column)" },
+        { "value": "buybar", "label": "Buy bar (pinned on mobile)" }
+      ],
+      "default": "placard"
+    },
+    {
+      "type": "text",
+      "id": "region_label",
+      "label": "Buy bar accessible name",
+      "default": "Choose a size and add to cart",
+      "visible_if": "{{ block.settings.role == 'buybar' }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP column",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}

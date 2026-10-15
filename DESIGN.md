@@ -347,6 +347,16 @@ The pre-launch tease for a drop: a full-bleed dark surface that behaves like a d
 
 **The Darkened Room Rule.** The tease inverts the storefront on purpose: where the gallery is white walls, the tease is the room with the lights down and the work lit. Anything that reintroduces storefront chrome — a card, a rounded container, a tinted canvas, a drop shadow — breaks the room. If an element needs definition here, it gets a hairline or nothing.
 
+### Product Page: the Gallery Wall (signature component)
+
+The product page hangs the garment like a work on a wall: the label on one side, the work in the middle, and the purchase on the other. Built from one container block, `blocks/pdp-column.liquid`, in five roles (placard, head, body, purchase, buybar).
+
+- **Desktop (≥990px), three columns:** placard (title, artist / edition placard, price, rating, accordions, spec list, press) on the left; photographs stacked one per row in the center; size, add to cart and app widgets on the right. The two side columns stick while the photographs scroll.
+- **Mobile (<750px), pinned buy bar:** the real variant picker and product form are fixed to the bottom of the screen from first paint. It shows a mono summary line (title, price), a square segmented size strip, then Add to cart beside the wallet button. There is one picker and one form, never a mirrored copy. Single-value options (a tee's one colourway) are hidden in the bar; their legends stay for screen readers. Floating launchers (Shopify Inbox) are lifted above the bar.
+- **Complete the look:** a `product-recommendations` section in `complementary` mode, curated per product in Shopify's Search & Discovery app. With no pairings it renders nothing.
+
+**The Square Wall Rule.** On the product page only, buttons, size chips, inputs and wallet buttons run square (0 radius). The tokens are re-pointed on `.product-information:has(.pdp-column)`, so the storefront's 14px / 12px buttons and pill chips are unchanged everywhere else. Colour swatches stay round, because they are samples of colour, not controls with a shape. This is a scoped exception, like a collection world; it does not license square corners elsewhere.
+
 ## 6. Do's and Don'ts
 
 ### Do:
