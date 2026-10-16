@@ -80,6 +80,32 @@
   }
 
   /*
+   * Virtual Try-On is a fit aid, so it sits under the size picker as a full-width
+   * secondary action: outline, square, mono regular. Add to cart stays the only
+   * black fill. Colours come from the app block settings (white on black ink).
+   */
+  .product-information:has(.pdp-column) .vton-widget,
+  .product-information:has(.pdp-column) .vton-widget__button {
+    inline-size: 100%;
+  }
+
+  .product-information:has(.pdp-column) .vton-widget__button {
+    min-block-size: var(--height-buy-buttons, 3.25rem);
+    border: 1px solid var(--color-foreground);
+    border-radius: 0;
+    box-shadow: none;
+    font-family: var(--font-body--family);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
+  /* The Dealeasy Vault card ships 10px and 6px radii; on this page it follows the Square Wall Rule. */
+  .product-information:has(.pdp-column) lb-gift-with-product,
+  .product-information:has(.pdp-column) lb-gift-with-product * {
+    border-radius: 0;
+  }
+
+  /*
    * The Shopify Inbox launcher lands on the purchase controls at every width
    * (the pinned bar on mobile, Add to cart on tablet, the purchase column's
    * wallet button on desktop), so on this page it is hidden while the chat is
@@ -129,6 +155,13 @@
        which put it on top of Add to cart. It sits on the bar's top edge instead. */
     body:has(.pdp-column--buybar) [class*='kl-teaser-'] {
       bottom: var(--pdp-buybar-height) !important; /* stylelint-disable-line declaration-no-important */
+    }
+
+    /* Shopify's hCaptcha badge (added when the newsletter field is focused) is
+       fixed 20px from the bottom at z-index 9999: on top of Buy with Shop, with
+       its Privacy/Terms links unreachable by keyboard. It clears the bar instead. */
+    body:has(.pdp-column--buybar) #shop-hcaptcha-badge-container {
+      bottom: calc(var(--pdp-buybar-height) + 1.25rem);
     }
 
     /* Google's store widget (Google & YouTube app embed) floats bottom-left over
@@ -256,6 +289,12 @@
       grid-template-columns: minmax(16rem, 1fr) minmax(0, 2.1fr) minmax(17rem, 1fr);
       column-gap: clamp(2rem, 3.5vw, 4.5rem);
       align-items: start;
+      /* Fixed width: capped at the theme's page width (90rem, the same edges as
+         the header) and centred, so wide screens don't stretch the wall. */
+      box-sizing: border-box;
+      inline-size: 100%;
+      max-inline-size: calc(var(--page-content-width, var(--narrow-page-width, 90rem)) + 2 * var(--page-margin, 2.5rem));
+      margin-inline: auto;
       padding-inline: var(--page-margin, 2.5rem);
     }
 

@@ -1,14 +1,22 @@
 /**
  * PDP layout helpers for the gallery wall (blocks/pdp-column.liquid).
  *
- * 1. Keeps app widgets out of the pinned mobile bar. The Dealeasy
- *    gift-with-product widget injects itself beside the add-to-cart button,
- *    which on mobile is inside the fixed buy bar; there it doubled the bar's
- *    height and pushed the wallet button off screen. While the bar is pinned,
- *    the widget is moved to its app block in the purchase column (or just after
- *    the bar when that block is missing). The gift is still added with the tee.
+ * 1. Keeps the payment actions together. The Dealeasy gift-with-product
+ *    widget injects itself beside the add-to-cart button: on mobile that is
+ *    inside the fixed buy bar (it doubled the bar's height and pushed the
+ *    wallet button off screen), and on desktop it split Add to cart from
+ *    Buy with Shop. At every width the widget is moved to its app block after
+ *    the purchase controls (or just after the bar when that block is missing).
+ *    The gift is still added with the tee.
+ *    Virtual Try-On sits under the size picker (inside the bar's markup); while
+ *    the bar is pinned it moves out to just after the bar, so the pinned bar
+ *    stays sizes + payment only, and it moves back if the bar unpins.
  * 2. Keeps keyboard focus clear of the bar and the sticky header.
- * 3. Publishes the desktop side columns' heights so a column taller than the
+ * 3. Publishes the pinned bar's real height as --pdp-buybar-height. The CSS
+ *    default (10rem) fits a size-only bar; a product with a second option
+ *    (e.g. Size + Style) grows the bar to ~243px, and the page padding, scroll
+ *    padding and the Klaviyo / hCaptcha offsets must follow it.
+ * 4. Publishes the desktop side columns' heights so a column taller than the
  *    window scrolls with the page first and sticks once its end is in view.
  */
 
@@ -16,8 +24,26 @@ const BAR = '.pdp-column--buybar';
 const WIDGETS = 'lb-gift-with-product';
 const pinned = window.matchMedia('(max-width: 749px)');
 
+const TRY_ON = '[id*="vton_app_vton_button"]';
+
+const placeTryOn = () => {
+  const bar = document.querySelector(BAR);
+  const tryOn = document.querySelector(TRY_ON);
+  if (!bar || !tryOn) return;
+
+  if (pinned.matches) {
+    if (bar.contains(tryOn)) bar.after(tryOn);
+    return;
+  }
+
+  // Unpinned: under the size picker, the slot the template gives it.
+  const picker = bar.querySelector('variant-picker');
+  const slot = picker && [...bar.children].find(child => child.contains(picker));
+  if (slot && slot.nextElementSibling !== tryOn) slot.after(tryOn);
+};
+
 const relocate = () => {
-  if (!pinned.matches) return;
+  placeTryOn();
 
   for (const widget of document.querySelectorAll(`${BAR} ${WIDGETS}`)) {
     const bar = widget.closest(BAR);
@@ -46,8 +72,12 @@ const revealFocus = event => {
     return;
 
   requestAnimationFrame(() => {
-    const box = (target.matches('input') && target.labels?.[0]) || target;
-    const rect = box.getBoundingClientRect();
+    // Measure the control itself. Only an input with no visible box of its own
+    // (a size chip's hidden radio) is measured by its label; a text field's
+    // label is often visually hidden (1x1px) and would misplace the field.
+    let rect = target.getBoundingClientRect();
+    const label = target instanceof HTMLInputElement ? target.labels?.[0] : null;
+    if (label && (rect.width <= 1 || rect.height <= 1)) rect = label.getBoundingClientRect();
     if (!rect.height) return;
 
     const margin = 16;
@@ -78,12 +108,31 @@ const columnSize = new ResizeObserver(entries => {
   }
 });
 
+const barSize = new ResizeObserver(entries => {
+  const root = document.documentElement;
+  for (const entry of entries) {
+    if (!pinned.matches) {
+      root.style.removeProperty('--pdp-buybar-height');
+      continue;
+    }
+    const height =
+      entry.borderBoxSize?.[0]?.blockSize ?? entry.target.getBoundingClientRect().height;
+    if (height) root.style.setProperty('--pdp-buybar-height', `${Math.ceil(height)}px`);
+  }
+});
+
 const observeColumns = () => {
   for (const selector of Object.values(COLUMNS)) {
     const column = document.querySelector(selector);
     if (!column || observed.has(column)) continue;
     observed.add(column);
     columnSize.observe(column);
+  }
+
+  const bar = document.querySelector(BAR);
+  if (bar && !observed.has(bar)) {
+    observed.add(bar);
+    barSize.observe(bar);
   }
 };
 
