@@ -46,8 +46,12 @@ const revealFocus = event => {
     return;
 
   requestAnimationFrame(() => {
-    const box = (target.matches('input') && target.labels?.[0]) || target;
-    const rect = box.getBoundingClientRect();
+    // Measure the control itself. Only an input with no visible box of its own
+    // (a size chip's hidden radio) is measured by its label; a text field's
+    // label is often visually hidden (1x1px) and would misplace the field.
+    let rect = target.getBoundingClientRect();
+    const label = target instanceof HTMLInputElement ? target.labels?.[0] : null;
+    if (label && (rect.width <= 1 || rect.height <= 1)) rect = label.getBoundingClientRect();
     if (!rect.height) return;
 
     const margin = 16;
