@@ -52,6 +52,12 @@
     border-block-start: 1px solid var(--color-border);
   }
 
+  /* No rule above the first row: the accordion's bottom border sits right above
+     it, and the two hairlines read as a doubled line. */
+  .product-spec-list__row:first-child {
+    border-block-start: 0;
+  }
+
   .product-spec-list__row:last-child {
     border-block-end: 1px solid var(--color-border);
   }
