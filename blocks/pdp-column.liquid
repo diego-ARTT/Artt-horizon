@@ -79,6 +79,26 @@
     border-radius: 0;
   }
 
+  /*
+   * Virtual Try-On is a fit aid, so it sits under the size picker as a full-width
+   * secondary action: outline, square, mono regular. Add to cart stays the only
+   * black fill. Colours come from the app block settings (white on black ink).
+   */
+  .product-information:has(.pdp-column) .vton-widget,
+  .product-information:has(.pdp-column) .vton-widget__button {
+    inline-size: 100%;
+  }
+
+  .product-information:has(.pdp-column) .vton-widget__button {
+    min-block-size: var(--height-buy-buttons, 3.25rem);
+    border: 1px solid var(--color-foreground);
+    border-radius: 0;
+    box-shadow: none;
+    font-family: var(--font-body--family);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+
   /* The Dealeasy Vault card ships 10px and 6px radii; on this page it follows the Square Wall Rule. */
   .product-information:has(.pdp-column) lb-gift-with-product,
   .product-information:has(.pdp-column) lb-gift-with-product * {

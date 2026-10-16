@@ -623,16 +623,6 @@
                   },
                   "blocks": {}
                 },
-                "vton_app_vton_button_Eem7LK": {
-                  "type": "shopify://apps/vton-app/blocks/vton_button/019f359d-a20c-7346-9f06-917e3db00adb",
-                  "settings": {
-                    "product": "{{closest.product}}",
-                    "enable_camera": true,
-                    "button_background": "#000000",
-                    "button_text_color": "#FFFFFF",
-                    "api_url": ""
-                  }
-                },
                 "dealeasy_gift_with_product_mc7Ybm": {
                   "type": "shopify://apps/dealeasy/blocks/gift-with-product/e47a8634-0496-480d-9e46-6f7fafd34b30",
                   "settings": {
@@ -728,10 +718,21 @@
                         }
                       },
                       "block_order": []
+                    },
+                    "vton_app_vton_button_Eem7LK": {
+                      "type": "shopify://apps/vton-app/blocks/vton_button/019f359d-a20c-7346-9f06-917e3db00adb",
+                      "settings": {
+                        "product": "{{closest.product}}",
+                        "enable_camera": true,
+                        "button_background": "#FFFFFF",
+                        "button_text_color": "#000000",
+                        "api_url": ""
+                      }
                     }
                   },
                   "block_order": [
                     "variant_picker_R3rGDr",
+                    "vton_app_vton_button_Eem7LK",
                     "buy_buttons_eYQEYi"
                   ]
                 },
@@ -747,7 +748,6 @@
                 "size_guide_Pge3P4",
                 "chat_link",
                 "pdp_buybar",
-                "vton_app_vton_button_Eem7LK",
                 "dealeasy_gift_with_product_mc7Ybm"
               ]
             }
