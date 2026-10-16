@@ -8,6 +8,9 @@
  *    Buy with Shop. At every width the widget is moved to its app block after
  *    the purchase controls (or just after the bar when that block is missing).
  *    The gift is still added with the tee.
+ *    Virtual Try-On sits under the size picker (inside the bar's markup); while
+ *    the bar is pinned it moves out to just after the bar, so the pinned bar
+ *    stays sizes + payment only, and it moves back if the bar unpins.
  * 2. Keeps keyboard focus clear of the bar and the sticky header.
  * 3. Publishes the desktop side columns' heights so a column taller than the
  *    window scrolls with the page first and sticks once its end is in view.
@@ -17,7 +20,27 @@ const BAR = '.pdp-column--buybar';
 const WIDGETS = 'lb-gift-with-product';
 const pinned = window.matchMedia('(max-width: 749px)');
 
+const TRY_ON = '[id*="vton_app_vton_button"]';
+
+const placeTryOn = () => {
+  const bar = document.querySelector(BAR);
+  const tryOn = document.querySelector(TRY_ON);
+  if (!bar || !tryOn) return;
+
+  if (pinned.matches) {
+    if (bar.contains(tryOn)) bar.after(tryOn);
+    return;
+  }
+
+  // Unpinned: under the size picker, the slot the template gives it.
+  const picker = bar.querySelector('variant-picker');
+  const slot = picker && [...bar.children].find(child => child.contains(picker));
+  if (slot && slot.nextElementSibling !== tryOn) slot.after(tryOn);
+};
+
 const relocate = () => {
+  placeTryOn();
+
   for (const widget of document.querySelectorAll(`${BAR} ${WIDGETS}`)) {
     const bar = widget.closest(BAR);
     if (!bar) continue;
@@ -105,6 +128,7 @@ if (document.querySelector(BAR)) {
 
   relocate();
   observeColumns();
+  pinned.addEventListener('change', relocate);
   // The app injects late and re-injects when a variant change morphs the form.
   new MutationObserver(queue).observe(document.body, { childList: true, subtree: true });
 }
