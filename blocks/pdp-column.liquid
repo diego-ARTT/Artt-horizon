@@ -79,6 +79,12 @@
     border-radius: 0;
   }
 
+  /* The Dealeasy Vault card ships 10px and 6px radii; on this page it follows the Square Wall Rule. */
+  .product-information:has(.pdp-column) lb-gift-with-product,
+  .product-information:has(.pdp-column) lb-gift-with-product * {
+    border-radius: 0;
+  }
+
   /*
    * The Shopify Inbox launcher lands on the purchase controls at every width
    * (the pinned bar on mobile, Add to cart on tablet, the purchase column's

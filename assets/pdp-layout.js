@@ -1,12 +1,13 @@
 /**
  * PDP layout helpers for the gallery wall (blocks/pdp-column.liquid).
  *
- * 1. Keeps app widgets out of the pinned mobile bar. The Dealeasy
- *    gift-with-product widget injects itself beside the add-to-cart button,
- *    which on mobile is inside the fixed buy bar; there it doubled the bar's
- *    height and pushed the wallet button off screen. While the bar is pinned,
- *    the widget is moved to its app block in the purchase column (or just after
- *    the bar when that block is missing). The gift is still added with the tee.
+ * 1. Keeps the payment actions together. The Dealeasy gift-with-product
+ *    widget injects itself beside the add-to-cart button: on mobile that is
+ *    inside the fixed buy bar (it doubled the bar's height and pushed the
+ *    wallet button off screen), and on desktop it split Add to cart from
+ *    Buy with Shop. At every width the widget is moved to its app block after
+ *    the purchase controls (or just after the bar when that block is missing).
+ *    The gift is still added with the tee.
  * 2. Keeps keyboard focus clear of the bar and the sticky header.
  * 3. Publishes the desktop side columns' heights so a column taller than the
  *    window scrolls with the page first and sticks once its end is in view.
@@ -17,8 +18,6 @@ const WIDGETS = 'lb-gift-with-product';
 const pinned = window.matchMedia('(max-width: 749px)');
 
 const relocate = () => {
-  if (!pinned.matches) return;
-
   for (const widget of document.querySelectorAll(`${BAR} ${WIDGETS}`)) {
     const bar = widget.closest(BAR);
     if (!bar) continue;
@@ -106,7 +105,6 @@ if (document.querySelector(BAR)) {
 
   relocate();
   observeColumns();
-  pinned.addEventListener('change', relocate);
   // The app injects late and re-injects when a variant change morphs the form.
   new MutationObserver(queue).observe(document.body, { childList: true, subtree: true });
 }
