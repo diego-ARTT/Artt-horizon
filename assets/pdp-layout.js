@@ -12,7 +12,11 @@
  *    the bar is pinned it moves out to just after the bar, so the pinned bar
  *    stays sizes + payment only, and it moves back if the bar unpins.
  * 2. Keeps keyboard focus clear of the bar and the sticky header.
- * 3. Publishes the desktop side columns' heights so a column taller than the
+ * 3. Publishes the pinned bar's real height as --pdp-buybar-height. The CSS
+ *    default (10rem) fits a size-only bar; a product with a second option
+ *    (e.g. Size + Style) grows the bar to ~243px, and the page padding, scroll
+ *    padding and the Klaviyo / hCaptcha offsets must follow it.
+ * 4. Publishes the desktop side columns' heights so a column taller than the
  *    window scrolls with the page first and sticks once its end is in view.
  */
 
@@ -104,12 +108,31 @@ const columnSize = new ResizeObserver(entries => {
   }
 });
 
+const barSize = new ResizeObserver(entries => {
+  const root = document.documentElement;
+  for (const entry of entries) {
+    if (!pinned.matches) {
+      root.style.removeProperty('--pdp-buybar-height');
+      continue;
+    }
+    const height =
+      entry.borderBoxSize?.[0]?.blockSize ?? entry.target.getBoundingClientRect().height;
+    if (height) root.style.setProperty('--pdp-buybar-height', `${Math.ceil(height)}px`);
+  }
+});
+
 const observeColumns = () => {
   for (const selector of Object.values(COLUMNS)) {
     const column = document.querySelector(selector);
     if (!column || observed.has(column)) continue;
     observed.add(column);
     columnSize.observe(column);
+  }
+
+  const bar = document.querySelector(BAR);
+  if (bar && !observed.has(bar)) {
+    observed.add(bar);
+    barSize.observe(bar);
   }
 };
 
