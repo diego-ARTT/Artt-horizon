@@ -131,6 +131,13 @@
       bottom: var(--pdp-buybar-height) !important; /* stylelint-disable-line declaration-no-important */
     }
 
+    /* Shopify's hCaptcha badge (added when the newsletter field is focused) is
+       fixed 20px from the bottom at z-index 9999: on top of Buy with Shop, with
+       its Privacy/Terms links unreachable by keyboard. It clears the bar instead. */
+    body:has(.pdp-column--buybar) #shop-hcaptcha-badge-container {
+      bottom: calc(var(--pdp-buybar-height) + 1.25rem);
+    }
+
     /* Google's store widget (Google & YouTube app embed) floats bottom-left over
        the bar's title. Its position is an inline !important style that cannot be
        moved, and relocating it breaks its panel, so it sits out on mobile PDPs. */
