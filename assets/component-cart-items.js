@@ -8,7 +8,7 @@ import {
   startViewTransition,
 } from '@theme/utilities';
 import { morphSection, sectionRenderer } from '@theme/section-renderer';
-import { ThemeEvents, QuantitySelectorUpdateEvent } from '@theme/events';
+import { ThemeEvents, QuantitySelectorUpdateEvent, CartSectionRestoredEvent } from '@theme/events';
 import { cartPerformance } from '@theme/performance';
 import {
   createViewEventElement,
@@ -61,6 +61,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
       ?.then(({ detail }) => {
         const sectionsHtml = detail?.sections?.[this.sectionId];
         if (sectionsHtml) {
+          sectionRenderer.abortRender(this.sectionId);
           morphSection(this.sectionId, sectionsHtml, {
             mode: this.isDrawer ? 'hydration' : 'full',
           });
@@ -91,6 +92,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
         const sections = /** @type {Record<string, string> | undefined} */ (detail?.sections);
         const sectionsHtml = sections?.[this.sectionId];
         if (sectionsHtml) {
+          sectionRenderer.abortRender(this.sectionId);
           morphSection(this.sectionId, sectionsHtml, {
             mode: this.isDrawer ? 'hydration' : 'full',
           });
@@ -114,6 +116,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
     document.addEventListener(ThemeEvents.quantitySelectorUpdate, this.#debouncedOnChange);
     document.addEventListener(StandardEvents.cartDiscountUpdate, this.#handleDiscountUpdate);
     document.addEventListener(StandardEvents.cartNoteUpdate, this.#handleNoteUpdate);
+    window.addEventListener('pageshow', this.#handlePageShow);
   }
 
   disconnectedCallback() {
@@ -123,6 +126,66 @@ export class CartItemsComponent extends createViewEventElement(Component) {
     document.removeEventListener(ThemeEvents.quantitySelectorUpdate, this.#debouncedOnChange);
     document.removeEventListener(StandardEvents.cartDiscountUpdate, this.#handleDiscountUpdate);
     document.removeEventListener(StandardEvents.cartNoteUpdate, this.#handleNoteUpdate);
+    window.removeEventListener('pageshow', this.#handlePageShow);
+  }
+
+  /**
+   * Re-renders the cart section when the page is shown again via Back or the back/forward cache.
+   *
+   * A restored page replays frozen markup, so the drawer and cart page keep the line items from
+   * before the shopper left. The header bubble can already correct itself on `pageshow`, which
+   * is why the count and the cart body disagree until a reload. Changing a quantity on that
+   * stale list sends `line` to the Cart API against the wrong row.
+   *
+   * `persisted` alone misses Chrome. Chrome skips the back/forward cache when the page contains
+   * the Sign in with Shop iframe (`shopify-account`), which this header renders. Back then
+   * rebuilds the document from the HTTP cache: `persisted` is false and the stale cart still
+   * paints. `navigation.type === 'back_forward'` covers that path. A real bfcache restore keeps
+   * the original navigation entry (`navigate`), so `persisted` is still required. Ordinary loads
+   * are neither, and `pageshow` fires on those too.
+   *
+   * @param {PageTransitionEvent} event
+   */
+  #handlePageShow = event => {
+    const navigationEntry = globalThis.performance?.getEntriesByType?.('navigation')[0];
+    const navigationType = CartItemsComponent.#isNavigationTiming(navigationEntry)
+      ? navigationEntry.type
+      : undefined;
+    if (!event.persisted && navigationType !== 'back_forward') return;
+    // `section_id` is optional and the getter throws without it. This listener is not inside
+    // a promise chain that already catches that.
+    if (!this.dataset.sectionId) return;
+
+    // Both restore paths would otherwise morph a cached copy of the same stale HTML.
+    // A bfcache restore never fires `load`, so the renderer cache is still pre-navigation.
+    // A disk-cache Back does fire `load` and seeds that cache from the stale document.
+    sectionRenderer
+      .renderSection(this.sectionId, {
+        cache: false,
+        mode: this.isDrawer ? 'hydration' : 'full',
+        // Empty → non-empty adds the cart summary markup, which carries its own stylesheet.
+        injectStylesheet: this.isDrawer && this.querySelector('[data-cart-drawer-empty]') !== null,
+      })
+      .then(() => {
+        // Morph swaps quantity selectors in place, so they never reconnect and their
+        // min/max button states stay bound to the pre-restore quantities.
+        this.#updateCartQuantitySelectorButtonStates();
+        // No drawer-open event fires on a restore, so the sticky summary has to be remeasured.
+        this.dispatchEvent(new CartSectionRestoredEvent());
+      })
+      .catch(error => {
+        if (error?.name !== 'AbortError') {
+          console.warn('[cart-items] back/forward restore render failed:', error);
+        }
+      });
+  };
+
+  /**
+   * @param {PerformanceEntry | undefined} entry
+   * @returns {entry is PerformanceNavigationTiming}
+   */
+  static #isNavigationTiming(entry) {
+    return entry?.entryType === 'navigation';
   }
 
   /**
@@ -233,6 +296,10 @@ export class CartItemsComponent extends createViewEventElement(Component) {
       }
     });
 
+    for (const sectionId of sectionsToUpdate) {
+      sectionRenderer.abortRender(sectionId);
+    }
+
     const body = JSON.stringify({
       line: line,
       quantity: quantity,
@@ -292,6 +359,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
           },
         });
 
+        sectionRenderer.abortRender(this.sectionId);
         morphSection(this.sectionId, parsedResponseText.sections[this.sectionId], {
           mode: this.isDrawer ? 'hydration' : 'full',
         });
@@ -372,6 +440,7 @@ export class CartItemsComponent extends createViewEventElement(Component) {
         };
 
         if (cartItemsHtml) {
+          sectionRenderer.abortRender(this.sectionId);
           const existingKeys = new Set(this.refs.cartItemRows?.map(row => row.dataset.key) ?? []);
 
           if (wasEmptyCartDrawer) {
