@@ -5,6 +5,15 @@ import { mediaQueryLarge, isMobileBreakpoint, getIOSVersion } from '@theme/utili
 import VariantPicker from '@theme/variant-picker';
 import { StandardEvents, ProductSelectEvent, CartLinesUpdateEvent } from '@shopify/events';
 
+/**
+ * Monotonic token shared by every `quick-add-component` instance.
+ * `#quick-add-modal-content` is a single DOM surface; per-instance AbortControllers
+ * cannot cancel another card's in-flight Choose fetch, so an older completion must
+ * not morph/open after a newer card's click.
+ * @type {number}
+ */
+let sharedModalRequestId = 0;
+
 export class QuickAddComponent extends Component {
   /** @type {AbortController | null} */
   #abortController = null;
@@ -107,6 +116,9 @@ export class QuickAddComponent extends Component {
   handleClick = async event => {
     event.preventDefault();
 
+    // Claim ownership of the shared modal before any await so a slower earlier
+    // card cannot overwrite this click after it resumes.
+    const requestId = ++sharedModalRequestId;
     const currentUrl = this.productPageUrl;
 
     if (this.dataset.usesSellingPlans === 'true') {
@@ -120,6 +132,7 @@ export class QuickAddComponent extends Component {
     if (!productGrid) {
       // Fetch and cache the content
       const html = await this.fetchProductPage(currentUrl);
+      if (requestId !== sharedModalRequestId) return;
       if (html) {
         const gridElement = html.querySelector('[data-product-grid-content]');
         if (gridElement) {
@@ -130,14 +143,17 @@ export class QuickAddComponent extends Component {
       }
     }
 
+    // Another card's Choose click supersedes this one — do not touch the shared modal.
+    if (requestId !== sharedModalRequestId) return;
+
     if (productGrid) {
       // Use a fresh clone from the cache
       const freshContent = /** @type {Element} */ (productGrid.cloneNode(true));
       await this.updateQuickAddModal(freshContent);
+      if (requestId !== sharedModalRequestId) return;
       this.#updateVariantPicker(productGrid);
+      this.#openQuickAddModal();
     }
-
-    this.#openQuickAddModal();
   };
 
   #resetScroll() {

@@ -786,6 +786,30 @@ class DataLoader extends Component {
 }
 ```
 
+**Shared UI owned by multiple component instances (quick-add modal):**
+
+When several component instances can write one shared DOM surface (e.g. `#quick-add-modal-content`):
+- Per-instance `AbortController` / request ids only serialize work **within** one instance. A slower Choose fetch on card A will still complete after card B and overwrite the modal unless ownership is process-wide.
+- Use a **module-level** monotonic request id: increment at the start of each user action that intends to own the surface; after every `await`, return early if the id no longer matches before morphing or opening.
+- Only morph/open when this action has content for the product the user just chose — never fall through to open leftover DOM from a previous product.
+- Distinct from same-instance abort/prefetch races (draft PR #29): those still need `finally` not to clear a newer controller and prefetch `{ cancelPrevious: false }`.
+
+```javascript
+let sharedModalRequestId = 0;
+
+class QuickAddComponent extends Component {
+  handleClick = async () => {
+    const requestId = ++sharedModalRequestId;
+    const html = await this.fetchProductPage(url);
+    if (requestId !== sharedModalRequestId) return; // another card won
+    if (!html) return;
+    await this.updateQuickAddModal(html);
+    if (requestId !== sharedModalRequestId) return;
+    this.openModal();
+  };
+}
+```
+
 **Clear async gates on success and failure:**
 
 When user actions are gated behind async DOM refreshes, emit and handle a failure signal for non-abort failures. Do not leave forms or buttons permanently queued behind a success-only event, and keep any hidden submitted values aligned with the user's selected value before flushing queued actions.
