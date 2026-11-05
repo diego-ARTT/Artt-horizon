@@ -32,6 +32,21 @@ import {
  * @extends {Component<Refs>}
  */
 export class CartItemsComponent extends createViewEventElement(Component) {
+  /** @type {Set<Promise<boolean>>} */
+  static #pendingQuantityUpdates = new Set();
+
+  /** The number of Check out submits that wait for quantity saves, across all cart instances. */
+  static #checkoutHolds = 0;
+
+  /**
+   * Includes quantity mutations, their section renders, and control cleanup across all cart instances.
+   * Each promise resolves to true when the store rejected the quantity and the line shows the error.
+   * @returns {ReadonlyArray<Promise<boolean>>} A snapshot that cannot modify the shared pending set.
+   */
+  static get pendingQuantityUpdates() {
+    return Array.from(CartItemsComponent.#pendingQuantityUpdates);
+  }
+
   #debouncedOnChange = debounce(
     /** @param {Event} event */
     event => {
@@ -219,101 +234,197 @@ export class CartItemsComponent extends createViewEventElement(Component) {
     const cartPerformaceUpdateMarker = cartPerformance.createStartingMarker(
       `${config.action}:user-action`
     );
-
-    this.#disableCartItems();
-
-    const { line, quantity } = config;
-    const { cartTotal } = this.refs;
-
-    const cartItemsComponents = document.querySelectorAll('cart-items-component');
-    const sectionsToUpdate = new Set([this.sectionId]);
-    cartItemsComponents.forEach(item => {
-      if (item instanceof HTMLElement && item.dataset.sectionId) {
-        sectionsToUpdate.add(item.dataset.sectionId);
-      }
+    let rejected = false;
+    let completeQuantityUpdate = () => {};
+    /** @type {Promise<boolean>} */
+    const quantityUpdate = new Promise(resolve => {
+      completeQuantityUpdate = () => resolve(rejected);
     });
+    CartItemsComponent.#pendingQuantityUpdates.add(quantityUpdate);
 
-    const body = JSON.stringify({
-      line: line,
-      quantity: quantity,
-      sections: Array.from(sectionsToUpdate).join(','),
-      sections_url: window.location.pathname,
-    });
+    const finishQuantityUpdate = () => {
+      CartItemsComponent.#pendingQuantityUpdates.delete(quantityUpdate);
+      completeQuantityUpdate();
+    };
 
-    cartTotal?.shimmer();
+    try {
+      this.#disableCartItems();
 
-    const deferredUpdatePromise = CartLinesUpdateEvent.createPromise();
-    const lineId = this.refs.cartItemRows[line - 1]?.dataset.key ?? '';
-    this.dispatchEvent(
-      new CartLinesUpdateEvent({
-        action: config.action === 'change' && quantity > 0 ? 'update' : 'remove',
-        context: 'cart',
-        lines: [{ id: lineId, quantity }],
-        promise: deferredUpdatePromise.promise,
-      })
-    );
+      const { line, quantity } = config;
+      const { cartTotal } = this.refs;
 
-    fetch(`${Theme.routes.cart_change_url}`, fetchConfig('json', { body }))
-      .then(response => {
-        return response.text();
-      })
-      .then(responseText => {
-        const parsedResponseText = JSON.parse(responseText);
-
-        resetShimmer(this);
-
-        if (parsedResponseText.errors) {
-          this.#handleCartError(line, parsedResponseText);
-          deferredUpdatePromise.reject(new Error(parsedResponseText.errors));
-          return;
+      const cartItemsComponents = document.querySelectorAll('cart-items-component');
+      const sectionsToUpdate = new Set([this.sectionId]);
+      for (const item of cartItemsComponents) {
+        if (item instanceof HTMLElement && item.dataset.sectionId) {
+          sectionsToUpdate.add(item.dataset.sectionId);
         }
+      }
 
-        const newSectionHTML = new DOMParser().parseFromString(
-          parsedResponseText.sections[this.sectionId],
-          'text/html'
-        );
-
-        // Grab the new cart item count from a hidden element
-        const newCartHiddenItemCount =
-          newSectionHTML.querySelector('[ref="cartItemCount"]')?.textContent;
-        const newCartItemCount = newCartHiddenItemCount ? parseInt(newCartHiddenItemCount, 10) : 0;
-
-        // Update data-cart-quantity for all matching variants
-        this.#updateQuantitySelectors(parsedResponseText);
-
-        deferredUpdatePromise.resolve({
-          cart: CartLinesUpdateEvent.createCartFromAjaxResponse(parsedResponseText),
-          detail: {
-            sections: parsedResponseText.sections,
-            items: parsedResponseText.items,
-            itemCount: newCartItemCount,
-            source: 'cart-items-component',
-            didError: false,
-          },
-        });
-
-        morphSection(this.sectionId, parsedResponseText.sections[this.sectionId], {
-          mode: this.isDrawer ? 'hydration' : 'full',
-        });
-
-        this.#updateCartQuantitySelectorButtonStates();
-      })
-      .catch(error => {
-        console.error(error);
-        deferredUpdatePromise.reject(error);
-
-        this.dispatchEvent(
-          new CartErrorEvent({
-            error: error?.message || 'Failed to update cart',
-            code: 'SERVICE_UNAVAILABLE',
-          })
-        );
-      })
-      .finally(() => {
-        this.#enableCartItems();
-        cartPerformance.measureFromMarker(cartPerformaceUpdateMarker);
+      const body = JSON.stringify({
+        line: line,
+        quantity: quantity,
+        sections: Array.from(sectionsToUpdate).join(','),
+        sections_url: window.location.pathname,
       });
+
+      cartTotal?.shimmer();
+
+      const deferredUpdatePromise = CartLinesUpdateEvent.createPromise();
+      const lineId = this.refs.cartItemRows[line - 1]?.dataset.key ?? '';
+      this.dispatchEvent(
+        new CartLinesUpdateEvent({
+          action: config.action === 'change' && quantity > 0 ? 'update' : 'remove',
+          context: 'cart',
+          lines: [{ id: lineId, quantity }],
+          promise: deferredUpdatePromise.promise,
+        })
+      );
+
+      fetch(`${Theme.routes.cart_change_url}`, fetchConfig('json', { body }))
+        .then(response => {
+          return response.text();
+        })
+        .then(async responseText => {
+          const parsedResponseText = JSON.parse(responseText);
+
+          resetShimmer(this);
+
+          if (parsedResponseText.errors) {
+            // Set before painting the error. A throw in the error UI must still keep Check out on the cart.
+            rejected = true;
+            this.#handleCartError(line, parsedResponseText);
+            deferredUpdatePromise.reject(new Error(parsedResponseText.errors));
+            return;
+          }
+
+          const newSectionHTML = new DOMParser().parseFromString(
+            parsedResponseText.sections[this.sectionId],
+            'text/html'
+          );
+
+          // Grab the new cart item count from a hidden element
+          const newCartHiddenItemCount =
+            newSectionHTML.querySelector('[ref="cartItemCount"]')?.textContent;
+          const newCartItemCount = newCartHiddenItemCount
+            ? parseInt(newCartHiddenItemCount, 10)
+            : 0;
+
+          // Update data-cart-quantity for all matching variants
+          this.#updateQuantitySelectors(parsedResponseText);
+
+          deferredUpdatePromise.resolve({
+            cart: CartLinesUpdateEvent.createCartFromAjaxResponse(parsedResponseText),
+            detail: {
+              sections: parsedResponseText.sections,
+              items: parsedResponseText.items,
+              itemCount: newCartItemCount,
+              source: 'cart-items-component',
+              didError: false,
+            },
+          });
+
+          try {
+            await morphSection(this.sectionId, parsedResponseText.sections[this.sectionId], {
+              mode: this.isDrawer ? 'hydration' : 'full',
+            });
+            this.#updateCartQuantitySelectorButtonStates();
+          } catch (error) {
+            console.error(error);
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          deferredUpdatePromise.reject(error);
+
+          this.dispatchEvent(
+            new CartErrorEvent({
+              error: error?.message || 'Failed to update cart',
+              code: 'SERVICE_UNAVAILABLE',
+            })
+          );
+        })
+        .finally(() => {
+          try {
+            this.#enableCartItems();
+            cartPerformance.measureFromMarker(cartPerformaceUpdateMarker);
+          } finally {
+            finishQuantityUpdate();
+          }
+        });
+    } catch (error) {
+      console.error(error);
+      this.#enableCartItems();
+      finishQuantityUpdate();
+    }
   }
+
+  /**
+   * Check out waits for a pending quantity save. A quantity edit saves through Ajax after a short wait. A form post
+   * at the same time makes iOS Safari cancel the save, and the store answers the post with no page and no message.
+   * This flushes the wait, cancels the post, and awaits the save. A rejected quantity shows its error on the line
+   * and the buyer stays on the cart. Any other result resumes the post. A failed save keeps the typed quantity in
+   * its field, so the store checks it on the post.
+   * The wait saves only the latest edit. With unsaved edits on two or more lines, the post goes at once, as before,
+   * so that it carries every typed quantity.
+   * While Check out waits, this cancels a new submit, so the wait resumes the post once. After a rejection, a keyboard
+   * submit gets the focus back in its field.
+   * @param {SubmitEvent} event - The submit event on the cart form.
+   */
+  holdCheckoutForQuantitySave = async event => {
+    const { submitter } = event;
+    if (!(event.target instanceof HTMLFormElement) || !(submitter instanceof HTMLElement)) return;
+    if (event.defaultPrevented) return;
+
+    // The wait in progress resumes the post. Cancel this submit, so that only one post goes out.
+    if (CartItemsComponent.#checkoutHolds) {
+      event.preventDefault();
+      return;
+    }
+
+    let edited = 0;
+    for (const input of event.target.querySelectorAll('input[name="updates[]"]')) {
+      if (input instanceof HTMLInputElement && input.value !== input.defaultValue) edited++;
+    }
+    if (edited > 1) return;
+
+    // A keyboard submit leaves the focus in an edited field. The blur queues its save.
+    const active = document.activeElement;
+    const blurred =
+      active instanceof HTMLInputElement &&
+      event.target.contains(active) &&
+      active.value !== active.defaultValue
+        ? active
+        : null;
+    blurred?.blur();
+    this.#debouncedOnChange.flush();
+
+    let pending = CartItemsComponent.pendingQuantityUpdates;
+    if (!pending.length) return;
+    event.preventDefault();
+
+    let rejected = false;
+    CartItemsComponent.#checkoutHolds++;
+    try {
+      while (pending.length) {
+        rejected = (await Promise.all(pending)).some(Boolean) || rejected;
+        this.#debouncedOnChange.flush();
+        pending = CartItemsComponent.pendingQuantityUpdates;
+      }
+    } finally {
+      CartItemsComponent.#checkoutHolds--;
+    }
+
+    if (rejected) {
+      // The blur moved the focus to the page. Put it back in the field, unless the buyer moved it during the wait.
+      if (document.activeElement === document.body) blurred?.focus();
+      return;
+    }
+
+    // The save re-rendered the section, so the submitter can be a detached element.
+    const button = submitter.isConnected ? submitter : document.getElementById(submitter.id);
+    if (button instanceof HTMLElement) button.click();
+  };
 
   /**
    * Handles the cart error.
