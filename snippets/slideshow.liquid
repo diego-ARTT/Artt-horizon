@@ -85,7 +85,7 @@
   {% endif %}
   style="--slideshow-timeline: {{ timeline_scope }};{{ style }}"
   {% if autoplay == true %}
-    autoplay="{{ autoplay_speed }}" aria-live="polite"
+    autoplay="{{ autoplay_speed }}" aria-live="off"
   {% endif %}
   initial-slide="{{ initial_slide | default: 0 }}"
   {% if auto_hide_controls %}

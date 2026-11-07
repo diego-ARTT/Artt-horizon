@@ -103,7 +103,7 @@
   {% capture controls %}
     {% render 'slideshow-controls',
       style: controls_style,
-      autoplay: false,
+      autoplay: autoplay_enabled,
       item_count: block_count,
       show_arrows: show_arrows,
       arrows_on_media: false,
@@ -200,7 +200,7 @@ role="group" aria-roledescription="slide"{% if slide_label != blank %} aria-labe
 
     {% if block_count > 0 %}
       {% capture carousel_attributes -%}
-role="region" aria-roledescription="carousel" aria-live="{% if autoplay_enabled %}off{% else %}polite{% endif %}"{% if heading != blank %} aria-labelledby="{{ heading_id }}"{% else %} aria-label="{{ aria_label | escape }}"{% endif %} onmouseenter="this.suspend && this.suspend()" onmouseleave="this.resume && this.resume()"
+role="region" aria-roledescription="carousel"{% unless autoplay_enabled %} aria-live="polite"{% endunless %}{% if heading != blank %} aria-labelledby="{{ heading_id }}"{% else %} aria-label="{{ aria_label | escape }}"{% endif %} onmouseenter="this.suspend && this.suspend()" onmouseleave="this.resume && this.resume()"
       {%- endcapture %}
       {% assign carousel_attributes = carousel_attributes | strip %}
 
@@ -337,12 +337,6 @@ role="region" aria-roledescription="carousel" aria-live="{% if autoplay_enabled 
     color: color-mix(in srgb, var(--color-foreground, currentColor) 80%, transparent);
   }
 
-  /* Hide play/pause buttons */
-  .media-quote-carousel__slider slideshow-controls .icon-play,
-  .media-quote-carousel__slider slideshow-controls .icon-pause {
-    display: none;
-  }
-
   /* Ensure dots are visible - override mix-blend-mode and add background */
   .media-quote-carousel__slider slideshow-controls:has(.slideshow-controls__dots) {
     mix-blend-mode: normal;
@@ -353,18 +347,38 @@ role="region" aria-roledescription="carousel" aria-live="{% if autoplay_enabled 
     justify-content: center;
   }
 
+  /* Play/pause sits with the dots as one centred control group. */
+  .media-quote-carousel .media-quote-carousel__slider slideshow-controls[pagination-position] {
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .media-quote-carousel__slider .slideshow-control:is(.icon-pause, .icon-play) {
+    min-width: 1.5rem;
+    min-height: 1.5rem;
+    justify-content: center;
+  }
+
+  /* 24px hit area per dot (WCAG 2.5.8); the drawn dot keeps its size via ::after. */
+  .media-quote-carousel__slider .slideshow-controls__dots {
+    gap: 0.25rem;
+  }
+
   .media-quote-carousel__slider .slideshow-controls__dots button {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0;
     --color: color-mix(in srgb, var(--color-foreground, currentColor) 50%, transparent);
     --color-active: var(--color-foreground, currentColor);
     --color-hover: color-mix(in srgb, var(--color-foreground, currentColor) 70%, transparent);
   }
 
   /* Ensure active dot is visible */
-  .media-quote-carousel__slider .slideshow-controls__dots button[aria-selected='true'] {
+  .media-quote-carousel__slider .slideshow-controls__dots button[aria-current='true'] {
     --color: var(--color-foreground, currentColor);
   }
 
-  .media-quote-carousel__slider .slideshow-controls__dots button[aria-selected='true']::after {
+  .media-quote-carousel__slider .slideshow-controls__dots button[aria-current='true']::after {
     background-color: var(--color-foreground, currentColor) !important;
     width: 0.7rem !important;
     height: 0.7rem !important;

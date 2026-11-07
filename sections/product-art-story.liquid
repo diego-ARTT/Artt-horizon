@@ -49,6 +49,11 @@
   >
     <div class="art-story__inner">
       {%- if detail != blank -%}
+        {%- liquid
+          # Build the alt first: filters inside a named image_tag argument apply to the
+          # whole tag's output, which used to leak the product title onto the page.
+          assign detail_alt = section.settings.detail_alt_prefix | append: ' ' | append: product_resource.title | strip
+        -%}
         <figure class="art-story__media">
           {{
             detail
@@ -58,7 +63,7 @@
               sizes: '(min-width: 990px) 55vw, 100vw',
               widths: '600,900,1200,1600,2000',
               loading: 'lazy',
-              alt: section.settings.detail_alt_prefix | append: ' ' | append: product_resource.title
+              alt: detail_alt
           }}
         </figure>
       {%- endif -%}
