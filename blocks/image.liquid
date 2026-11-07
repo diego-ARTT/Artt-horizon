@@ -40,6 +40,7 @@
 
 {% capture image %}
   {%- if block_settings.image -%}
+    {%- assign image_alt = block_settings.alt | default: block_settings.image.alt | default: '' -%}
     {{
       block_settings.image
       | image_url: width: 3840
@@ -47,6 +48,7 @@
         width: block_settings.image.width,
         widths: widths,
         height: block_settings.image.height,
+        alt: image_alt,
         class: 'image-block__image border-style',
         style: image_border_style,
         sizes: sizes
@@ -119,6 +121,12 @@
       "type": "image_picker",
       "id": "image",
       "label": "t:settings.image"
+    },
+    {
+      "type": "text",
+      "id": "alt",
+      "label": "Image description",
+      "info": "Read aloud by screen readers. For a logo, use the publication's name. Leave blank to use the file's alt text."
     },
     {
       "type": "url",

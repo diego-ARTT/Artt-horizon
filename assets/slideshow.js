@@ -156,6 +156,8 @@ export class Slideshow extends Component {
     if (slideCount > 1) {
       this.removeEventListener('mouseenter', this.suspend);
       this.removeEventListener('mouseleave', this.resume);
+      this.removeEventListener('focusin', this.suspend);
+      this.removeEventListener('focusout', this.#handleFocusOut);
       this.removeEventListener('pointerenter', this.#handlePointerEnter);
       document.removeEventListener('visibilitychange', this.#handleVisibilityChange);
     }
@@ -368,11 +370,36 @@ export class Slideshow extends Component {
   }
 
   set paused(value) {
+    // The play/pause pair swaps visibility; keep keyboard focus on whichever is now shown.
+    const { activeElement } = document;
+    const hadToggleFocus =
+      activeElement instanceof HTMLElement &&
+      this.contains(activeElement) &&
+      activeElement.matches('.icon-pause, .icon-play');
+
     if (value) {
       this.setAttribute('paused', '');
     } else {
       this.removeAttribute('paused');
     }
+
+    if (hadToggleFocus) {
+      const shown = this.querySelector(
+        value ? '.slideshow-control.icon-play' : '.slideshow-control.icon-pause'
+      );
+      if (shown instanceof HTMLElement && shown !== activeElement) shown.focus();
+    }
+
+    this.#syncLiveRegion();
+  }
+
+  /**
+   * A rotating carousel stays quiet; once paused, slide changes are the visitor's
+   * own and get announced (WAI-ARIA carousel pattern).
+   */
+  #syncLiveRegion() {
+    if (!this.autoplay) return;
+    this.setAttribute('aria-live', this.paused ? 'polite' : 'off');
   }
 
   /**
@@ -388,6 +415,8 @@ export class Slideshow extends Component {
    */
   resume() {
     if (!this.autoplay || this.paused) return;
+    // Keyboard focus inside holds rotation, whatever else asks to resume (scroll end, mouseleave).
+    if (this.matches(':focus-within')) return;
 
     this.pause();
     this.play();
@@ -428,7 +457,8 @@ export class Slideshow extends Component {
     if (current) current.textContent = `${value + 1}`;
 
     for (const controls of [thumbnails, dots]) {
-      controls?.forEach((el, i) => el.setAttribute('aria-selected', `${i === value}`));
+      // aria-current, not aria-selected: these are buttons, and aria-selected isn't valid on one.
+      controls?.forEach((el, i) => el.setAttribute('aria-current', `${i === value}`));
     }
 
     if (previous) previous.disabled = Boolean(!this.infinite && value === 0);
@@ -559,12 +589,19 @@ export class Slideshow extends Component {
 
     this.addEventListener('mouseenter', this.suspend);
     this.addEventListener('mouseleave', this.resume);
+    this.addEventListener('focusin', this.suspend);
+    this.addEventListener('focusout', this.#handleFocusOut);
     this.addEventListener('pointerenter', this.#handlePointerEnter);
     document.addEventListener('visibilitychange', this.#handleVisibilityChange);
 
     this.#updateControlsVisibility();
 
     this.disabled = this.isNested || this.disabled;
+
+    // Auto-rotation is motion the visitor didn't ask for: under reduced motion,
+    // start paused and leave the play button to opt in (WCAG 2.2.2).
+    if (this.autoplay && prefersReducedMotion()) this.paused = true;
+    else if (this.autoplay) this.#syncLiveRegion();
 
     this.resume();
 
@@ -843,6 +880,17 @@ export class Slideshow extends Component {
    * Pause the slideshow when the page is hidden.
    */
   #handleVisibilityChange = () => (document.hidden ? this.suspend() : this.resume());
+
+  /**
+   * Keyboard focus inside the slideshow holds rotation; leaving it resumes.
+   * @param {FocusEvent} event
+   */
+  #handleFocusOut = event => {
+    if (event.relatedTarget instanceof Node && this.contains(event.relatedTarget)) return;
+    if (this.matches(':hover')) return;
+    // Wait for focus to land, so :focus-within reflects where it went.
+    setTimeout(() => this.resume());
+  };
 
   #updateControlsVisibility() {
     if (!this.hasAttribute('auto-hide-controls')) return;
