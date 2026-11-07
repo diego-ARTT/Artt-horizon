@@ -196,7 +196,12 @@ export class Slideshow extends Component {
     for (const slide of this.refs.slides) {
       if (slide.hasAttribute('reveal')) {
         slide.removeAttribute('reveal');
-        slide.setAttribute('aria-hidden', 'true');
+        // A revealed slide keeps its aria-hidden state only while it is the current
+        // slide and is no longer hidden (a variant image the product card just chose).
+        // Every other revealed slide leaves the slideshow; selecting it exposes it again below.
+        if (slide.hasAttribute('hidden') || slide !== currentSlide) {
+          slide.setAttribute('aria-hidden', 'true');
+        }
       }
     }
 
