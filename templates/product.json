@@ -504,6 +504,7 @@
                               "name": "t:names.image",
                               "settings": {
                                 "image": "shopify://shop_images/g-bw.png",
+                                "alt": "GQ",
                                 "link": "",
                                 "image_ratio": "adapt",
                                 "width": "fill",
@@ -528,6 +529,7 @@
                               "name": "t:names.image",
                               "settings": {
                                 "image": "shopify://shop_images/modern_luxury.png",
+                                "alt": "Modern Luxury Silicon Valley",
                                 "link": "",
                                 "image_ratio": "adapt",
                                 "width": "fill",
@@ -552,6 +554,7 @@
                               "name": "t:names.image",
                               "settings": {
                                 "image": "shopify://shop_images/usa-today-bw.png",
+                                "alt": "USA Today",
                                 "link": "",
                                 "image_ratio": "adapt",
                                 "width": "fill",
