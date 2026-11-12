@@ -42,9 +42,25 @@
   data-testid="group-block"
 >
   {%- if settings.link != blank -%}
+    {%- liquid
+      # The overlay link is a pointer-sized hit area with no text of its own.
+      # When the group already holds a real link, keep the overlay out of the
+      # tab order and the accessibility tree so it isn't an unnamed duplicate.
+      # Otherwise name it from the group's visible text.
+      assign overlay_is_redundant = false
+      if children contains 'href='
+        assign overlay_is_redundant = true
+      endif
+      assign overlay_label = children | strip_html | strip_newlines | strip | truncatewords: 16, ''
+    -%}
     <a
       href="{{ settings.link }}"
       class="group-block__link"
+      {% if overlay_is_redundant %}
+        tabindex="-1" aria-hidden="true"
+      {% elsif overlay_label != blank %}
+        aria-label="{{ overlay_label | escape }}"
+      {% endif %}
       {% if settings.open_in_new_tab %}
         target="_blank" rel="noopener"
       {% endif %}
@@ -91,6 +107,12 @@
     :is(a, button, input, textarea, select) {
       pointer-events: auto;
     }
+  }
+
+  /* With the overlay hidden from keyboards, the text link is the keyboard target: keep it 24px tall (WCAG 2.5.8). */
+  .group-block__link ~ .group-block-content :is(a.button, a.button-secondary, a.button-unstyled) {
+    min-block-size: 1.5rem;
+    align-items: center;
   }
 
   /* Needs the .group-block__link ~ to be specific enough to take effect. */

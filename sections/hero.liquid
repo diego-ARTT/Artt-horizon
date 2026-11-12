@@ -9,6 +9,13 @@
   assign has_only_video = false
   assign has_only_video_mobile = false
 
+  # Alt text: the section's own description wins over the file's alt, and the
+  # attribute is always written (an image with no alt at all gets its file name read out).
+  assign hero_alt_1 = section.settings.image_1_alt | default: section.settings.image_1.alt | default: ''
+  assign hero_alt_1_mobile = section.settings.image_1_alt | default: section.settings.image_1_mobile.alt | default: ''
+  assign hero_alt_2 = section.settings.image_2_alt | default: section.settings.image_2.alt | default: ''
+  assign hero_alt_2_mobile = section.settings.image_2_alt | default: section.settings.image_2_mobile.alt | default: ''
+
   # Desktop media checks
   # For each media slot, check if the media is not blank and the media type matches the slot
   # Need to check both (1) media picker is not blank AND (2) section.setting.media_type because user can toggle between different media types to display, but choosing "Image" doesn't clear a saved "Video" in the theme editor.
@@ -137,7 +144,7 @@
           width: section.settings.image_1.width,
           widths: widths,
           height: section.settings.image_1.height,
-          alt: section.settings.image_1.alt,
+          alt: hero_alt_1,
           class: 'hero__media',
           sizes: sizes,
           fetchpriority: fetch_priority,
@@ -153,7 +160,7 @@
           width: section.settings.image_1.width,
           widths: widths,
           height: section.settings.image_1.height,
-          alt: section.settings.image_1.alt,
+          alt: hero_alt_1,
           class: 'hero__media',
           sizes: sizes,
           fetchpriority: fetch_priority,
@@ -173,6 +180,7 @@
           controls: false,
           muted: true,
           class: 'hero__media',
+          aria-hidden: 'true',
           data-testid: 'hero-desktop-video-1'
       }}
     </div>
@@ -189,7 +197,7 @@
             width: section.settings.image_1_mobile.width,
             widths: mobile_widths,
             height: section.settings.image_1_mobile.height,
-            alt: section.settings.image_1_mobile.alt,
+            alt: hero_alt_1_mobile,
             class: 'hero__media',
             sizes: sizes_mobile,
             fetchpriority: fetch_priority,
@@ -209,7 +217,8 @@
             controls: false,
             muted: true,
             class: 'hero__media',
-            data-testid: 'hero-mobile-video-1'
+            aria-hidden: 'true',
+          data-testid: 'hero-mobile-video-1'
         }}
       </div>
     {%- endif -%}
@@ -241,7 +250,7 @@
           width: section.settings.image_2.width,
           widths: widths,
           height: section.settings.image_2.height,
-          alt: section.settings.image_2.alt,
+          alt: hero_alt_2,
           class: 'hero__media',
           sizes: sizes,
           fetchpriority: fetch_priority,
@@ -257,7 +266,7 @@
           width: section.settings.image_2.width,
           widths: widths,
           height: section.settings.image_2.height,
-          alt: section.settings.image_2.alt,
+          alt: hero_alt_2,
           class: 'hero__media',
           sizes: sizes,
           fetchpriority: fetch_priority,
@@ -277,6 +286,7 @@
           controls: false,
           muted: true,
           class: 'hero__media',
+          aria-hidden: 'true',
           data-testid: 'hero-desktop-video-2'
       }}
     </div>
@@ -293,7 +303,7 @@
             width: section.settings.image_2_mobile.width,
             widths: mobile_widths,
             height: section.settings.image_2_mobile.height,
-            alt: section.settings.image_2_mobile.alt,
+            alt: hero_alt_2_mobile,
             class: 'hero__media',
             sizes: sizes_mobile,
             fetchpriority: fetch_priority,
@@ -313,7 +323,8 @@
             controls: false,
             muted: true,
             class: 'hero__media',
-            data-testid: 'hero-mobile-video-2'
+            aria-hidden: 'true',
+          data-testid: 'hero-mobile-video-2'
         }}
       </div>
     {%- endif -%}
@@ -540,8 +551,78 @@
     >
       {% content_for 'blocks' %}
     </div>
+    {%- if media_1 == 'video' or media_2 == 'video' or media_1_mobile == 'video' or media_2_mobile == 'video' -%}
+      {%- comment -%}
+        Looping background video needs a way to stop it (WCAG 2.2.2). Under reduced
+        motion it starts paused; the script at the bottom of this file drives it.
+      {%- endcomment -%}
+      <button
+        type="button"
+        class="hero__video-toggle button-unstyled"
+        data-hero-video-toggle
+        aria-pressed="false"
+        aria-label="{{ 'accessibility.pause_video' | t }}"
+        data-label-pause="{{ 'accessibility.pause_video' | t }}"
+        data-label-play="{{ 'accessibility.play_video' | t }}"
+      >
+        <span class="hero__video-toggle-icon hero__video-toggle-icon--pause">
+          {{- 'icon-pause.svg' | inline_asset_content -}}
+        </span>
+        <span class="hero__video-toggle-icon hero__video-toggle-icon--play">
+          {{- 'icon-play.svg' | inline_asset_content -}}
+        </span>
+      </button>
+    {%- endif -%}
   </div>
 </div>
+
+{% javascript %}
+  (function () {
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function videosFor(button) {
+      var hero = button.closest('.hero');
+      return hero ? hero.querySelectorAll('video') : [];
+    }
+
+    function setPaused(button, paused) {
+      button.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      button.setAttribute('aria-label', paused ? button.dataset.labelPlay : button.dataset.labelPause);
+      videosFor(button).forEach(function (video) {
+        if (paused) {
+          video.pause();
+        } else {
+          var playing = video.play();
+          if (playing && playing.catch) playing.catch(function () {});
+        }
+      });
+    }
+
+    function init(root) {
+      root.querySelectorAll('[data-hero-video-toggle]').forEach(function (button) {
+        if (button.dataset.bound === 'true') return;
+        button.dataset.bound = 'true';
+        if (reduced.matches) {
+          videosFor(button).forEach(function (video) {
+            video.removeAttribute('autoplay');
+          });
+          setPaused(button, true);
+        }
+      });
+    }
+
+    document.addEventListener('click', function (event) {
+      var button = event.target.closest && event.target.closest('[data-hero-video-toggle]');
+      if (!button) return;
+      setPaused(button, button.getAttribute('aria-pressed') !== 'true');
+    });
+
+    init(document);
+    document.addEventListener('shopify:section:load', function (event) {
+      init(event.target);
+    });
+  })();
+{% endjavascript %}
 
 {% stylesheet %}
   .hero-wrapper {
@@ -575,6 +656,58 @@
 
     @media screen and (min-width: 750px) {
       align-items: var(--vertical-alignment);
+    }
+  }
+
+  .hero__video-toggle {
+    position: absolute;
+    /* Top corner: the bottom of the hero holds the CTA and the chat launcher on mobile. */
+    inset-block-start: var(--padding-lg, 1rem);
+    inset-inline-end: var(--padding-lg, 1rem);
+    z-index: var(--layer-raised);
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    color: #fff;
+    background-color: rgb(0 0 0 / 0.45);
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgb(0 0 0 / 0.7);
+    }
+
+    &:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+      box-shadow: 0 0 0 4px rgb(0 0 0 / 0.6);
+    }
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      --icon-stroke-width: 2px;
+    }
+  }
+
+  /* A transparent header pulls the first section up beneath it; clear the header. */
+  body:has(.header[transparent]) .content-for-layout > .shopify-section:first-child .hero__video-toggle {
+    inset-block-start: calc(var(--header-height, 0px) + var(--header-group-height, 0px) + var(--padding-lg, 1rem));
+  }
+
+  .hero__video-toggle-icon {
+    display: contents;
+  }
+
+  .hero__video-toggle[aria-pressed='false'] .hero__video-toggle-icon--play,
+  .hero__video-toggle[aria-pressed='true'] .hero__video-toggle-icon--pause {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__video-toggle {
+      transition: none;
     }
   }
 
@@ -812,6 +945,13 @@
       "visible_if": "{{ section.settings.media_type_1 == 'image' }}"
     },
     {
+      "type": "text",
+      "id": "image_1_alt",
+      "label": "Image description",
+      "info": "Read aloud by screen readers. Describe the garment and the artwork on it. Leave blank to use the file's alt text.",
+      "visible_if": "{{ section.settings.media_type_1 == 'image' or section.settings.media_type_1_mobile == 'image' }}"
+    },
+    {
       "type": "video",
       "id": "video_1",
       "label": "t:settings.video",
@@ -842,6 +982,13 @@
       "id": "image_2",
       "label": "t:settings.image",
       "visible_if": "{{ section.settings.media_type_2 == 'image' }}"
+    },
+    {
+      "type": "text",
+      "id": "image_2_alt",
+      "label": "Image description",
+      "info": "Read aloud by screen readers. Describe the garment and the artwork on it. Leave blank to use the file's alt text.",
+      "visible_if": "{{ section.settings.media_type_2 == 'image' or section.settings.media_type_2_mobile == 'image' }}"
     },
     {
       "type": "video",
