@@ -324,6 +324,11 @@
     "blog_post_description": "Un extrait du contenu de votre article de blog"
   },
   "products": {
+    "size_guide": {
+      "figure_title": "Where each measurement is taken, with the garment laid flat",
+      "figure_caption": "Measured flat. Chest (width) is armpit to armpit, so double it for all the way round. Body (length) is the top of the shoulder to the hem.",
+      "figure_hint": "Tap a size to see it on the garment."
+    },
     "product": {
       "add_to_cart": "Ajouter au panier",
       "added_to_cart": "Ajouté au panier",
