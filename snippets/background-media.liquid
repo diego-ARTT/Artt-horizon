@@ -64,7 +64,8 @@
         {%- endfor -%}
       </video>
     </video-background-component>
-  {%- else -%}
+  {%- elsif request.design_mode -%}
+    {%- comment -%} Placeholder only in the theme editor; on the storefront an empty slot falls back to the section's background colour. {%- endcomment -%}
     <div class="{{ video_classes }}">
       {%- assign placeholder_name = placeholder | default: 'hero-apparel-2' -%}
       {%- if placeholder_name == blank -%}
@@ -123,7 +124,7 @@
         | image_url: width: 3840
         | image_tag: sizes: sizes, widths: widths, loading: loading, fetchpriority: fetch_priority
       }}
-    {%- else -%}
+    {%- elsif request.design_mode -%}
       {%- assign placeholder_name = placeholder | default: 'hero-apparel-2' -%}
       {%- if placeholder_name == blank -%}
         {%- assign placeholder_name = 'hero-apparel-2' -%}
