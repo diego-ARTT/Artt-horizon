@@ -3,6 +3,7 @@
   python3 -I scripts/bfcm-2026/bfcm.py plan                       # read-only: snapshot + plan + summary
   python3 -I scripts/bfcm-2026/bfcm.py apply <plan-file>          # backup, then write sale prices
   python3 -I scripts/bfcm-2026/bfcm.py verify <plan-file>         # live prices == plan?
+  python3 -I scripts/bfcm-2026/bfcm.py restore-collection <handle>  # undo the sale for one collection mid-sale
   python3 -I scripts/bfcm-2026/bfcm.py rollback [--force]               # restore from every applied-*.json
 
 Files (snapshots, plans, backups, logs) go to ~/Development/arttitude-store-work/bfcm-2026/.
@@ -23,6 +24,8 @@ from pricing import sale_price  # noqa: E402
 
 STORE = "arttitudes.myshopify.com"
 OUT = os.path.expanduser("~/Development/arttitude-store-work/bfcm-2026")
+# Collections that must never be discounted (owner, 2026-11-17).
+EXCLUDED_COLLECTIONS = ["alter-ego"]
 
 Q_SHOP = "query { shop { ianaTimezone } priceLists(first: 20) { nodes { name currency fixedPricesCount } } }"
 Q_PRODUCTS = """query Products($after: String, $q: String) {
@@ -31,6 +34,7 @@ Q_PRODUCTS = """query Products($after: String, $q: String) {
     nodes { id handle title variantsCount { count } variants(first: 100) { nodes { id price compareAtPrice } } }
   }
 }"""
+Q_COLLECTION = "query C($h: String!) { collectionByHandle(handle: $h) { productsCount { count } products(first: 250) { nodes { id handle } } } }"
 M_BULK = """mutation SetPrices($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
   productVariantsBulkUpdate(productId: $productId, variants: $variants) {
     productVariants { id price compareAtPrice }
@@ -70,6 +74,10 @@ def build_plan(snapshot):
         if changes:
             plan.append({"productId": p["id"], "handle": p["handle"], "variants": changes})
     return plan
+
+
+def without_products(plan, product_ids):
+    return [e for e in plan if e["productId"] not in product_ids]
 
 
 def summarize(plan, snapshot):
@@ -182,6 +190,23 @@ def fetch(active_only=True):
             "timezone": shop["shop"]["ianaTimezone"], "products": products}
 
 
+def collection_product_ids(handle):
+    c = run(Q_COLLECTION, {"h": handle})["collectionByHandle"]
+    if c is None:
+        sys.exit(f"collection '{handle}' not found")
+    nodes = c["products"]["nodes"]
+    if len(nodes) != c["productsCount"]["count"]:
+        sys.exit(f"collection '{handle}': fetched {len(nodes)} of {c['productsCount']['count']} products")
+    return {n["id"] for n in nodes}
+
+
+def excluded_product_ids():
+    ids = set()
+    for h in EXCLUDED_COLLECTIONS:
+        ids |= collection_product_ids(h)
+    return ids
+
+
 def write(entries):
     log, errors = [], 0
     for i, e in enumerate(entries, 1):
@@ -230,7 +255,7 @@ def _mismatches(expected, live):
 def cmd_plan():
     snap = fetch()
     print("snapshot:", _save(snap, "snapshot"))
-    plan = build_plan(snap)
+    plan = without_products(build_plan(snap), excluded_product_ids())
     print("plan:", _save(plan, "plan"))
     print(f"timezone: {snap['timezone']}")
     print(summarize(plan, snap))
@@ -239,7 +264,7 @@ def cmd_plan():
 def cmd_apply(plan_file):
     approved = {pv["id"]: _vals(pv) for e in _load(plan_file) for pv in e["variants"]}
     snap = fetch()
-    plan = build_plan(snap)  # raises on truncated variants before anything is saved or written
+    plan = without_products(build_plan(snap), excluded_product_ids())  # build_plan raises on truncated variants
     drift = [pv["id"] for e in plan for pv in e["variants"]
              if pv["id"] not in approved or not (_same(pv["price"], approved[pv["id"]][0]) and _same(pv["compareAtPrice"], approved[pv["id"]][1]))]
     if drift:
@@ -280,6 +305,22 @@ def cmd_rollback(force):
     sys.exit(1 if errors or bad else 0)
 
 
+def cmd_restore_collection(handle):
+    """Put one collection's products back to their pre-sale prices mid-sale."""
+    ids = collection_product_ids(handle)
+    applied_files = sorted(glob.glob(os.path.join(OUT, "applied-*.json")))
+    targets = {vid: t for vid, t in rollback_targets([_load(f) for f in applied_files]).items() if t["productId"] in ids}
+    writes, report = build_rollback(targets, fetch(active_only=False))
+    print("\n".join(report) or "no hand edits or missing variants")
+    print(f"restoring {sum(len(e['variants']) for e in writes)} variants across {len(writes)} products in '{handle}'")
+    errors = write(writes) if writes else 0
+    skipped = {m for line in report for m in re.findall(r"gid://shopify/ProductVariant/\d+", line)}
+    expected = {vid: t["before"] for vid, t in targets.items() if vid not in skipped}
+    bad = _mismatches(expected, fetch(active_only=False))
+    print(f"restore verified {len(expected)}/{len(expected)}" if not bad else f"RESTORE MISMATCH {len(bad)}\n" + "\n".join(bad[:30]))
+    sys.exit(1 if errors or bad else 0)
+
+
 if __name__ == "__main__":
     args = sys.argv[1:] or ["plan"]
     if args[0] == "plan":
@@ -288,6 +329,8 @@ if __name__ == "__main__":
         cmd_apply(args[1])
     elif args[0] == "verify":
         cmd_verify(args[1])
+    elif args[0] == "restore-collection":
+        cmd_restore_collection(args[1])
     elif args[0] == "rollback":
         cmd_rollback("--force" in args)
     else:
