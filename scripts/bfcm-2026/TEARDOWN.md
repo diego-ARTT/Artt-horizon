@@ -1,0 +1,35 @@
+# Ending the BFCM 2026 sale
+
+**When:** Dec 1 2026, 00:00 America/Los_Angeles (end of Cyber Monday).
+Run steps 1 and 2 back to back; the storefront and prices should change within the same few minutes.
+
+## 1. Take down the banner, marquee and black sale badge
+
+Merge the draft PR **"End BFCM 2026"** (branch `bfcm-2026-teardown`). It reverts the theme commit
+`feat(bfcm): BFCM homepage banner, marquee and black sale badge` and nothing else
+(`templates/index.json`, `sections/header-group.json`, `config/settings_data.json`).
+
+If that PR is missing or conflicts (e.g. someone edited the homepage in the customizer during the sale),
+create it fresh from main:
+
+```bash
+git switch -c bfcm-2026-teardown origin/main
+git revert <sha of the BFCM theme commit on main>   # find it: git log --oneline origin/main -- templates/index.json
+```
+
+## 2. Put prices back
+
+```bash
+python3 -I scripts/bfcm-2026/bfcm.py rollback ~/Development/arttitude-store-work/bfcm-2026/backup-BEFORE-SALE-<timestamp>.json
+```
+
+- It prints a report first:
+  - `HAND EDIT (skipped)` — someone changed that variant's price during the sale; it is left alone. Decide per line; re-run with `--force` to overwrite all of them with the pre-sale values.
+  - `NEW PRODUCT / NEW VARIANT (untouched)` — created during the sale; check its price by hand.
+- It ends with `restore verified n/n`. Anything else = look at the mismatch lines and re-run (re-running is safe).
+
+## 3. Check the live store (phone width first)
+
+- Homepage: no BFCM banner, no marquee, ICONS hero is first.
+- A product that was full price before the sale: no strikethrough, no sale badge.
+- A product that was already marked down before the sale: its old markdown is back (e.g. 101.25 with 135.00 struck through).
