@@ -3,7 +3,7 @@
   python3 -I scripts/bfcm-2026/bfcm.py plan                       # read-only: snapshot + plan + summary
   python3 -I scripts/bfcm-2026/bfcm.py apply <plan-file>          # backup, then write sale prices
   python3 -I scripts/bfcm-2026/bfcm.py verify <plan-file>         # live prices == plan?
-  python3 -I scripts/bfcm-2026/bfcm.py rollback <backup-file> [--force]
+  python3 -I scripts/bfcm-2026/bfcm.py rollback [--force]               # restore from every applied-*.json
 
 Files (snapshots, plans, backups, logs) go to ~/Development/arttitude-store-work/bfcm-2026/.
 """
@@ -11,6 +11,7 @@ import datetime
 import glob
 import json
 import os
+import re
 import statistics
 import subprocess
 import sys
@@ -24,8 +25,8 @@ STORE = "arttitudes.myshopify.com"
 OUT = os.path.expanduser("~/Development/arttitude-store-work/bfcm-2026")
 
 Q_SHOP = "query { shop { ianaTimezone } priceLists(first: 20) { nodes { name currency fixedPricesCount } } }"
-Q_PRODUCTS = """query Products($after: String) {
-  products(first: 50, after: $after, query: "status:active") {
+Q_PRODUCTS = """query Products($after: String, $q: String) {
+  products(first: 50, after: $after, query: $q) {
     pageInfo { hasNextPage endCursor }
     nodes { id handle title variantsCount { count } variants(first: 100) { nodes { id price compareAtPrice } } }
   }
@@ -96,34 +97,50 @@ def summarize(plan, snapshot):
     return "\n".join(lines)
 
 
-def build_rollback(backup, live, sale_plan, force=False):
-    before = {var["id"]: _vals(var) for p in backup["products"] for var in p["variants"]}
-    planned = {pv["id"]: _vals(pv) for e in sale_plan for pv in e["variants"]}
-    backup_products = {p["id"] for p in backup["products"]}
+def rollback_targets(applied):
+    """Merge the plans apply actually wrote (oldest first) into {variant_id: target}.
+
+    `before` is the first value we ever replaced (the true pre-sale value);
+    `sale` is the last value we wrote (what a hand edit is detected against).
+    """
+    targets = {}
+    for plan in applied:
+        for e in plan:
+            for pv in e["variants"]:
+                t = targets.setdefault(pv["id"], {"productId": e["productId"], "handle": e["handle"],
+                                                  "before": (pv["old_price"], pv["old_compareAtPrice"])})
+                t["sale"] = _vals(pv)
+    return targets
+
+
+def build_rollback(targets, live, force=False, known=None):
+    """Return (writes, report). `known` = every variant id seen in a pre-sale backup, to flag new variants."""
     writes, report = [], []
+    live_variants = {}
     for p in live["products"]:
-        if p["id"] not in backup_products:
-            report.append(f"NEW PRODUCT (untouched): {p['handle']}")
-            continue
         changes = []
         for var in p["variants"]:
             vid, cur = var["id"], _vals(var)
-            if vid not in before:
-                report.append(f"NEW VARIANT (untouched): {p['handle']} {vid}")
+            live_variants[vid] = p["handle"]
+            t = targets.get(vid)
+            if t is None:
+                if known is not None and vid not in known:
+                    report.append(f"NEW VARIANT (untouched): {p['handle']} {vid}")
                 continue
-            if vid not in planned:
-                continue
-            want = before[vid]
+            want, sale = t["before"], t["sale"]
             if _same(cur[0], want[0]) and _same(cur[1], want[1]):
                 continue  # already restored
-            if not (_same(cur[0], planned[vid][0]) and _same(cur[1], planned[vid][1])):
+            if not (_same(cur[0], sale[0]) and _same(cur[1], sale[1])):
                 report.append(f"HAND EDIT {'(forced)' if force else '(skipped)'}: {p['handle']} {vid} "
-                              f"live {cur} vs sale {planned[vid]} vs before {want}")
+                              f"live {cur} vs sale {sale} vs before {want}")
                 if not force:
                     continue
             changes.append({"id": vid, "price": want[0], "compareAtPrice": want[1]})
         if changes:
             writes.append({"productId": p["id"], "handle": p["handle"], "variants": changes})
+    for vid, t in targets.items():
+        if vid not in live_variants:
+            report.append(f"MISSING (deleted?): {t['handle']} {vid} — was {t['before']} before the sale")
     return writes, report
 
 
@@ -146,14 +163,15 @@ def run(query, variables=None, mutation=False):
     raise RuntimeError(last)
 
 
-def fetch():
+def fetch(active_only=True):
+    """active_only=False also returns draft/archived products (used by rollback)."""
     shop = run(Q_SHOP)
     for pl in shop["priceLists"]["nodes"]:
         if pl["fixedPricesCount"]:
             print(f"WARNING: price list '{pl['name']}' has {pl['fixedPricesCount']} fixed prices — those won't follow the sale")
     products, after = [], None
     while True:
-        page = run(Q_PRODUCTS, {"after": after})["products"]
+        page = run(Q_PRODUCTS, {"after": after, "q": "status:active" if active_only else None})["products"]
         for n in page["nodes"]:
             products.append({"id": n["id"], "handle": n["handle"], "title": n["title"],
                              "variantsCount": n["variantsCount"]["count"], "variants": n["variants"]["nodes"]})
@@ -221,13 +239,16 @@ def cmd_plan():
 def cmd_apply(plan_file):
     approved = {pv["id"]: _vals(pv) for e in _load(plan_file) for pv in e["variants"]}
     snap = fetch()
-    first = not glob.glob(os.path.join(OUT, "backup-BEFORE-SALE-*.json"))
-    print("backup:", _save(snap, "backup-BEFORE-SALE" if first else "backup"))
-    plan = build_plan(snap)
+    plan = build_plan(snap)  # raises on truncated variants before anything is saved or written
     drift = [pv["id"] for e in plan for pv in e["variants"]
              if pv["id"] not in approved or not (_same(pv["price"], approved[pv["id"]][0]) and _same(pv["compareAtPrice"], approved[pv["id"]][1]))]
     if drift:
         sys.exit(f"refusing: {len(drift)} variants differ from the approved plan (prices changed since?) e.g. {drift[:5]} — re-run plan")
+    skipped = len(set(approved) - {pv["id"] for e in plan for pv in e["variants"]})
+    if skipped:
+        print(f"note: {skipped} approved variants need no write now (already applied, archived, or repriced)")
+    print("backup:", _save(snap, "backup"))
+    print("applied record:", _save(plan, "applied"))  # rollback reads every applied-*.json
     print(f"writing {sum(len(e['variants']) for e in plan)} variants across {len(plan)} products")
     sys.exit(1 if write(plan) else 0)
 
@@ -239,14 +260,22 @@ def cmd_verify(plan_file):
     sys.exit(1 if bad else 0)
 
 
-def cmd_rollback(backup_file, force):
-    backup = _load(backup_file)
-    writes, report = build_rollback(backup, fetch(), build_plan(backup), force=force)
-    print("\n".join(report) or "no hand edits or new products")
+def cmd_rollback(force):
+    applied_files = sorted(glob.glob(os.path.join(OUT, "applied-*.json")))
+    if not applied_files:
+        sys.exit(f"no applied-*.json in {OUT} — nothing to roll back")
+    print("applied records:", *applied_files, sep="\n  ")
+    targets = rollback_targets([_load(f) for f in applied_files])
+    known = {var["id"] for f in glob.glob(os.path.join(OUT, "backup-*.json")) for p in _load(f)["products"] for var in p["variants"]}
+    live = fetch(active_only=False)
+    writes, report = build_rollback(targets, live, force=force, known=known)
+    print("\n".join(report) or "no hand edits, new or missing variants")
     print(f"restoring {sum(len(e['variants']) for e in writes)} variants across {len(writes)} products")
-    errors = write(writes)
-    expected = {pv["id"]: _vals(pv) for e in writes for pv in e["variants"]}
-    bad = _mismatches(expected, fetch())
+    errors = write(writes) if writes else 0
+    skipped = {m for line in report if "(skipped)" in line or line.startswith("MISSING")
+               for m in re.findall(r"gid://shopify/ProductVariant/\d+", line)}
+    expected = {vid: t["before"] for vid, t in targets.items() if vid not in skipped}
+    bad = _mismatches(expected, fetch(active_only=False))
     print(f"restore verified {len(expected)}/{len(expected)}" if not bad else f"RESTORE MISMATCH {len(bad)}\n" + "\n".join(bad[:30]))
     sys.exit(1 if errors or bad else 0)
 
@@ -260,6 +289,6 @@ if __name__ == "__main__":
     elif args[0] == "verify":
         cmd_verify(args[1])
     elif args[0] == "rollback":
-        cmd_rollback(args[1], "--force" in args)
+        cmd_rollback("--force" in args)
     else:
         sys.exit(__doc__)

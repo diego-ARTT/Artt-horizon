@@ -20,12 +20,14 @@ git revert <sha of the BFCM theme commit on main>   # find it: git log --oneline
 ## 2. Put prices back
 
 ```bash
-python3 -I scripts/bfcm-2026/bfcm.py rollback ~/Development/arttitude-store-work/bfcm-2026/backup-BEFORE-SALE-<timestamp>.json
+python3 -I scripts/bfcm-2026/bfcm.py rollback
 ```
 
+- It restores from every `applied-*.json` in `~/Development/arttitude-store-work/bfcm-2026/` (one per apply run — the exact values each run replaced and wrote), and checks products in any status, so items drafted or archived during the sale are restored too.
 - It prints a report first:
   - `HAND EDIT (skipped)` — someone changed that variant's price during the sale; it is left alone. Decide per line; re-run with `--force` to overwrite all of them with the pre-sale values.
-  - `NEW PRODUCT / NEW VARIANT (untouched)` — created during the sale; check its price by hand.
+  - `NEW VARIANT (untouched)` — created during the sale; check its price by hand.
+  - `MISSING (deleted?)` — a variant we discounted no longer exists; nothing to restore.
 - It ends with `restore verified n/n`. Anything else = look at the mismatch lines and re-run (re-running is safe).
 
 ## 3. Check the live store (phone width first)

@@ -1,7 +1,7 @@
 import copy
 import unittest
 
-from bfcm import build_plan, build_rollback, summarize
+from bfcm import build_plan, build_rollback, rollback_targets, summarize
 
 
 def v(vid, price, cap=None):
@@ -67,12 +67,35 @@ class RollbackTest(unittest.TestCase):
         self.backup = snapshot()
         self.plan = build_plan(self.backup)
         self.live = apply_plan(self.backup, self.plan)
+        self.targets = rollback_targets([self.plan])
 
     def writes_by_id(self, writes):
         return {pv["id"][-2:]: (pv["price"], pv["compareAtPrice"]) for e in writes for pv in e["variants"]}
 
+    def test_rollback_two_applies_uses_what_was_written(self):
+        # first apply only got through product A (partial failure)
+        plan1 = [e for e in self.plan if e["handle"] == "a-full"]
+        snap2 = apply_plan(self.backup, plan1)
+        # before the re-apply, someone hand-edits B (not yet on sale) and A's first variant
+        snap2["products"][1]["variants"][0]["price"] = "110.00"
+        snap2["products"][0]["variants"][0].update(price="120.00", compareAtPrice="135.00")
+        plan2 = build_plan(snap2)
+        live = apply_plan(snap2, plan2)
+        writes, report = build_rollback(rollback_targets([plan1, plan2]), live)
+        w = self.writes_by_id(writes)
+        self.assertEqual(w["21"], ("110.00", "135.00"))  # B's value just before it went on sale, not the stale 101.25
+        self.assertEqual(w["11"], ("135.00", None))  # first recorded pre-sale value wins
+        self.assertEqual(w["12"], ("150.00", None))
+        self.assertEqual(report, [])
+
+    def test_rollback_reports_missing_product(self):
+        self.live["products"] = [p for p in self.live["products"] if p["handle"] != "b-marked"]
+        writes, report = build_rollback(self.targets, self.live)
+        self.assertNotIn("21", self.writes_by_id(writes))
+        self.assertTrue(any("MISSING" in line and "b-marked" in line for line in report))
+
     def test_rollback_restores(self):
-        writes, report = build_rollback(self.backup, self.live, self.plan)
+        writes, report = build_rollback(self.targets, self.live)
         w = self.writes_by_id(writes)
         self.assertEqual(w["21"], ("101.25", "135.00"))
         self.assertEqual(w["11"], ("135.00", None))
@@ -82,18 +105,20 @@ class RollbackTest(unittest.TestCase):
 
     def test_rollback_skips_hand_edit(self):
         self.live["products"][0]["variants"][0]["price"] = "80.00"
-        writes, report = build_rollback(self.backup, self.live, self.plan)
+        writes, report = build_rollback(self.targets, self.live)
         self.assertNotIn("11", self.writes_by_id(writes))
         self.assertTrue(any("a-full" in line for line in report))
-        forced, _ = build_rollback(self.backup, self.live, self.plan, force=True)
+        forced, _ = build_rollback(self.targets, self.live, force=True)
         self.assertIn("11", self.writes_by_id(forced))
 
     def test_rollback_reports_new_product(self):
         self.live["products"].append({"id": "gid://shopify/Product/9", "handle": "z-new", "title": "Z",
                                       "variantsCount": 1, "variants": [v(91, "50.00")]})
-        writes, report = build_rollback(self.backup, self.live, self.plan)
+        known = {var["id"] for p in self.backup["products"] for var in p["variants"]}
+        writes, report = build_rollback(self.targets, self.live, known=known)
         self.assertNotIn("91", self.writes_by_id(writes))
         self.assertTrue(any("z-new" in line for line in report))
+        self.assertFalse(any("c-deep" in line for line in report))  # never-changed variant 31 is known, not new
 
 
 if __name__ == "__main__":
