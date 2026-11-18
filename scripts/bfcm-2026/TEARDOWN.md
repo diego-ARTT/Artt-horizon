@@ -30,6 +30,16 @@ python3 -I scripts/bfcm-2026/bfcm.py rollback
   - `MISSING (deleted?)` — a variant we discounted no longer exists; nothing to restore.
 - It ends with `restore verified n/n`. Anything else = look at the mismatch lines and re-run (re-running is safe).
 
+## 2b. Turn discount codes back on
+
+28 discount codes were paused on Nov 17 so they couldn't stack on sale prices (everything except the two Alter Ego codes and the automatic discounts).
+
+```bash
+python3 -I scripts/bfcm-2026/discounts.py restore
+```
+
+It reactivates every code in `discounts-paused-*.json`, puts back the original end dates (the Judge.me referral codes end Dec 11 / Dec 17), and ends with `restored 28/28`. Then re-enable any Klaviyo flows you paused for the sale.
+
 ## 3. Check the live store (phone width first)
 
 - Homepage: no BFCM banner, no marquee, ICONS hero is first.
