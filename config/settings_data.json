@@ -226,7 +226,7 @@
     "badge_sold_out_background_color": "{{ settings.color_palette.color2 }}",
     "palette_input_border": "#00000080",
     "palette_variant_border": "#00000021",
-    "badge_sale_background_color": "{{ settings.color_palette.foreground }}",
+    "badge_sale_background_color": "{{ settings.color_palette.color4 }}",
     "page_text_color": "#000000cf",
     "drawer_text_color": "#000000cf",
     "drawer_border_color": "#0000000f",
@@ -235,8 +235,7 @@
     "palette_input_text": "#333333",
     "palette_input_background": "#ffffffc7",
     "palette_primary_button_border": "#000000",
-    "palette_secondary_button_background": "rgba(0,0,0,0)",
-    "badge_sale_text_color": "{{ settings.color_palette.background }}"
+    "palette_secondary_button_background": "rgba(0,0,0,0)"
   },
   "presets": {
     "Default": {
