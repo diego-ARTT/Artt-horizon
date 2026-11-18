@@ -13,16 +13,16 @@
   "sections": {
     "header_marquee_98qecc": {
       "type": "header-marquee",
-      "disabled": true,
+      "disabled": false,
       "name": "t:names.marquee",
       "settings": {
         "enable_marquee": true,
-        "message": "4th of July sales are on - 25% Off the 7 Deadly Sins Collection + Free Shipping on Orders $100+",
+        "message": "BLACK FRIDAY · 30% OFF EVERYTHING · ENDS CYBER MONDAY",
         "text_size": "small",
-        "link": "shopify://collections/seven-deadly-sins",
+        "link": "shopify://collections/all",
         "speed": 72,
         "direction": "normal",
-        "background_color": "#f5f5f5"
+        "background_color": "#000000"
       }
     },
     "header_section": {

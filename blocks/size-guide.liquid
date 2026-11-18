@@ -72,6 +72,105 @@
         </div>
         
         <div class="size-guide__content-wrapper">
+          {%- liquid
+            # Pick the silhouette from the guide's title or the product type. Long
+            # sleeves for crewnecks, hoodies, long-sleeve tees and jackets.
+            assign sg_kind = size_guide_page.title | append: ' ' | append: product.type | downcase
+            assign sg_long = false
+            if sg_kind contains 'crewneck' or sg_kind contains 'hoodie' or sg_kind contains 'sweat' or sg_kind contains 'jacket' or sg_kind contains 'long sleeve' or sg_kind contains 'l/s'
+              assign sg_long = true
+            endif
+            assign sg_figure_id = 'size-guide-figure-' | append: block.id
+          -%}
+          {%- comment -%}
+            Theme-drawn measuring diagram. It replaces the picture inside the page
+            content: real text in the brand faces, every column in the table drawn
+            and named as the table names it, and the numbers for the size being
+            looked at. Stays hidden (and the page's own picture stays) until the
+            script finds a table it can read.
+          {%- endcomment -%}
+          <figure
+            class="size-guide__figure{% if sg_long %} size-guide__figure--long{% endif %}"
+            data-size-guide-figure
+            hidden
+          >
+            <p
+              class="size-guide__figure-size"
+              data-figure-size
+              aria-hidden="true"
+            ></p>
+            <svg
+              class="size-guide__diagram"
+              viewBox="0 0 360 284"
+              preserveAspectRatio="xMinYMid meet"
+              role="img"
+              aria-labelledby="{{ sg_figure_id }}-title"
+              focusable="false"
+            >
+              <title id="{{ sg_figure_id }}-title">{{ 'products.size_guide.figure_title' | t }}</title>
+              {%- if sg_long -%}
+                <path
+                  class="size-guide__garment"
+                  d="M140 20 Q180 48 220 20 L266 34 Q292 44 298 80 L318 236 L292 244 L258 104 L257 258 L103 258 L102 104 L68 244 L42 236 L62 80 Q68 44 94 34 Z"
+                />
+                <path class="size-guide__garment-detail" d="M146 22 Q180 40 214 22 M103 248 H257 M314 222 L289 230 M46 222 L71 230" />
+              {%- else -%}
+                <path
+                  class="size-guide__garment"
+                  d="M140 20 Q180 48 220 20 L265 34 L308 100 L278 118 L256 92 L256 258 L104 258 L104 92 L82 118 L52 100 L95 34 Z"
+                />
+                <path class="size-guide__garment-detail" d="M146 22 Q180 40 214 22 M104 250 H256" />
+              {%- endif -%}
+
+              {%- comment -%} Chest / width: straight across, armpit to armpit. {%- endcomment -%}
+              {%- if sg_long -%}
+                {%- assign chest_y = 112 -%}
+                {%- assign chest_x1 = 103 -%}
+                {%- assign chest_x2 = 257 -%}
+              {%- else -%}
+                {%- assign chest_y = 100 -%}
+                {%- assign chest_x1 = 104 -%}
+                {%- assign chest_x2 = 256 -%}
+              {%- endif -%}
+              <g class="size-guide__dim" data-dim="chest">
+                <path
+                  class="size-guide__dim-line"
+                  d="M{{ chest_x1 }} {{ chest_y }} H{{ chest_x2 }} M{{ chest_x1 }} {{ chest_y | minus: 5 }} V{{ chest_y | plus: 5 }} M{{ chest_x2 }} {{ chest_y | minus: 5 }} V{{ chest_y | plus: 5 }}"
+                />
+                <text class="size-guide__dim-label" x="180" y="{{ chest_y | plus: 22 }}" text-anchor="middle" data-dim-label></text>
+                <text class="size-guide__dim-value" x="180" y="{{ chest_y | plus: 41 }}" text-anchor="middle" data-dim-value></text>
+              </g>
+
+              {%- comment -%} Body / length: top of the shoulder beside the collar, straight down to the hem. {%- endcomment -%}
+              <g class="size-guide__dim" data-dim="body">
+                <path class="size-guide__dim-line" d="M140 20 V258 M135 20 H145 M135 258 H145" />
+                <text class="size-guide__dim-label" x="149" y="206" data-dim-label></text>
+                <text class="size-guide__dim-value" x="149" y="225" data-dim-value></text>
+              </g>
+
+              {%- comment -%}
+                Sleeve: drawn along the sleeve from the shoulder to the cuff. The
+                pages don't state where sleeve is measured from, so no caption
+                claims a starting point.
+              {%- endcomment -%}
+              <g class="size-guide__dim" data-dim="sleeve">
+                {%- if sg_long -%}
+                  <path class="size-guide__dim-line" d="M82 32 L30 238 M78.1 31 L85.9 33 M26.1 237 L33.9 239" />
+                  <text class="size-guide__dim-label" x="6" y="262" data-dim-label></text>
+                  <text class="size-guide__dim-value" x="6" y="280" data-dim-value></text>
+                {%- else -%}
+                  <path class="size-guide__dim-line" d="M85 27.5 L42 93.5 M81.6 25.3 L88.4 29.7 M38.6 91.3 L45.4 95.7" />
+                  <text class="size-guide__dim-label" x="22" y="142" data-dim-label></text>
+                  <text class="size-guide__dim-value" x="22" y="161" data-dim-value></text>
+                {%- endif -%}
+              </g>
+            </svg>
+            <figcaption class="size-guide__figure-caption">
+              <span>{{ 'products.size_guide.figure_caption' | t }}</span>
+              <span class="size-guide__figure-hint">{{ 'products.size_guide.figure_hint' | t }}</span>
+            </figcaption>
+          </figure>
+
           <rte-formatter>
             {{ size_guide_page.content }}
           </rte-formatter>
@@ -80,6 +179,209 @@
     </dialog>
   </dialog-component>
 {%- endif -%}
+
+{% javascript %}
+  /*
+   * Size guide enhancements, all delegated from document: variant changes can
+   * morph the product section, and listeners bound to the original nodes would
+   * be lost.
+   *
+   * 1. Mark the chart row for the size the shopper already picked.
+   * 2. Drive the theme-drawn diagram from whichever table is showing: name each
+   *    dimension the way the table's column heading does, and print the numbers
+   *    for the size being looked at (the picked size, a tapped row, or the row
+   *    under the pointer).
+   */
+  (() => {
+    if (window.__sizeGuideEnhanced) return;
+    window.__sizeGuideEnhanced = true;
+
+    const DIMENSIONS = [
+      ['chest', /chest|width|bust|pit/i],
+      ['body', /body|length/i],
+      ['sleeve', /sleeve/i],
+    ];
+
+    const normalize = (value) =>
+      String(value || '')
+        .trim()
+        .toUpperCase()
+        .replace(/\s+/g, '')
+        .replace(/^XXL$/, '2XL')
+        .replace(/^XXXL$/, '3XL');
+
+    /* Visible text of a cell, ignoring the screen-reader "(selected)" label. */
+    const cellText = (cell) => {
+      if (!cell) return '';
+      let text = '';
+      cell.childNodes.forEach((node) => {
+        if (node.nodeType === 1 && node.classList.contains('size-guide__selected-label')) return;
+        text += node.textContent;
+      });
+      return text.replace(/\s+/g, ' ').trim();
+    };
+
+    const selectedSize = (scope) => {
+      const inputs = scope.querySelectorAll('input[data-option-name]:checked, select[data-option-name]');
+      for (const input of inputs) {
+        if (!/size|taille|talla/i.test(input.dataset.optionName || '')) continue;
+        return normalize(input.value);
+      }
+      return '';
+    };
+
+    const markRows = (dialog, size) => {
+      dialog.querySelectorAll('.size-guide__selected-label').forEach((el) => el.remove());
+      dialog.querySelectorAll('tbody tr').forEach((row) => {
+        const cell = row.querySelector('td, th');
+        const match = Boolean(size) && cell && normalize(cellText(cell)) === size;
+        row.classList.toggle('size-guide__row--selected', match);
+        if (match) {
+          const label = document.createElement('span');
+          label.className = 'size-guide__selected-label visually-hidden';
+          label.textContent = ' (selected)';
+          cell.append(label);
+        }
+      });
+    };
+
+    const isShown = (element) => element.getClientRects().length > 0;
+
+    /* The table currently on screen, its measurement columns, and its size rows. */
+    const readTable = (dialog) => {
+      const table = [...dialog.querySelectorAll('rte-formatter table')].find(isShown);
+      const header = table && (table.tHead?.rows[0] || table.rows[0]);
+      if (!header) return null;
+
+      const columns = {};
+      [...header.cells].forEach((cell, index) => {
+        if (index === 0) return;
+        const name = cellText(cell);
+        const match = DIMENSIONS.find(([, pattern]) => pattern.test(name));
+        if (match && !(match[0] in columns)) columns[match[0]] = { index, name };
+      });
+      if (!Object.keys(columns).length) return null;
+
+      const rows = [...table.rows].filter((row) => row !== header && !row.closest('thead') && row.cells.length > 1);
+      return { table, columns, rows };
+    };
+
+    /* "Unisex" / "Women's" when the chart has fit tabs, so the readout says which. */
+    const fitLabel = (dialog) => {
+      const chart = dialog.querySelector('.sg-size-chart');
+      if (!chart) return '';
+      const radios = [...chart.querySelectorAll(':scope > input[type="radio"]')];
+      const index = radios.findIndex((radio) => radio.checked);
+      if (radios.length < 2 || index < 0) return '';
+      return cellText(chart.querySelectorAll('.sg-size-chart__tab-label')[index]);
+    };
+
+    const render = (dialog, preview) => {
+      const figure = dialog.querySelector('[data-size-guide-figure]');
+      const wrapper = dialog.querySelector('.size-guide__content-wrapper');
+      if (!figure || !wrapper) return;
+
+      const data = readTable(dialog);
+      if (!data) {
+        figure.hidden = true;
+        wrapper.classList.remove('size-guide--has-figure');
+        return;
+      }
+
+      if (!data.rows.includes(dialog.sizeGuideActiveRow)) dialog.sizeGuideActiveRow = null;
+      const row =
+        (data.rows.includes(preview) && preview) ||
+        dialog.sizeGuideActiveRow ||
+        data.rows.find((candidate) => candidate.classList.contains('size-guide__row--selected')) ||
+        null;
+
+      data.rows.forEach((candidate) =>
+        candidate.classList.toggle('size-guide__row--active', candidate === dialog.sizeGuideActiveRow)
+      );
+
+      figure.querySelectorAll('[data-dim]').forEach((group) => {
+        const column = data.columns[group.dataset.dim];
+        group.classList.toggle('is-absent', !column);
+        if (!column) return;
+        group.querySelector('[data-dim-label]').textContent = column.name.toUpperCase();
+        group.querySelector('[data-dim-value]').textContent = row ? cellText(row.cells[column.index]) : '';
+      });
+
+      const size = row ? cellText(row.cells[0]) : '';
+      figure.querySelector('[data-figure-size]').textContent = size
+        ? [size, fitLabel(dialog)].filter(Boolean).join(' · ')
+        : '';
+      figure.classList.toggle('has-values', Boolean(row));
+      figure.hidden = false;
+      wrapper.classList.add('size-guide--has-figure');
+    };
+
+    const focusDimension = (dialog, cell) => {
+      const figure = dialog.querySelector('[data-size-guide-figure]');
+      if (!figure) return;
+      const data = cell ? readTable(dialog) : null;
+      const entry = data && Object.entries(data.columns).find(([, column]) => column.index === cell.cellIndex);
+      if (entry) figure.dataset.focus = entry[0];
+      else delete figure.dataset.focus;
+    };
+
+    const dialogOf = (node) => node?.closest?.('.size-guide__content');
+    const bodyRowOf = (node) => {
+      const row = node?.closest?.('tr');
+      return row && !row.closest('thead') && row.querySelector('td') ? row : null;
+    };
+
+    document.addEventListener(
+      'click',
+      (event) => {
+        const button = event.target.closest?.('.size-guide__button');
+        if (button) {
+          const dialog = button.closest('dialog-component')?.querySelector('.size-guide__content');
+          if (!dialog) return;
+          const scope = button.closest('.shopify-section, product-form-component, main') || document;
+          markRows(dialog, selectedSize(scope) || selectedSize(document));
+          dialog.sizeGuideActiveRow = null;
+          /* Wait for the dialog to open: the visible table is found by layout. */
+          requestAnimationFrame(() => render(dialog));
+          return;
+        }
+
+        const dialog = dialogOf(event.target);
+        const row = dialog && event.target.closest('rte-formatter') && bodyRowOf(event.target);
+        if (!row) return;
+        /* Tapping a row pins it on the diagram; tapping it again lets go. */
+        dialog.sizeGuideActiveRow = dialog.sizeGuideActiveRow === row ? null : row;
+        render(dialog);
+      },
+      true
+    );
+
+    document.addEventListener('change', (event) => {
+      const dialog = dialogOf(event.target);
+      if (!dialog || !event.target.matches('input[type="radio"]')) return;
+      dialog.sizeGuideActiveRow = null;
+      requestAnimationFrame(() => render(dialog));
+    });
+
+    document.addEventListener('pointerover', (event) => {
+      if (event.pointerType !== 'mouse') return;
+      const dialog = dialogOf(event.target);
+      const cell = dialog && event.target.closest?.('rte-formatter :is(td, th)');
+      if (!cell) return;
+      render(dialog, bodyRowOf(cell));
+      focusDimension(dialog, cell);
+    });
+
+    document.addEventListener('pointerout', (event) => {
+      if (event.pointerType !== 'mouse') return;
+      const dialog = dialogOf(event.target);
+      const table = dialog && event.target.closest?.('rte-formatter table');
+      if (!table || table.contains(event.relatedTarget)) return;
+      render(dialog);
+      focusDimension(dialog, null);
+    });
+  })();
+{% endjavascript %}
 
 {% stylesheet %}
   .size-guide__button {
@@ -156,8 +458,13 @@
 
   .size-guide__content--drawer .size-guide__header {
     flex-shrink: 0;
-    padding: var(--padding-xl) var(--padding-xl) var(--padding-md);
+    /* Reserve the close button's lane so a two-line title never runs under it. */
+    padding: var(--padding-xl) calc(var(--minimum-touch-target) + var(--padding-md)) var(--padding-md) var(--padding-xl);
     border-bottom: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  }
+
+  .size-guide__title {
+    text-wrap: balance;
   }
 
   .size-guide__content--drawer .size-guide__content-wrapper {
@@ -218,40 +525,420 @@
     width: 100%;
   }
 
-  /* Ensure tables in size guides are responsive */
-  .size-guide__content-wrapper table,
-  .size-guide__inner table,
-  rte-formatter table {
+  /*
+   * Size chart content.
+   *
+   * The chart lives in Shopify pages (admin data, not this repo) and ships its
+   * own <style> block: IBM Plex Mono (never loaded, so it falls back to the
+   * system mono), a cream/stone palette, 6px-rounded tabs and radio inputs
+   * hidden with display:none (unreachable by keyboard). The theme owns
+   * presentation here, so these rules restyle it to the ARTT system.
+   *
+   * `:not(#sg)` adds one ID of specificity on purpose: the page CSS selects its
+   * active tab with ID selectors (#sg-tab-unisex:checked ~ ...), and this is the
+   * only way to outrank it without !important. Matching is by class and
+   * position, so new chart pages with other ID prefixes are covered too.
+   */
+  .size-guide__content-wrapper:not(#sg) {
+    /*
+     * Opaque on purpose. The popover foreground is translucent (#000000cf), and
+     * Chrome paints collapsed-table borders and row fills per cell; where
+     * fractional column edges overlap, translucent paint shows as seams.
+     */
+    --sg-ink: rgb(var(--color-foreground-rgb));
+    --sg-rule: color-mix(in srgb, var(--sg-ink) 12%, var(--color-background));
+    --sg-muted: rgb(var(--color-foreground-rgb) / 0.68);
+    --sg-meta-font: var(--font-body--family);
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--color-foreground-rgb) / 0.25) transparent;
+  }
+
+  .size-guide__content-wrapper:not(#sg) .sg-size-chart {
+    font-family: var(--sg-meta-font);
+    color: var(--color-foreground);
+    max-width: none;
+  }
+
+  /* The drawer title already names the guide; the page's tracked kicker repeats it. */
+  .size-guide__content-wrapper:not(#sg) .sg-size-chart__heading {
+    display: none;
+  }
+
+  /* Garment diagram: keep it a reference figure, not the first screenful. */
+  .size-guide__content-wrapper:not(#sg) :is(.sg-size-chart, .main-content) > svg {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 13rem;
+    margin-block-end: var(--margin-2xl, 2rem);
+
+    @media screen and (min-width: 750px) {
+      max-height: 15rem;
+    }
+  }
+
+  /* Fit tabs: real radios, visually hidden but focusable, driving underline tabs. */
+  .size-guide__content-wrapper:not(#sg) .sg-size-chart > input[type='radio'] {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    opacity: 0;
+  }
+
+  .size-guide__content-wrapper:not(#sg) .sg-size-chart__tabs {
+    display: flex;
+    gap: var(--gap-xl, 1.5rem);
+    border: 0;
+    border-bottom: 1px solid var(--sg-rule);
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .size-guide__content-wrapper:not(#sg) .sg-size-chart__tabs .sg-size-chart__tab-label {
+    flex: 0 0 auto;
+    margin-block-end: -1px;
+    padding: 0.75rem 0;
+    min-height: var(--minimum-touch-target);
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    background: none;
+    color: var(--sg-muted);
+    font-family: var(--sg-meta-font);
+    font-size: 0.875rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+    text-align: start;
+    transition: color var(--animation-speed) var(--animation-easing),
+      border-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .size-guide__content-wrapper:not(#sg) .sg-size-chart__tabs .sg-size-chart__tab-label:hover {
+    background: none;
+    color: var(--color-foreground);
+  }
+
+  .size-guide__content-wrapper:not(#sg)
+    .sg-size-chart:has(> input:nth-of-type(1):checked)
+    .sg-size-chart__tabs
+    .sg-size-chart__tab-label:nth-of-type(1),
+  .size-guide__content-wrapper:not(#sg)
+    .sg-size-chart:has(> input:nth-of-type(2):checked)
+    .sg-size-chart__tabs
+    .sg-size-chart__tab-label:nth-of-type(2),
+  .size-guide__content-wrapper:not(#sg)
+    .sg-size-chart:has(> input:nth-of-type(3):checked)
+    .sg-size-chart__tabs
+    .sg-size-chart__tab-label:nth-of-type(3) {
+    background: none;
+    color: var(--color-foreground);
+    font-weight: 700;
+    border-bottom-color: var(--color-foreground);
+  }
+
+  .size-guide__content-wrapper:not(#sg)
+    .sg-size-chart:has(> input:nth-of-type(1):focus-visible)
+    .sg-size-chart__tab-label:nth-of-type(1),
+  .size-guide__content-wrapper:not(#sg)
+    .sg-size-chart:has(> input:nth-of-type(2):focus-visible)
+    .sg-size-chart__tab-label:nth-of-type(2),
+  .size-guide__content-wrapper:not(#sg)
+    .sg-size-chart:has(> input:nth-of-type(3):focus-visible)
+    .sg-size-chart__tab-label:nth-of-type(3) {
+    outline: var(--focus-outline-width, 2px) solid currentcolor;
+    outline-offset: var(--focus-outline-offset, 3px);
+  }
+
+  /*
+   * Table rows.
+   *
+   * Columns are auto-sized and land on fractional pixels, and Chrome paints row
+   * fills and collapsed borders once per cell, so any per-cell paint leaves
+   * hairline seams at the column edges. Instead, each row's rule and fill is
+   * one pseudo-element on its first cell, spanning the full table width (the
+   * wrapper is a size container, so 100cqw is the table's width). Nothing is
+   * painted per cell, so there is nothing to seam.
+   */
+  .size-guide__content-wrapper:not(#sg) :is(.rte-table-wrapper, .sg-size-chart__table-wrap) {
+    container-type: inline-size;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .size-guide__content-wrapper:not(#sg) :is(table, thead, tbody, tr) {
+    border: 0;
+    background: none;
+  }
+
+  /* Tables: one rule for the chart pages and the older plain RTE tables. */
+  .size-guide__content-wrapper:not(#sg) table {
+    display: table;
     width: 100%;
+    margin: 0;
     border-collapse: collapse;
-    margin-block: var(--margin-md);
+    font-family: var(--sg-meta-font);
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
   }
 
-  .size-guide__content-wrapper table th,
-  .size-guide__content-wrapper table td,
-  .size-guide__inner table th,
-  .size-guide__inner table td,
-  rte-formatter table th,
-  rte-formatter table td {
-    padding: var(--padding-sm);
-    text-align: left;
-    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-10));
+  .size-guide__content-wrapper:not(#sg) :is(th, td) {
+    padding: 0.875rem 0 0.875rem var(--padding-md);
+    border: 0;
+    background: none;
+    color: var(--color-foreground);
+    font-size: inherit;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-align: end;
+    white-space: nowrap;
+    transition: color var(--animation-speed) var(--animation-easing);
   }
 
-  .size-guide__content-wrapper table th,
-  .size-guide__inner table th,
-  rte-formatter table th {
-    font-weight: 600;
-    background-color: rgb(var(--color-background-rgb) / var(--opacity-50));
+  /* A small inset on the outer columns lets the selected row read as a bar. */
+  .size-guide__content-wrapper:not(#sg) :is(th, td):first-child {
+    position: relative;
+    padding-inline: 0.75rem var(--padding-md);
+    text-align: start;
   }
 
-  @media screen and (max-width: 749px) {
-    .size-guide__content-wrapper table,
-    .size-guide__inner table,
-    rte-formatter table {
-      display: block;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+  .size-guide__content-wrapper:not(#sg) :is(th, td):last-child {
+    padding-inline-end: 0.75rem;
+  }
+
+  .size-guide__content-wrapper:not(#sg) :is(th, td) :is(p, div) {
+    margin: 0;
+  }
+
+  /* The row surface: rule along the bottom, fill for hover and selection. */
+  .size-guide__content-wrapper:not(#sg) tr > :first-child::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 100cqw;
+    z-index: -1;
+    border-bottom: 1px solid var(--sg-rule);
+    background-color: transparent;
+    pointer-events: none;
+    transition: background-color var(--animation-speed) var(--animation-easing);
+  }
+
+  .size-guide__content-wrapper:not(#sg) tbody tr:last-child > :first-child::before {
+    border-bottom-color: transparent;
+  }
+
+  /* Column heads: Meta role (Space Mono 12px, 0.13em), on a full Ink rule. */
+  .size-guide__content-wrapper:not(#sg) thead :is(th, td) {
+    padding-block: 1rem 0.625rem;
+    color: var(--sg-muted);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .size-guide__content-wrapper:not(#sg) thead tr > :first-child::before {
+    border-bottom-color: var(--sg-ink);
+  }
+
+  /* The size is what people scan for, so it is the strongest cell in the row. */
+  .size-guide__content-wrapper:not(#sg) tbody tr > :first-child {
+    color: var(--color-foreground);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  @media (hover: hover) {
+    .size-guide__content-wrapper:not(#sg) tbody tr:hover > :first-child::before {
+      background-color: rgb(var(--color-foreground-rgb) / 0.05);
+    }
+  }
+
+  /* The shopper's current size, inverted like a selected chip, in solid Ink. */
+  .size-guide__content-wrapper:not(#sg) tbody tr.size-guide__row--selected > :first-child::before {
+    background-color: var(--sg-ink);
+    border-bottom-color: var(--sg-ink);
+  }
+
+  .size-guide__content-wrapper:not(#sg) tbody tr.size-guide__row--selected > * {
+    color: var(--color-background);
+  }
+
+  /*
+   * Theme-drawn measuring diagram. The garment is a quiet outline; the
+   * measurements are the Ink. Sized in viewBox units: at drawer width the
+   * labels render at ~11px (Meta) and the values at ~14px.
+   */
+  .size-guide__figure {
+    margin: 0 0 var(--margin-2xl, 2rem);
+  }
+
+  .size-guide__figure[hidden] {
+    display: none;
+  }
+
+  /* Once the theme diagram is up, the page's own picture steps aside. */
+  .size-guide__content-wrapper.size-guide--has-figure:not(#sg) rte-formatter svg {
+    display: none;
+  }
+
+  .size-guide__figure-size {
+    min-height: 1.5em;
+    margin: 0 0 var(--margin-xs, 0.5rem);
+    color: rgb(var(--color-foreground-rgb));
+    font-family: var(--font-body--family);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .size-guide__diagram {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 15rem;
+    overflow: visible;
+
+    @media screen and (min-width: 750px) {
+      max-height: 17rem;
+    }
+  }
+
+  .size-guide__garment {
+    fill: none;
+    stroke: rgb(var(--color-foreground-rgb) / 0.4);
+    stroke-width: 1.25;
+    stroke-linejoin: round;
+  }
+
+  .size-guide__garment-detail {
+    fill: none;
+    stroke: rgb(var(--color-foreground-rgb) / 0.2);
+    stroke-width: 1;
+  }
+
+  .size-guide__dim {
+    transition: opacity var(--animation-speed) var(--animation-easing);
+  }
+
+  .size-guide__dim.is-absent {
+    display: none;
+  }
+
+  .size-guide__dim-line {
+    fill: none;
+    stroke: rgb(var(--color-foreground-rgb));
+    stroke-width: 1.25;
+    stroke-linecap: square;
+    transition: stroke-width var(--animation-speed) var(--animation-easing);
+  }
+
+  .size-guide__dim-label {
+    fill: rgb(var(--color-foreground-rgb) / 0.68);
+    font-family: var(--font-body--family);
+    font-size: 13px;
+    letter-spacing: 0.13em;
+  }
+
+  .size-guide__dim-value {
+    fill: rgb(var(--color-foreground-rgb));
+    font-family: var(--font-body--family);
+    font-size: 17px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Pointing at a column isolates its line on the garment. */
+  .size-guide__figure[data-focus] .size-guide__dim {
+    opacity: 0.2;
+  }
+
+  .size-guide__figure[data-focus='chest'] [data-dim='chest'],
+  .size-guide__figure[data-focus='body'] [data-dim='body'],
+  .size-guide__figure[data-focus='sleeve'] [data-dim='sleeve'] {
+    opacity: 1;
+  }
+
+  .size-guide__figure[data-focus='chest'] [data-dim='chest'] .size-guide__dim-line,
+  .size-guide__figure[data-focus='body'] [data-dim='body'] .size-guide__dim-line,
+  .size-guide__figure[data-focus='sleeve'] [data-dim='sleeve'] .size-guide__dim-line {
+    stroke-width: 2;
+  }
+
+  .size-guide__figure-caption {
+    display: grid;
+    gap: 0.375rem;
+    margin-block-start: var(--margin-md, 0.75rem);
+    color: rgb(var(--color-foreground-rgb) / 0.68);
+    font-family: var(--font-body--family);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    max-width: 60ch;
+  }
+
+  .size-guide__figure:not(.has-values) [data-dim-value] {
+    display: none;
+  }
+
+  /* Rows double as a picker for the diagram. */
+  .size-guide__content-wrapper.size-guide--has-figure:not(#sg) tbody tr {
+    cursor: pointer;
+  }
+
+  .size-guide__content-wrapper:not(#sg)
+    tbody
+    tr.size-guide__row--active:not(.size-guide__row--selected)
+    > :first-child::before {
+    background-color: rgb(var(--color-foreground-rgb) / 0.09);
+  }
+
+  /* Measuring notes and fit advice. */
+  .size-guide__content-wrapper:not(#sg) :is(.sg-size-chart__note, rte-formatter em) {
+    display: block;
+    margin-block: var(--margin-lg, 1rem) 0;
+    color: var(--sg-muted);
+    font-family: var(--sg-meta-font);
+    font-size: 0.75rem;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
+  }
+
+  .size-guide__content-wrapper:not(#sg) rte-formatter em {
+    margin-block: 0 var(--margin-md, 0.75rem);
+  }
+
+  .size-guide__content-wrapper:not(#sg) .main-content > div {
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .size-guide__content-wrapper:not(#sg) .main-content table {
+    margin-block-end: var(--margin-lg, 1rem);
+  }
+
+  .size-guide__content-wrapper:not(#sg) ::selection {
+    background: var(--color-foreground);
+    color: var(--color-background);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .size-guide__content-wrapper:not(#sg) :is(th, td, .sg-size-chart__tab-label),
+    .size-guide__content-wrapper:not(#sg) tr > :first-child::before,
+    .size-guide__dim,
+    .size-guide__dim-line {
+      transition: none;
     }
   }
 {% endstylesheet %}
