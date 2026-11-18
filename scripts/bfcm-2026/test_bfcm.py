@@ -1,7 +1,7 @@
 import copy
 import unittest
 
-from bfcm import build_plan, build_rollback, rollback_targets, summarize
+from bfcm import build_plan, build_rollback, rollback_targets, summarize, without_products
 
 
 def v(vid, price, cap=None):
@@ -60,6 +60,22 @@ class PlanTest(unittest.TestCase):
         self.assertIn("3 products", text)
         self.assertIn("5 variants", text)
         self.assertIn("4 to change", text)
+
+
+class ExcludeTest(unittest.TestCase):
+    def test_without_products_drops_excluded(self):
+        plan = build_plan(snapshot())
+        kept = without_products(plan, {"gid://shopify/Product/2"})
+        self.assertEqual([e["handle"] for e in kept], ["a-full", "c-deep"])
+
+    def test_restore_targets_for_excluded_products(self):
+        plan = build_plan(snapshot())
+        live = apply_plan(snapshot(), plan)
+        targets = {vid: t for vid, t in rollback_targets([plan]).items() if t["productId"] == "gid://shopify/Product/2"}
+        writes, report = build_rollback(targets, live)
+        self.assertEqual([(e["handle"], e["variants"][0]["price"], e["variants"][0]["compareAtPrice"]) for e in writes],
+                         [("b-marked", "101.25", "135.00")])
+        self.assertEqual(report, [])
 
 
 class RollbackTest(unittest.TestCase):
