@@ -38,7 +38,9 @@ python3 -I scripts/bfcm-2026/bfcm.py rollback
 python3 -I scripts/bfcm-2026/discounts.py restore
 ```
 
-It reactivates every code in `discounts-paused-*.json`, puts back the original end dates (the Judge.me referral codes end Dec 11 / Dec 17), and ends with `restored 28/28`. Then re-enable any Klaviyo flows you paused for the sale.
+It reactivates every code in `discounts-paused-*.json`, puts back the original end dates (the Judge.me referral codes end Dec 11 / Dec 17), and ends with `restored 28/28`.
+
+Note: `ART10`, `BROWSE10` and `CART10` were turned back on during the sale (Nov 17) because live Klaviyo flows (welcome, site/browse/cart/checkout abandonment) hand them out; they're in the record too, and re-activating an active code is harmless. No Klaviyo flows were paused.
 
 ## 3. Check the live store (phone width first)
 
